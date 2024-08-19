@@ -51,7 +51,7 @@ root.use(cors())
 root.use("/assets",express.static(path.join(__dirname, 'Assets')))
 root.use("/admin", admin)
 
-root.get("/", (req, res) => {res.send( "dadas")})
+root.get("/", (req, res) => {res.send("Home Page")})
 
 
 root.listen(3000, ()=> {console.log("Server Connected")})
