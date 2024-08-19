@@ -2,7 +2,7 @@ let ejs = require('ejs');
  
 
 
- module.exports = (head, body) => {return (ejs.render(
+ module.exports = (head, body) => (ejs.render(
     `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,4 +11,4 @@ let ejs = require('ejs');
 <body>
     <%- body %>
 </body>
-</html>`, {head, body}))}
+</html>`, {head, body}))

@@ -1,27 +1,24 @@
-const Components = require("#Components")
+const Resources = require("#Resources")
 const Index = require("#Index")
 const sha256 = require("js-sha256")
 
 
-const admin = Index.express.Router()
+ const admin = Index.express.Router()
 
 admin.get("/", (req,res) => {res.redirect("/")})
 
+console.log(Resources)
 
 
+admin.get("/login", (req,res) => {
 
-const LoginPage =Components.BoilerPlate(
-    head=
-    `<link rel="stylesheet" href="/assets/globals.css">
-    <title>Login</title>`,
+
     
-    body=`
-    ${Components.Header(description="haederr")}
-    ${Components.LoginPage}
-    ${Components.Footer(description="aaaa")}`)
+    
+    res.send(Resources.LoginPage())
 
 
-admin.get("/login", (req,res) => {res.send(LoginPage)})
+})
 
 
 
@@ -73,6 +70,15 @@ if(record.rows.length == 0){
  
 
 
+})
+
+
+
+
+admin.get("/:id", (req, res) => {
+
+    console.log(req.params.id)
+res.send(UserPage)
 })
 
 

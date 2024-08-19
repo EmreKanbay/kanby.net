@@ -1,6 +1,8 @@
 let ejs = require('ejs');
  
-const component = `<form id="jfuuRGyj-login-form">
+
+
+module.exports =  (data) => ejs.render(`<form id="jfuuRGyj-login-form">
 
     <div>
     <label for="">Username / Email</label>
@@ -9,7 +11,7 @@ const component = `<form id="jfuuRGyj-login-form">
     <input id="jfuuRGyj-login-input-password" type="text"> <br>
 </div>
 
-
+<h1 id="jfuuRGyj-login-failed-alert"></h1>
 
 <input type="submit" value="submit">
 
@@ -57,12 +59,10 @@ document.querySelector("#jfuuRGyj-login-form").addEventListener("submit", async 
     })
 
     if(response.redirected){window.location.replace(response.url)}
-    if(response.ok){
-     console.log(response.status + " " + response.statusText)
-    }else{throw new Error("Status is not OK")}
+    if(!response.ok){document.querySelector("#jfuuRGyj-login-failed-alert").innerHTML="Login Failed"}
 
+     console.log(response.status + " " + response.statusText)
  } catch (error) {
-     console.log(error)
  
  }
 
@@ -74,8 +74,6 @@ document.querySelector("#jfuuRGyj-login-form").addEventListener("submit", async 
 })
  
 
-</script>`
+</script>` , {data})
 
 
-
-module.exports = ejs.render(component , {description: "İ am a footer"})
