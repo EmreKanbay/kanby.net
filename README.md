@@ -6,19 +6,20 @@
 
 ## Tech stack:
 
+### FRONTEND
+
+- HTML CSS JS (No Js Framework)
+
+
 ### Backend
 
 - Node JS,
 - Express JS,
-- EJS (For templating)
-
+ 
 ### DATABASE
 
 - Postgres SQL
 
-### FRONTEND
-
-- HTML CSS JS (No Js Framework)
 
 ---
 

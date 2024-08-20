@@ -3,10 +3,14 @@ const LoginForm = require("../Components/LoginForm");
 const Footer = require("../Components/Footer");
 const BoilerPlate = require("../Components/BoilerPlate");
 
-const html = x => {
-	return x + "";
+const html = (x, ...values) => {
+	var rendered = "";
+	for (let u = 0; u < x.length; u++) {
+		rendered = rendered.concat(x[u]);
+		if (u < x.length - 1) rendered = rendered.concat(values[u]);
+	}
+	return rendered;
 };
-
 module.exports = () =>
 	BoilerPlate(
 		(head = html`

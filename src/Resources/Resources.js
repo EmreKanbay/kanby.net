@@ -5,6 +5,8 @@ const Markdown = require("./Components/Markdown");
 const LoginForm = require("./Components/LoginForm");
 
 const LoginPage = require("./Pages/LoginPage");
+const LandingPage = require("./Pages/LandingPage");
+const AdminDashboard = require("./Pages/AdminDashboard");
 
 module.exports = {
 	Header,
@@ -14,4 +16,6 @@ module.exports = {
 	Markdown,
 	LoginForm,
 	LoginPage,
+	LandingPage,
+	AdminDashboard,
 };

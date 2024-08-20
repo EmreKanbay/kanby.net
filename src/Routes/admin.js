@@ -15,7 +15,7 @@ admin.get("/login", (req, res) => {
 admin.post("/login", Index.upload.none(), async (req, res) => {
 	var record;
 
-	// 
+	//
 
 	try {
 		record = await Index.pool.query(
@@ -27,7 +27,6 @@ admin.post("/login", Index.upload.none(), async (req, res) => {
 		res.send();
 	}
 
- 
 	try {
 		if (record.rowCount == 0) {
 			res.statusCode = 404;
@@ -35,12 +34,12 @@ admin.post("/login", Index.upload.none(), async (req, res) => {
 			res.send();
 		} else if (record.rowCount == 1) {
 			if (record.rows[0]["password_hash"] == sha256(req.body["login_password"])) {
- 				res.cookie("login_name", record.rows[0]["login_name"]);
- 				res.cookie("password_hash", record.rows[0]["password_hash"]);
+				res.cookie("login_name", record.rows[0]["login_name"]);
+				res.cookie("password_hash", record.rows[0]["password_hash"]);
 				res.statusCode = 202;
 				res.statusMessage = "Password Is Accurate";
-                res.redirect(new URL(`/admin/${record.rows[0]["id"]}`,req.protocol+ "://" + req.get("host")))
-            } else {
+				res.redirect(new URL(`/admin/${record.rows[0]["id"]}`, req.protocol + "://" + req.get("host")));
+			} else {
 				res.statusCode = 401;
 				res.statusMessage = "Password Is Inaccurate";
 				res.send();
@@ -58,7 +57,7 @@ admin.post("/login", Index.upload.none(), async (req, res) => {
 });
 
 admin.get("/:id", (req, res) => {
- 	res.send("UserPage");
+	res.send(Resources.LandingPage());
 });
 
 module.exports = admin;
