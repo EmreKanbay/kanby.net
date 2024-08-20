@@ -1,13 +1,13 @@
 const Header = require("../Components/Header");
 const Footer = require("../Components/Footer");
-const BoilerPlate = require("../Components/BoilerPlate");
+const VisitorStaticPageLayout = require("../Layouts/VisitorStaticPageLayout");
 
 const html = x => {
 	return x + "";
 };
 
 module.exports = () =>
-	BoilerPlate(
+	VisitorStaticPageLayout(
 		(head = html`
 			<link
 				rel="stylesheet"

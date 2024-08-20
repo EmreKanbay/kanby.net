@@ -1,7 +1,7 @@
 const Header = require("../Components/Header");
 const LoginForm = require("../Components/LoginForm");
 const Footer = require("../Components/Footer");
-const BoilerPlate = require("../Components/BoilerPlate");
+const VisitorStaticPageLayout = require("../Layouts/VisitorStaticPageLayout");
 
 const html = (x, ...values) => {
 	var rendered = "";
@@ -12,7 +12,7 @@ const html = (x, ...values) => {
 	return rendered;
 };
 module.exports = () =>
-	BoilerPlate(
+	VisitorStaticPageLayout(
 		(head = html`
 			<link
 				rel="stylesheet"

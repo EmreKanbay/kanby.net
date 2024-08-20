@@ -10,16 +10,14 @@
 
 - HTML CSS JS (No Js Framework)
 
-
 ### Backend
 
 - Node JS,
 - Express JS,
- 
+
 ### DATABASE
 
 - Postgres SQL
-
 
 ---
 

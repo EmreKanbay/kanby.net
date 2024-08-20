@@ -57,7 +57,7 @@ admin.post("/login", Index.upload.none(), async (req, res) => {
 });
 
 admin.get("/:id", (req, res) => {
-	res.send(Resources.LandingPage());
+	res.send(Resources.AdminDashboard());
 });
 
 module.exports = admin;

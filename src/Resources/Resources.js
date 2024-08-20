@@ -1,6 +1,6 @@
 const Header = require("./Components/Header");
 const Footer = require("./Components/Footer");
-const BoilerPlate = require("./Components/BoilerPlate");
+const VisitorStaticPageLayout = require("./Layouts/VisitorStaticPageLayout");
 const Markdown = require("./Components/Markdown");
 const LoginForm = require("./Components/LoginForm");
 
@@ -12,7 +12,7 @@ module.exports = {
 	Header,
 	Footer,
 	LoginPage,
-	BoilerPlate,
+	VisitorStaticPageLayout,
 	Markdown,
 	LoginForm,
 	LoginPage,
