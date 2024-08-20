@@ -1,5 +1,9 @@
 let ejs = require("ejs");
 
+const html = x => {
+	return x + "";
+};
+
 module.exports = (head, body) =>
 	ejs.render(
 		html`

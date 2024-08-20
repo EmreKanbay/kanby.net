@@ -1,4 +1,7 @@
 let ejs = require("ejs");
+const html = x => {
+	return x + "";
+};
 
 module.exports = data =>
 	ejs.render(

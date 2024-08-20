@@ -3,6 +3,10 @@ const LoginForm = require("../Components/LoginForm");
 const Footer = require("../Components/Footer");
 const BoilerPlate = require("../Components/BoilerPlate");
 
+const html = x => {
+	return x + "";
+};
+
 module.exports = () =>
 	BoilerPlate(
 		(head = html`
