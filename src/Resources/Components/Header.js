@@ -1,16 +1,15 @@
-let ejs = require('ejs');
- 
+let ejs = require("ejs");
 
- module.exports = (data)=>  ejs.render(
-    `<div class="header-container">
+module.exports = data =>
+	ejs.render(
+		html`
+			<div class="header-container">
+				<h1>HEADER</h1>
 
-    <h1>HEADER</h1>
-    
-    <button onclick="ale()"> test </button>
-    
-    <p><%= data.description %></p>
-    
-</div>
+				<button onclick="ale()">test</button>
 
- 
-`, {data})
+				<p><%= data.description %></p>
+			</div>
+		`,
+		{ data },
+	);

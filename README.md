@@ -2,22 +2,23 @@
 
 ### Author Zayd al-Muqaddim al-Qamar al-‘Aarabi
 
->  CMS is the most easy to install & use CMS for non-techies!
- 
+> CMS is the most easy to install & use CMS for non-techies!
+
 ## Tech stack:
 
 ### Backend
+
 - Node JS,
 - Express JS,
 - EJS (For templating)
 
 ### DATABASE
+
 - Postgres SQL
 
-
 ### FRONTEND
+
 - HTML CSS JS (No Js Framework)
- 
 
 ---
 
@@ -27,7 +28,6 @@
 2. Dockerfile will be available in every stable release.
 3. **Error handling** and **cybersecurity** side will not be neglected.
 
- 
 ```
 - Blogs, news, Content and Static pages will be created on admin panel via markdown(.md)
 - Users will have privileges
@@ -48,6 +48,3 @@
 - tutorial for markdown syntax
 - custom component shortcodes for inserting html, css and js into markdown especially in Blogs, News, Contents
 ```
-
-
-
