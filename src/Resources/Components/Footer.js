@@ -6,6 +6,7 @@ const html = (x, ...values) => {
 	}
 	return rendered;
 };
+
 module.exports = data => html`
 	<div>
 		<h1>Footer</h1>
