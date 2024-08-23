@@ -7,8 +7,7 @@ const html = (x, ...values) => {
 	return rendered;
 };
 
-module.exports = data => html`
-	<footer class="K0e6gd-container">
+module.exports = () => html`<footer class="K0e6gd-container">
 		<div class="K0e6gd-sub-container">
 			<div class="K0e6gd-heading">
 				<p>Social Media</p>
@@ -459,7 +458,8 @@ module.exports = data => html`
 			background-size: contain;
 			background-repeat: no-repeat;
 			background-position: center;
-			opacity: 0.5;
+			opacity: .7;
+ 			filter: invert(1)
 		}
 
 		.K0e6gd-heading > ul > li > a {
@@ -476,5 +476,4 @@ module.exports = data => html`
 			font-weight: 400;
 			font-style: normal;
 		}
-	</style>
-`;
+	</style>`;

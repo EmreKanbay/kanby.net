@@ -7,7 +7,7 @@ const html = (x, ...values) => {
 	return rendered;
 };
 
-module.exports = data => html`
+module.exports = () => html`
 	<header class="liwlCh-header-container">
 		<input
 			class="liwlCh-header-menu-toggle"

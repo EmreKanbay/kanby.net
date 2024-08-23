@@ -1,3 +1,6 @@
+const Components = require("../Components");
+
+
 const html = (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -7,14 +10,19 @@ const html = (x, ...values) => {
 	return rendered;
 };
 
-module.exports = (head, body) => html`
+module.exports = (head, content) => html`
 	<!doctype html>
 	<html lang="en">
 		<head>
 			${head}
 		</head>
 		<body>
-			${body}
+			${Components.Header()}
+			${content}
+			${Components.Footer()}
 		</body>
 	</html>
 `;
+
+
+

@@ -1,9 +1,8 @@
-const Header = require("../Components/Header");
-const LoginForm = require("../Components/LoginForm");
-const Footer = require("../Components/Footer");
-const VisitorStaticPageLayout = require("../Layouts/VisitorStaticPageLayout");
+   const Components = require("../Components");
+  const Layouts = require("../Layouts");
 
-const html = (x, ...values) => {
+
+ const html = (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -12,7 +11,7 @@ const html = (x, ...values) => {
 	return rendered;
 };
 module.exports = () =>
-	VisitorStaticPageLayout(
+	Layouts.VisitorLayout(
 		(head = html`
 			<link
 				rel="stylesheet"
@@ -21,8 +20,103 @@ module.exports = () =>
 			<title>Login</title>
 		`),
 		(body = `
-    ${Header({ description: "ads" })}
-    ${LoginForm({})}
-    ${Footer({ description: "ads" })}
-     `),
+    
+			Login Page
+    ${html`
+		<div class="ge0yN5-container">
+			<form class="ge0yN5-form">
+				<p>Root Username</p>
+				<input type="text" />
+				<br />
+				<p>Root Password</p>
+				<input
+					class="ge0yN5-username-input"
+					type="password"
+				/>
+				<br />
+				<input
+					class="ge0yN5-password-input"
+					type="submit"
+					value="Login"
+				/>
+				<p class="ge0yN5-warning-text"></p>
+			</form>
+		</div>
+	
+		<style>
+			.ge0yN5-container {
+				width: 100%;
+				display: flex;
+				justify-content: center;
+			}
+	
+			.ge0yN5-warning-text {
+				font-size: 1rem;
+				color: crimson;
+				text-align: center;
+			}
+			.ge0yN5-form {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				width: max-content;
+				padding: 1rem;
+				font-family: "Roboto" sans-serif;
+			}
+	
+			.ge0yN5-form > p {
+				margin-bottom: 0;
+				font-family: sans-serif;
+			}
+	
+			.ge0yN5-container [type="text"],
+			.ge0yN5-container [type="password"] {
+				padding: 1rem;
+	
+				border-radius: 0.5rem;
+				border: 1px solid rgb(33, 33, 33, 0.7);
+			}
+	
+			.ge0yN5-container [type="submit"] {
+				cursor: pointer;
+				padding: 0.7rem 1.5rem;
+				border: none;
+				background-color: black;
+				color: white;
+				border-radius: 0.5rem;
+				width: 100%;
+			}
+		</style>
+	
+		<script>
+			document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
+				e.preventDefault();
+	
+				const formData = new FormData();
+				formData.append("login_name", document.querySelector(".ge0yN5-username-input").value);
+				formData.append("login_password", document.querySelector(".ge0yN5-password-input").value);
+				try {
+					const response = await fetch("/admin/login", {
+						body: formData,
+						method: "POST",
+					});
+	
+					if (response.redirected) {
+						window.location.replace(response.url);
+					}
+					if (!response.ok) {
+						document.querySelector(".ge0yN5-warning-text").innerHTML = "
+						${Components.ErrorBox({
+							 message: "The user you have typed does not found",
+						})}
+							 "
+					}
+	
+					console.log(response.status + " " + response.statusText);
+				} catch (error) {}
+			});
+		</script>
+	`
+	}
+      `),
 	);

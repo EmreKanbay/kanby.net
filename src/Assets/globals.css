@@ -5,6 +5,11 @@ html {
 	padding: 0;
 	margin: 0;
 	width: 100vw;
+	overflow-x: hidden;
+	scrollbar-gutter: stable;
+}
+:root {
+	--max-viewport-width: 1300px;
 }
 
 .header-container {

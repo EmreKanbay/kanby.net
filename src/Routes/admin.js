@@ -1,5 +1,8 @@
-const Resources = require("#Resources");
-const Index = require("#Index");
+const Pages = require("../Resources/Pages");
+const Layouts = require("../Resources/Layouts");
+const Components = require("../Resources/Components");
+
+ const Index = require("#Index");
 const sha256 = require("js-sha256");
 
 const admin = Index.express.Router();
@@ -9,7 +12,7 @@ admin.get("/", (req, res) => {
 });
 
 admin.get("/login", (req, res) => {
-	res.send(Resources.LoginPage());
+	res.send(Pages.LoginPage());
 });
 
 admin.post("/login", Index.upload.none(), async (req, res) => {
@@ -57,7 +60,7 @@ admin.post("/login", Index.upload.none(), async (req, res) => {
 });
 
 admin.get("/:id", (req, res) => {
-	res.send(Resources.AdminDashboard());
+	res.send(Pages.AdminPage());
 });
 
 module.exports = admin;

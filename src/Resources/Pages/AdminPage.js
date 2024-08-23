@@ -1,5 +1,6 @@
-const Layouts = require("../Layouts")
+const Layouts = require("../Layouts");
 
+ 
 const html = (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -16,11 +17,11 @@ module.exports = () =>
 				rel="stylesheet"
 				href="/assets/globals.css"
 			/>
-			<title>Kanby</title>
+			<title>Admin</title>
 		`),
 		(body = `
-  
-    Landing Page
-    
+ 
+            admin panel is this
+
       `),
 	);

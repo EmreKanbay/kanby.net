@@ -10,7 +10,6 @@
 	"license": "ISC",
 	"description": "",
 	"imports": {
-		"#Resources": "./src/Resources/Resources.js",
 		"#Index": "./src/index.js"
 	},
 	"dependencies": {
