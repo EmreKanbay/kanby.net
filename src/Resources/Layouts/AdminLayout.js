@@ -18,8 +18,8 @@ module.exports = (head, content) => html`
 		<body>
 			${Components.visitor.Header()}
 			${content}
-			${Components.visitor.Footer()}
-		</body>
+            
+ 		</body>
 	</html>
 `;
 

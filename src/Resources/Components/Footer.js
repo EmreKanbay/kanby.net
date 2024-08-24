@@ -14,7 +14,7 @@ module.exports = () => html`<footer class="K0e6gd-container">
 				<ul>
 					<li>
 						<img
-							src="https://kanby.net/assets/github.svg"
+							src="../../Assets/github.svg"
 							alt=""
 						/>
 						<a
@@ -26,7 +26,7 @@ module.exports = () => html`<footer class="K0e6gd-container">
 					</li>
 					<li>
 						<img
-							src="https://kanby.net/assets/twitter.svg"
+							src="../../Assets/twitter.svg"
 							alt=""
 						/>
 						<a
@@ -38,7 +38,7 @@ module.exports = () => html`<footer class="K0e6gd-container">
 					</li>
 					<li>
 						<img
-							src="https://kanby.net/assets/linkedin.svg"
+							src="../../Assets/linkedin.svg"
 							alt=""
 						/>
 						<a
@@ -50,7 +50,7 @@ module.exports = () => html`<footer class="K0e6gd-container">
 					</li>
 					<li>
 						<img
-							src="https://kanby.net/assets/codepen.svg"
+							src="../../Assets/codepen.svg"
 							alt=""
 						/>
 						<a
@@ -62,7 +62,7 @@ module.exports = () => html`<footer class="K0e6gd-container">
 					</li>
 					<li>
 						<img
-							src="https://kanby.net/assets/tiktok.svg"
+							src="../../Assets/tiktok.svg"
 							alt=""
 						/>
 						<a
@@ -74,7 +74,7 @@ module.exports = () => html`<footer class="K0e6gd-container">
 					</li>
 					<li>
 						<img
-							src="https://kanby.net/assets/instagram.svg"
+							src="../../Assets/Instagram.svg"
 							alt=""
 						/>
 						<a
@@ -411,7 +411,7 @@ module.exports = () => html`<footer class="K0e6gd-container">
 			z-index: -1;
 			height: 100%;
 
-			background-image: url("https://kanby.net/assets/footer_background.svg");
+			background-image: url("../../Assets/footer_background.svg");
 			background-repeat: no-repeat;
 			transform: rotate(180deg);
 			filter: brightness(80%);
@@ -454,7 +454,7 @@ module.exports = () => html`<footer class="K0e6gd-container">
 			content: "";
 			width: 1.3rem;
 			height: 1.3rem;
-			background-image: url("https://kanby.net/assets/external-link.svg");
+			background-image: url("../../Assets/external-link.svg");
 			background-size: contain;
 			background-repeat: no-repeat;
 			background-position: center;

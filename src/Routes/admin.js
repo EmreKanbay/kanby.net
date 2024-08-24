@@ -1,6 +1,4 @@
 const Pages = require("../Resources/Pages");
-const Layouts = require("../Resources/Layouts");
-const Components = require("../Resources/Components");
 
  const Index = require("#Index");
 const sha256 = require("js-sha256");
@@ -59,8 +57,32 @@ admin.post("/login", Index.upload.none(), async (req, res) => {
 	}
 });
 
-admin.get("/:id", (req, res) => {
-	res.send(Pages.AdminPage());
+admin.get("/:id",async (req, res) => {
+
+	var record;
+	try {
+		if (typeof req.cookies?.login_name != "undefined" && typeof req.cookies?.password_hash != "undefined") {
+			
+		
+
+			record = await Index.pool.query(
+				`SELECT login_name, password_hash, id FROM "users" WHERE login_name='${req.cookies?.login_name}' AND password_hash='${req.cookies?.password_hash}'`,
+			);
+
+			if (record.rows.length == 1){}
+            else{ res.statusMessage = "Not Authorized";res.status(401).send("<h1>Not Authorized</h1>");}
+			
+		
+			
+			if(req.params.id == record.rows[0].id) 	res.send(Pages.AdminPage());
+
+			else {res.statusMessage = "Not Authorized";res.status(401).send("<h1>Not Authorized</h1>");}
+		} else {res.statusMessage = "Not Authorized";res.status(401).send("<h1>Not Authorized</h1>")}
+	} catch (error) {
+		console.log(error);
+		res.statusMessage = "Internal Server Error";res.status(401).send("<h1>Internal Server Error</h1>")	}
+
+
 });
 
 module.exports = admin;

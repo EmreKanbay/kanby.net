@@ -7,8 +7,14 @@ const SuccessBox = require("./Components/SuccessBox");
 
 
 module.exports = {
-    Header,
- 	Footer,
-	ErrorBox,
-	SuccessBox,
+	"visitor": {
+		Header,
+		Footer,
+	   ErrorBox,
+	   SuccessBox,
+	},
+	"admin":{
+		
+	}
+  
 };

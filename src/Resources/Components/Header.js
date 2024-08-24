@@ -123,6 +123,7 @@ module.exports = () => html`
 				grid-template-rows: var(--header-height);
 				border-bottom: 1px solid rgb(33, 33, 33, 0.4);
 				gap: 1rem;
+				z-index:99;
 			}
 
 			.liwlCh-header-menu-toggle {
@@ -134,20 +135,20 @@ module.exports = () => html`
 				height: 60%;
 				cursor: pointer;
 				padding: 0.3rem;
-				background-image: url("https://kanby.net/Assets/menu-icon.svg");
+				background-image: url("../../Assets/menu-icon.svg");
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: center;
 			}
 
 			.liwlCh-header-menu-toggle:checked {
-				background-image: url("https://kanby.net/Assets/cancel.svg");
+				background-image: url("../../Assets/cancel.svg");
 			}
 
 			.liwlCh-header-menu-logo {
 				grid-row: 1 / 2;
 				height: 100%;
-				background-image: url("https://kanby.net/Assets/logo.png");
+				background-image: url("../../Assets/logo-black.svg");
 				background-size: contain;
 				background-repeat: no-repeat;
 			}
@@ -159,7 +160,7 @@ module.exports = () => html`
 				margin-right: 0.3rem;
 				grid-column: 3 / 4;
 				grid-row: 1 / 2;
-				background-image: url("https://kanby.net/Assets/search-icon.svg");
+				background-image: url("../../Assets/search-icon.svg");
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: right;
@@ -211,7 +212,7 @@ module.exports = () => html`
 				grid-area: 1 / 2 / span 1 / span 1;
 
 				border-radius: 1rem;
-				background-image: url("https://kanby.net/Assets/cancel.svg");
+				background-image: url("../../Assets/cancel.svg");
 				background-position: center;
 				background-repeat: no-repeat;
 
@@ -226,7 +227,7 @@ module.exports = () => html`
 				border-top-right-radius: 1rem;
 				border-bottom-right-radius: 1rem;
 
-				background-image: url("https://kanby.net/Assets/search-icon.svg");
+				background-image: url("../../Assets/search-icon.svg");
 				background-position: center;
 				background-size: 60%;
 				background-repeat: no-repeat;
@@ -280,7 +281,7 @@ module.exports = () => html`
 			.liwlCh-header-menu-navigation-heading > a::after {
 				opacity: 0.6;
 				content: "";
-				background-image: url("https://kanby.net/Assets/external-link.svg");
+				background-image: url("../../Assets/external-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -307,7 +308,7 @@ module.exports = () => html`
 				content: "";
 				opacity: 0.6;
 
-				background-image: url("https://kanby.net/Assets/internal-link.svg");
+				background-image: url("../../Assets/internal-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -386,7 +387,7 @@ module.exports = () => html`
 			.liwlCh-header-menu-navigation-heading > a::after {
 				opacity: 0.6;
 				content: "";
-				background-image: url("https://kanby.net/Assets/external-link.svg");
+				background-image: url("../../Assets/external-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -412,7 +413,7 @@ module.exports = () => html`
 				content: "";
 				opacity: 0.6;
 
-				background-image: url("https://kanby.net/Assets/internal-link.svg");
+				background-image: url("../../Assets/internal-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -481,7 +482,7 @@ module.exports = () => html`
 				width: 1.2rem;
 				opacity: 0.4;
 				height: 1.2rem;
-				background-image: url("https://kanby.net/Assets/down-angle.svg");
+				background-image: url("../../Assets/down-angle.svg");
 				background-repeat: no-repeat;
 				background-size: 100%;
 				background-position: center;

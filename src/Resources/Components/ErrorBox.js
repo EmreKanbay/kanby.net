@@ -27,7 +27,9 @@ module.exports = message => html`
 
 	<style>
 		#qMQEbc-container {
-			--error-color: rgb(247, 60, 60);
+			display:grid; /*default is grid*/
+			margin-top:1rem;
+ 			--error-color: rgb(247, 60, 60);
 			width: 100%;
 
 			box-sizing: border-box;
@@ -37,7 +39,6 @@ module.exports = message => html`
 
 			grid-template-columns: 3rem auto;
 			grid-template-rows: auto;
-			display: grid;
 		}
 		#qMQEbc-container > div:nth-child(1) {
 			padding: 0.3rem;
@@ -54,7 +55,7 @@ module.exports = message => html`
 		#qMQEbc-container > div:nth-child(2) {
 			align-self: center;
 			padding: 0.8rem 1rem;
-			color: rgb(247, 60, 60);
+			color: white;
 		}
 	</style>
 `;

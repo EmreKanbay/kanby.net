@@ -11,7 +11,7 @@ const html = (x, ...values) => {
 };
 
 module.exports = () =>
-	Layouts.VisitorLayout(
+	Layouts.AdminLayout(
 		(head = html`
 			<link
 				rel="stylesheet"
