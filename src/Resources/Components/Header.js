@@ -123,7 +123,7 @@ module.exports = () => html`
 				grid-template-rows: var(--header-height);
 				border-bottom: 1px solid rgb(33, 33, 33, 0.4);
 				gap: 1rem;
-				z-index:99;
+				z-index: 99;
 			}
 
 			.liwlCh-header-menu-toggle {
@@ -148,6 +148,7 @@ module.exports = () => html`
 			.liwlCh-header-menu-logo {
 				grid-row: 1 / 2;
 				height: 100%;
+				margin-left: 0.5rem;
 				background-image: url("../../Assets/logo-black.svg");
 				background-size: contain;
 				background-repeat: no-repeat;

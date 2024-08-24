@@ -1,4 +1,4 @@
-const Layouts = require("../Layouts")
+const Layouts = require("../Layouts");
 
 const html = (x, ...values) => {
 	var rendered = "";
@@ -8,8 +8,6 @@ const html = (x, ...values) => {
 	}
 	return rendered;
 };
-
-
 
 module.exports = () =>
 	Layouts.VisitorLayout(

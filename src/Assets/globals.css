@@ -24,3 +24,16 @@ html {
 .header-container > h1 {
 	margin: 0;
 }
+
+.loading {
+	display: none;
+	width: 100%;
+	height: 70px;
+	background-repeat: no-repeat;
+	background-image: url("../Assets/loading.svg");
+	background-position: center;
+	background-size: 15%;
+}
+.loading.active {
+	display: initial;
+}

@@ -7,7 +7,7 @@ const html = (x, ...values) => {
 	return rendered;
 };
 
-module.exports = message => html`
+module.exports = data => html`
 	<div id="qMQEbc-container">
 		<div>
 			<svg
@@ -22,14 +22,14 @@ module.exports = message => html`
 				></path>
 			</svg>
 		</div>
-		<div>${message}</div>
+		<div>${data.message}</div>
 	</div>
 
 	<style>
 		#qMQEbc-container {
-			display:grid; /*default is grid*/
-			margin-top:1rem;
- 			--error-color: rgb(247, 60, 60);
+			display: grid; /*default is grid*/
+			margin-top: 1rem;
+			--error-color: rgb(247, 60, 60);
 			width: 100%;
 
 			box-sizing: border-box;
