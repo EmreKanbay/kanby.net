@@ -1,13 +1,23 @@
-const html = (x, ...values) => {
+
+const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) rendered = rendered.concat(values[u]);
+		if (u < x.length - 1) {
+			if (typeof values[u] == "function") {
+				rendered = rendered.concat(await values[u]());
+			} else {
+				rendered = rendered.concat(values[u]);
+			}
+		}
 	}
+
 	return rendered;
 };
 
-module.exports = data => html`
+
+module.exports = {
+	html: ()=> 	construct`
 	<div id="qMQEbc-container">
 		<div>
 			<svg
@@ -15,11 +25,9 @@ module.exports = data => html`
 				fill="currentColor"
 				stroke-width="0"
 				viewBox="0 0 512 512"
-				xmlns="http://www.w3.org/2000/svg"
-			>
+				xmlns="http://www.w3.org/2000/svg">
 				<path
-					d="M228.9 79.9L51.8 403.1C40.6 423.3 55.5 448 78.9 448h354.3c23.3 0 38.2-24.7 27.1-44.9L283.1 79.9c-11.7-21.2-42.5-21.2-54.2 0zM273.6 214L270 336h-28l-3.6-122h35.2zM256 402.4c-10.7 0-19.1-8.1-19.1-18.4s8.4-18.4 19.1-18.4 19.1 8.1 19.1 18.4-8.4 18.4-19.1 18.4z"
-				></path>
+					d="M228.9 79.9L51.8 403.1C40.6 423.3 55.5 448 78.9 448h354.3c23.3 0 38.2-24.7 27.1-44.9L283.1 79.9c-11.7-21.2-42.5-21.2-54.2 0zM273.6 214L270 336h-28l-3.6-122h35.2zM256 402.4c-10.7 0-19.1-8.1-19.1-18.4s8.4-18.4 19.1-18.4 19.1 8.1 19.1 18.4-8.4 18.4-19.1 18.4z"></path>
 			</svg>
 		</div>
 		<div>${data.message}</div>
@@ -58,4 +66,6 @@ module.exports = data => html`
 			color: white;
 		}
 	</style>
-`;
+`, js:()=>  construct``
+}
+	

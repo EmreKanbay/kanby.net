@@ -1,14 +1,22 @@
-const Components = require("../Components");
-const Layouts = require("../Layouts");
+const Layouts = require("../Layouts/Layouts");
 
-const html = (x, ...values) => {
+const html = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) rendered = rendered.concat(values[u]);
+		if (u < x.length - 1) {
+			if (typeof values[u] == "function") {
+				rendered = rendered.concat(await values[u]());
+			} else {
+				rendered = rendered.concat(values[u]);
+			}
+		}
 	}
+
 	return rendered;
 };
+
+
 
 // ${(()=> String(Components.visitor.ErrorBox("")))()}
 
@@ -17,8 +25,7 @@ module.exports = () =>
 		(head = html`
 			<link
 				rel="stylesheet"
-				href="/assets/globals.css"
-			/>
+				href="/assets/globals.css" />
 			<title>Login</title>
 		`),
 		(content = html`
@@ -29,23 +36,20 @@ module.exports = () =>
 					<p>Root Username</p>
 					<input
 						type="text"
-						class="ge0yN5-username-input"
-					/>
+						class="ge0yN5-username-input" />
 					<br />
 					<p>Root Password</p>
 					<input
 						class="ge0yN5-password-input"
-						type="password"
-					/>
+						type="password" />
 					<br />
 					<input
 						type="submit"
-						value="Login"
-					/>
+						value="Login" />
 
 					<div class="ge0yN5-login-error"></div>
 
-					<div class="ge0yN5-loading loading"></div>
+					<div class="ge0yN5-loading loading-inline"></div>
 				</form>
 			</div>
 
@@ -118,60 +122,11 @@ module.exports = () =>
 							window.location.replace(res.url);
 						}
 
-						if (res.status == 404) {
-							try {
-								fetch("/get-component/visitor/ErrorBox", {
-									headers: { "Content-Type": "application/json" },
-									body: JSON.stringify({ message: "User Not Found" }),
-									method: "POST",
-								})
-									.then(e => e.text())
-									.then(e => {
-										document.querySelector(".ge0yN5-loading").classList.remove("active");
-										document.querySelector(".ge0yN5-login-error").innerHTML = e;
-									});
-							} catch {}
-						} else if (res.status == 401) {
-							try {
-								fetch("/get-component/visitor/ErrorBox", {
-									headers: { "Content-Type": "application/json" },
-									body: JSON.stringify({ message: "Password Is Inaccurate" }),
-									method: "POST",
-								})
-									.then(e => e.text())
-									.then(e => {
-										document.querySelector(".ge0yN5-loading").classList.remove("active");
-										document.querySelector(".ge0yN5-login-error").innerHTML = e;
-									});
-							} catch {}
-						} else if (res.status == 500) {
-							try {
-								fetch("/get-component/visitor/ErrorBox", {
-									headers: { "Content-Type": "application/json" },
-									body: JSON.stringify({ message: "Internal Server Error" }),
-									method: "POST",
-								})
-									.then(e => e.text())
-									.then(e => {
-										document.querySelector(".ge0yN5-loading").classList.remove("active");
-										document.querySelector(".ge0yN5-login-error").innerHTML = e;
-									});
-							} catch {}
-						} else if (!res.ok) {
-							try {
-								fetch("/get-component/visitor/ErrorBox", {
-									headers: { "Content-Type": "application/json" },
-									body: JSON.stringify({ message: "Unknown Error" }),
-									method: "POST",
-								})
-									.then(e => e.text())
-									.then(e => {
-										document.querySelector(".ge0yN5-loading").classList.remove("active");
-										document.querySelector(".ge0yN5-login-error").innerHTML = e;
-									});
-							} catch {}
-						}
+							else if (!res.ok) {
+								document.querySelector(".ge0yN5-loading").classList.remove("active");
+								document.querySelector(".ge0yN5-login-error").innerHTML =await res.text();
 
+						}
 					} catch (error) {
 						document.querySelector(".ge0yN5-loading").classList.remove("active");
 						document.querySelector(".ge0yN5-login-error").innerHTML = \` <h1>Network Error</h1>\`;

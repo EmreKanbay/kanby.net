@@ -1,4 +1,4 @@
-const Layouts = require("../Layouts");
+const Layouts = require("../../Layouts/Layouts");
 
 const html = (x, ...values) => {
 	var rendered = "";
@@ -14,13 +14,14 @@ module.exports = () =>
 		(head = html`
 			<link
 				rel="stylesheet"
-				href="/assets/globals.css"
-			/>
+				href="/assets/globals.css" />
 			<title>Admin</title>
 		`),
-		(body = `
+		(content = `
  
-            admin panel is this
+        This is dashboard
+
+	
 
       `),
 	);

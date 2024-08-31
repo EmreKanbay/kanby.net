@@ -13,8 +13,7 @@ module.exports = () => html`
 			class="liwlCh-header-menu-toggle"
 			type="checkbox"
 			name=""
-			id=""
-		/>
+			id="" />
 
 		<nav class="liwlCh-header-menu-navigation">
 			<div class="liwlCh-header-menu-navigation-heading">
@@ -74,30 +73,25 @@ module.exports = () => html`
 
 		<a
 			class="liwlCh-header-menu-logo"
-			href="https://kanby.net"
-		></a>
+			href="https://kanby.net"></a>
 
 		<div
 			tabindex="0"
-			class="liwlCh-header-menu-search"
-		>
+			class="liwlCh-header-menu-search">
 			<div class="liwlCh-header-menu-search-top-bar">
 				<form class="liwlCh-header-menu-search-top-bar-form">
 					<span>
 						<input
 							type="text"
-							placeholder="I am looking for..."
-						/>
+							placeholder="I am looking for..." />
 						<input
 							type="submit"
-							value=""
-						/>
+							value="" />
 					</span>
 					<input
 						onclick="cancelSearchTab(this)"
 						type="button"
-						value=""
-					/>
+						value="" />
 					<cite>Not Available</cite>
 				</form>
 			</div>
@@ -135,21 +129,21 @@ module.exports = () => html`
 				height: 60%;
 				cursor: pointer;
 				padding: 0.3rem;
-				background-image: url("../../Assets/menu-icon.svg");
+				background-image: url("/assets/menu-icon.svg");
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: center;
 			}
 
 			.liwlCh-header-menu-toggle:checked {
-				background-image: url("../../Assets/cancel.svg");
+				background-image: url("/assets/cancel.svg");
 			}
 
 			.liwlCh-header-menu-logo {
 				grid-row: 1 / 2;
 				height: 100%;
 				margin-left: 0.5rem;
-				background-image: url("../../Assets/logo-black.svg");
+				background-image: url("/assets/logo-black.svg");
 				background-size: contain;
 				background-repeat: no-repeat;
 			}
@@ -161,7 +155,7 @@ module.exports = () => html`
 				margin-right: 0.3rem;
 				grid-column: 3 / 4;
 				grid-row: 1 / 2;
-				background-image: url("../../Assets/search-icon.svg");
+				background-image: url("/assets/search-icon.svg");
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: right;
@@ -213,7 +207,7 @@ module.exports = () => html`
 				grid-area: 1 / 2 / span 1 / span 1;
 
 				border-radius: 1rem;
-				background-image: url("../../Assets/cancel.svg");
+				background-image: url("/assets/cancel.svg");
 				background-position: center;
 				background-repeat: no-repeat;
 
@@ -228,7 +222,7 @@ module.exports = () => html`
 				border-top-right-radius: 1rem;
 				border-bottom-right-radius: 1rem;
 
-				background-image: url("../../Assets/search-icon.svg");
+				background-image: url("/assets/search-icon.svg");
 				background-position: center;
 				background-size: 60%;
 				background-repeat: no-repeat;
@@ -282,7 +276,7 @@ module.exports = () => html`
 			.liwlCh-header-menu-navigation-heading > a::after {
 				opacity: 0.6;
 				content: "";
-				background-image: url("../../Assets/external-link.svg");
+				background-image: url("/assets/external-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -309,7 +303,7 @@ module.exports = () => html`
 				content: "";
 				opacity: 0.6;
 
-				background-image: url("../../Assets/internal-link.svg");
+				background-image: url("/assets/internal-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -388,7 +382,7 @@ module.exports = () => html`
 			.liwlCh-header-menu-navigation-heading > a::after {
 				opacity: 0.6;
 				content: "";
-				background-image: url("../../Assets/external-link.svg");
+				background-image: url("/assets/external-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -414,7 +408,7 @@ module.exports = () => html`
 				content: "";
 				opacity: 0.6;
 
-				background-image: url("../../Assets/internal-link.svg");
+				background-image: url("/assets/internal-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -483,7 +477,7 @@ module.exports = () => html`
 				width: 1.2rem;
 				opacity: 0.4;
 				height: 1.2rem;
-				background-image: url("../../Assets/down-angle.svg");
+				background-image: url("/assets/down-angle.svg");
 				background-repeat: no-repeat;
 				background-size: 100%;
 				background-position: center;

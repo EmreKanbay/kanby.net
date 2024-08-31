@@ -1,4 +1,4 @@
-const Components = require("../Resources/Components");
+const Components = require("../Resources/Components/Components");
 
 const Index = require("#Index");
 const sha256 = require("js-sha256");
@@ -21,7 +21,12 @@ getComponents.post("/admin/:component_name", Index.express.json(), async (req, r
 			}
 
 			if (typeof Components.admin[req.params.component_name] != "undefined") {
-				res.send(Components.admin[req.params.component_name](req.body));
+				res.send(
+					JSON.stringify({
+						html: await Components.admin[req.params.component_name].html(req.body),
+						js: await Components.admin[req.params.component_name].js(req.body),
+					}),
+				);
 			} else {
 				res.send("<h1>Component Not Found</h1>");
 			}
@@ -31,8 +36,7 @@ getComponents.post("/admin/:component_name", Index.express.json(), async (req, r
 		}
 	} catch (error) {
 		console.log(error);
-		res.statusMessage = "Not Authorized";
-		res.status(401).send("<h1>Not Authorized</h1>");
+		res.status(500).send("<h1>Internal Server Error</h1>");
 	}
 });
 

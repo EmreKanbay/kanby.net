@@ -1,13 +1,22 @@
-const html = (x, ...values) => {
+const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) rendered = rendered.concat(values[u]);
+		if (u < x.length - 1) {
+			if (typeof values[u] == "function") {
+				rendered = rendered.concat(await values[u]());
+			} else {
+				rendered = rendered.concat(values[u]);
+			}
+		}
 	}
+
 	return rendered;
 };
 
-module.exports = () => html`
+module.exports = {
+
+	html: ()=> construct`
 	<footer class="K0e6gd-container">
 		<div class="K0e6gd-sub-container">
 			<div class="K0e6gd-heading">
@@ -15,73 +24,61 @@ module.exports = () => html`
 				<ul>
 					<li>
 						<img
-							src="../../Assets/github.svg"
-							alt=""
-						/>
+							src="/assets/github.svg"
+							alt="" />
 						<a
 							target="_blank"
-							href="https://github.com/EmreKanbay"
-						>
+							href="https://github.com/EmreKanbay">
 							Github
 						</a>
 					</li>
 					<li>
 						<img
-							src="../../Assets/twitter.svg"
-							alt=""
-						/>
+							src="/assets/twitter.svg"
+							alt="" />
 						<a
 							target="_blank"
-							href="https://x.com/_EmreKanbay_"
-						>
+							href="https://x.com/_EmreKanbay_">
 							Twitter / X
 						</a>
 					</li>
 					<li>
 						<img
-							src="../../Assets/linkedin.svg"
-							alt=""
-						/>
+							src="/assets/linkedin.svg"
+							alt="" />
 						<a
 							target="_blank"
-							href="https://www.linkedin.com/in/EmreKanbay/"
-						>
+							href="https://www.linkedin.com/in/EmreKanbay/">
 							LinkedIn
 						</a>
 					</li>
 					<li>
 						<img
-							src="../../Assets/codepen.svg"
-							alt=""
-						/>
+							src="/assets/codepen.svg"
+							alt="" />
 						<a
 							target="_blank"
-							href="https://codepen.io/Emre-Kanbay"
-						>
+							href="https://codepen.io/Emre-Kanbay">
 							CodePen
 						</a>
 					</li>
 					<li>
 						<img
-							src="../../Assets/tiktok.svg"
-							alt=""
-						/>
+							src="/assets/tiktok.svg"
+							alt="" />
 						<a
 							target="_blank"
-							href="https://www.tiktok.com/@Emre_Kanbay"
-						>
+							href="https://www.tiktok.com/@Emre_Kanbay">
 							Tiktok
 						</a>
 					</li>
 					<li>
 						<img
-							src="../../Assets/Instagram.svg"
-							alt=""
-						/>
+							src="/assets/Instagram.svg"
+							alt="" />
 						<a
 							target="_blank"
-							href="https://www.instagram.com/_emrekanbay_"
-						>
+							href="https://www.instagram.com/_emrekanbay_">
 							Instagram
 						</a>
 					</li>
@@ -94,32 +91,28 @@ module.exports = () => html`
 					<li>
 						<a
 							target="_blank"
-							href="/company"
-						>
+							href="/company">
 							Our Company
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/team"
-						>
+							href="/team">
 							Meet the Team
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/careers"
-						>
+							href="/careers">
 							Careers
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/press"
-						>
+							href="/press">
 							Press
 						</a>
 					</li>
@@ -132,32 +125,28 @@ module.exports = () => html`
 					<li>
 						<a
 							target="_blank"
-							href="/consulting"
-						>
+							href="/consulting">
 							Consulting
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/support"
-						>
+							href="/support">
 							Support
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/training"
-						>
+							href="/training">
 							Training
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/development"
-						>
+							href="/development">
 							Development
 						</a>
 					</li>
@@ -170,32 +159,28 @@ module.exports = () => html`
 					<li>
 						<a
 							target="_blank"
-							href="/product1"
-						>
+							href="/product1">
 							Product 1
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/product2"
-						>
+							href="/product2">
 							Product 2
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/product3"
-						>
+							href="/product3">
 							Product 3
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/product4"
-						>
+							href="/product4">
 							Product 4
 						</a>
 					</li>
@@ -208,32 +193,28 @@ module.exports = () => html`
 					<li>
 						<a
 							target="_blank"
-							href="/faq"
-						>
+							href="/faq">
 							FAQ
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/contact"
-						>
+							href="/contact">
 							Contact Us
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/return-policy"
-						>
+							href="/return-policy">
 							Return Policy
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/shipping-info"
-						>
+							href="/shipping-info">
 							Shipping Information
 						</a>
 					</li>
@@ -246,32 +227,28 @@ module.exports = () => html`
 					<li>
 						<a
 							target="_blank"
-							href="/terms"
-						>
+							href="/terms">
 							Terms of Service
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/privacy"
-						>
+							href="/privacy">
 							Privacy Policy
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/cookies"
-						>
+							href="/cookies">
 							Cookie Policy
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/disclaimer"
-						>
+							href="/disclaimer">
 							Disclaimer
 						</a>
 					</li>
@@ -284,32 +261,28 @@ module.exports = () => html`
 					<li>
 						<a
 							target="_blank"
-							href="/subscribe"
-						>
+							href="/subscribe">
 							Subscribe
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/archive"
-						>
+							href="/archive">
 							Newsletter Archive
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/preferences"
-						>
+							href="/preferences">
 							Preferences
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/unsubscribe"
-						>
+							href="/unsubscribe">
 							Unsubscribe
 						</a>
 					</li>
@@ -322,32 +295,28 @@ module.exports = () => html`
 					<li>
 						<a
 							target="_blank"
-							href="/partner1"
-						>
+							href="/partner1">
 							Partner 1
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/partner2"
-						>
+							href="/partner2">
 							Partner 2
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/partner3"
-						>
+							href="/partner3">
 							Partner 3
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/partner4"
-						>
+							href="/partner4">
 							Partner 4
 						</a>
 					</li>
@@ -360,32 +329,28 @@ module.exports = () => html`
 					<li>
 						<a
 							target="_blank"
-							href="/blog"
-						>
+							href="/blog">
 							Blog
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/guides"
-						>
+							href="/guides">
 							Guides
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/case-studies"
-						>
+							href="/case-studies">
 							Case Studies
 						</a>
 					</li>
 					<li>
 						<a
 							target="_blank"
-							href="/whitepapers"
-						>
+							href="/whitepapers">
 							Whitepapers
 						</a>
 					</li>
@@ -412,7 +377,7 @@ module.exports = () => html`
 			z-index: -1;
 			height: 100%;
 
-			background-image: url("../../Assets/footer_background.svg");
+			background-image: url("/assets/footer_background.svg");
 			background-repeat: no-repeat;
 			transform: rotate(180deg);
 			filter: brightness(80%);
@@ -455,7 +420,7 @@ module.exports = () => html`
 			content: "";
 			width: 1.3rem;
 			height: 1.3rem;
-			background-image: url("../../Assets/external-link.svg");
+			background-image: url("/assets/external-link.svg");
 			background-size: contain;
 			background-repeat: no-repeat;
 			background-position: center;
@@ -478,4 +443,6 @@ module.exports = () => html`
 			font-style: normal;
 		}
 	</style>
-`;
+`, js: () => construct``
+
+}
