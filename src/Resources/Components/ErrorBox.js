@@ -17,7 +17,7 @@ const construct = async (x, ...values) => {
 
 
 module.exports = {
-	html: ()=> 	construct`
+	html: (data)=> 	construct`
 	<div id="qMQEbc-container">
 		<div>
 			<svg
@@ -66,6 +66,6 @@ module.exports = {
 			color: white;
 		}
 	</style>
-`, js:()=>  construct``
+`, js:(data)=>  construct``
 }
 	

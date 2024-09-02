@@ -21,7 +21,7 @@ const construct = async (x, ...values) => {
 
 
 module.exports = {
-	html: body => construct`
+	html: (data) => construct`
 		<div class="A5ueMP-cotnainer">
  
 
@@ -140,7 +140,7 @@ module.exports = {
 			}
 		</style>
 	`,
-	js: body => construct`
+	js: (data) => construct`
 document.querySelector("#A5ueMP-cotnainer-top-select").addEventListener("change", (e)=> {
 	alert(e.target.value)
 

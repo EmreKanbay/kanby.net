@@ -1,6 +1,6 @@
-const Components = require("../Components/Components");
+const Components = require("../Components");
 
-const html = async (x, ...values) => {
+const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -16,16 +16,21 @@ const html = async (x, ...values) => {
 	return rendered;
 };
 
+const script = (data) => construct``
 
 
-module.exports = async (head, content) => html`
+module.exports = async (data) => await  construct`
 	<!doctype html>
 	<html lang="en">
 		<head>
-			${await head}
+			${await data.head}
 		</head>
 		<body>
-			${await Components.visitor.Header()} ${await content} ${Components.visitor.Footer()}
-		</body>
+			${await Components.visitor.Header.html()} ${await data.content} ${await Components.visitor.Footer.html()}
+		
+			${()=> {return typeof script() != "undefined" ? `<script>${script()}</script>` : null}}
+		
+			</body>
 	</html>
-`;
+`
+

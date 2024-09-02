@@ -1,26 +1,48 @@
-const Layouts = require("../Layouts/Layouts");
+const Layouts = require("#Layouts");
 
 
-const html = (x, ...values) => {
+const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) rendered = rendered.concat(values[u]);
+		if (u < x.length - 1) {
+			if (typeof values[u] == "function") {
+				rendered = rendered.concat(await values[u]());
+			} else {
+				rendered = rendered.concat(values[u]);
+			}
+		}
 	}
+
 	return rendered;
 };
 
-module.exports = () =>
-	Layouts.VisitorLayout(
-		(head = html`
+module.exports = {
+
+
+	html: async (data) => await Layouts.VisitorLayout({
+
+		head: await construct`
 			<link
 				rel="stylesheet"
 				href="/assets/globals.css" />
 			<title>Kanby</title>
-		`),
-		(body = `
+			`,
+
+
+			content:await construct`
+
   
-    Landing Page
-    
-      `),
-	);
+				<h2 style="text-align:center"><a href="/Turkish/blogs">Blogs</a><h2>
+				<h2 style="text-align:center" ><a>Contents</a><h2>
+				<h2 style="text-align:center" ><a>News</a><h2>
+ 			
+					${()=> {return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : ""}}
+
+      `
+	}
+
+
+	), js: (data) => construct`alert(12)`
+}
+

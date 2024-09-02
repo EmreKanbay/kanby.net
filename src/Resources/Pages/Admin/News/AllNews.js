@@ -1,4 +1,5 @@
 const Layouts = require("#Layouts");
+const Index = require("#Index");
 
 
 const construct = async (x, ...values) => {
@@ -27,14 +28,30 @@ module.exports = {
 		<title>Admin</title>
 	`,content: await construct`
  
-	This is dashboard
+	All News here
+
+        				<select
+					onchange=""
+					name="cars"
+					id="cars">
+					${async () => {
+						return String(
+							(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
+								return `
+						<option value="${t}">${t}</option>
+					`;
+							}),
+						).replaceAll(",", "\n");
+					}}
+				</select>
+
 
 	<script>
 	document.querySelectorAll(".nav-menu__item").forEach( (node, index) => { node.classList.remove("is-active")})
-	document.querySelector(".navbar-dashboard").classList.add("is-active")
+	document.querySelector(".navbar-news").classList.add("is-active")
 	</script>
 
-
+	
 	${()=> {return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : ""}}
 
 

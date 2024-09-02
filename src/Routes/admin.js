@@ -1,18 +1,17 @@
-const Pages = require("../Resources/Pages/Pages");
-
+const Pages = require("#Pages");
 const Index = require("#Index");
-const Components = require("../Resources/Components/Components");
+const Components = require("#Components");
+
+
 
 const admin = Index.express.Router();
 
 const sub_admin = Index.express.Router();
+ 
 
-admin.get("/", (req, res) => {
-	res.redirect("/");
-});
 
 admin.get("/login", async (req, res) => {
-	res.send(await Pages.LoginPage());
+	res.send(await Pages.LoginPage.html({script: await Pages.LoginPage.js()}));
 });
 
 admin.post("/login", Index.upload.none(), async (req, res) => {
@@ -25,14 +24,15 @@ admin.post("/login", Index.upload.none(), async (req, res) => {
 	   );		 
 	
 	   if (record.rows.length == 1) {
-		   res.cookie('login_name', req?.body?.login_name, { expires: new Date(Date.now() + 900000), httpOnly: true })
-		   res.cookie('password_hash', Index.sha256(req?.body?.login_password), { expires: new Date(Date.now() + 900000), httpOnly: true })
-		   res.redirect(new URL(`/admin/${record.rows[0]["id"]}`, req.protocol + "://" + req.get("host")));
+		   res.cookie('login_name', req?.body?.login_name, { expires: new Date(Date.now() + 36000000), httpOnly: false })
+		   res.cookie('password_hash', Index.sha256(req?.body?.login_password), { expires: new Date(Date.now() + 36000000), httpOnly: false })
+		   res.cookie('user_id', record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: false })
+		   res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard`, req.protocol + "://" + req.get("host")));
 
  	   }
 	   else {
 		res.statusCode = 404;
-		res.send(Components.visitor.ErrorBox({message: "login failed"}));
+		res.send(await Components.visitor.ErrorBox.html({message: "login failed"}));
 	   }
 
 });
@@ -46,7 +46,9 @@ admin.use("/:id", async (req, res, next) => {
 
 			if (record.rows.length == 1 &&req.params.id == record.rows[0].id ) {
 
-				next()
+				if(req.path == "/") res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard`, req.protocol + "://" + req.get("host")));
+				else next()
+				
 			} else {
 				res.statusMessage = "Not Authorized";
 				res.status(401).send("<h1>Not Authorized</h1>");
@@ -60,9 +62,7 @@ admin.use("/:id", async (req, res, next) => {
 });
 
 
-admin.get("/:id", async (req, res, next)=> {
-	res.send(await Pages.AdminDashboard());
-})
+ 
 
 admin.use("/:id/", sub_admin)
 
@@ -71,24 +71,82 @@ admin.use("/:id/", sub_admin)
 
 
 
+sub_admin.get("/dashboard" , async ( req,res,next) => {
+ 	res.send(await Pages.AdminDashboard.html());
 
-
-
-
-
-
-
-sub_admin.get("/blogs" ,( req,res,next) => {
-	res.send("all blogs")
 })
 
 
-sub_admin.get("/blogs/add" ,( req,res,next) => {
-	res.send("add blog")
+
+//id | title | description | language | author | creation_date | 
+//last_modify_date | url_path | markdown_content | thumbnail_url | 
+//meta_title | meta_description 
+
+
+
+
+sub_admin.get("/blogs" ,async( req,res,next) => {
+	res.send(await Pages.AllBlogs.html());
 })
 
-sub_admin.get("/blogs/:id" ,( req,res,next) => {
-	res.send("single blog")
+sub_admin.get("/blogs/add" ,async( req,res,next) => {
+	res.send(await Pages.AddBlog.html());
+})
+
+
+
+sub_admin.route("/blogs")
+
+.post(Index.upload.none(), async (req, res) => {
+
+	var record = await Index.pool.query(`SELECT * FROM "blogs" WHERE language='${req.body.language}'`)
+
+
+  
+	res.send(record.rows)
+
+})
+.put(Index.upload.none() ,async( req,res) => {
+
+var record = await Index.pool.query(`SELECT * FROM "users" WHERE login_name='${req?.cookies?.login_name}' AND password_hash='${req?.cookies?.password_hash}'`)
+
+console.log(record.rows[0])
+ 
+try{
+	await Index.pool.query(`INSERT INTO "blogs" (title, description, 
+		language,  author, creation_date, 
+		rendered_content, meta_title, meta_description) VALUES ('${req.body.blog_title}', '${req.body.blog_description}', 
+		'${req.body.blog_language}', '${record.rows[0].public_name}', '${Date.now()}', '${req.body.blog_markdown}', '${req.body.blog_meta_title}', '${req.body.blog_meta_description}' )`)
+
+		res.send();
+
+}catch(e){
+console.log(e)
+res.status(500).send();
+
+}
+
+})
+
+
+
+
+
+
+
+ 
+sub_admin.get("/contents" ,async( req,res,next) => {
+	res.send(await Pages.AllContents.html());
+})
+
+
+sub_admin.get("/news" ,async( req,res,next) => {
+	res.send(await Pages.AllNews.html());
+})
+
+
+sub_admin.get("/pages" ,async( req,res,next) => {
+	res.send(await Pages.AllPages.html());
 })
 
 
@@ -102,7 +160,7 @@ sub_admin.get("/blogs/:id" ,( req,res,next) => {
 
 
 admin.use("/:id", async (req, res) => {
-	res.send(await Pages.NotFound())
+	res.send(await Pages.NotFound.html())
 
 });
 

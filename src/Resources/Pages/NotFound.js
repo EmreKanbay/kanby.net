@@ -1,7 +1,7 @@
-const Layouts = require("../Layouts/Layouts");
+const Layouts = require("#Layouts");
 
 
-const html = async (x, ...values) => {
+const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -17,18 +17,24 @@ const html = async (x, ...values) => {
 	return rendered;
 };
 
+
 // ${(()=> String(Components.visitor.ErrorBox("")))()}
 
-module.exports = () =>
-	Layouts.VisitorLayout(
-		(head = html`
-			<link
-				rel="stylesheet"
-				href="/assets/globals.css" />
-			<title>404</title>
-		`),
-		(content = html`
+module.exports = { 
+	html: async (data) =>  await Layouts.VisitorLayout({
+		head: await construct`
+		<link
+			rel="stylesheet"
+			href="/assets/globals.css" />
+		<title>404</title>
+	`,content: await construct`
 
-      <h1 style="text-align:center"> This page is not found</h1>
- 		`),
-	);
+	<h1 style="text-align:center"> This page is not found</h1>
+${()=> {return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : ""}}
+
+	   `
+
+	}
+	), js: (data) => construct``
+}
+	

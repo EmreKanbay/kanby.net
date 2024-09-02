@@ -1,8 +1,7 @@
-const Components = require("../Resources/Components/Components");
+const Components = require("#Components");
 
 const Index = require("#Index");
-const sha256 = require("js-sha256");
-
+ 
 const getComponents = Index.express.Router();
 
 getComponents.post("/admin/:component_name", Index.express.json(), async (req, res) => {

@@ -1,13 +1,21 @@
-const html = (x, ...values) => {
+const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) rendered = rendered.concat(values[u]);
+		if (u < x.length - 1) {
+			if (typeof values[u] == "function") {
+				rendered = rendered.concat(await values[u]());
+			} else {
+				rendered = rendered.concat(values[u]);
+			}
+		}
 	}
+
 	return rendered;
 };
 
-module.exports = () => html`
+module.exports = {
+	html: (data) => construct`
 	<header class="liwlCh-header-container">
 		<input
 			class="liwlCh-header-menu-toggle"
@@ -111,6 +119,11 @@ module.exports = () => html`
 
 	<style>
 		@media only screen and (min-width: 0) {
+
+			.liwlCh-header-menu-navigation{
+			overscroll-behavior: none;
+			z-index:123
+			}
 			.liwlCh-header-container {
 				display: grid;
 				--header-height: 3rem;
@@ -243,7 +256,9 @@ module.exports = () => html`
 			}
 
 			.liwlCh-header-menu-navigation {
-				overflow-y: scroll;
+				
+
+ 				overflow-y: scroll;
 				position: absolute;
 				box-sizing: border-box;
 				top: calc(var(--header-height) + 1px);
@@ -556,4 +571,7 @@ module.exports = () => html`
 			}
 		}
 	</style>
-`;
+`, js: (data)=>  construct``
+}
+
+

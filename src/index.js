@@ -6,7 +6,7 @@ require("dotenv").config();
 const sha256 = require("js-sha256");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const Resources = require("./Resources/Resources")
+const notFound = require("./Resources/Pages/NotFound")
 
 
 
@@ -33,8 +33,9 @@ const auth =async (req, res) => {
 		);
 	
 		if (record.rows.length == 1) {
-			res.cookie('login_name', req.cookies.login_name, { expires: new Date(Date.now() + 900000), httpOnly: true })
-			res.cookie('password_hash', req?.cookies?.password_hash, { expires: new Date(Date.now() + 900000), httpOnly: true })
+			res.cookie('login_name', record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: false })
+			res.cookie('password_hash', record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: false })
+			res.cookie('user_id', record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: false })
 			
 			return {authenticated: true, record: record}
 		}
@@ -78,9 +79,9 @@ root.use("/admin/", async (req, res, next) => {
 		if(checkAuth.authenticated){
 	
 			if (req.path == "/login") {
-				res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}`, req.protocol + "://" + req.get("host")));
+				res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard`, req.protocol + "://" + req.get("host")));
 			} else if (req.path == "/") {
-				res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}`, req.protocol + "://" + req.get("host")));
+				res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard`, req.protocol + "://" + req.get("host")));
 			} else {
 				next();
 			}
@@ -116,12 +117,8 @@ root.use("/" , visitor)
 
 
 
-
-
-
-
 root.use("/", async (req, res) => {
-	res.send(await Resources.Pages.NotFound())
+	res.send(await notFound.html())
 });
 
 

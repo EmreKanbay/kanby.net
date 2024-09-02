@@ -16,7 +16,7 @@ const construct = async (x, ...values) => {
 
 module.exports = {
 
-	html: ()=> construct`
+	html: (data)=> construct`
 	<footer class="K0e6gd-container">
 		<div class="K0e6gd-sub-container">
 			<div class="K0e6gd-heading">
@@ -443,6 +443,6 @@ module.exports = {
 			font-style: normal;
 		}
 	</style>
-`, js: () => construct``
+`, js: (data) => construct``
 
 }
