@@ -44,8 +44,10 @@ body{
 }
 
 .loading-block {
+  position: fixed;
+  z-index:1;
 	display: none;
-	width: 100%;
+	width: 80vw;
 	height: 100%;
 	background-repeat: no-repeat;
 	background-image: url("../Assets/loading.svg");

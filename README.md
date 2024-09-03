@@ -21,6 +21,35 @@
 
 ---
 
+
+
+### SQL db setup codes
+
+without this tables set up, code will throw error :)
+
+```SQL
+
+ CREATE TABLE users (id serial primary key, login_name text, creation_date text, password_hash text, profile_picture_url text, privilege text, public_name text)
+ 
+ ```
+
+
+
+```SQL
+ CREATE TABLE variables (key text, value text[])
+
+ ```
+
+
+```SQL
+ CREATE TABLE blogs (id serial primary key, title text, description text, language text, author text, creation_date text, last_modify_date text, thumbnail_url text, rendered_content text, raw_content text) 
+ ```
+
+
+
+
+
+
 ### Template literal guides,
 
 #### To list html repetadly

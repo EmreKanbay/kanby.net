@@ -61,21 +61,11 @@ module.exports = {
 	
 				<h2>Cover Image</h2>
 
-				<input id="blog-cover-image"  type="file">
+				<input disabled id="blog-cover-image"  type="file">
 
 
 				<h2>Markdown</h2>
 				<textarea  required id="blog-markdown-content"  class="markdown-editor" ></textarea>
-
-
-				<h2>Meta Title</h2>
- 
-				<input required id="blog-meta-title" type="text">
-
-				<h2>Meta Description</h2>
- 
-				<input required id="blog-meta-description" type="text">
-
 
 					<br>
 					<br>
@@ -104,6 +94,9 @@ module.exports = {
 
 	document.querySelector("#preview-markdown").addEventListener("click",async (e)=> {
 		
+
+		document.querySelector(".loading-block").classList.add("active")
+
 		const res = await fetch("https://api.github.com/markdown", {
 		headers: {"accept": "application/vnd.github+json"},
 		method:"POST",
@@ -113,7 +106,12 @@ module.exports = {
 		if (res.ok){
 
 		document.querySelector(".markdown-body").innerHTML = await res.text()
- 		}
+ 		}else {
+ 						 document.querySelector("#qMQEbc-container").classList.add("active")
+		 document.querySelector("#qMQEbc-message").innerHTML = await response.text()
+
+
+		}
 
 		})
 
@@ -143,8 +141,23 @@ module.exports = {
 		body: formData,
 		
 		}) 
+
+
+		if(response.ok){
+
+		window.location.href = "./"
 		
-		
+		}
+		else{
+		 document.querySelector("#qMQEbc-container").classList.add("active")
+		 document.querySelector("#qMQEbc-message").innerHTML = await response.text()
+		}
+				
+		}else{
+				 document.querySelector("#qMQEbc-container").classList.add("active")
+		 document.querySelector("#qMQEbc-message").innerHTML = await response.text()
+
+
 		}
 
 
