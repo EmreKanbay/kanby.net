@@ -17,12 +17,29 @@ const upload = multer();
 
 //configure libraries
 const pool = new Pool({
-	host: process.env.PG_HOST,
-	user: process.env.PG_USER,
-	password: process.env.PG_PASSWORD,
-	port: process.env.PG_PORT,
-	database: process.env.PG_DB,
+connectionString: process.env.PG_STRING
 });
+
+
+var DB_connected = false;
+(async () => {
+
+	try{
+		await pool.query("SELECT 1")
+		await pool.query("SELECT * FROM users")
+		await pool.query("SELECT * FROM blogs")
+		await pool.query("SELECT * FROM variables")
+ 		console.log("DB connected succesfully")
+		DB_connected = true
+	
+	}catch(e){
+		DB_connected = false
+	
+		console.log("hata")
+		console.log(e)
+	}
+
+})()
 
 
 const auth =async (req, res) => {
@@ -67,13 +84,21 @@ const getComponents = require("./Routes/getComponent");
 // Setup Middlewares
  root.use(cookieParser());
 
+ root.use("/" , (req, res, next) => {
+
+if(DB_connected) next()
+else res.send("DB is not connected")
+
+
+ })
 
 
 // Admin'e gelince credential kontrol ediyor Çünki yetki gerektiren tek admin var
 root.use("/admin/", async (req, res, next) => {
 
-	
 
+	if(DB_connected){}
+	else{res.send("DB CONENCTİON ERROR");return}
 		var checkAuth = await auth(req,res)
  			
 		if(checkAuth.authenticated){

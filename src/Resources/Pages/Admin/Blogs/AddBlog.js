@@ -133,11 +133,10 @@ module.exports = {
  		const formData = new FormData();
 
 		formData.append("blog_title", document.querySelector("#blog-title").value)
-		formData.append("blog_markdown", await res.text())
+		formData.append("blog_markdown_rendered", await res.text())
+		formData.append("blog_markdwon_raw", document.querySelector("#blog-markdown-content").value)
 		formData.append("blog_language", document.querySelector("#blog-form-language").value)
 		formData.append("blog_description", document.querySelector("#blog-description").value)
-		formData.append("blog_meta_description", document.querySelector("#blog-meta-description").value)
-		formData.append("blog_meta_title", document.querySelector("#blog-meta-title").value)
  
 		const response = await fetch("./", {
 		method:"PUT",

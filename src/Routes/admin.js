@@ -108,23 +108,28 @@ sub_admin.route("/blogs")
 })
 .put(Index.upload.none() ,async( req,res) => {
 
-var record = await Index.pool.query(`SELECT * FROM "users" WHERE login_name='${req?.cookies?.login_name}' AND password_hash='${req?.cookies?.password_hash}'`)
+// var record = await Index.pool.query(`SELECT * FROM "users" WHERE login_name='${req?.cookies?.login_name}' AND password_hash='${req?.cookies?.password_hash}'`)
 
-console.log(record.rows[0])
+// console.log(record.rows[0])
+
+res.send()
+
+
+console.log(req.body)
  
-try{
-	await Index.pool.query(`INSERT INTO "blogs" (title, description, 
-		language,  author, creation_date, 
-		rendered_content, meta_title, meta_description) VALUES ('${req.body.blog_title}', '${req.body.blog_description}', 
-		'${req.body.blog_language}', '${record.rows[0].public_name}', '${Date.now()}', '${req.body.blog_markdown}', '${req.body.blog_meta_title}', '${req.body.blog_meta_description}' )`)
+// try{
+// 	await Index.pool.query(`INSERT INTO "blogs" (title, description, 
+// 		language,  author, creation_date, 
+// 		rendered_content, meta_title, meta_description) VALUES ('${req.body.blog_title}', '${req.body.blog_description}', 
+// 		'${req.body.blog_language}', '${record.rows[0].public_name}', '${Date.now()}', '${req.body.blog_markdown}', '${req.body.blog_meta_title}', '${req.body.blog_meta_description}' )`)
 
-		res.send();
+// 		res.send();
 
-}catch(e){
-console.log(e)
-res.status(500).send();
+// }catch(e){
+// console.log(e)
+// res.status(500).send();
 
-}
+// }
 
 })
 

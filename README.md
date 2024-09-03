@@ -2,7 +2,7 @@
 
 ### Author Zayd al-Muqaddim al-Qamar al-‘Aarabi
 
-> CMS is the most easy to install & use CMS for non-techies!
+> Backend and Frontend Code of my website.
 
 ## Tech stack:
 
@@ -151,7 +151,7 @@ this API returns a json object with 2 elements inside
 first is rendered html string,
 second is rendered JS string.
 
-both of thise strings are rendered on server, the fetch method is post, so you can send data to server before render to add stuff inside of this strings.
+both of these strings are rendered on server, the fetch method is post, so you can send data to server before render to add stuff inside to both js and html.
 
 if you do not create a script tag and append it to DOM, script will not run. I mean innerHTML does not run scripts.
 
