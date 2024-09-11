@@ -1,8 +1,6 @@
-# Fast, SEO prioritized, Responsive CMS AKA APP_NAME
+# Source code of kanby.net
 
 ### Author Zayd al-Muqaddim al-Qamar al-‘Aarabi
-
-> Backend and Frontend Code of my website.
 
 ## Tech stack:
 
@@ -83,10 +81,23 @@ console.log("".concat(...[1,2,3,4,6].map(t => {return `tetetetet`})))
 
 BUT, if you will run async function inside of map, it will return you an array of promises, you need to resolve it with Promise.all(array of promises).
 
+```js
+<select required id="blog-form-language-edit">
+
+${async () => { 
+						
+return await Promise.all((await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map( async r => {
+			return await construct`
+
+	<option ${ () => {if(t.language == r){return "selected"}else{return ""}}}  value="${()=> r}">${()=> r}</option>
+`;
+		}))
 
 
+}}
+</select>
 
-
+```
 
 
 
@@ -94,13 +105,13 @@ BUT, if you will run async function inside of map, it will return you an array o
 
 - #### Syncronus
 
-<code>&#96;${(()=> {return 1+1"})()}&#96;</code>
 
-Here is example
+```js
 
-![alt text](./ReadmeImages/image.png)
+${(()=> {return 1+1})()}	
 
-![alt text](./ReadmeImages/image-1.png)
+```
+
 
 - #### asyncronus
 
@@ -157,8 +168,20 @@ const html = async (x, ...values) => {
 };
 ```
 
+
+so basically the snippet above lets us write pure functions inside template literals, and if that function returns something, it will put that into string
+
 ```js
-console.log(html`
+
+${() => {return "test"}}
+
+
+```
+
+
+
+```js
+console.log(await html`
 	<div class="A5ueMP-cotnainer">
 		${async () => {
 			return String(
