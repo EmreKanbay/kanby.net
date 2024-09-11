@@ -13,8 +13,7 @@ const construct = async (x, ...values) => {
 
 	return rendered;
 };
-
-module.exports = {
+ module.exports = {
 	html: (data) => construct`
 	<header class="liwlCh-header-container">
 		<input
@@ -142,21 +141,21 @@ module.exports = {
 				height: 60%;
 				cursor: pointer;
 				padding: 0.3rem;
-				background-image: url("/assets/menu-icon.svg");
+				background-image: url("/assets/menu-icon.svg?${Date.now()}");
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: center;
 			}
 
 			.liwlCh-header-menu-toggle:checked {
-				background-image: url("/assets/cancel.svg");
+				background-image: url("/assets/cancel.svg?${Date.now()}");
 			}
 
 			.liwlCh-header-menu-logo {
 				grid-row: 1 / 2;
 				height: 100%;
 				margin-left: 0.5rem;
-				background-image: url("/assets/logo-black.svg");
+				background-image: url("/assets/logo.svg?${Date.now()}");
 				background-size: contain;
 				background-repeat: no-repeat;
 			}
@@ -168,7 +167,7 @@ module.exports = {
 				margin-right: 0.3rem;
 				grid-column: 3 / 4;
 				grid-row: 1 / 2;
-				background-image: url("/assets/search-icon.svg");
+				background-image: url("/assets/search-icon.svg?${Date.now()}");
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: right;
@@ -220,7 +219,7 @@ module.exports = {
 				grid-area: 1 / 2 / span 1 / span 1;
 
 				border-radius: 1rem;
-				background-image: url("/assets/cancel.svg");
+				background-image: url("/assets/cancel.svg?${Date.now()}");
 				background-position: center;
 				background-repeat: no-repeat;
 
@@ -235,7 +234,7 @@ module.exports = {
 				border-top-right-radius: 1rem;
 				border-bottom-right-radius: 1rem;
 
-				background-image: url("/assets/search-icon.svg");
+				background-image: url("/assets/search-icon.svg?${Date.now()}");
 				background-position: center;
 				background-size: 60%;
 				background-repeat: no-repeat;
@@ -291,7 +290,7 @@ module.exports = {
 			.liwlCh-header-menu-navigation-heading > a::after {
 				opacity: 0.6;
 				content: "";
-				background-image: url("/assets/external-link.svg");
+				background-image: url("/assets/external-link.svg?${Date.now()}");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -318,7 +317,7 @@ module.exports = {
 				content: "";
 				opacity: 0.6;
 
-				background-image: url("/assets/internal-link.svg");
+				background-image: url("/assets/internal-link.svg?${Date.now()}");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -397,7 +396,7 @@ module.exports = {
 			.liwlCh-header-menu-navigation-heading > a::after {
 				opacity: 0.6;
 				content: "";
-				background-image: url("/assets/external-link.svg");
+				background-image: url("/assets/external-link.svg?${Date.now()}");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -423,7 +422,7 @@ module.exports = {
 				content: "";
 				opacity: 0.6;
 
-				background-image: url("/assets/internal-link.svg");
+				background-image: url("/assets/internal-link.svg?${Date.now()}");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -492,7 +491,7 @@ module.exports = {
 				width: 1.2rem;
 				opacity: 0.4;
 				height: 1.2rem;
-				background-image: url("/assets/down-angle.svg");
+				background-image: url("/assets/down-angle.svg?${Date.now()}");
 				background-repeat: no-repeat;
 				background-size: 100%;
 				background-position: center;

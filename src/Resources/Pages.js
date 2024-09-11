@@ -3,10 +3,10 @@ const LandingPage = require("./Pages/LandingPage");
 const AdminDashboard = require("./Pages/Admin/AdminDashboard");
 const NotFound = require("./Pages/NotFound");
 const AllBlogs = require("./Pages/Admin/Blogs/AllBlogs");
-const AllContents = require("./Pages/Admin/Contents/AllContents");
-const AllPages = require("./Pages/Admin/StaticPages/AllPages");
-const AllNews = require("./Pages/Admin/News/AllNews");
 const AddBlog = require("./Pages/Admin/Blogs/AddBlog");
+const Media = require("./Pages/Admin/Media/Media");
+const AddMedia = require("./Pages/Admin/Media/AddMedia");
+const ViewBlog = require("./Pages/Admin/Blogs/ViewBlog");
  
 module.exports = {
 	LoginPage,
@@ -14,9 +14,9 @@ module.exports = {
 	AdminDashboard,
 	NotFound,
 	AllBlogs,
-	AllContents,
-	AllPages,
-	AllNews,
-	AddBlog
+ 	ViewBlog,
+ 	AddBlog,
+	Media,
+	AddMedia
 
 };

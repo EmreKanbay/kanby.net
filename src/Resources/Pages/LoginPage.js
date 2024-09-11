@@ -23,9 +23,7 @@ module.exports = {
 
 html: async (data) => await Layouts.VisitorLayout({
 	head:await construct`
-	<link
-		rel="stylesheet"
-		href="/assets/globals.css" />
+ 
 	<title>Login</title>
 `, content:await construct`
 <div class="ge0yN5-container">
@@ -119,7 +117,7 @@ document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 			document.querySelector(".ge0yN5-loading").classList.add("active");
 			document.querySelector(".ge0yN5-login-error").innerHTML = "";
 
-			const res = await fetch("/admin/login", {
+			const res = await fetch(window.location.href, {
 				body: formData,
 				method: "POST",
 			});

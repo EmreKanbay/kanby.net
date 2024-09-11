@@ -114,7 +114,7 @@ module.exports = {
 				content: "";
 				background-repeat:no-repeat;
 
-				background-image: url("../Assets/plus.svg");
+				background-image: url("../Assets/plus.svg?${Date.now()}");
 				width: 1rem;
 				height: 1rem;
 				background-size: contain;

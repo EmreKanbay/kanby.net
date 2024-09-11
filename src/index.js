@@ -7,18 +7,27 @@ const sha256 = require("js-sha256");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const notFound = require("./Resources/Pages/NotFound")
-
+const crypto = require("crypto")
+ 
 
 
 
 //Initalize libraries
 const { Pool } = pg;
-const upload = multer();
+
+
 
 //configure libraries
 const pool = new Pool({
-connectionString: process.env.PG_STRING
-});
+user: process.env.PG_USER,
+host: process.env.PG_HOST,
+port: process.env.PG_PORT,
+password: process.env.PG_PASSWORD,
+database: process.env.PG_DATABASE
+
+ });
+
+
 
 
 var DB_connected = false;
@@ -40,6 +49,24 @@ var DB_connected = false;
 	}
 
 })()
+
+
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+	  cb(null, './src/Media')
+	},
+	filename: async function (req, file, cb) {
+ 
+ 		var [main, ext] = file.originalname.split(".");
+ 
+
+ 	  cb(null,main + "-" + crypto.randomUUID().split("-")[1] + "." + ext)
+	}
+  })
+
+const upload = multer({ storage: storage});
+
 
 
 const auth =async (req, res) => {
@@ -93,7 +120,39 @@ else res.send("DB is not connected")
  })
 
 
+// remove trailing slash to all requests 
+
+root.use((req, res, next) => {
+
+ var static = ["media", "assets"]
+
+ if(!static.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined"){
+
+	if (req.path.substr(-1) !== '/') {
+		// req.url = .slice(0,-1)
+		// root.handle(req, res, next)
+		res.redirect(req.path + "/")
+		return
+
+	  } else {
+
+		next();
+		return
+
+	  }
+ 
+ }else{
+	next()
+	return
+
+ }
+ 
+
+
+  });
+
 // Admin'e gelince credential kontrol ediyor Çünki yetki gerektiren tek admin var
+
 root.use("/admin/", async (req, res, next) => {
 
 
@@ -103,16 +162,18 @@ root.use("/admin/", async (req, res, next) => {
  			
 		if(checkAuth.authenticated){
 	
-			if (req.path == "/login") {
+			if (req.path == "/login/") {
 				res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard`, req.protocol + "://" + req.get("host")));
 			} else if (req.path == "/") {
 				res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard`, req.protocol + "://" + req.get("host")));
 			} else {
 				next();
 			}
+
 		}  else {
-			if (req.path == "/login") {
-				next();
+
+			if (req.path == "/login/") {
+ 				next();
 			} else {
 				res.statusMessage = "Not Authorized";
 				res.status(401).send("<h1>Not Authorized</h1>");
@@ -131,6 +192,10 @@ root.use("/admin/", async (req, res, next) => {
 
 // Statik medyalar
 root.use("/assets", express.static(path.join(__dirname, "Assets")));
+root.use("/media", express.static(path.join(__dirname, "Media")));
+
+
+
 
 // Route Handlers
 root.use("/admin", admin);

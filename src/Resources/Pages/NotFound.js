@@ -23,9 +23,6 @@ const construct = async (x, ...values) => {
 module.exports = { 
 	html: async (data) =>  await Layouts.VisitorLayout({
 		head: await construct`
-		<link
-			rel="stylesheet"
-			href="/assets/globals.css" />
 		<title>404</title>
 	`,content: await construct`
 

@@ -45,7 +45,9 @@ without this tables set up, code will throw error :)
  CREATE TABLE blogs (id serial primary key, title text, description text, language text, author text, creation_date text, last_modify_date text, thumbnail_url text, rendered_content text, raw_content text) 
  ```
 
-
+```SQL
+ CREATE TABLE media (id serial primary key, full_url text, alt_text text) 
+ ```
 
 
 
@@ -54,11 +56,39 @@ without this tables set up, code will throw error :)
 
 #### To list html repetadly
 
-<code>&#96;${String(["data","data1", "data2"].map( t => {return &#96;&lt;h1&gt;${t}&lt;/h1&gt;&#96;})).replaceAll(",", "\n")}&#96;</code>
+```js
+String(
+		(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
+			return `
+<option value="" selected disabled hidden>language</option>
+
+	<option value="${t}">${t}</option>
+`;
+		}),
+	).replaceAll(",", "\n");
+```
 
 ![alt text](./ReadmeImages/image-3.png)
 
 it is similar to React, we use string instead of JSX.
+
+
+this code does not let us use comma(,) inside strings, and that is a problem.
+
+use this -> 
+
+```js
+console.log("".concat(...[1,2,3,4,6].map(t => {return `tetetetet`})))
+```
+
+BUT, if you will run async function inside of map, it will return you an array of promises, you need to resolve it with Promise.all(array of promises).
+
+
+
+
+
+
+
 
 #### Running code inside of template literal.
 
@@ -233,3 +263,6 @@ Or you can create blob of js string and append script tag inside head tag with a
 - tutorial for markdown syntax
 - custom component shortcodes for inserting html, css and js into markdown especially in Blogs, News, Contents
 ```
+
+
+				

@@ -22,14 +22,13 @@ const construct = async (x, ...values) => {
 module.exports = {
 	html: async (data) => await Layouts.AdminLayout({
 		head: await construct`
-		<link
-			rel="stylesheet"
-			href="/assets/globals.css" />
+ 
 		<title>Admin</title>
 	`,content: await construct`
- 
-	All Blogs here
 
+<h1  class="page-title">Blogs</h1>
+
+<span>language:</span>
         				<select
   					id="all-blogs-language">
 					${async () => {
@@ -46,21 +45,44 @@ module.exports = {
 				</select>
 
 
-				<div id="all-blogs-list"></div>
 
-
-
-
-
-
-
+				<div id="all-blogs-list">
+				<h1>Select a language</h1>
+			
+				
+				</div>
 
 				<style>
+
+				.all-blogs-item{
+				cursor:pointer;
+				display:grid;
+				min-width:200px;
+				max-width:300px;
+				grid-template-columns: 100%;
+				grid-template-rows: 5fr 1fr;
+				border:1px solid black;
+				overflow: hidden;
+				border-radius: .7rem;
+
+				}
+
+				.all-blogs-item img{
+				
+				width:100%
+				}
+
+				.all-blogs-item{
+				display:grid;
+				place-items:center;
+				
+				}
 				
 				#all-blogs-list{
 				
 				width:100%;
 				display:flex;
+				flex-wrap:wrap;
 				gap:1rem;
 				
 				
@@ -75,16 +97,24 @@ module.exports = {
 					const formData = new FormData()
 
 					formData.append("language", document.querySelector("#all-blogs-language").value)
+					
+		document.querySelector(".loading-block").classList.add("active")
+					
 					const res = await fetch(window.location.href, {
 					method:"POST",
 					body: formData
 					
 					})
+		document.querySelector(".loading-block").classList.remove("active")
 
 					if(res.ok){
 					
-					document.querySelector("#all-blogs-list").innerHTML
-					console.log(await res.json())
+					var rows = await res.text()
+
+					document.querySelector("#all-blogs-list").innerHTML = rows 
+ 
+					}else{
+					
 					}
 					
 					})

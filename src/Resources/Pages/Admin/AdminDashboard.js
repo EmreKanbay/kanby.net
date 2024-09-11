@@ -21,9 +21,7 @@ const construct = async (x, ...values) => {
 module.exports = {
 	html: async (data) => await Layouts.AdminLayout({
 		head: await construct`
-		<link
-			rel="stylesheet"
-			href="/assets/globals.css" />
+ 
 		<title>Admin</title>
 	`,content: await construct`
  

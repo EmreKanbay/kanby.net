@@ -14,6 +14,7 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
+ 
 module.exports = {
 
 	html: (data)=> construct`
@@ -24,7 +25,7 @@ module.exports = {
 				<ul>
 					<li>
 						<img
-							src="/assets/github.svg"
+							src="/assets/github.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -34,7 +35,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/twitter.svg"
+							src="/assets/twitter.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -44,7 +45,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/linkedin.svg"
+							src="/assets/linkedin.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -54,7 +55,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/codepen.svg"
+							src="/assets/codepen.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -64,7 +65,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/tiktok.svg"
+							src="/assets/tiktok.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -74,7 +75,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/Instagram.svg"
+							src="/assets/Instagram.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -377,7 +378,7 @@ module.exports = {
 			z-index: -1;
 			height: 100%;
 
-			background-image: url("/assets/footer_background.svg");
+			background-image: url("/assets/footer_background.svg?${Date.now()}");
 			background-repeat: no-repeat;
 			transform: rotate(180deg);
 			filter: brightness(80%);
@@ -420,7 +421,7 @@ module.exports = {
 			content: "";
 			width: 1.3rem;
 			height: 1.3rem;
-			background-image: url("/assets/external-link.svg");
+			background-image: url("/assets/external-link.svg?${Date.now()}");
 			background-size: contain;
 			background-repeat: no-repeat;
 			background-position: center;

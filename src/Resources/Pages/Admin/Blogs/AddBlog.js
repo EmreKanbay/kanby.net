@@ -22,9 +22,7 @@ const construct = async (x, ...values) => {
 module.exports = {
 	html: async (data) => await Layouts.AdminLayout({
 		head: await construct`
-		<link
-			rel="stylesheet"
-			href="/assets/globals.css" />
+ 
 		<title>Admin</title>
 	`,content: await construct`
  
@@ -59,9 +57,9 @@ module.exports = {
 
 
 	
-				<h2>Cover Image</h2>
+				<h2>Cover Image url</h2>
 
-				<input disabled id="blog-cover-image"  type="file">
+				<input id="blog-cover-image"  type="text">
 
 
 				<h2>Markdown</h2>
@@ -106,6 +104,8 @@ module.exports = {
 		if (res.ok){
 
 		document.querySelector(".markdown-body").innerHTML = await res.text()
+		document.querySelector(".loading-block").classList.remove("active")
+		
  		}else {
  						 document.querySelector("#qMQEbc-container").classList.add("active")
 		 document.querySelector("#qMQEbc-message").innerHTML = await response.text()
@@ -116,6 +116,9 @@ module.exports = {
 		})
 
 	document.querySelector("#add-blog-form").addEventListener("submit", async (e)=> {
+
+		document.querySelector(".loading-block").classList.add("active")
+
 
 		e.preventDefault()
 		
@@ -135,12 +138,16 @@ module.exports = {
 		formData.append("blog_markdwon_raw", document.querySelector("#blog-markdown-content").value)
 		formData.append("blog_language", document.querySelector("#blog-form-language").value)
 		formData.append("blog_description", document.querySelector("#blog-description").value)
- 
+		formData.append("blog_cover_image", document.querySelector("#blog-cover-image").value)
+
 		const response = await fetch("./", {
 		method:"PUT",
 		body: formData,
 		
 		}) 
+
+		document.querySelector(".loading-block").classList.remove("active")
+
 
 
 		if(response.ok){

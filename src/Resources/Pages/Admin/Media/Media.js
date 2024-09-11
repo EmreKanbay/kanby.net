@@ -1,0 +1,99 @@
+const Layouts = require("#Layouts");
+const Index = require("#Index");
+ 
+
+ const construct = async (x, ...values) => {
+	var rendered = "";
+	for (let u = 0; u < x.length; u++) {
+		rendered = rendered.concat(x[u]);
+		if (u < x.length - 1) {
+			if (typeof values[u] == "function") {
+				rendered = rendered.concat(await values[u]());
+			} else {
+				rendered = rendered.concat(values[u]);
+			}
+		}
+	}
+
+	return rendered;
+};
+
+ 
+module.exports = {
+	html: async (data) => await Layouts.AdminLayout({
+		head: await construct`
+
+		<title>Admin</title>
+	`,content: await construct`
+ 
+	<h1>Media page</h1>
+
+	<div id="media-display-cont">
+
+	${async () => {
+		return String(
+			(await Index.pool.query(`SELECT * FROM "media"`)).rows.map(t => {
+				return `
+	
+		<div class="media-element">
+		<img src="${t.full_url}?${Date.now()}" alt="${t.alt_text}" />
+
+		<span>${t.full_url}</span>
+	</div>
+		`;
+			}),
+		).replaceAll(",", "\n");
+	}}
+
+
+
+	${String(
+		[
+		  2, 3, 1, 1, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3,
+		].map(t => {
+		  return `
+			  <div style="height:0" class="media-element placeholder">      
+			  </div>
+	  `;
+		}),
+	  ).replaceAll(",", "\n")}
+
+
+	</div>
+
+
+	<style>
+	
+	#media-display-cont{
+margin-top:1rem;
+
+display:flex;
+flex-wrap: wrap;
+gap:.5rem;
+	}
+
+.media-element{
+    flex-grow:1;
+ 		min-width: 150px;
+    max-width: 250px;
+ }
+
+.media-element img{
+	width: 100%
+}
+
+	</style>
+
+		<script>
+	document.querySelectorAll(".nav-menu__item").forEach( (node, index) => { node.classList.remove("is-active")})
+	document.querySelector(".navbar-media").classList.add("is-active")
+	</script>
+	
+	${()=> {return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : ""}}
+
+
+  `}
+
+	) ,js: async (data)=> await construct``
+}
+	

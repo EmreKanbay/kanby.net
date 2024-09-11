@@ -15,14 +15,49 @@
 };
 
 
-
-
+ 
 module.exports = async (data) => await construct`
     <!doctype html>
             <html lang="en">
                 <head>
                     <title>Admin Panel</title>
+                    		<link
+			rel="stylesheet"
+			href="/assets/globals.css?${Date.now()}" />
+		<link rel="icon" href="/assets/logo.svg">
+
                     ${data.head}
+
+                    <style>
+                    .loading-inline {
+	display: none;
+	width: 100%;
+	height: 70px;
+	background-repeat: no-repeat;
+	background-image: url("/assets/loading.svg");
+	background-position: center;
+	background-size: 15%;
+}
+.loading-inline.active {
+	display: block;
+}
+
+.loading-block {
+  position: fixed;
+  z-index:1;
+	display: none;
+	width: 80vw;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-image: url("/assets/loading.svg?${Date.now()}");
+	background-position: center;
+	background-size: 5%;
+	background-color: rgb(11, 11, 11, 0.5);
+}
+.loading-block.active {
+	display: block;
+}
+    </style>
                 </head>
     
                 <body>
@@ -39,16 +74,16 @@ module.exports = async (data) => await construct`
                                         <li  class="nav-menu__item navbar-dashboard "
                                              >
                                             <div class="nav-menu__item__inner">
-                                                <div  onclick="goTo('/dashboard')"   class="nav-menu__item__inner_main"> 
+                                                <div  onclick="goTo('/dashboard/')"   class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
                                                         style="filter:invert(1)"
-                                                        src="https://cdn-icons-png.flaticon.com/512/4922/4922073.png"
+                                                        src="/assets/dashboard-icon.svg?${Date.now()}"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Dashboard</span></div>
                                                 </div>
                                                 <div class="nav-menu__item__inner-submenu">
-                                                        <div onclick="goTo('/dashboard/analytics')"  >Analytics</div>
+                                                        <div onclick="goTo('/dashboard/analytics/')"  >Analytics</div>
                                                  </div>  
                                             </div>
                                         </li>
@@ -58,57 +93,36 @@ module.exports = async (data) => await construct`
                                             <li class="nav-menu__item  navbar-blogs  "
                                              >
                                             <div class="nav-menu__item__inner">
-                                                <div  onclick="goTo('/blogs')" class="nav-menu__item__inner_main"> 
+                                                <div  onclick="goTo('/blogs/')" class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
-                                                        style="filter:invert(1)"
-                                                        src="https://cdn-icons-png.flaticon.com/512/4922/4922073.png"
+                                                         src="/assets/blogs-icon.svg?${Date.now()}"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Blog</span></div>
                                                 </div>
                                                 <div class="nav-menu__item__inner-submenu">
-                                                         <div onclick="goTo('/blogs/add')">Add New</div>
+                                                         <div onclick="goTo('/blogs/add/')">Add New</div>
                                                 </div>  
                                             </div>
                                         </li>
 
 
-
-                                        <li class="nav-menu__item  navbar-contents "
+                                                        <li class="nav-menu__item  navbar-media  "
                                              >
                                             <div class="nav-menu__item__inner">
-                                                <div  onclick="goTo('/contents')"  class="nav-menu__item__inner_main"> 
+                                                <div  onclick="goTo('/media/')" class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
-                                                        style="filter:invert(1)"
-                                                        src="https://cdn-icons-png.flaticon.com/512/4922/4922073.png"
+                                                         src="/assets/image-icon.svg?${Date.now()}"
                                                         class="sidebar-menu-icons" />
-                                                    <div class="nav-menu-item__title"><span>Contents</span></div>
+                                                    <div class="nav-menu-item__title"><span>Media</span></div>
                                                 </div>
                                                 <div class="nav-menu__item__inner-submenu">
-                                                         <div onclick="goTo('/contents/add')">Add New</div>
+                                                         <div onclick="goTo('/media/add/')">Add New</div>
                                                 </div>  
                                             </div>
                                         </li>
 
-
-
-                                            <li class="nav-menu__item  navbar-news "
-                                             >
-                                            <div class="nav-menu__item__inner">
-                                                <div onclick="goTo('/news')"  class="nav-menu__item__inner_main"> 
-                                                
-                                                        <img
-                                                        style="filter:invert(1)"
-                                                        src="https://cdn-icons-png.flaticon.com/512/4922/4922073.png"
-                                                        class="sidebar-menu-icons" />
-                                                    <div class="nav-menu-item__title"><span>News</span></div>
-                                                </div>
-                                                <div class="nav-menu__item__inner-submenu">
-                                                         <div onclick="goTo('/news/add')">Add New</div>
-                                                </div>  
-                                            </div>
-                                        </li>
     
 
                                     </ul>
@@ -175,8 +189,7 @@ display: grid;
                             <div class="content-wrapper content-wrapper--with-bg">
                     
     
-                                <h1 class="page-title">Page Title</h1>
-    
+     
                                 <div class="page-content">
 
                                 ${data.content}
@@ -195,7 +208,7 @@ display: grid;
         font-family: "Open Sans";
         font-size: 14px;
         font-weight: 400;
-        overflow: hidden;
+        overflow-x: hidden;
      }
     
      .logo__txt{
@@ -422,8 +435,10 @@ height:4rem;
      
     main.l-main .page-title {
         font-weight: 400;
-        margin-top: 0;
-        margin-bottom: 25px;
+        margin-top: 1rem;
+        border: 2px solid black;
+         margin-bottom: 25px;
+        text-align:center
     }
     .sidebar-is-expanded main.l-main {
         padding-left: 220px;
@@ -434,6 +449,8 @@ height:4rem;
 
             <script>
 
+
+ 
  
         const user_id = document.cookie[document.cookie.indexOf("user_id") + 8]
   
@@ -441,7 +458,7 @@ height:4rem;
 
 
 
-                window.location.href = window.location.origin + "/admin" + "/" + user_id  + target
+                window.location.href = window.location.origin + "/admin" + "/" + user_id  + target 
                 
                 
                 }
