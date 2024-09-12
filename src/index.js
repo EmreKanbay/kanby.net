@@ -90,6 +90,12 @@ const getComponents = require("./Routes/getComponent");
 // Setup Middlewares
 root.use(cookieParser());
 
+app.use('/robots.txt', function (req, res, next) {
+    res.type('text/plain')
+    res.send("User-agent: *\nDisallow: /");
+});
+
+
 root.use("/", (req, res, next) => {
 	if (DB_connected) next();
 	else res.send("DB is not connected");
