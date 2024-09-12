@@ -90,7 +90,7 @@ const getComponents = require("./Routes/getComponent");
 // Setup Middlewares
 root.use(cookieParser());
 
-root.use('/robots.txt', function (req, res, next) {
+root.get('/robots.txt', function (req, res, next) {
     res.type('text/plain')
 
      res.send("User-agent: *\nDisallow: /");

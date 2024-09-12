@@ -24,7 +24,7 @@ admin.post("/login/", Index.upload.none(), async (req, res) => {
 			httpOnly: false,
 		});
 		res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: false });
-		res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard/`, req.protocol + "://" + req.get("host")));
+		res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard/`,  "https://" + req.get("host")));
 	} else {
 		res.statusCode = 404;
 		res.send(await Components.visitor.ErrorBox.html({ message: "login failed" }));
@@ -40,7 +40,7 @@ admin.use("/:id", async (req, res, next) => {
 
 		if (record.rows.length == 1 && req.params.id == record.rows[0].id) {
 			if (req.path == "/")
-				res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard`, req.protocol + "://" + req.get("host")));
+				res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard`,  "https://" + req.get("host")));
 			else next();
 		} else {
 			res.statusMessage = "Not Authorized";
