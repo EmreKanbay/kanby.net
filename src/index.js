@@ -25,8 +25,11 @@ var DB_connected = false;
 (async () => {
 	try {
 		await pool.query("SELECT 1");
+		console.log("works")
 		await pool.query("SELECT * FROM users");
+		console.log("works")
 		await pool.query("SELECT * FROM blogs");
+		console.log("works")
 		await pool.query("SELECT * FROM variables");
 		console.log("DB connected succesfully");
 		DB_connected = true;

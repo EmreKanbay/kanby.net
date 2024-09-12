@@ -20,6 +20,8 @@ ENV PG_PASSWORD ""
 ENV PG_DATABASE ""
 ENV PG_HOST ""
 
+
+ 
 # there is no trailing slash on CDN domain. do NOT do that -> http://abc.com/
 # Instead do that -> http://abc.com
 # All required files must be exist in cdn  
@@ -44,6 +46,6 @@ USER node
 
 # Expose the port that the application listens on.
 EXPOSE 3000
-
+ 
 # Run the application.
 CMD ["node", "./src"]
