@@ -90,9 +90,8 @@ const getComponents = require("./Routes/getComponent");
 // Setup Middlewares
 root.use(cookieParser());
 
-app.use('/robots.txt', function (req, res, next) {
-    res.type('text/plain')
-    res.send("User-agent: *\nDisallow: /");
+root.use('/robots.txt', function (req, res, next) {
+     res.send("User-agent: *\nDisallow: /");
 });
 
 
@@ -104,7 +103,7 @@ root.use("/", (req, res, next) => {
 // remove trailing slash to all requests
 
 root.use((req, res, next) => {
-	var static = ["media", "assets"];
+	var static = ["media", "assets", "robots.txt"];
 
 	if (!static.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
 		if (req.path.substr(-1) !== "/") {
