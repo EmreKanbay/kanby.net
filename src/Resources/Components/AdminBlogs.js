@@ -1,5 +1,9 @@
 const Index = require("#Index");
 
+require("dotenv").config();
+
+const cdn = process.env.CDN_DOMAIN;
+
 const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -16,12 +20,8 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-
-
-
-
 module.exports = {
-	html: (data) => construct`
+	html: data => construct`
 		<div class="A5ueMP-cotnainer">
  
 
@@ -114,7 +114,7 @@ module.exports = {
 				content: "";
 				background-repeat:no-repeat;
 
-				background-image: url("../Assets/plus.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/plus.svg?${Date.now()}");
 				width: 1rem;
 				height: 1rem;
 				background-size: contain;
@@ -140,13 +140,10 @@ module.exports = {
 			}
 		</style>
 	`,
-	js: (data) => construct`
+	js: data => construct`
 document.querySelector("#A5ueMP-cotnainer-top-select").addEventListener("change", (e)=> {
 	alert(e.target.value)
 
 	})
-`
+`,
 };
-
-
-

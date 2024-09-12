@@ -1,4 +1,8 @@
- const construct = async (x, ...values) => {
+require("dotenv").config();
+
+const cdn = process.env.CDN_DOMAIN;
+
+const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -14,16 +18,15 @@
 	return rendered;
 };
 
-
- 
-module.exports = async (data) => await construct`
+module.exports = async data =>
+	await construct`
     <!doctype html>
             <html lang="en">
                 <head>
                     <title>Admin Panel</title>
                     		<link
 			rel="stylesheet"
-			href="/assets/globals.css?${Date.now()}" />
+			href="${cdn}/assets/globals.css?${Date.now()}" />
 		<link rel="icon" href="/assets/logo.svg">
 
                     ${data.head}
@@ -34,7 +37,7 @@ module.exports = async (data) => await construct`
 	width: 100%;
 	height: 70px;
 	background-repeat: no-repeat;
-	background-image: url("/assets/loading.svg");
+	background-image: url("${cdn}/assets/loading.svg");
 	background-position: center;
 	background-size: 15%;
 }
@@ -49,7 +52,7 @@ module.exports = async (data) => await construct`
 	width: 80vw;
 	height: 100%;
 	background-repeat: no-repeat;
-	background-image: url("/assets/loading.svg?${Date.now()}");
+	background-image: url("${cdn}/assets/loading.svg?${Date.now()}");
 	background-position: center;
 	background-size: 5%;
 	background-color: rgb(11, 11, 11, 0.5);
@@ -78,7 +81,7 @@ module.exports = async (data) => await construct`
                                                 
                                                         <img
                                                         style="filter:invert(1)"
-                                                        src="/assets/dashboard-icon.svg?${Date.now()}"
+                                                        src="${cdn}/assets/dashboard-icon.svg?${Date.now()}"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Dashboard</span></div>
                                                 </div>
@@ -96,7 +99,7 @@ module.exports = async (data) => await construct`
                                                 <div  onclick="goTo('/blogs/')" class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
-                                                         src="/assets/blogs-icon.svg?${Date.now()}"
+                                                         src="${cdn}/assets/blogs-icon.svg?${Date.now()}"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Blog</span></div>
                                                 </div>
@@ -113,7 +116,7 @@ module.exports = async (data) => await construct`
                                                 <div  onclick="goTo('/media/')" class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
-                                                         src="/assets/image-icon.svg?${Date.now()}"
+                                                         src="${cdn}/assets/image-icon.svg?${Date.now()}"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Media</span></div>
                                                 </div>
@@ -468,6 +471,4 @@ height:4rem;
             
                 </body>
             </html>
-    `
-    
- 
+    `;

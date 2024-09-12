@@ -1,3 +1,6 @@
+require("dotenv").config();
+
+const cdn = process.env.CDN_DOMAIN;
 const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -14,10 +17,8 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
- 
 module.exports = {
-
-	html: (data)=> construct`
+	html: data => construct`
 	<footer class="K0e6gd-container">
 		<div class="K0e6gd-sub-container">
 			<div class="K0e6gd-heading">
@@ -25,7 +26,7 @@ module.exports = {
 				<ul>
 					<li>
 						<img
-							src="/assets/github.svg?${Date.now()}"
+							src="${cdn}/assets/github.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -35,7 +36,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/twitter.svg?${Date.now()}"
+							src="${cdn}/assets/twitter.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -45,7 +46,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/linkedin.svg?${Date.now()}"
+							src="${cdn}/assets/linkedin.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -55,7 +56,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/codepen.svg?${Date.now()}"
+							src="${cdn}/assets/codepen.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -65,7 +66,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/tiktok.svg?${Date.now()}"
+							src="${cdn}/assets/tiktok.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -75,7 +76,7 @@ module.exports = {
 					</li>
 					<li>
 						<img
-							src="/assets/Instagram.svg?${Date.now()}"
+							src="${cdn}/assets/Instagram.svg?${Date.now()}"
 							alt="" />
 						<a
 							target="_blank"
@@ -378,7 +379,7 @@ module.exports = {
 			z-index: -1;
 			height: 100%;
 
-			background-image: url("/assets/footer_background.svg?${Date.now()}");
+			background-image: url("${cdn}/assets/footer_background.svg?${Date.now()}");
 			background-repeat: no-repeat;
 			transform: rotate(180deg);
 			filter: brightness(80%);
@@ -421,7 +422,7 @@ module.exports = {
 			content: "";
 			width: 1.3rem;
 			height: 1.3rem;
-			background-image: url("/assets/external-link.svg?${Date.now()}");
+			background-image: url("${cdn}/assets/external-link.svg?${Date.now()}");
 			background-size: contain;
 			background-repeat: no-repeat;
 			background-position: center;
@@ -444,6 +445,6 @@ module.exports = {
 			font-style: normal;
 		}
 	</style>
-`, js: (data) => construct``
-
-}
+`,
+	js: data => construct``,
+};

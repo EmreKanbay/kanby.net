@@ -1,7 +1,6 @@
 const Layouts = require("#Layouts");
 const Index = require("#Index");
 
-
 const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -18,17 +17,14 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-
-
-
-
-
 module.exports = {
-	html: async (data) => await Layouts.AdminLayout({
-		head: await construct`
+	html: async data =>
+		await Layouts.AdminLayout({
+			head: await construct`
 
 		<title>Admin</title>
-	`,content: await construct`
+	`,
+			content: await construct`
  
 	<h1>add media</h1>
 
@@ -124,14 +120,12 @@ document.querySelector("#media-upload").addEventListener("change", (e) => {
 	document.querySelector(".navbar-media").classList.add("is-active")
 	</script>
 	
-	${()=> {return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : ""}}
+	${() => {
+		return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
+	}}
 
 
-  `}
-
-	) ,js: async (data)=> await construct``
-}
-	
-
-
-
+  `,
+		}),
+	js: async data => await construct``,
+};

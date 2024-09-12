@@ -1,7 +1,9 @@
 const Layouts = require("#Layouts");
 const Index = require("#Index");
-const he = require("he")
+const he = require("he");
 
+require("dotenv").config();
+const cdn = process.env.CDN_DOMAIN;
 
 const construct = async (x, ...values) => {
 	var rendered = "";
@@ -19,25 +21,25 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
- 
-
 module.exports = {
-	html: async (data) => await Layouts.AdminLayout({
-		head: await construct`
+	html: async data =>
+		await Layouts.AdminLayout({
+			head: await construct`
  
 		<title>Admin</title>
-	`,content: await construct`
+	`,
+			content: await construct`
 
 
 
 <div id="blog-top-bar">
 
 	<button class="blog-button" id="edit-blog">
-	<img  src="/assets/pen.svg?${Date.now()}" />
+	<img  src="${cdn}/assets/pen.svg?${Date.now()}" />
 	</button>
 
 	<button class="blog-button" id="delete-blog">
-	<img  src="/assets/trash-icon.svg?${Date.now()}" />
+	<img  src="${cdn}/assets/trash-icon.svg?${Date.now()}" />
 	</button>
 
 </div>
@@ -45,7 +47,10 @@ module.exports = {
 
 	
    
-    ${async () => {var query = await Index.pool.query(`SELECT * FROM blogs WHERE id='${data.id}'`);t = query.rows[0] ; return await construct`
+    ${async () => {
+			var query = await Index.pool.query(`SELECT * FROM blogs WHERE id='${data.id}'`);
+			t = query.rows[0];
+			return await construct`
 		
 
 			<form data-blog-id="${data.id}" style="display:none" id="edit-blog-form">
@@ -55,18 +60,22 @@ module.exports = {
 
  					id="blog-form-language-edit">
 
-				${async () => { 
-						
-  
- 				   return await Promise.all((await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map( async r => {
-								return await construct`
+				${async () => {
+					return await Promise.all(
+						(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(async r => {
+							return await construct`
  
-						<option ${ () => {if(t.language == r){return "selected"}else{return ""}}}  value="${()=> r}">${()=> r}</option>
+						<option ${() => {
+							if (t.language == r) {
+								return "selected";
+							} else {
+								return "";
+							}
+						}}  value="${() => r}">${() => r}</option>
 					`;
-							}))
-
-
-					}}
+						}),
+					);
+				}}
 				</select>
 
 
@@ -116,7 +125,8 @@ module.exports = {
 
 
 		
-		`}}
+		`;
+		}}
    
 
 
@@ -267,13 +277,12 @@ document.querySelector("#blog-top-bar").style.display = "none"
   </script>
 
 	
-	${()=> {return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : ""}}
+	${() => {
+		return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
+	}}
 
 
-	`}
-
-	) ,js: async (data)=> await construct``
-}
-	
-
-
+	`,
+		}),
+	js: async data => await construct``,
+};

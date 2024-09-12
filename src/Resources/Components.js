@@ -4,7 +4,6 @@ const Footer = require("./Components/Footer");
 
 const SuccessBox = require("./Components/SuccessBox");
 const AdminBlogs = require("./Components/AdminBlogs");
- 
 
 module.exports = {
 	visitor: {
@@ -12,10 +11,8 @@ module.exports = {
 		Footer,
 		ErrorBox,
 		SuccessBox,
-		
 	},
 	admin: {
 		AdminBlogs,
- 
 	},
 };

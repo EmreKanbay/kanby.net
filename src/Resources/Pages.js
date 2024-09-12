@@ -7,16 +7,15 @@ const AddBlog = require("./Pages/Admin/Blogs/AddBlog");
 const Media = require("./Pages/Admin/Media/Media");
 const AddMedia = require("./Pages/Admin/Media/AddMedia");
 const ViewBlog = require("./Pages/Admin/Blogs/ViewBlog");
- 
+
 module.exports = {
 	LoginPage,
 	LandingPage,
 	AdminDashboard,
 	NotFound,
 	AllBlogs,
- 	ViewBlog,
- 	AddBlog,
+	ViewBlog,
+	AddBlog,
 	Media,
-	AddMedia
-
+	AddMedia,
 };

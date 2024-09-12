@@ -1,8 +1,7 @@
 const Layouts = require("#Layouts");
 const Index = require("#Index");
- 
 
- const construct = async (x, ...values) => {
+const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -18,13 +17,14 @@ const Index = require("#Index");
 	return rendered;
 };
 
- 
 module.exports = {
-	html: async (data) => await Layouts.AdminLayout({
-		head: await construct`
+	html: async data =>
+		await Layouts.AdminLayout({
+			head: await construct`
 
 		<title>Admin</title>
-	`,content: await construct`
+	`,
+			content: await construct`
  
 	<h1>Media page</h1>
 
@@ -48,15 +48,13 @@ module.exports = {
 
 
 	${String(
-		[
-		  2, 3, 1, 1, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3,
-		].map(t => {
-		  return `
+		[2, 3, 1, 1, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3].map(t => {
+			return `
 			  <div style="height:0" class="media-element placeholder">      
 			  </div>
 	  `;
 		}),
-	  ).replaceAll(",", "\n")}
+	).replaceAll(",", "\n")}
 
 
 	</div>
@@ -89,11 +87,12 @@ gap:.5rem;
 	document.querySelector(".navbar-media").classList.add("is-active")
 	</script>
 	
-	${()=> {return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : ""}}
+	${() => {
+		return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
+	}}
 
 
-  `}
-
-	) ,js: async (data)=> await construct``
-}
-	
+  `,
+		}),
+	js: async data => await construct``,
+};

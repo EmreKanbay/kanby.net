@@ -16,16 +16,16 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-
 // ${(()=> String(Components.visitor.ErrorBox("")))()}
 
 module.exports = {
-
-html: async (data) => await Layouts.VisitorLayout({
-	head:await construct`
+	html: async data =>
+		await Layouts.VisitorLayout({
+			head: await construct`
  
 	<title>Login</title>
-`, content:await construct`
+`,
+			content: await construct`
 <div class="ge0yN5-container">
 	<form class="ge0yN5-form">
 		<h1>Admin Panel Login</h1>
@@ -99,13 +99,14 @@ html: async (data) => await Layouts.VisitorLayout({
 	}
 </style>
 
-${()=> {return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : ""}}
+${() => {
+	return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
+}}
 
 
-`
-}
-
-), js: (data) => construct`
+`,
+		}),
+	js: data => construct`
 
 document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 		e.preventDefault();
@@ -137,7 +138,5 @@ document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 		}
 	});
 	
-	`
-
-}
-	
+	`,
+};

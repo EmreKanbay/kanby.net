@@ -6,7 +6,7 @@
 
 ### FRONTEND
 
-- HTML CSS JS (No Js Framework)
+- Vanilla JS - For better speed and Better SEO
 
 ### Backend
 
@@ -19,8 +19,6 @@
 
 ---
 
-
-
 ### SQL db setup codes
 
 without this tables set up, code will throw error :)
@@ -28,27 +26,21 @@ without this tables set up, code will throw error :)
 ```SQL
 
  CREATE TABLE users (id serial primary key, login_name text, creation_date text, password_hash text, profile_picture_url text, privilege text, public_name text)
- 
- ```
 
-
+```
 
 ```SQL
  CREATE TABLE variables (key text, value text[])
 
- ```
-
-
-```SQL
- CREATE TABLE blogs (id serial primary key, title text, description text, language text, author text, creation_date text, last_modify_date text, thumbnail_url text, rendered_content text, raw_content text) 
- ```
+```
 
 ```SQL
- CREATE TABLE media (id serial primary key, full_url text, alt_text text) 
- ```
+ CREATE TABLE blogs (id serial primary key, title text, description text, language text, author text, creation_date text, last_modify_date text, thumbnail_url text, rendered_content text, raw_content text)
+```
 
-
-
+```SQL
+ CREATE TABLE media (id serial primary key, full_url text, alt_text text)
+```
 
 ### Template literal guides,
 
@@ -56,62 +48,69 @@ without this tables set up, code will throw error :)
 
 ```js
 String(
-		(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
-			return `
+	(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
+		return `
 <option value="" selected disabled hidden>language</option>
 
 	<option value="${t}">${t}</option>
 `;
-		}),
-	).replaceAll(",", "\n");
+	}),
+).replaceAll(",", "\n");
 ```
 
 ![alt text](./ReadmeImages/image-3.png)
 
 it is similar to React, we use string instead of JSX.
 
-
 this code does not let us use comma(,) inside strings, and that is a problem.
 
-use this -> 
+use this ->
 
 ```js
-console.log("".concat(...[1,2,3,4,6].map(t => {return `tetetetet`})))
+console.log(
+	"".concat(
+		...[1, 2, 3, 4, 6].map(t => {
+			return `tetetetet`;
+		}),
+	),
+);
 ```
 
 BUT, if you will run async function inside of map, it will return you an array of promises, you need to resolve it with Promise.all(array of promises).
 
 ```js
-<select required id="blog-form-language-edit">
+<select
+	required
+	id="blog-form-language-edit">
+	$
+	{async () => {
+		return await Promise.all(
+			(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(async r => {
+				return await construct`
 
-${async () => { 
-						
-return await Promise.all((await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map( async r => {
-			return await construct`
-
-	<option ${ () => {if(t.language == r){return "selected"}else{return ""}}}  value="${()=> r}">${()=> r}</option>
+	<option ${() => {
+		if (t.language == r) {
+			return "selected";
+		} else {
+			return "";
+		}
+	}}  value="${() => r}">${() => r}</option>
 `;
-		}))
-
-
-}}
+			}),
+		);
+	}}
 </select>
-
 ```
-
-
 
 #### Running code inside of template literal.
 
 - #### Syncronus
 
-
 ```js
 
-${(()=> {return 1+1})()}	
+${(()=> {return 1+1})()}
 
 ```
-
 
 - #### asyncronus
 
@@ -168,7 +167,6 @@ const html = async (x, ...values) => {
 };
 ```
 
-
 so basically the snippet above lets us write pure functions inside template literals, and if that function returns something, it will put that into string
 
 ```js
@@ -178,27 +176,27 @@ ${() => {return "test"}}
 
 ```
 
-
-
 ```js
-console.log(await html`
-	<div class="A5ueMP-cotnainer">
-		${async () => {
-			return String(
-				(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(
-					t => `
+console.log(
+	await html`
+		<div class="A5ueMP-cotnainer">
+			${async () => {
+				return String(
+					(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(
+						t => `
 						<h1>${t}</h1>
 					`,
-				),
-			).replaceAll(",", "\n");
-		}}
-		${() => {
-			return "<h1>My fancy header</h1>";
-		}}
+					),
+				).replaceAll(",", "\n");
+			}}
+			${() => {
+				return "<h1>My fancy header</h1>";
+			}}
 
-		<h1>Blogs</h1>
-	</div>
-`);
+			<h1>Blogs</h1>
+		</div>
+	`,
+);
 /* Output ->
 
 <div class="A5ueMP-cotnainer">
@@ -221,12 +219,9 @@ basically, our tag function runs the function we provided in templated string an
 
 <code>&#96;document.querySelector(".class").innerHTML = &#92;&#96; &lt;div&gt;Complex HTML&lt;/div&gt; &#92;&#96; &#96;</code>
 
-
-
-
 ## Fetch component from server and render it on client
 
-` /get-component/[admin | visitor]/[component_name] `
+`/get-component/[admin | visitor]/[component_name]`
 
 With the API above you can fetch components from server,
 this API returns a json object with 2 elements inside
@@ -255,10 +250,7 @@ fetch("/get-component/admin/AdminBlogs", {
 	}).catch(e){alert("Fetch Error")};
 ```
 
-
 Or you can create blob of js string and append script tag inside head tag with a src pointing to blob url
-
-
 
 ### Features
 
@@ -286,6 +278,3 @@ Or you can create blob of js string and append script tag inside head tag with a
 - tutorial for markdown syntax
 - custom component shortcodes for inserting html, css and js into markdown especially in Blogs, News, Contents
 ```
-
-
-				

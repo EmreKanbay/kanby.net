@@ -1,7 +1,7 @@
 const Components = require("#Components");
 
 const Index = require("#Index");
- 
+
 const getComponents = Index.express.Router();
 
 getComponents.post("/admin/:component_name", Index.express.json(), async (req, res) => {

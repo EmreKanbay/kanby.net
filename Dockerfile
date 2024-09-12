@@ -20,6 +20,11 @@ ENV PG_PASSWORD ""
 ENV PG_DATABASE ""
 ENV PG_HOST ""
 
+# there is no trailing slash on CDN domain. do NOT do that -> http://abc.com/
+# Instead do that -> http://abc.com
+# All required files must be exist in cdn  
+ENV CDN_DOMAIN "" 
+
 
 WORKDIR /usr/src/app
 

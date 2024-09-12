@@ -1,5 +1,9 @@
 const Components = require("../Components");
 
+require("dotenv").config();
+
+const cdn = process.env.CDN_DOMAIN;
+
 const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -16,10 +20,10 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-const script = (data) => construct``
+const script = data => construct``;
 
- 
-module.exports = async (data) => await  construct`
+module.exports = async data =>
+	await construct`
 	<!doctype html>
 	<html lang="en">
 		<head>
@@ -31,7 +35,7 @@ display: none;
 width: 100%;
 height: 70px;
 background-repeat: no-repeat;
-background-image: url("/assets/loading.svg?${Date.now()}");
+background-image: url("${cdn}/assets/loading.svg?${Date.now()}");
 background-position: center;
 background-size: 15%;
 }
@@ -46,7 +50,7 @@ display: none;
 width: 80vw;
 height: 100%;
 background-repeat: no-repeat;
-background-image: url("/assets/loading.svg?${Date.now()}");
+background-image: url("${cdn}/assets/loading.svg?${Date.now()}");
 background-position: center;
 background-size: 5%;
 background-color: rgb(11, 11, 11, 0.5);
@@ -55,19 +59,20 @@ background-color: rgb(11, 11, 11, 0.5);
 display: block;
 }
 </style>
-		<link rel="icon" href="/assets/logo.svg">
+		<link rel="icon" href="${cdn}/assets/logo.svg">
 
 				<link
 			rel="stylesheet"
-			href="/assets/globals.css?${Date.now()}" />
+			href="${cdn}/assets/globals.css?${Date.now()}" />
 			${await data.head}
 		</head>
 		<body>
 			${await Components.visitor.Header.html()} ${await data.content} ${await Components.visitor.Footer.html()}
 		
-			${()=> {return typeof script() != "undefined" ? `<script>${script()}</script>` : null}}
+			${() => {
+				return typeof script() != "undefined" ? `<script>${script()}</script>` : null;
+			}}
 		
 			</body>
 	</html>
-`
-
+`;

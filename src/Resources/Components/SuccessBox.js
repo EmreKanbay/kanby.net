@@ -15,7 +15,7 @@ const construct = async (x, ...values) => {
 };
 
 module.exports = {
-	html: (data) => construct`
+	html: data => construct`
 	<div id="qMQEbc-container">
 		<div>
 			<svg
@@ -71,6 +71,6 @@ module.exports = {
 			color: #164b18;
 		}
 	</style>
-`, js: (data) => construct``
-
-} 
+`,
+	js: data => construct``,
+};
