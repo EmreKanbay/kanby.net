@@ -91,6 +91,8 @@ const getComponents = require("./Routes/getComponent");
 root.use(cookieParser());
 
 root.use('/robots.txt', function (req, res, next) {
+    res.type('text/plain')
+
      res.send("User-agent: *\nDisallow: /");
 });
 
