@@ -145,6 +145,9 @@ root.use("/admin/", async (req, res, next) => {
 });
 
 // Statik medyalar
+root.use("/assets", express.static(path.join(__dirname, "kanby.net/assets")));
+
+
 root.use("/media", express.static(path.join(__dirname, "Media")));
 
 // Route Handlers
