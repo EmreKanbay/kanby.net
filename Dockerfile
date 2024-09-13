@@ -6,10 +6,10 @@
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
-# ARG NODE_VERSION=18.0.0
+ARG NODE_VERSION=18.0.0
 
-# FROM node:${NODE_VERSION}-alpine
-FROM node:20-bullseye
+FROM node:${NODE_VERSION}-alpine
+
 # Use production node environment by default.
 ENV NODE_ENV production
 
