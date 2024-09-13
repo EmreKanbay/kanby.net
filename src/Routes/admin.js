@@ -190,11 +190,19 @@ sub_admin
 		res.send(await Pages.AddMedia.html());
 	})
 	.put(Index.upload.single("media"), async (req, res, next) => {
-		const text = "INSERT  INTO media VALUES (DEFAULT, $1, $2)";
-		const values = [`/media/${req.file.filename}`, req.body.alt_text];
 
-		await Index.pool.query(text, values);
-		res.send();
+		try{
+
+			const text = "INSERT  INTO media VALUES (DEFAULT, $1, $2)";
+			const values = [`/media/${req.file.filename}`, req.body.alt_text];
+	
+			await Index.pool.query(text, values);
+			res.send();
+		}catch(e){
+			console.log(e)
+			res.status(500).send()
+		}
+
 	});
 
 admin.use("/:id", async (req, res) => {
