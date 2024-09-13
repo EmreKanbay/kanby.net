@@ -14,6 +14,7 @@ FROM node:${NODE_VERSION}-alpine
 ENV NODE_ENV production
 
 
+
 ENV PG_PORT ""
 ENV PG_USER ""	
 ENV PG_PASSWORD ""	
