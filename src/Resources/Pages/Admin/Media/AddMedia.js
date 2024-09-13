@@ -73,7 +73,7 @@ document.querySelector("#media-form").addEventListener("submit", async (e)=> {
  
 		document.querySelector(".loading-block").classList.add("active")
 
- 	const res = await fetch(".", {
+ 	const res = await fetch("..", {
 
 	method:"PUT",
 	body: formData,

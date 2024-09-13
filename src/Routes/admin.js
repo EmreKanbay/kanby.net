@@ -87,7 +87,7 @@ sub_admin
 
  <div onclick="window.location.href = './${t.id}'" data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" data-raw-content="${he.encode(t.raw_content)}"  class="all-blogs-item">
 
-			<img src="${cdn}/${t.thumbnail_url}" />
+			<img  src="${t.thumbnail_url}" />
 
 			<span>${t.title}</span>
 			</div>
@@ -181,29 +181,27 @@ sub_admin.route("/media/")
 
  })
 
+ .put(Index.upload.single("media"), async (req, res, next) => {
+
+	try{
+
+		const text = "INSERT  INTO media VALUES (DEFAULT, $1, $2)";
+		const values = [`${cdn}/media/${req.file.filename}`, req.body.alt_text];
+ 
+		await Index.pool.query(text, values);
+		res.send();
+	}catch(e){
+		console.log(e)
+		res.status(500).send()
+	}
+
+});
 
 
-sub_admin
-	.route("/media/add/")
-
-	.get(async (req, res, next) => {
+sub_admin.get("/media/add/", async (req, res, next) => {
 		res.send(await Pages.AddMedia.html());
 	})
-	.put(Index.upload.single("media"), async (req, res, next) => {
 
-		try{
-
-			const text = "INSERT  INTO media VALUES (DEFAULT, $1, $2)";
-			const values = [`/media/${req.file.filename}`, req.body.alt_text];
- 	
-			await Index.pool.query(text, values);
-			res.send();
-		}catch(e){
-			console.log(e)
-			res.status(500).send()
-		}
-
-	});
 
 admin.use("/:id", async (req, res) => {
 	res.send(await Pages.NotFound.html());

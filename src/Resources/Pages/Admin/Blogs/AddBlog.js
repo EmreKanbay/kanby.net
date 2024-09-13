@@ -140,7 +140,7 @@ module.exports = {
 		formData.append("blog_description", document.querySelector("#blog-description").value)
 		formData.append("blog_cover_image", document.querySelector("#blog-cover-image").value)
 
-		const response = await fetch(".", {
+		const response = await fetch("..", {
 		method:"PUT",
 		body: formData,
 		

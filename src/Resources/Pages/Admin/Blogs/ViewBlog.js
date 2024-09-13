@@ -116,7 +116,7 @@ module.exports = {
 
  <div data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" data-raw-content="${he.encode(t.raw_content)}" class="markdown-body">
 
-<img class="thumbnail" src="${cdn}/${t.thumbnail_url}?${Date.now()}" />
+<img class="thumbnail" src="${t.thumbnail_url}?${Date.now()}" />
 <h1  class="page-title">${t.title}</h1>
 
 	${t.rendered_content}
