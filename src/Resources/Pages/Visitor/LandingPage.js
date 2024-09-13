@@ -1,4 +1,7 @@
 const Layouts = require("#Layouts");
+const Index = require("#Index");
+const he = require("he");
+
 
 const construct = async (x, ...values) => {
 	var rendered = "";

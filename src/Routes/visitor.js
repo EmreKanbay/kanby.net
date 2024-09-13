@@ -10,7 +10,7 @@ visitor.get("/", async (req, res, next) => {
 	// res.send(await Pages.LandingPage.html({}))
 });
 
-visitor.get("/:lang", async (req, res, next) => {
+visitor.get("/:lang/", async (req, res, next) => {
 
 
 	const query = await Index.pool.query("SELECT * FROM variables")
@@ -25,6 +25,20 @@ visitor.get("/:lang", async (req, res, next) => {
 	}
 });
 
+
+visitor.get("/:lang/blogs/", async (req, res, next) => {
+
+	res.send(await Pages.Blogs.html({language: req.params.lang}));
+
+
+})
+
+visitor.get("/:lang/blogs/:id", async (req, res, next) => {
+
+	res.send(await Pages.SingleBlog.html({language: req.params.lang, blog_id: req.params.id}));
+
+
+})
 
 visitor.use("/:lang", async (req, res, next) => {
 
