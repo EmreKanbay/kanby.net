@@ -92,7 +92,7 @@ document.querySelector("#media-form").addEventListener("submit", async (e)=> {
 	else{
 	
 	 document.querySelector("#qMQEbc-container").classList.add("active")
-		 document.querySelector("#qMQEbc-message").innerHTML = await response.text()
+		 document.querySelector("#qMQEbc-message").innerHTML = await res.text()
 }
 }	)
 
