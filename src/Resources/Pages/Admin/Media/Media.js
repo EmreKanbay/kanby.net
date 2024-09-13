@@ -1,6 +1,11 @@
 const Layouts = require("#Layouts");
 const Index = require("#Index");
 
+require("dotenv").config();
+
+const cdn = process.env.CDN_DOMAIN;
+
+
 const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -36,7 +41,7 @@ module.exports = {
 				return `
 	
 		<div data-media-id="${t.id}" data-media-full-url="${t.full_url}" data-media-alt-text="${t.alt_text}"  class="media-element">
-		<img src="${t.full_url}?${Date.now()}" alt="${t.alt_text}" />
+		<img src="${cdn}${t.full_url}?${Date.now()}" alt="${t.alt_text}" />
 
 		<span>${t.full_url}</span>
 		<button class="media-delete">delete</button>

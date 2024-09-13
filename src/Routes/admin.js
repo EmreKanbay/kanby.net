@@ -4,6 +4,10 @@ const Components = require("#Components");
 const path = require("path");
 var he = require("he");
 
+require("dotenv").config();
+
+const cdn = process.env.CDN_DOMAIN;
+
 const admin = Index.express.Router();
 
 const sub_admin = Index.express.Router();
@@ -83,7 +87,7 @@ sub_admin
 
  <div onclick="window.location.href = './${t.id}'" data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" data-raw-content="${he.encode(t.raw_content)}"  class="all-blogs-item">
 
-			<img src="${t.thumbnail_url}" />
+			<img src="${cdn}${t.thumbnail_url}" />
 
 			<span>${t.title}</span>
 			</div>
