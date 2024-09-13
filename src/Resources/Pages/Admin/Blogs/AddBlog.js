@@ -152,7 +152,9 @@ module.exports = {
 
 		if(response.ok){
 
-		window.location.href = "./"
+		console.log(response)
+
+		window.location.href = ".."
 		
 		}
 		else{
