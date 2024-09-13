@@ -125,12 +125,9 @@ document.querySelectorAll(".media-delete").forEach(t => {t.addEventListener("cli
 	
 	</script>
 	
-	${() => {
-		return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
-	}}
+
 
 
   `,
-		}),
-	js: async data => await construct``,
+		})
 };

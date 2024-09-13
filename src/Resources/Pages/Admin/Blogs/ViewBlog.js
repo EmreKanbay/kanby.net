@@ -276,13 +276,8 @@ document.querySelector("#blog-top-bar").style.display = "none"
  
   </script>
 
-	
-	${() => {
-		return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
-	}}
 
 
 	`,
-		}),
-	js: async data => await construct``,
+		})
 };

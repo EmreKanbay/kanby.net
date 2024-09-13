@@ -69,10 +69,7 @@ display: block;
 		<body>
 			${await Components.visitor.Header.html()} ${await data.content} ${await Components.visitor.Footer.html()}
 		
-			${() => {
-				return typeof script() != "undefined" ? `<script>${script()}</script>` : null;
-			}}
-		
+
 			</body>
 	</html>
 `;

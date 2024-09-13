@@ -125,13 +125,9 @@ module.exports = {
 	document.querySelector(".navbar-blogs").classList.add("is-active")
 	</script>
 
-	
-	${() => {
-		return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
-	}}
+
 
 
   `,
-		}),
-	js: async data => await construct``,
+		})
 };

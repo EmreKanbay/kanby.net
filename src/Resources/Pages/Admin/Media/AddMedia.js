@@ -119,12 +119,9 @@ document.querySelector("#media-upload").addEventListener("change", (e) => {
 	document.querySelector(".navbar-media").classList.add("is-active")
 	</script>
 	
-	${() => {
-		return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
-	}}
+
 
 
   `,
-		}),
-	js: async data => await construct``,
+		})
 };

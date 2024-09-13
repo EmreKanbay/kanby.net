@@ -99,14 +99,7 @@ module.exports = {
 	}
 </style>
 
-${() => {
-	return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
-}}
-
-
-`,
-		}),
-	js: data => construct`
+<script>
 
 document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 		e.preventDefault();
@@ -137,6 +130,9 @@ document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 			document.querySelector(".ge0yN5-login-error").innerHTML = \` <h1>Network Error</h1>\`;
 		}
 	});
-	
-	`,
+
+</script>
+
+`,
+		})
 };

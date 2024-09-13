@@ -13,7 +13,7 @@ const admin = Index.express.Router();
 const sub_admin = Index.express.Router();
 
 admin.get("/login/", async (req, res) => {
-	res.send(await Pages.LoginPage.html({ script: await Pages.LoginPage.js() }));
+	res.send(await Pages.LoginPage.html());
 });
 
 admin.post("/login/", Index.upload.none(), async (req, res) => {
@@ -202,9 +202,12 @@ sub_admin.get("/media/add/", async (req, res, next) => {
 		res.send(await Pages.AddMedia.html());
 	})
 
-
+	admin.get("/:id/bll", async (req, res) => {
+		res.send(await Components.admin.AdminBlogs.html());
+	});
 admin.use("/:id", async (req, res) => {
 	res.send(await Pages.NotFound.html());
 });
+
 
 module.exports = admin;

@@ -27,11 +27,8 @@ module.exports = {
 			content: await construct`
 
 	<h1 style="text-align:center"> This page is not found</h1>
-${() => {
-	return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
-}}
+
 
 	   `,
-		}),
-	js: data => construct``,
+		})
 };

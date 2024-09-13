@@ -16,8 +16,30 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
+
+
+const text = {
+
+Turkish: {
+
+	key1:"merhaba"
+
+},
+
+English: {
+
+	key1:"hello"
+
+
+}
+
+
+
+}
+
+
 module.exports = {
-	html: async data =>
+	html: async (data,script = this) =>
 		await Layouts.VisitorLayout({
 			head: await construct`
  
@@ -30,12 +52,12 @@ module.exports = {
 				<h2 style="text-align:center"><a href="/Turkish/blogs">Blogs</a><h2>
 				<h2 style="text-align:center" ><a>Contents</a><h2>
 				<h2 style="text-align:center" ><a>News</a><h2>
+
+
+
  			
-					${() => {
-						return typeof data?.script != "undefined" ? `<script>${data?.script}</script>` : "";
-					}}
+			 
 
       `,
-		}),
-	js: data => construct`alert(12)`,
+		})
 };
