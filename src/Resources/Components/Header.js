@@ -17,97 +17,133 @@ const construct = async (x, ...values) => {
 
 	return rendered;
 };
+
+
+const text = {
+	Turkish: {
+		key1:"Ücretsiz Araçlar",
+		key1_1:"Tavsiye Yönetim Aracı",
+		key1_2:"Not Yönetim Aracı",
+		key1_3:"Finans Yönetim Aracı",
+		key1_4:"İnsan İlişkileri Yönetim Aracı",
+		key2:"Sosyal Medya",
+		key2_1:"Github",
+		key2_2:"Twitter / X",
+		key2_3:"Linkedin",
+		key2_4:"Codepen",
+		key2_5:"Tiktok",
+		key2_6:"Instagram",
+		key3:"Bağlantılar",
+		key3_1:"Bloglar",
+		key3_2:"Haberler",
+		key3_3:"İçerikler",
+		key3_4:"Medya Galerisi",
+ 	},
+	English: {
+		key1:"Free Tools",
+		key1_1:"Advice Manager",
+		key1_2:"Cheat Sheet Manager",
+		key1_3:"Finance Manager",
+		key1_4:"Personal Relations Manager",
+		key2:"Social Media",
+		key2_1:"Github",
+		key2_2:"Twitter / X",
+		key2_3:"Linkedin",
+		key2_4:"Codepen",
+		key2_5:"Tiktok",
+		key2_6:"Instagram",
+		key3:"Links",
+		key3_1:"Blogs",
+		key3_2:"News",
+		key3_3:"Contents",
+		key3_4:"Media Gallery",
+  	}
+ 	}
+
+
+
+
 module.exports = {
 	html: data => construct`
+	
 	<header class="liwlCh-header-container">
-		<input
-			class="liwlCh-header-menu-toggle"
-			type="checkbox"
-			name=""
-			id="" />
+    <input
+        class="liwlCh-header-menu-toggle"
+        type="checkbox"
+        name=""
+        id="" />
 
-		<nav class="liwlCh-header-menu-navigation">
-			<div class="liwlCh-header-menu-navigation-heading">
-				<a href="">Main Menu</a>
-				<ul>
-					<li><a href="">Introduction</a></li>
-					<li><a href="">Features</a></li>
-					<li><a href="">Contact Us</a></li>
-				</ul>
-			</div>
+        <nav class="liwlCh-header-menu-navigation">
 
-			<div class="liwlCh-header-menu-navigation-heading">
-				<a href="">Free Tools</a>
-				<ul>
-					<li><a href="">Tool 1</a></li>
-					<li><a href="">Tool 2</a></li>
-					<li><a href="">Tool 3</a></li>
-				</ul>
-			</div>
 
-			<div class="liwlCh-header-menu-navigation-heading">
-				<a href="">Resources</a>
-				<ul>
-					<li><a href="">Blog</a></li>
-					<li><a href="">Case Studies</a></li>
-					<li><a href="">White Papers</a></li>
-				</ul>
-			</div>
+            <div class="liwlCh-header-menu-navigation-heading">
+                <a href="">${text[data.language].key1}</a>
+                <ul>
+                    <li><a href="">${text[data.language].key1_1}</a></li>
+                    <li><a href="">${text[data.language].key1_2}</a></li>
+                    <li><a href="">${text[data.language].key1_3}</a></li>
+                    <li><a href="">${text[data.language].key1_4}</a></li>
+                </ul>
+            </div>
 
-			<div class="liwlCh-header-menu-navigation-heading">
-				<a href="">Support</a>
-				<ul>
-					<li><a href="">FAQ</a></li>
-					<li><a href="">Help Center</a></li>
-					<li><a href="">Contact Support</a></li>
-				</ul>
-			</div>
 
-			<div class="liwlCh-header-menu-navigation-heading">
-				<a href="">About Us</a>
-				<ul>
-					<li><a href="">Our Story</a></li>
-					<li><a href="">Team</a></li>
-					<li><a href="">Careers</a></li>
-				</ul>
-			</div>
+            <div class="liwlCh-header-menu-navigation-heading">
+                <a href="">${text[data.language].key2}</a>
+                <ul>
+                    <li><a href="">${text[data.language].key2_1}</a></li>
+                    <li><a href="">${text[data.language].key2_2}</a></li>
+                    <li><a href="">${text[data.language].key2_3}</a></li>
+                    <li><a href="">${text[data.language].key2_4}</a></li>
+                    <li><a href="">${text[data.language].key2_5}</a></li>
+                    <li><a href="">${text[data.language].key2_6}</a></li>
+                </ul>
+            </div>
 
-			<div class="liwlCh-header-menu-navigation-heading">
-				<a href="">Legal</a>
-				<ul>
-					<li><a href="">Privacy Policy</a></li>
-					<li><a href="">Terms of Service</a></li>
-					<li><a href="">Cookie Policy</a></li>
-				</ul>
-			</div>
-		</nav>
 
-		<a
-			class="liwlCh-header-menu-logo"
-			href="https://kanby.net"></a>
+			            <div class="liwlCh-header-menu-navigation-heading">
+                <a href="">${text[data.language].key3}</a>
+                <ul>
+                    <li><a href="">${text[data.language].key3_1}</a></li>
+                    <li><a href="">${text[data.language].key3_2}</a></li>
+                    <li><a href="">${text[data.language].key3_3}</a></li>
+                    <li><a href="">${text[data.language].key3_4}</a></li>
+                </ul>
+            </div>
+            
+            
+       
+    
+        
+    </nav>
 
-		<div
-			tabindex="0"
-			class="liwlCh-header-menu-search">
-			<div class="liwlCh-header-menu-search-top-bar">
-				<form class="liwlCh-header-menu-search-top-bar-form">
-					<span>
-						<input
-							type="text"
-							placeholder="I am looking for..." />
-						<input
-							type="submit"
-							value="" />
-					</span>
-					<input
-						onclick="cancelSearchTab(this)"
-						type="button"
-						value="" />
-					<cite>Not Available</cite>
-				</form>
-			</div>
-		</div>
-	</header>
+    <a
+        class="liwlCh-header-menu-logo"
+        href="https://kanby.net"></a>
+
+    <div
+        tabindex="0"
+        class="liwlCh-header-menu-search">
+        <div class="liwlCh-header-menu-search-top-bar">
+            <form class="liwlCh-header-menu-search-top-bar-form">
+                <span>
+                    <input
+                        type="text"
+                        placeholder="I am looking for..." />
+                    <input
+                        type="submit"
+                        value="" />
+                </span>
+                <input
+                    onclick="cancelSearchTab(this)"
+                    type="button"
+                    value="" />
+                <cite>Not Available</cite>
+            </form>
+        </div>
+    </div>
+</header>
+
+
 
 	<script>
 		const cancelSearchTab = e => {

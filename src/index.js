@@ -6,7 +6,6 @@ require("dotenv").config();
 const sha256 = require("js-sha256");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const notFound = require("./Resources/Pages/NotFound");
 const crypto = require("crypto");
 
 //Initalize libraries
@@ -156,11 +155,13 @@ root.use("/admin", admin);
 
 root.use("/get-component", getComponents);
 
+
+
+
 root.use("/", visitor);
 
-root.use("/", async (req, res) => {
-	res.send(await notFound.html());
-});
+
+
 
 // start server
 root.listen(3000, () => {

@@ -17,349 +17,284 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
+const text = {
+	Turkish: {
+		key1:"Sosyal Medya",
+		key2:"Bağlantılar",
+        key2_1:"Bloglar",
+        key2_2:"Haberler",
+        key2_3:"İçerikler",
+        key2_4:"Medya Galerisi",
+        key3:"Hizmetler",
+        key3_1:"Özel İnternet Uygulaması",
+        key3_2:"IOS Uygulaması",
+        key3_3:"Android Uygulaması",
+        key3_4:"Masaüstü Uygulaması",
+        key4:"Ürünler",
+        key4_1:"Restoran Yönetimi",
+        key4_2:"İçerik Yönetim Sistemi",
+        key4_3:"Kurumsal Kaynak Yönetimi",
+        key4_4:"Server Kurulumu",
+        key4_5:"Muhasebe Otomasyonu",
+        key5:"Ücretsiz Araçlar",
+        key5_1:"Tavsiye Yönetim Aracı",
+        key5_2:"Not Yönetim Aracı",
+        key5_3:"Finans Yönetim Aracı",
+        key5_4:"İnsan İlişkileri Yönetim Aracı",
+ 	},
+	English: {
+		key1:"Social Media",
+		key2:"Links",
+        key2_1:"Blogs",
+        key2_2:"News",
+        key2_3:"Contents",
+        key2_4:"Media Gallery",
+        key3:"Services",
+        key3_1:"Custom Web App",
+        key3_2:"IOS App",
+        key3_3:"Android App",
+        key3_4:"Desktop App",
+        key4:"Products",
+        key4_1:"Restaurant Management",
+        key4_2:"Content Management System",
+        key4_3:"Enterprise resource planning",
+        key4_4:"Server Setup",
+        key4_5:"Accountant Automation",
+        key5:"Free Tools",
+        key5_1:"Advice Manager",
+        key5_2:"Cheat Sheet Manager",
+        key5_3:"Finance Manager",
+        key5_4:"Personal Relations Manager",
+ 	}
+ 	}
+
+
 module.exports = {
 	html: data => construct`
-	<footer class="K0e6gd-container">
-		<div class="K0e6gd-sub-container">
-			<div class="K0e6gd-heading">
-				<p>Social Media</p>
-				<ul>
-					<li>
-						<img
-							src="${cdn}/assets/github.svg?${Date.now()}"
-							alt="" />
-						<a
-							target="_blank"
-							href="https://github.com/EmreKanbay">
-							Github
-						</a>
-					</li>
-					<li>
-						<img
-							src="${cdn}/assets/twitter.svg?${Date.now()}"
-							alt="" />
-						<a
-							target="_blank"
-							href="https://x.com/_EmreKanbay_">
-							Twitter / X
-						</a>
-					</li>
-					<li>
-						<img
-							src="${cdn}/assets/linkedin.svg?${Date.now()}"
-							alt="" />
-						<a
-							target="_blank"
-							href="https://www.linkedin.com/in/EmreKanbay/">
-							LinkedIn
-						</a>
-					</li>
-					<li>
-						<img
-							src="${cdn}/assets/codepen.svg?${Date.now()}"
-							alt="" />
-						<a
-							target="_blank"
-							href="https://codepen.io/Emre-Kanbay">
-							CodePen
-						</a>
-					</li>
-					<li>
-						<img
-							src="${cdn}/assets/tiktok.svg?${Date.now()}"
-							alt="" />
-						<a
-							target="_blank"
-							href="https://www.tiktok.com/@Emre_Kanbay">
-							Tiktok
-						</a>
-					</li>
-					<li>
-						<img
-							src="${cdn}/assets/Instagram.svg?${Date.now()}"
-							alt="" />
-						<a
-							target="_blank"
-							href="https://www.instagram.com/_emrekanbay_">
-							Instagram
-						</a>
-					</li>
-				</ul>
-			</div>
 
-			<div class="K0e6gd-heading">
-				<p>About Us</p>
-				<ul>
-					<li>
-						<a
-							target="_blank"
-							href="/company">
-							Our Company
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/team">
-							Meet the Team
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/careers">
-							Careers
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/press">
-							Press
-						</a>
-					</li>
-				</ul>
-			</div>
 
-			<div class="K0e6gd-heading">
-				<p>Services</p>
-				<ul>
-					<li>
-						<a
-							target="_blank"
-							href="/consulting">
-							Consulting
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/support">
-							Support
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/training">
-							Training
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/development">
-							Development
-						</a>
-					</li>
-				</ul>
-			</div>
+    <footer class="K0e6gd-container">
+    <div class="K0e6gd-sub-container">
+        <div class="K0e6gd-heading">
+            <p>${text[data.language].key1}</p>
+            <ul>
+                <li>
+                    <img
+                        src="${cdn}/assets/github.svg?${Date.now()}"
+                        alt="" />
+                    <a
+                        target="_blank"
+                        href="https://github.com/EmreKanbay">
+                        Github
+                    </a>
+                </li>
+                <li>
+                    <img
+                        src="${cdn}/assets/twitter.svg?${Date.now()}"
+                        alt="" />
+                    <a
+                        target="_blank"
+                        href="https://x.com/_EmreKanbay_">
+                        Twitter / X
+                    </a>
+                </li>
+                <li>
+                    <img
+                        src="${cdn}/assets/linkedin.svg?${Date.now()}"
+                        alt="" />
+                    <a
+                        target="_blank"
+                        href="https://www.linkedin.com/in/EmreKanbay/">
+                        LinkedIn
+                    </a>
+                </li>
+                <li>
+                    <img
+                        src="${cdn}/assets/codepen.svg?${Date.now()}"
+                        alt="" />
+                    <a
+                        target="_blank"
+                        href="https://codepen.io/Emre-Kanbay">
+                        CodePen
+                    </a>
+                </li>
+                <li>
+                    <img
+                        src="${cdn}/assets/tiktok.svg?${Date.now()}"
+                        alt="" />
+                    <a
+                        target="_blank"
+                        href="https://www.tiktok.com/@Emre_Kanbay">
+                        Tiktok
+                    </a>
+                </li>
+                <li>
+                    <img
+                        src="${cdn}/assets/Instagram.svg?${Date.now()}"
+                        alt="" />
+                    <a
+                        target="_blank"
+                        href="https://www.instagram.com/_emrekanbay_">
+                        Instagram
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-			<div class="K0e6gd-heading">
-				<p>Products</p>
-				<ul>
-					<li>
-						<a
-							target="_blank"
-							href="/product1">
-							Product 1
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/product2">
-							Product 2
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/product3">
-							Product 3
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/product4">
-							Product 4
-						</a>
-					</li>
-				</ul>
-			</div>
+        <div class="K0e6gd-heading">
+            <p>${text[data.language].key2}</p>
+            <ul>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/company">
+                        ${text[data.language].key2_1}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/team">
+                        ${text[data.language].key2_2}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/careers">
+                        ${text[data.language].key2_3}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/press">
+                        ${text[data.language].key2_4}
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-			<div class="K0e6gd-heading">
-				<p>Support</p>
-				<ul>
-					<li>
-						<a
-							target="_blank"
-							href="/faq">
-							FAQ
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/contact">
-							Contact Us
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/return-policy">
-							Return Policy
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/shipping-info">
-							Shipping Information
-						</a>
-					</li>
-				</ul>
-			</div>
 
-			<div class="K0e6gd-heading">
-				<p>Legal</p>
-				<ul>
-					<li>
-						<a
-							target="_blank"
-							href="/terms">
-							Terms of Service
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/privacy">
-							Privacy Policy
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/cookies">
-							Cookie Policy
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/disclaimer">
-							Disclaimer
-						</a>
-					</li>
-				</ul>
-			</div>
+        <div class="K0e6gd-heading">
+            <p>${text[data.language].key3}</p>
+            <ul>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/company">
+                        ${text[data.language].key3_1}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/team">
+                        ${text[data.language].key3_2}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/careers">
+                        ${text[data.language].key3_3}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/press">
+                        ${text[data.language].key3_4}
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-			<div class="K0e6gd-heading">
-				<p>Newsletter</p>
-				<ul>
-					<li>
-						<a
-							target="_blank"
-							href="/subscribe">
-							Subscribe
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/archive">
-							Newsletter Archive
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/preferences">
-							Preferences
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/unsubscribe">
-							Unsubscribe
-						</a>
-					</li>
-				</ul>
-			</div>
 
-			<div class="K0e6gd-heading">
-				<p>Partners</p>
-				<ul>
-					<li>
-						<a
-							target="_blank"
-							href="/partner1">
-							Partner 1
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/partner2">
-							Partner 2
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/partner3">
-							Partner 3
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/partner4">
-							Partner 4
-						</a>
-					</li>
-				</ul>
-			</div>
 
-			<div class="K0e6gd-heading">
-				<p>Resources</p>
-				<ul>
-					<li>
-						<a
-							target="_blank"
-							href="/blog">
-							Blog
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/guides">
-							Guides
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/case-studies">
-							Case Studies
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							href="/whitepapers">
-							Whitepapers
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</footer>
+        <div class="K0e6gd-heading">
+            <p>${text[data.language].key4}</p>
+            <ul>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/company">
+                        ${text[data.language].key4_1}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/team">
+                        ${text[data.language].key4_2}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/careers">
+                        ${text[data.language].key4_3}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/press">
+                        ${text[data.language].key4_4}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/press">
+                        ${text[data.language].key4_5}
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+
+                <div class="K0e6gd-heading">
+            <p>${text[data.language].key5}</p>
+            <ul>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/company">
+                        ${text[data.language].key5_1}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/team">
+                        ${text[data.language].key5_2}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/careers">
+                        ${text[data.language].key5_3}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        target="_blank"
+                        href="/press">
+                        ${text[data.language].key5_4}
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+
+
+
+    </div>
+</footer>
 
 	<style>
 		.K0e6gd-container {

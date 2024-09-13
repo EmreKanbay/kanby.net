@@ -1,5 +1,10 @@
 const Layouts = require("#Layouts");
 
+
+require("dotenv").config();
+const cdn = process.env.CDN_DOMAIN;
+
+
 const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -16,17 +21,37 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-// ${(()=> String(Components.visitor.ErrorBox("")))()}
 
+const text = {
+	Turkish: {
+		key1:"Sayfa Bulunamadı",
+
+	},
+	English: {
+		key1:"Page Not Found",
+
+	}
+ 	}
+
+	
 module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
+			language: data.language,
+
 			head: await construct`
-		<title>404</title>
+		<title>404 | Not Found</title>
 	`,
 			content: await construct`
 
-	<h1 style="text-align:center"> This page is not found</h1>
+
+			<main style="width:100%; display:flex;align-items:center;flex-direction:column;margin:2rem 0rem">
+			
+			<img style="width:60%" src="${cdn}/assets/notfound.svg" alt="not-found"/>
+			
+			<h1 style="text-align:center">${text[data.language].key1}</h1>
+			</main>
+
 
 
 	   `,

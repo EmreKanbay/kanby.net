@@ -67,7 +67,11 @@ display: block;
 			${await data.head}
 		</head>
 		<body>
-			${await Components.visitor.Header.html()} ${await data.content} ${await Components.visitor.Footer.html()}
+			${await Components.visitor.Header.html({language: data.language})} 
+			
+			${await data.content} 
+			
+			${await Components.visitor.Footer.html({language: data.language})}
 		
 
 			</body>

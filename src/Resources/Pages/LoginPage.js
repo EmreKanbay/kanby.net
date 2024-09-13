@@ -21,6 +21,8 @@ const construct = async (x, ...values) => {
 module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
+			language: data.language,
+
 			head: await construct`
  
 	<title>Login</title>
