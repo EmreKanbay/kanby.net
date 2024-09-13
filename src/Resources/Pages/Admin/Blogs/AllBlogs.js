@@ -100,7 +100,7 @@ module.exports = {
 					
 		document.querySelector(".loading-block").classList.add("active")
 					
-					const res = await fetch(window.location.href, {
+					const res = await fetch(".", {
 					method:"POST",
 					body: formData
 					

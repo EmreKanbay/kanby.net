@@ -73,7 +73,7 @@ document.querySelector("#media-form").addEventListener("submit", async (e)=> {
 
 		document.querySelector(".loading-block").classList.add("active")
 
- 	const res = await fetch("./add", {
+ 	const res = await fetch(".", {
 
 	method:"PUT",
 	body: formData,
@@ -86,7 +86,7 @@ document.querySelector("#media-form").addEventListener("submit", async (e)=> {
 
 
 	if(res.ok) {
-                window.location.href = "../"
+                window.location.href = ".."
 	
 	}
 	else{

@@ -213,7 +213,7 @@ module.exports = {
 		formData.append("blog_id", document.querySelector("#edit-blog-form").getAttribute("data-blog-id"))
 	
 
-		const res2 = await fetch(window.location.href, {
+		const res2 = await fetch(".", {
 		method:"PATCH",
 		body:formData
 
@@ -253,7 +253,7 @@ document.querySelector("#blog-top-bar").style.display = "none"
 
 		document.querySelector(".loading-block").classList.add("active")
 
-		const res = await fetch(window.location.href, {
+		const res = await fetch(".", {
 		method:"DELETE",
 		body: formData
 		})

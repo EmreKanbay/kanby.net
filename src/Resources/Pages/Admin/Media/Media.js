@@ -98,7 +98,7 @@ document.querySelectorAll(".media-delete").forEach(t => {t.addEventListener("cli
  
 		document.querySelector(".loading-block").classList.add("active")
 
- 	const res = await fetch("./", {
+ 	const res = await fetch(".", {
 
 	method:"DELETE",
 	body: formData,
