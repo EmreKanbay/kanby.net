@@ -70,7 +70,7 @@ document.querySelector("#media-form").addEventListener("submit", async (e)=> {
  
 	formData.append("media", document.querySelector("#media-upload").files[0], document.querySelector("#media-name").value + "." + document.querySelector("#media-upload").files[0].name.split(".")[document.querySelector("#media-upload").files[0].name.split(".").length - 1])
 	formData.append("alt_text", document.querySelector("#alt_text").value)
-
+ 
 		document.querySelector(".loading-block").classList.add("active")
 
  	const res = await fetch(".", {

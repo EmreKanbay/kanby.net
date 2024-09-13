@@ -194,7 +194,8 @@ sub_admin
 		try{
 
 			const text = "INSERT  INTO media VALUES (DEFAULT, $1, $2)";
-			const values = [`/media/${req.file.filename}`, req.body.alt_text];
+			// const values = [`/media/${req.file.filename}`, req.body.alt_text];
+			const values = [`media/wr-e429.svg`, req.body.alt_text];
 	
 			await Index.pool.query(text, values);
 			res.send();
