@@ -163,9 +163,21 @@ sub_admin
 		res.send();
 	});
 
-sub_admin.get("/media/", async (req, res, next) => {
+sub_admin.route("/media/")
+.get(async (req, res, next) => {
 	res.send(await Pages.Media.html());
-});
+})
+.delete(Index.upload.none(), async (req, res, next) => {
+
+	const text = "DELETE FROM media WHERE id = $1";
+	const values = [req.body.id];
+
+	await Index.pool.query(text, values);
+	res.send();
+
+ })
+
+
 
 sub_admin
 	.route("/media/add/")

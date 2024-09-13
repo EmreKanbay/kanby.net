@@ -25,19 +25,15 @@ var DB_connected = false;
 (async () => {
 	try {
 		await pool.query("SELECT 1");
-		console.log("works")
 		await pool.query("SELECT * FROM users");
-		console.log("works")
 		await pool.query("SELECT * FROM blogs");
-		console.log("works")
 		await pool.query("SELECT * FROM variables");
 		console.log("DB connected succesfully");
 		DB_connected = true;
 	} catch (e) {
 		DB_connected = false;
 
-		console.log("hata");
-		console.log(e);
+ 		console.log(e);
 	}
 })();
 
@@ -152,10 +148,10 @@ root.use("/admin/", async (req, res, next) => {
 });
 
 // Statik medyalar
-root.use("/assets", express.static(path.join(__dirname, "kanby.net/assets")));
+// root.use("/assets", express.static(path.join(__dirname, "kanby.net/assets")));
 
 
-root.use("/media", express.static(path.join(__dirname, "Media")));
+// root.use("/media", express.static(path.join(__dirname, "Media")));
 
 // Route Handlers
 root.use("/admin", admin);

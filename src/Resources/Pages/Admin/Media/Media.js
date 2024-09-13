@@ -35,10 +35,11 @@ module.exports = {
 			(await Index.pool.query(`SELECT * FROM "media"`)).rows.map(t => {
 				return `
 	
-		<div class="media-element">
+		<div data-media-id="${t.id}" data-media-full-url="${t.full_url}" data-media-alt-text="${t.alt_text}"  class="media-element">
 		<img src="${t.full_url}?${Date.now()}" alt="${t.alt_text}" />
 
 		<span>${t.full_url}</span>
+		<button class="media-delete">delete</button>
 	</div>
 		`;
 			}),
@@ -85,6 +86,38 @@ gap:.5rem;
 		<script>
 	document.querySelectorAll(".nav-menu__item").forEach( (node, index) => { node.classList.remove("is-active")})
 	document.querySelector(".navbar-media").classList.add("is-active")
+
+document.querySelectorAll(".media-delete").forEach(t => {t.addEventListener("click", async (e)=> {
+
+
+	const formData = new FormData();
+ 
+	
+
+	formData.append("id", e.target.parentNode.getAttribute("data-media-id"))
+ 
+		document.querySelector(".loading-block").classList.add("active")
+
+ 	const res = await fetch("./", {
+
+	method:"DELETE",
+	body: formData,
+
+	
+	
+	})
+
+			document.querySelector(".loading-block").classList.remove("active")
+
+			if(res.ok){
+			
+			window.location.href = "."
+			
+			}
+
+
+	})})
+	
 	</script>
 	
 	${() => {
