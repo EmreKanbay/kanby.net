@@ -39,7 +39,7 @@ var DB_connected = false;
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, "./src/Media");
+		cb(null, "./Media");
 	},
 	filename: async function (req, file, cb) {
 		var [main, ext] = file.originalname.split(".");
