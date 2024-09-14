@@ -65,19 +65,20 @@ font-family: sans-serif;
 }
 
 </style>
-		<link rel="icon" href="${cdn}/assets/logo.svg">
-
+ 
 				<link
 			rel="stylesheet"
 			href="${cdn}/assets/globals.css?${Date.now()}" />
+		<link rel="icon" href="${cdn}/assets/new-logo1.svg">
+
 			${await data.head}
 		</head>
 		<body>
-			${await Components.visitor.Header.html({language: data.language})} 
+			${await Components.visitor.Header.html({ language: data.language })} 
 			
 			${await data.content} 
 			
-			${await Components.visitor.Footer.html({language: data.language})}
+			${await Components.visitor.Footer.html({ language: data.language })}
 		
 
 			</body>

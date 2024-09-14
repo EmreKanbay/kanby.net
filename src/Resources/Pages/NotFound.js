@@ -1,9 +1,7 @@
 const Layouts = require("#Layouts");
 
-
 require("dotenv").config();
 const cdn = process.env.CDN_DOMAIN;
-
 
 const construct = async (x, ...values) => {
 	var rendered = "";
@@ -21,19 +19,15 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-
 const text = {
 	Turkish: {
-		key1:"Sayfa Bulunamadı",
-
+		key1: "Sayfa Bulunamadı",
 	},
 	English: {
-		key1:"Page Not Found",
+		key1: "Page Not Found",
+	},
+};
 
-	}
- 	}
-
-	
 module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
@@ -55,5 +49,5 @@ module.exports = {
 
 
 	   `,
-		})
+		}),
 };

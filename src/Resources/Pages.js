@@ -23,5 +23,5 @@ module.exports = {
 	AddMedia,
 	Blogs,
 	SingleBlog,
-	Contact
+	Contact,
 };

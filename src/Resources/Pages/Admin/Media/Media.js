@@ -5,7 +5,6 @@ require("dotenv").config();
 
 const cdn = process.env.CDN_DOMAIN;
 
-
 const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -129,5 +128,5 @@ document.querySelectorAll(".media-delete").forEach(t => {t.addEventListener("cli
 
 
   `,
-		})
+		}),
 };

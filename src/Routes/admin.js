@@ -28,7 +28,7 @@ admin.post("/login/", Index.upload.none(), async (req, res) => {
 			httpOnly: false,
 		});
 		res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: false });
-		res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard/`,  "https://" + req.get("host")));
+		res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard/`, "https://" + req.get("host")));
 	} else {
 		res.statusCode = 404;
 		res.send(await Components.visitor.ErrorBox.html({ message: "login failed" }));
@@ -44,7 +44,7 @@ admin.use("/:id", async (req, res, next) => {
 
 		if (record.rows.length == 1 && req.params.id == record.rows[0].id) {
 			if (req.path == "/")
-				res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard`,  "https://" + req.get("host")));
+				res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard`, "https://" + req.get("host")));
 			else next();
 		} else {
 			res.statusMessage = "Not Authorized";
@@ -167,47 +167,41 @@ sub_admin
 		res.send();
 	});
 
-sub_admin.route("/media/")
-.get(async (req, res, next) => {
-	res.send(await Pages.Media.html());
-})
-.delete(Index.upload.none(), async (req, res, next) => {
+sub_admin
+	.route("/media/")
+	.get(async (req, res, next) => {
+		res.send(await Pages.Media.html());
+	})
+	.delete(Index.upload.none(), async (req, res, next) => {
+		const text = "DELETE FROM media WHERE id = $1";
+		const values = [req.body.id];
 
-	const text = "DELETE FROM media WHERE id = $1";
-	const values = [req.body.id];
-
-	await Index.pool.query(text, values);
-	res.send();
-
- })
-
- .put(Index.upload.single("media"), async (req, res, next) => {
-
-	try{
-
-		const text = "INSERT  INTO media VALUES (DEFAULT, $1, $2)";
-		const values = [`${cdn}/media/${req.file.filename}`, req.body.alt_text];
- 
 		await Index.pool.query(text, values);
 		res.send();
-	}catch(e){
-		console.log(e)
-		res.status(500).send()
-	}
-
-});
-
-
-sub_admin.get("/media/add/", async (req, res, next) => {
-		res.send(await Pages.AddMedia.html());
 	})
 
-	admin.get("/:id/bll", async (req, res) => {
-		res.send(await Components.admin.AdminBlogs.html());
+	.put(Index.upload.single("media"), async (req, res, next) => {
+		try {
+			const text = "INSERT  INTO media VALUES (DEFAULT, $1, $2)";
+			const values = [`${cdn}/media/${req.file.filename}`, req.body.alt_text];
+
+			await Index.pool.query(text, values);
+			res.send();
+		} catch (e) {
+			console.log(e);
+			res.status(500).send();
+		}
 	});
+
+sub_admin.get("/media/add/", async (req, res, next) => {
+	res.send(await Pages.AddMedia.html());
+});
+
+admin.get("/:id/bll", async (req, res) => {
+	res.send(await Components.admin.AdminBlogs.html());
+});
 admin.use("/:id", async (req, res) => {
 	res.send(await Pages.NotFound.html());
 });
-
 
 module.exports = admin;

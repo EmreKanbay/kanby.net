@@ -11,76 +11,35 @@ visitor.get("/", async (req, res, next) => {
 });
 
 visitor.get("/:lang/", async (req, res, next) => {
+	const query = await Index.pool.query("SELECT * FROM variables");
 
-
-	const query = await Index.pool.query("SELECT * FROM variables")
-
- 	if(query.rows[0].value.includes(req.params.lang)){
-
-		 res.send(await Pages.LandingPage.html({language: req.params.lang}));
-
-	}
-	else{
-		next()
+	if (query.rows[0].value.includes(req.params.lang)) {
+		res.send(await Pages.LandingPage.html({ language: req.params.lang }));
+	} else {
+		next();
 	}
 });
-
 
 visitor.get("/:lang/blogs/", async (req, res, next) => {
-
-	res.send(await Pages.Blogs.html({language: req.params.lang}));
-
-
-})
-
-visitor.get("/:lang/blogs/:id", async (req, res, next) => {
-
-	res.send(await Pages.SingleBlog.html({language: req.params.lang, blog_id: req.params.id}));
-
-
-})
-
-
-
-
-
-
-
-visitor.get("/:lang/contact/", async (req, res, next) => {
-
-	res.send(await Pages.Contact.html({language: req.params.lang}));
-
-
-})
-
-
-
-
-
-
-
-
-
-
-
-
-visitor.use("/:lang", async (req, res, next) => {
-
-	const query = await Index.pool.query("SELECT * FROM variables")
- 
-
- 	if(query.rows[0].value.includes(req.params.lang)){
-
- 		 res.send(await Pages.NotFound.html({language: req.params.lang}));
-
-	}
-	else{
-		res.send(await Pages.NotFound.html({language:"English"}));
-	}
+	res.send(await Pages.Blogs.html({ language: req.params.lang }));
 });
 
+visitor.get("/:lang/blogs/:id", async (req, res, next) => {
+	res.send(await Pages.SingleBlog.html({ language: req.params.lang, blog_id: req.params.id }));
+});
 
+visitor.get("/:lang/contact/", async (req, res, next) => {
+	res.send(await Pages.Contact.html({ language: req.params.lang }));
+});
 
+visitor.use("/:lang", async (req, res, next) => {
+	const query = await Index.pool.query("SELECT * FROM variables");
 
+	if (query.rows[0].value.includes(req.params.lang)) {
+		res.send(await Pages.NotFound.html({ language: req.params.lang }));
+	} else {
+		res.send(await Pages.NotFound.html({ language: "English" }));
+	}
+});
 
 module.exports = visitor;

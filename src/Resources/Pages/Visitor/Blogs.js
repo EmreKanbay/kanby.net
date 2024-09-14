@@ -2,7 +2,6 @@ const Layouts = require("#Layouts");
 const Index = require("#Index");
 const he = require("he");
 
-
 const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -19,24 +18,20 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-
 const text = {
 	Turkish: {
-		key1:"Bloglar",
-        key2:"Blog henüz yok"
+		key1: "Bloglar",
+		key2: "Blog henüz yok",
 	},
 	English: {
-		key1:"Blogs",
-        key2:"No blog exist yet"
-
-	}
- 	}
-
+		key1: "Blogs",
+		key2: "No blog exist yet",
+	},
+};
 
 module.exports = {
-	html: async (data) =>
+	html: async data =>
 		await Layouts.VisitorLayout({
-
 			language: data.language,
 			head: await construct`
  
@@ -49,14 +44,13 @@ module.exports = {
             <h1 style="text-align:center">${text[data.language].key1}</h1>
 				<div id="all-blogs-list">
 
-				${async ()=> {
+				${async () => {
+					var record = await Index.pool.query("SELECT * FROM blogs WHERE language='" + data.language + "'");
 
-		var record = await Index.pool.query("SELECT * FROM blogs WHERE language=\'" + data.language + "\'");
-
-        if(record.rowCount != 0){
-            return "".concat(
-                ...record.rows.map(t => {
-                    return `
+					if (record.rowCount != 0) {
+						return "".concat(
+							...record.rows.map(t => {
+								return `
 
 <div onclick="window.location.href = './${t.id}'" data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" data-raw-content="${he.encode(t.raw_content)}"  class="all-blogs-item">
 
@@ -65,17 +59,11 @@ module.exports = {
         <span>${t.title}</span>
         </div>
     `;
-                }),
-            )
-
-        }else{
-
-            return `<p>${text[data.language].key2}</p>`
-        }
-
-	
-
-
+							}),
+						);
+					} else {
+						return `<p>${text[data.language].key2}</p>`;
+					}
 				}}
 				
 				</div>
@@ -123,5 +111,5 @@ module.exports = {
 			 
 
       `,
-		})
+		}),
 };

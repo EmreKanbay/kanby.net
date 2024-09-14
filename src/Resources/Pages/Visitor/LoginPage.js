@@ -136,5 +136,5 @@ document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 </script>
 
 `,
-		})
+		}),
 };

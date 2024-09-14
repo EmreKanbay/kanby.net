@@ -2,7 +2,6 @@ const Layouts = require("#Layouts");
 const Index = require("#Index");
 const he = require("he");
 
-
 const construct = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
@@ -19,25 +18,22 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-
 const text = {
 	Turkish: {
-		key1:"Bloglar",
-		key2:"İçerikler",
-		key3:"Haberler",
+		key1: "Bloglar",
+		key2: "İçerikler",
+		key3: "Haberler",
 	},
 	English: {
-		key1:"Blogs",
-		key2:"Contents",
-		key3:"News",
-	}
- 	}
-
+		key1: "Blogs",
+		key2: "Contents",
+		key3: "News",
+	},
+};
 
 module.exports = {
-	html: async (data) =>
+	html: async data =>
 		await Layouts.VisitorLayout({
-
 			language: data.language,
 			head: await construct`
  
@@ -49,10 +45,10 @@ module.exports = {
  
 			 <div class="blog-body">
 
-				${async ()=> {
-
-		var record = await Index.pool.query(`SELECT * FROM blogs WHERE language='${data.language}' AND id = '${data.blog_id}' `);
-
+				${async () => {
+					var record = await Index.pool.query(
+						`SELECT * FROM blogs WHERE language='${data.language}' AND id = '${data.blog_id}' `,
+					);
 
 					return `
                     
@@ -66,9 +62,7 @@ module.exports = {
                  ${record.rows[0].rendered_content}
 					</div>
                     
-                    `
-
-
+                    `;
 				}}
 				
 		 </div>
@@ -100,5 +94,5 @@ module.exports = {
          </style>
 
       `,
-		})
+		}),
 };

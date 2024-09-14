@@ -32,12 +32,11 @@ var DB_connected = false;
 	} catch (e) {
 		DB_connected = false;
 
- 		console.log(e);
+		console.log(e);
 	}
 })();
 
 const storage = multer.diskStorage({
-
 	filename: async function (req, file, cb) {
 		var [main, ext] = file.originalname.split(".");
 
@@ -83,12 +82,11 @@ const getComponents = require("./Routes/getComponent");
 // Setup Middlewares
 root.use(cookieParser());
 
-root.get('/robots.txt', function (req, res, next) {
-    res.type('text/plain')
+root.get("/robots.txt", function (req, res, next) {
+	res.type("text/plain");
 
-     res.send("User-agent: *\nDisallow: /");
+	res.send("User-agent: *\nDisallow: /");
 });
-
 
 root.use("/", (req, res, next) => {
 	if (DB_connected) next();
@@ -147,7 +145,6 @@ root.use("/admin/", async (req, res, next) => {
 // Statik medyalar
 // root.use("/assets", express.static(path.join(__dirname, "kanby.net/assets")));
 
-
 // root.use("/media", express.static(path.join(__dirname, "Media")));
 
 // Route Handlers
@@ -155,13 +152,7 @@ root.use("/admin", admin);
 
 root.use("/get-component", getComponents);
 
-
-
-
 root.use("/", visitor);
-
-
-
 
 // start server
 root.listen(3000, () => {

@@ -123,5 +123,5 @@ document.querySelector("#media-upload").addEventListener("change", (e) => {
 
 
   `,
-		})
+		}),
 };

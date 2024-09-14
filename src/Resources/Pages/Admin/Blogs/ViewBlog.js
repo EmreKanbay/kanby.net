@@ -279,5 +279,5 @@ document.querySelector("#blog-top-bar").style.display = "none"
 
 
 	`,
-		})
+		}),
 };

@@ -18,50 +18,46 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-
 const text = {
 	Turkish: {
-		key1:"Ücretsiz Araçlar",
-		key1_1:"Tavsiye Yönetim Aracı",
-		key1_2:"Not Yönetim Aracı",
-		key1_3:"Finans Yönetim Aracı",
-		key1_4:"İnsan İlişkileri Yönetim Aracı",
-		key2:"Sosyal Medya",
-		key2_1:"Github",
-		key2_2:"Twitter / X",
-		key2_3:"Linkedin",
-		key2_4:"Codepen",
-		key2_5:"Tiktok",
-		key2_6:"Instagram",
-		key3:"Bağlantılar",
-		key3_1:"Bloglar",
-		key3_2:"Haberler",
-		key3_3:"İçerikler",
-		key3_4:"Medya Galerisi",
- 	},
+		key1: "Ücretsiz Araçlar",
+		key1_1: "Tavsiye Yönetim Aracı",
+		key1_2: "Not Yönetim Aracı",
+		key1_3: "Finans Yönetim Aracı",
+		key1_4: "İnsan İlişkileri Yönetim Aracı",
+		key2: "Sosyal Medya",
+		key2_1: "Github",
+		key2_2: "Twitter / X",
+		key2_3: "Linkedin",
+		key2_4: "Codepen",
+		key2_5: "Tiktok",
+		key2_6: "Instagram",
+		key3: "Bağlantılar",
+		key3_1: "Bloglar",
+		key3_2: "Haberler",
+		key3_3: "İçerikler",
+		key3_4: "Medya Galerisi",
+	},
 	English: {
-		key1:"Free Tools",
-		key1_1:"Advice Manager",
-		key1_2:"Cheat Sheet Manager",
-		key1_3:"Finance Manager",
-		key1_4:"Personal Relations Manager",
-		key2:"Social Media",
-		key2_1:"Github",
-		key2_2:"Twitter / X",
-		key2_3:"Linkedin",
-		key2_4:"Codepen",
-		key2_5:"Tiktok",
-		key2_6:"Instagram",
-		key3:"Links",
-		key3_1:"Blogs",
-		key3_2:"News",
-		key3_3:"Contents",
-		key3_4:"Media Gallery",
-  	}
- 	}
-
-
-
+		key1: "Free Tools",
+		key1_1: "Advice Manager",
+		key1_2: "Cheat Sheet Manager",
+		key1_3: "Finance Manager",
+		key1_4: "Personal Relations Manager",
+		key2: "Social Media",
+		key2_1: "Github",
+		key2_2: "Twitter / X",
+		key2_3: "Linkedin",
+		key2_4: "Codepen",
+		key2_5: "Tiktok",
+		key2_6: "Instagram",
+		key3: "Links",
+		key3_1: "Blogs",
+		key3_2: "News",
+		key3_3: "Contents",
+		key3_4: "Media Gallery",
+	},
+};
 
 module.exports = {
 	html: data => construct`
@@ -195,7 +191,7 @@ module.exports = {
 				grid-row: 1 / 2;
 				height: 100%;
 				margin-left: 0.5rem;
-				background-image: url("${cdn}/assets/logo.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/new-logo1.svg?${Date.now()}");
 				background-size: contain;
 				background-repeat: no-repeat;
 			}
