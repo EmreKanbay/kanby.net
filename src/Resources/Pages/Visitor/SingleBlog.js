@@ -46,8 +46,7 @@ module.exports = {
 
 			content: await construct`
 
-
-
+ 
 			 <div class="blog-body">
 
 				${async ()=> {
@@ -57,10 +56,15 @@ module.exports = {
 
 					return `
                     
-                    <p >${record.rows[0].title}</p>
+                    <p class="title" >${record.rows[0].title}</p>
                     <p>${record.rows[0].description}</p>
-                    <img src="${record.rows[0].thumbnail_url}" />
-                ${record.rows[0].rendered_content}
+
+					<div class="seperator"></div>
+                    <img class="cover-img" src="${record.rows[0].thumbnail_url}" />
+
+					<div class="content">
+                 ${record.rows[0].rendered_content}
+					</div>
                     
                     `
 
@@ -69,18 +73,30 @@ module.exports = {
 				
 		 </div>
 			 
+		 
          <style>
          
-         
+         .seperator{
+		 
+		 height:2px;
+		 width:100%;
+		 background-color:black;
+		 margin-bottom:1rem;
+		 }
          .blog-body{
          
          display:flex;
-         margin:auto;
-         flex-direction:column;
-         align-items:flex-start;
-         width:max-content;
-
+		 width:100%;
+           flex-direction:column;
+          align-items:center;
+ 
          }
+				.title{
+				font-size:2rem;
+				font-weight:bold;
+				}
+		
+		 .cover-img{width:80%;max-width:900px}
          </style>
 
       `,

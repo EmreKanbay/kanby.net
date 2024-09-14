@@ -9,6 +9,7 @@ const AddMedia = require("./Pages/Admin/Media/AddMedia");
 const ViewBlog = require("./Pages/Admin/Blogs/ViewBlog");
 const Blogs = require("./Pages/Visitor/Blogs");
 const SingleBlog = require("./Pages/Visitor/SingleBlog");
+const Contact = require("./Pages/Contact");
 
 module.exports = {
 	LoginPage,
@@ -21,5 +22,6 @@ module.exports = {
 	Media,
 	AddMedia,
 	Blogs,
-	SingleBlog
+	SingleBlog,
+	Contact
 };

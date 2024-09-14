@@ -32,6 +32,9 @@ module.exports = async data =>
                     ${data.head}
 
                     <style>
+
+
+
                     .loading-inline {
 	display: none;
 	width: 100%;
@@ -60,6 +63,9 @@ module.exports = async data =>
 .loading-block.active {
 	display: block;
 }
+
+
+
     </style>
                 </head>
     

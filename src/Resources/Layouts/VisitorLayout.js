@@ -58,6 +58,12 @@ background-color: rgb(11, 11, 11, 0.5);
 .loading-block.active {
 display: block;
 }
+
+                    body{
+font-family: sans-serif;
+
+}
+
 </style>
 		<link rel="icon" href="${cdn}/assets/logo.svg">
 

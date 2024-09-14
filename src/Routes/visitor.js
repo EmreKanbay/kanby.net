@@ -40,6 +40,30 @@ visitor.get("/:lang/blogs/:id", async (req, res, next) => {
 
 })
 
+
+
+
+
+
+
+visitor.get("/:lang/contact/", async (req, res, next) => {
+
+	res.send(await Pages.Contact.html({language: req.params.lang}));
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
 visitor.use("/:lang", async (req, res, next) => {
 
 	const query = await Index.pool.query("SELECT * FROM variables")
