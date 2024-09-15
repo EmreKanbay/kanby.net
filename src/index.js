@@ -54,7 +54,7 @@ const auth = async (req, res) => {
 
 	const values = [req?.cookies?.login_name, req?.cookies?.password_hash];
 
-	var record = await Index.pool.query(text, values);
+	var record = await pool.query(text, values);
 
 
 	if (record.rows.length == 1) {
