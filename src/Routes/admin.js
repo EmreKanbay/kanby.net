@@ -13,7 +13,7 @@ const admin = Index.express.Router();
 const sub_admin = Index.express.Router();
 
 admin.get("/login/", async (req, res) => {
-	res.send(await Pages.LoginPage.html());
+	res.send(await Pages.LoginPage.html({language: "English"}));
 });
 
 admin.post("/login/", Index.upload.none(), async (req, res) => {

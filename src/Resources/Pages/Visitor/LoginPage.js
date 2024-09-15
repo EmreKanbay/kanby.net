@@ -16,8 +16,7 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-// ${(()=> String(Components.visitor.ErrorBox("")))()}
-
+ 
 module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
