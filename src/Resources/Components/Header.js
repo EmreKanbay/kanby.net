@@ -191,7 +191,7 @@ module.exports = {
 				grid-row: 1 / 2;
 				height: 100%;
 				margin-left: 0.5rem;
-				background-image: url("${cdn}/assets/new-logo1.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/logo.svg?${Date.now()}");
 				background-size: contain;
 				background-repeat: no-repeat;
 			}

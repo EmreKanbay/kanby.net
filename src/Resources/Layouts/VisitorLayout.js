@@ -69,7 +69,7 @@ font-family: sans-serif;
 				<link
 			rel="stylesheet"
 			href="${cdn}/assets/globals.css?${Date.now()}" />
-		<link rel="icon" href="${cdn}/assets/new-logo1.svg">
+		<link rel="icon" href="${cdn}/assets/logo.svg">
 
 			${await data.head}
 		</head>
