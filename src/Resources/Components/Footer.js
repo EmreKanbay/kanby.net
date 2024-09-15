@@ -17,7 +17,7 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-const text = {
+const translation = {
 	Turkish: {
 		key1: "Sosyal Medya",
 		key2: "Bağlantılar",
@@ -75,7 +75,7 @@ module.exports = {
     <footer class="K0e6gd-container">
     <div class="K0e6gd-sub-container">
         <div class="K0e6gd-heading">
-            <p>${text[data.language].key1}</p>
+            <p>${translation[data.language].key1}</p>
             <ul>
                 <li>
                     <img
@@ -141,34 +141,34 @@ module.exports = {
         </div>
 
         <div class="K0e6gd-heading">
-            <p>${text[data.language].key2}</p>
+            <p>${translation[data.language].key2}</p>
             <ul>
                 <li>
                     <a
                         target="_blank"
                         href="/company">
-                        ${text[data.language].key2_1}
+                        ${translation[data.language].key2_1}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/team">
-                        ${text[data.language].key2_2}
+                        ${translation[data.language].key2_2}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/careers">
-                        ${text[data.language].key2_3}
+                        ${translation[data.language].key2_3}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/press">
-                        ${text[data.language].key2_4}
+                        ${translation[data.language].key2_4}
                     </a>
                 </li>
             </ul>
@@ -176,34 +176,34 @@ module.exports = {
 
 
         <div class="K0e6gd-heading">
-            <p>${text[data.language].key3}</p>
+            <p>${translation[data.language].key3}</p>
             <ul>
                 <li>
                     <a
                         target="_blank"
                         href="/company">
-                        ${text[data.language].key3_1}
+                        ${translation[data.language].key3_1}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/team">
-                        ${text[data.language].key3_2}
+                        ${translation[data.language].key3_2}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/careers">
-                        ${text[data.language].key3_3}
+                        ${translation[data.language].key3_3}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/press">
-                        ${text[data.language].key3_4}
+                        ${translation[data.language].key3_4}
                     </a>
                 </li>
             </ul>
@@ -212,41 +212,41 @@ module.exports = {
 
 
         <div class="K0e6gd-heading">
-            <p>${text[data.language].key4}</p>
+            <p>${translation[data.language].key4}</p>
             <ul>
                 <li>
                     <a
                         target="_blank"
                         href="/company">
-                        ${text[data.language].key4_1}
+                        ${translation[data.language].key4_1}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/team">
-                        ${text[data.language].key4_2}
+                        ${translation[data.language].key4_2}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/careers">
-                        ${text[data.language].key4_3}
+                        ${translation[data.language].key4_3}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/press">
-                        ${text[data.language].key4_4}
+                        ${translation[data.language].key4_4}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/press">
-                        ${text[data.language].key4_5}
+                        ${translation[data.language].key4_5}
                     </a>
                 </li>
             </ul>
@@ -255,34 +255,34 @@ module.exports = {
 
 
                 <div class="K0e6gd-heading">
-            <p>${text[data.language].key5}</p>
+            <p>${translation[data.language].key5}</p>
             <ul>
                 <li>
                     <a
                         target="_blank"
                         href="/company">
-                        ${text[data.language].key5_1}
+                        ${translation[data.language].key5_1}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/team">
-                        ${text[data.language].key5_2}
+                        ${translation[data.language].key5_2}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/careers">
-                        ${text[data.language].key5_3}
+                        ${translation[data.language].key5_3}
                     </a>
                 </li>
                 <li>
                     <a
                         target="_blank"
                         href="/press">
-                        ${text[data.language].key5_4}
+                        ${translation[data.language].key5_4}
                     </a>
                 </li>
 

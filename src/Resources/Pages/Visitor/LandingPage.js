@@ -21,7 +21,7 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-const text = {
+const translation = {
 	Turkish: {
 		key1: "Düşünce, Tasarım, Yazılım",
 		key2: "Talep üzerine uygulamalar geliştiriyorum. Bu uygulamalar web uygulamaları, iOS ve Android uygulamaları, masaüstü ve mobil için oyunlar, IoT projeleri, sunucu kurulumu, hosting, bulut sunucu kurulumu ve SQL sunucu kurulumu içeriyor",
@@ -57,12 +57,12 @@ module.exports = {
 								src="${cdn}/assets/EmreKanbay.jpeg"
 								alt="Trulli"
 								style="width:100%" />
-							<figcaption>Emre Kanbay | ${text[data.language].key6}</figcaption>
+							<figcaption>Emre Kanbay | ${translation[data.language].key6}</figcaption>
 						</figure>
 
 						<div>
-							<p class="profile-heading">${text[data.language].key1}</p>
-							<p class="profile-description">${text[data.language].key2}</p>
+							<p class="profile-heading">${translation[data.language].key1}</p>
+							<p class="profile-description">${translation[data.language].key2}</p>
 						</div>
 					</div>
 
@@ -80,16 +80,15 @@ module.exports = {
 						<li>Saas Video Edits</li>
 						<li>Music For Product Videos</li>
 						<li>Logo Design For Branding</li>
-						<li>Game Development</li>
-					</ul>
+  					</ul>
 
 					<div>
-						<p style="margin-left:2rem;font-size:2rem"><a href="./blogs">${text[data.language].key3}</a></p>
+						<p style="margin-left:2rem;font-size:2rem"><a href="./blogs">${translation[data.language].key3}</a></p>
 
 						<div class="all-blogs-list">
 							${async () => {
  
-								const text = `SELECT * FROM blogs WHERE language= $1 LIMIT 3`;
+ 								const text = `SELECT * FROM blogs WHERE language= $1 LIMIT 3`;
 
 								const values = [data.language];
 							
@@ -97,6 +96,7 @@ module.exports = {
 
 
 								if (record.rowCount != 0) {
+ 
 									return "".concat(
 										...record.rows.map(t => {
 											return `
@@ -111,13 +111,13 @@ module.exports = {
 										}),
 									);
 								} else {
-									return `<p>${text[data.language].key4}</p>`;
+									return `<p>${translation[data.language].key4}</p>`
 								}
 							}}
 						</div>
 					</div>
 
-					<p style="margin-left:2rem;font-size:2rem">${text[data.language].key5}</p>
+					<p style="margin-left:2rem;font-size:2rem">${translation[data.language].key5}</p>
 
 					<div class="all-blogs-list">
 						<div class="all-blogs-item ">

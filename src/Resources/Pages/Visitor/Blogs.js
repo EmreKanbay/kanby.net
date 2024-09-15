@@ -18,7 +18,7 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-const text = {
+const translation = {
 	Turkish: {
 		key1: "Bloglar",
 		key2: "Blog henüz yok",
@@ -35,13 +35,13 @@ module.exports = {
 			language: data.language,
 			head: await construct`
  
-			<title>Kanby | ${text[data.language].key1}</title>
+			<title>Kanby | ${translation[data.language].key1}</title>
 			`,
 
 			content: await construct`
 
 
-            <h1 style="text-align:center">${text[data.language].key1}</h1>
+            <h1 style="text-align:center">${translation[data.language].key1}</h1>
 				<div id="all-blogs-list">
 
 				${async () => {
@@ -71,7 +71,7 @@ module.exports = {
 							}),
 						);
 					} else {
-						return `<p>${text[data.language].key2}</p>`;
+						return `<p>${translation[data.language].key2}</p>`;
 					}
 				}}
 				

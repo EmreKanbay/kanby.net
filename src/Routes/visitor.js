@@ -12,8 +12,7 @@ visitor.get("/", async (req, res, next) => {
 
 visitor.get("/:lang/", async (req, res, next) => {
 	const query = await Index.pool.query("SELECT * FROM variables");
-
-	if (query.rows[0].value.includes(req.params.lang)) {
+ 	if (query.rows[0].value.includes(req.params.lang)) {
 		res.send(await Pages.LandingPage.html({ language: req.params.lang }));
 	} else {
 		next();

@@ -18,7 +18,7 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-const text = {
+const translation = {
 	Turkish: {
 		key1: "Ücretsiz Araçlar",
 		key1_1: "Tavsiye Yönetim Aracı",
@@ -73,36 +73,36 @@ module.exports = {
 
 
             <div class="liwlCh-header-menu-navigation-heading">
-                <a href="">${text[data.language].key1}</a>
+                <a href="">${translation[data.language].key1}</a>
                 <ul>
-                    <li><a href="">${text[data.language].key1_1}</a></li>
-                    <li><a href="">${text[data.language].key1_2}</a></li>
-                    <li><a href="">${text[data.language].key1_3}</a></li>
-                    <li><a href="">${text[data.language].key1_4}</a></li>
+                    <li><a href="">${translation[data.language].key1_1}</a></li>
+                    <li><a href="">${translation[data.language].key1_2}</a></li>
+                    <li><a href="">${translation[data.language].key1_3}</a></li>
+                    <li><a href="">${translation[data.language].key1_4}</a></li>
                 </ul>
             </div>
 
 
             <div class="liwlCh-header-menu-navigation-heading">
-                <a href="">${text[data.language].key2}</a>
+                <a href="">${translation[data.language].key2}</a>
                 <ul>
-                    <li><a href="">${text[data.language].key2_1}</a></li>
-                    <li><a href="">${text[data.language].key2_2}</a></li>
-                    <li><a href="">${text[data.language].key2_3}</a></li>
-                    <li><a href="">${text[data.language].key2_4}</a></li>
-                    <li><a href="">${text[data.language].key2_5}</a></li>
-                    <li><a href="">${text[data.language].key2_6}</a></li>
+                    <li><a href="">${translation[data.language].key2_1}</a></li>
+                    <li><a href="">${translation[data.language].key2_2}</a></li>
+                    <li><a href="">${translation[data.language].key2_3}</a></li>
+                    <li><a href="">${translation[data.language].key2_4}</a></li>
+                    <li><a href="">${translation[data.language].key2_5}</a></li>
+                    <li><a href="">${translation[data.language].key2_6}</a></li>
                 </ul>
             </div>
 
 
 			            <div class="liwlCh-header-menu-navigation-heading">
-                <a href="">${text[data.language].key3}</a>
+                <a href="">${translation[data.language].key3}</a>
                 <ul>
-                    <li><a href="">${text[data.language].key3_1}</a></li>
-                    <li><a href="">${text[data.language].key3_2}</a></li>
-                    <li><a href="">${text[data.language].key3_3}</a></li>
-                    <li><a href="">${text[data.language].key3_4}</a></li>
+                    <li><a href="">${translation[data.language].key3_1}</a></li>
+                    <li><a href="">${translation[data.language].key3_2}</a></li>
+                    <li><a href="">${translation[data.language].key3_3}</a></li>
+                    <li><a href="">${translation[data.language].key3_4}</a></li>
                 </ul>
             </div>
             

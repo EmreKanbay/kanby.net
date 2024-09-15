@@ -18,7 +18,7 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-const text = {
+const translation = {
 	Turkish: {
 		key1: "İletişim / Sosyal Medya",
 	},
@@ -33,14 +33,14 @@ module.exports = {
 			language: data.language,
 			head: await construct`
  
-			<title>Kanby | ${text[data.language].key1}</title>
+			<title>Kanby | ${translation[data.language].key1}</title>
 			`,
 
 			content: await construct`
 
 <div class="container-d457">
   
-  <p class="title-d457">${text[data.language].key1}<p>
+  <p class="title-d457">${translation[data.language].key1}<p>
   
   
   <div class="content-d457">

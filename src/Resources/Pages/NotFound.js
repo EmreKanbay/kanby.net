@@ -19,7 +19,7 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-const text = {
+const translation = {
 	Turkish: {
 		key1: "Sayfa Bulunamadı",
 	},
@@ -43,7 +43,7 @@ module.exports = {
 			
 			<img style="width:60%" src="${cdn}/assets/notfound.svg" alt="not-found"/>
 			
-			<h1 style="text-align:center">${text[data.language].key1}</h1>
+			<h1 style="text-align:center">${translation[data.language].key1}</h1>
 			</main>
 
 

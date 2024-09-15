@@ -18,7 +18,7 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-const text = {
+const translation = {
 	Turkish: {
 		key1: "Bloglar",
 		key2: "İçerikler",
