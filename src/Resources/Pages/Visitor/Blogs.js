@@ -45,7 +45,16 @@ module.exports = {
 				<div id="all-blogs-list">
 
 				${async () => {
-					var record = await Index.pool.query("SELECT * FROM blogs WHERE language='" + data.language + "'");
+ 
+					
+
+					const text = `SELECT * FROM blogs WHERE language= $1`;
+
+					const values = [data.language];
+				
+					var record = await Index.pool.query(text, values);
+
+
 
 					if (record.rowCount != 0) {
 						return "".concat(

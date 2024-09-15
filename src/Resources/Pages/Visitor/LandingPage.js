@@ -88,14 +88,20 @@ module.exports = {
 
 						<div class="all-blogs-list">
 							${async () => {
-								var record = await Index.pool.query(`SELECT * FROM blogs WHERE language='${data.language}' LIMIT 3`);
+ 
+								const text = `SELECT * FROM blogs WHERE language= $1 LIMIT 3`;
+
+								const values = [data.language];
+							
+								var record = await Index.pool.query(text, values);
+
 
 								if (record.rowCount != 0) {
 									return "".concat(
 										...record.rows.map(t => {
 											return `
 
-<div onclick="window.location.href = './${t.id}'" data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" data-raw-content="${he.encode(t.raw_content)}"  class="all-blogs-item">
+<div onclick="window.location.href = './blogs/${t.id}'" data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" class="all-blogs-item">
 
         <img  src="${t.thumbnail_url}" />
 
@@ -148,6 +154,11 @@ module.exports = {
 							<span>Link Optimiser</span>
 						</div>
 					</div>
+
+					<h1>Yapılacaklar</h1>
+					<p>Yapılacaklar</p>
+					<p>Yapılacaklar</p>
+					<p>Yapılacaklar</p>
 				</main>
 
 				<style>

@@ -36,7 +36,7 @@ module.exports = {
 
 	${async () => {
 		return String(
-			(await Index.pool.query(`SELECT * FROM "media"`)).rows.map(t => {
+			(await Index.pool.query(`SELECT * FROM media`)).rows.map(t => {
 				return `
 	
 		<div data-media-id="${t.id}" data-media-full-url="${t.full_url}" data-media-alt-text="${t.alt_text}"  class="media-element">

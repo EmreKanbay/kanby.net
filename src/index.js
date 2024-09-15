@@ -23,10 +23,10 @@ const pool = new Pool({
 var DB_connected = false;
 (async () => {
 	try {
-		await pool.query("SELECT 1");
-		await pool.query("SELECT * FROM users");
-		await pool.query("SELECT * FROM blogs");
-		await pool.query("SELECT * FROM variables");
+		await pool.query("SELECT * FROM users LIMIT 1");
+		await pool.query("SELECT * FROM blogs LIMIT 1");
+		await pool.query("SELECT * FROM variables LIMIT 1");
+		await pool.query("SELECT * FROM media LIMIT 1");
 		console.log("DB connected succesfully");
 		DB_connected = true;
 	} catch (e) {
@@ -47,9 +47,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const auth = async (req, res) => {
-	var record = await pool.query(
-		`SELECT login_name, password_hash, id FROM "users" WHERE login_name='${req?.cookies?.login_name}' AND password_hash='${req?.cookies?.password_hash}'`,
-	);
+
+
+
+	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name= $1 AND password_hash= $2`;
+
+	const values = [req?.cookies?.login_name, req?.cookies?.password_hash];
+
+	var record = await Index.pool.query(text, values);
+
 
 	if (record.rows.length == 1) {
 		res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: false });

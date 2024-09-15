@@ -17,9 +17,12 @@ admin.get("/login/", async (req, res) => {
 });
 
 admin.post("/login/", Index.upload.none(), async (req, res) => {
-	var record = await Index.pool.query(
-		`SELECT login_name, password_hash, id FROM "users" WHERE login_name='${req?.body?.login_name}' AND password_hash='${Index.sha256(req?.body?.login_password)}'`,
-	);
+
+	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name= $1 AND password_hash= $2`;
+
+	const values = [req?.body?.login_name, Index.sha256(req?.body?.login_password)];
+
+	var record = await Index.pool.query(text, values);
 
 	if (record.rows.length == 1) {
 		res.cookie("login_name", req?.body?.login_name, { expires: new Date(Date.now() + 36000000), httpOnly: false });
@@ -38,9 +41,14 @@ admin.post("/login/", Index.upload.none(), async (req, res) => {
 admin.use("/:id", async (req, res, next) => {
 	var record;
 	try {
-		record = await Index.pool.query(
-			`SELECT login_name, password_hash, id FROM "users" WHERE login_name='${req.cookies?.login_name}' AND password_hash='${req.cookies?.password_hash}'`,
-		);
+
+
+		const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name= $1 AND password_hash= $2`;
+
+		const values = [req?.cookies?.login_name, req.cookies?.password_hash];
+	
+		var record = await Index.pool.query(text, values);
+
 
 		if (record.rows.length == 1 && req.params.id == record.rows[0].id) {
 			if (req.path == "/")
@@ -75,7 +83,15 @@ sub_admin
 	})
 
 	.post(Index.upload.none(), async (req, res) => {
-		var record = await Index.pool.query(`SELECT * FROM "blogs" WHERE language='${req.body.language}'`);
+ 
+
+		const text = `SELECT * FROM "blogs" WHERE language= $1`;
+
+		const values = [req.body.language];
+	
+		var record = await Index.pool.query(text, values);
+
+
 
 		if (record.rowCount == 0) {
 			res.send("<h1>No blog exist</h1>");
@@ -100,9 +116,14 @@ sub_admin
 
 	.put(Index.upload.none(), async (req, res) => {
 		try {
-			var record = await Index.pool.query(
-				`SELECT public_name FROM "users" WHERE login_name='${req?.cookies?.login_name}' AND password_hash='${req?.cookies?.password_hash}'`,
-			);
+	
+			const text = `SELECT public_name FROM "users" WHERE login_name= $1 AND password_hash= $2`;
+
+			const values = [req?.cookies?.login_name, req?.cookies?.password_hash];
+		
+			var record = await Index.pool.query(text, values);
+
+
 		} catch (e) {
 			console.log(e);
 			res.status(500).send("DB USER data query Failed");

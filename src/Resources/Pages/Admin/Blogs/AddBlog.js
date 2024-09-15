@@ -58,8 +58,8 @@ module.exports = {
 
 	
 				<h2>Cover Image url</h2>
-
 				<input id="blog-cover-image"  type="text">
+				<p>*Preferably cover image aspect ratio should be 4/3 (1280 x 960) and filetype should be png or jpg </p>
 
 
 				<h2>Markdown</h2>

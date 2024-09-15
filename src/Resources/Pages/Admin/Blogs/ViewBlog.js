@@ -48,8 +48,16 @@ module.exports = {
 	
    
     ${async () => {
-			var query = await Index.pool.query(`SELECT * FROM blogs WHERE id='${data.id}'`);
+
+
+			const text = `SELECT * FROM blogs WHERE id= $1`;
+
+			const values = [data.id];
+		
+			var query = await Index.pool.query(text, values);
+			
 			t = query.rows[0];
+
 			return await construct`
 		
 

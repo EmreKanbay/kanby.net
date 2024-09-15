@@ -46,9 +46,13 @@ module.exports = {
 			 <div class="blog-body">
 
 				${async () => {
-					var record = await Index.pool.query(
-						`SELECT * FROM blogs WHERE language='${data.language}' AND id = '${data.blog_id}' `,
-					);
+		
+
+					const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
+
+					const values = [data.language, data.blog_id];
+				
+					var record = await Index.pool.query(text, values);
 
 					return `
                     
