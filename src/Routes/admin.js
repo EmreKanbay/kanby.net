@@ -188,6 +188,30 @@ sub_admin
 		res.send();
 	});
 
+
+	sub_admin.route("/projects/")
+	.get(async (req, res) => {
+res.send(await Pages.AllProjects.html());
+	})
+	.put()
+	sub_admin.get("/projects/add/", async (req, res) => {
+
+		res.send(await Pages.AddProject.html());
+
+
+
+	})
+
+	sub_admin.route("/projects/:id")
+	.get(async (req, res) => {
+res.send(await Pages.ViewProject.html());
+	})
+	.delete()
+	.put()
+
+
+	
+
 sub_admin
 	.route("/media/")
 	.get(async (req, res, next) => {
@@ -218,11 +242,11 @@ sub_admin.get("/media/add/", async (req, res, next) => {
 	res.send(await Pages.AddMedia.html());
 });
 
-admin.get("/:id/bll", async (req, res) => {
+admin.get("/:id/blogs", async (req, res) => {
 	res.send(await Components.admin.AdminBlogs.html());
 });
 admin.use("/:id", async (req, res) => {
-	res.send(await Pages.NotFound.html());
+	res.send(await Pages.NotFound.html({ language: "English" }));
 });
 
 module.exports = admin;

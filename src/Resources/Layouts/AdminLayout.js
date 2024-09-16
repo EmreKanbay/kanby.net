@@ -74,8 +74,8 @@ module.exports = async data =>
 
                         <div class="l-sidebar">
                             <div class="logo">
-                                <div class="logo__txt">CMS</div>
-                            </div>
+                                 <img   style="height:90%" src="${cdn}/assets/logo.svg"/>
+                             </div>
                             <div class="l-sidebar__content">
                                 <nav class="nav-menu js-menu">
                                     <ul class="u-list">
@@ -114,6 +114,24 @@ module.exports = async data =>
                                                 </div>  
                                             </div>
                                         </li>
+
+
+                                        <li  class="nav-menu__item navbar-projects "
+                                             >
+                                            <div class="nav-menu__item__inner">
+                                                <div  onclick="goTo('/projects/')"   class="nav-menu__item__inner_main"> 
+                                                
+                                                        <img
+                                                         src="${cdn}/assets/pen.svg?${Date.now()}"
+                                                        class="sidebar-menu-icons" />
+                                                    <div class="nav-menu-item__title"><span>Projects</span></div>
+                                                </div>
+                                                <div class="nav-menu__item__inner-submenu">
+                                                        <div onclick="goTo('/projects/add/')"  >Add</div>
+                                                 </div>  
+                                            </div>
+                                        </li>
+
 
 
                                                         <li class="nav-menu__item  navbar-media  "
@@ -219,12 +237,7 @@ display: grid;
         font-weight: 400;
         overflow-x: hidden;
      }
-    
-     .logo__txt{
-        color:white;
-        font-size:2rem;
-      }
-    
+ 
     .sidebar-menu-icons {
          place-self: center;
          margin: 0 1rem;
@@ -268,7 +281,7 @@ display: grid;
     }
     .l-sidebar .logo {
         width: 100%;
-        height: 70px;
+        height: 100px;
         display: flex;
         align-items: center;
         justify-content: center;

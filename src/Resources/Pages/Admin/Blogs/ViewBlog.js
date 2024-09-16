@@ -280,7 +280,9 @@ document.querySelector("#blog-top-bar").style.display = "none"
 	
 	})
  
- 
+ 	document.querySelectorAll(".nav-menu__item").forEach( (node, index) => { node.classList.remove("is-active")})
+	document.querySelector(".navbar-blogs").classList.add("is-active")
+
  
   </script>
 

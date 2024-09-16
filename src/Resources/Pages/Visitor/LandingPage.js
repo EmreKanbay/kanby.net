@@ -156,9 +156,7 @@ module.exports = {
 					</div>
 
 					<h1>Yapılacaklar</h1>
-					<p>Yapılacaklar</p>
-					<p>Yapılacaklar</p>
-					<p>Yapılacaklar</p>
+					<p>procekts crud - isim resim, markdown</p>
 				</main>
 
 				<style>
