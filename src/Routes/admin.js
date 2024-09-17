@@ -193,7 +193,25 @@ sub_admin
 	.get(async (req, res) => {
 res.send(await Pages.AllProjects.html());
 	})
-	.put()
+	.put(Index.upload.none(), async (req, res) => {
+
+		const columns = Object.keys(req.body).map(key => `"${key}"`).join(", "); // Get the column names as a string
+		const records = Object.values(req.body); 
+		const placeholders = records.map((_, idx) => `$${idx + 1}`).join(", ");
+
+
+		const text = `INSERT INTO projects (id, ${columns}) VALUES (DEFAULT, ${placeholders})`;
+
+  
+		const values = [...Object.values(req.body)];
+	
+ 		var record = await Index.pool.query(text, values);
+
+		
+
+ 
+		res.send("dsaasd")
+	})
 	sub_admin.get("/projects/add/", async (req, res) => {
 
 		res.send(await Pages.AddProject.html());
@@ -204,10 +222,29 @@ res.send(await Pages.AllProjects.html());
 
 	sub_admin.route("/projects/:id")
 	.get(async (req, res) => {
-res.send(await Pages.ViewProject.html());
+res.send(await Pages.ViewProject.html({ id: req.params.id }));
 	})
 	.delete()
-	.put()
+	.patch(
+		Index.upload.none(),async (req, res) => {
+
+
+			const text = `UPDATE projects SET "${Object.keys(req.body)[0]}" = $1 WHERE id= $2`;
+
+			const values = [Object.values(req.body)[0], Object.values(req.body)[1]];
+		
+ 			var query = await Index.pool.query(text, values);
+			
+
+
+
+
+
+
+
+		res.send("200")
+	})
+
 
 
 	
