@@ -80,7 +80,7 @@ module.exports = {
 		 
          <style>
          
-		 @media only screen and (max-width: 428px) {
+		 @media only screen and (max-width: 700px) {
 
 		 .content{
 		padding: 0 1rem;
@@ -105,6 +105,7 @@ module.exports = {
 
 
 		 .cover-img{
+		 width: 50%;
 		 justify-self: center;
 		 
 		 grid-area: a;
@@ -127,7 +128,50 @@ module.exports = {
 
 
 	
+ @media only screen and (min-width: 700px){
 
+		 .content{
+		padding: 0 1rem;
+		 
+		 }
+
+		 .blog-title{
+		 
+		 font-size: 1.7rem;
+		 font-weight: bold;
+		 margin: 0;
+		 }
+
+		#blog-container-text{
+			 padding: 0 1rem;
+		 justify-self:left;
+		 align-self: center;
+		 display:flex;
+		 flex-direction: column;
+		 grid-area:b;
+
+		 }
+
+
+		 .cover-img{
+		 justify-self: center;
+		 
+		 grid-area: a;
+		 
+		 }
+
+
+		 #blog-container{
+		 
+		 display: grid;
+		 grid-template-columns: 1fr 1fr;
+		 grid-template-rows: auto;
+		 grid-template-areas: "a b";
+		 
+		 
+		 }
+
+		}
  
 
 
@@ -146,8 +190,7 @@ module.exports = {
 				font-weight:bold;
 				}
 		
-		 .cover-img{width:80%;max-width:900px}
-         </style>
+          </style>
 
       `,
 		}),
