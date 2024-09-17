@@ -25,7 +25,7 @@ module.exports = async data =>
                 <head>
                     <title>Admin</title>
                 	<meta name="robots" content="noindex,nofollow">
-                    <link rel="stylesheet" href="${cdn}/assets/globals.css?${Date.now()}" />
+                    <link rel="stylesheet" href="${cdn}/assets/globals.css" />
 		            <link rel="icon" href="${cdn}/assets/logo.svg">
                     ${data.head}
                 </head>
@@ -49,7 +49,7 @@ module.exports = async data =>
                                                 
                                                         <img
                                                         style="filter:invert(1)"
-                                                        src="${cdn}/assets/dashboard-icon.svg?${Date.now()}"
+                                                        src="${cdn}/assets/dashboard-icon.svg"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Dashboard</span></div>
                                                 </div>
@@ -67,7 +67,7 @@ module.exports = async data =>
                                                 <div  onclick="goTo('/blogs/')" class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
-                                                         src="${cdn}/assets/blogs-icon.svg?${Date.now()}"
+                                                         src="${cdn}/assets/blogs-icon.svg"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Blog</span></div>
                                                 </div>
@@ -84,7 +84,7 @@ module.exports = async data =>
                                                 <div  onclick="goTo('/projects/')"   class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
-                                                         src="${cdn}/assets/pen.svg?${Date.now()}"
+                                                         src="${cdn}/assets/pen.svg"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Projects</span></div>
                                                 </div>
@@ -102,7 +102,7 @@ module.exports = async data =>
                                                 <div  onclick="goTo('/media/')" class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
-                                                         src="${cdn}/assets/image-icon.svg?${Date.now()}"
+                                                         src="${cdn}/assets/image-icon.svg"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Media</span></div>
                                                 </div>

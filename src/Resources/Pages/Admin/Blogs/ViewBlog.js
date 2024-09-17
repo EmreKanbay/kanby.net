@@ -32,11 +32,11 @@ module.exports = {
 <div id="blog-top-bar">
 
 	<button class="blog-button" id="edit-blog">
-	<img  src="${cdn}/assets/pen.svg?${Date.now()}" />
+	<img  src="${cdn}/assets/pen.svg" />
 	</button>
 
 	<button class="blog-button" id="delete-blog">
-	<img  src="${cdn}/assets/trash-icon.svg?${Date.now()}" />
+	<img  src="${cdn}/assets/trash-icon.svg" />
 	</button>
 
 </div>
@@ -121,7 +121,7 @@ module.exports = {
 
  <div data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" data-raw-content="${he.encode(t.raw_content)}" class="markdown-body">
 
-<img class="thumbnail" src="${t.thumbnail_url}?${Date.now()}" />
+<img class="thumbnail" src="${t.thumbnail_url}" />
 <h1  class="page-title">${t.title}</h1>
 
 	${t.rendered_content}

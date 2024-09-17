@@ -32,11 +32,11 @@ head: await construct``,
 <div id="project-top-bar">
 
 	<button class="project-button" id="edit-project">
-	<img  src="${cdn}/assets/pen.svg?${Date.now()}" />
+	<img  src="${cdn}/assets/pen.svg" />
 	</button>
 
 	<button class="project-button" id="delete-project">
-	<img  src="${cdn}/assets/trash-icon.svg?${Date.now()}" />
+	<img  src="${cdn}/assets/trash-icon.svg" />
 	</button>
 
 </div>

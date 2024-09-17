@@ -20,15 +20,13 @@ const construct = async (x, ...values) => {
 
 const translation = {
 	Turkish: {
-		key1: "Bloglar",
-		key2: "İçerikler",
-		key3: "Haberler",
-	},
+		key1: "Oluşturulma Tarihi: ",
+		key2: "Son Güncellenme Tarihi: ",
+ 	},
 	English: {
-		key1: "Blogs",
-		key2: "Contents",
-		key3: "News",
-	},
+		key1: "Creation Date: ",
+		key2: "Last Modify Date",
+ 	},
 };
 
 module.exports = {
@@ -72,24 +70,32 @@ module.exports = {
 				
 					var record = await Index.pool.query(text, values);
 
+
+
+
+
 					return `
                     
-                    
+                     
 					<div id="blog-container" >
-						<div id="blog-container-text">
+
+						<aside>
+						<img class="cover-img" src="${record.rows[0].thumbnail_url}" />					
 						<p class="blog-title" >${record.rows[0].title}</p>
 						<p class="blog-description">${record.rows[0].description}</p>
-						</div>
-						<img class="cover-img" src="${record.rows[0].thumbnail_url}" />					
-					</div>
+ 						<span style="display:flex;height:3rem;align-items:center;gap:1rem"><img  style="border-radius:50%;height:100%" src="https://avatars.githubusercontent.com/u/80778171?v=4"><p class="blog-author">${record.rows[0].author}</p></span>
+ 						<p class="blog-author">${translation[data.language].key1} ${new Date(record.rows[0].creation_date * 1).toLocaleDateString('en-GB').replace(/\//g, '-')}</p>
+ 						<p class="blog-author">${translation[data.language].key2} ${new Date(record.rows[0].last_modify_date * 1).toLocaleDateString('en-GB').replace(/\//g, '-')}</p>
 
 
-					<div class="seperator"></div>
-                    
-
-					<div class="markdown-body content">
+						</aside>
+		
+					<div class="markdown-body">
                  ${record.rows[0].rendered_content}
 					</div>
+
+
+								</div>
                     
                     `;
 				}}
@@ -97,13 +103,8 @@ module.exports = {
 			 
 		 
          <style>
-         
-		 @media only screen and (max-width: 700px) {
 
-		 .content{
-		padding: 0 1rem;
-		 
-		 }
+ 
 
 		 .blog-title{
 		 
@@ -111,33 +112,33 @@ module.exports = {
 		 font-weight: bold;
 		 margin: 0;
 		 }
+         
+		 @media only screen and (max-width: 700px) {
 
-		#blog-container-text{
+		aside{
 			 padding: 0 1rem;
-		 justify-self:center;
-		 display:flex;
+ 		 display:flex;
 		 flex-direction: column;
-		 grid-area:b;
-
+ 
 		 }
 
-
 		 .cover-img{
+		 margin:auto;
 		 width: 50%;
 		 justify-self: center;
 		 
-		 grid-area: a;
-		 
+ 		 
 		 }
 
 
 		 #blog-container{
+		 padding:.7rem;
+		 gap:1rem;
 		 
 		 display: grid;
 		 grid-template-columns: 100%;
 		 grid-template-rows: auto auto;
-		 grid-template-areas: "a" "b";
-		 
+ 		 
 		 
 		 }
 
@@ -148,41 +149,34 @@ module.exports = {
 	
  @media only screen and (min-width: 700px){
 
-		 .content{
-		padding: 0 1rem;
-		 
-		 }
-
-		 .blog-title{
-		 
-		 font-size: 1.7rem;
-		 font-weight: bold;
-		 margin: 0;
-		 }
-
-		#blog-container-text{
+ 
+		aside{
 			 padding: 0 1rem;
 		 justify-self:left;
-		 align-self: center;
-		 display:flex;
+ 		 display:flex;
 		 flex-direction: column;
+		 height:min-content;
 		 grid-area:b;
+		  border-left: 1px solid hsl(0, 0%, 70%);
+
 
 		 }
 
 
 		 .cover-img{
 		 justify-self: center;
-		 
-		 grid-area: a;
-		 
+			 
 		 }
 
 
 		 #blog-container{
-		 
+
+		 margin:0 auto;
+		 max-width: 1200px;		 
+		 padding:1rem;
+		 gap:1rem;
 		 display: grid;
-		 grid-template-columns: 1fr 1fr;
+		 grid-template-columns: 3fr 1fr;
 		 grid-template-rows: auto;
 		 grid-template-areas: "a b";
 		 
@@ -191,23 +185,6 @@ module.exports = {
 
 		}
  
-
-
-
-
-         .seperator{
-		 
-		 height:2px;
-		 width:100%;
-		 background-color:black;
-		 margin-bottom:1rem;
-		 }
-
-				.title{
-				font-size:2rem;
-				font-weight:bold;
-				}
-		
           </style>
 
       `,

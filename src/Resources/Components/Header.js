@@ -177,21 +177,21 @@ module.exports = {
 				height: 60%;
 				cursor: pointer;
 				padding: 0.3rem;
-				background-image: url("${cdn}/assets/menu-icon.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/menu-icon.svg");
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: center;
 			}
 
 			.liwlCh-header-menu-toggle:checked {
-				background-image: url("${cdn}/assets/cancel.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/cancel.svg");
 			}
 
 			.liwlCh-header-menu-logo {
 				grid-row: 1 / 2;
 				height: 100%;
 				margin-left: 0.5rem;
-				background-image: url("${cdn}/assets/logo.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/logo.svg");
 				background-size: contain;
 				background-repeat: no-repeat;
 			}
@@ -203,7 +203,7 @@ module.exports = {
 				margin-right: 0.3rem;
 				grid-column: 3 / 4;
 				grid-row: 1 / 2;
-				background-image: url("${cdn}/assets/search-icon.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/search-icon.svg");
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: right;
@@ -255,7 +255,7 @@ module.exports = {
 				grid-area: 1 / 2 / span 1 / span 1;
 
 				border-radius: 1rem;
-				background-image: url("${cdn}/assets/cancel.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/cancel.svg");
 				background-position: center;
 				background-repeat: no-repeat;
 
@@ -270,7 +270,7 @@ module.exports = {
 				border-top-right-radius: 1rem;
 				border-bottom-right-radius: 1rem;
 
-				background-image: url("${cdn}/assets/search-icon.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/search-icon.svg");
 				background-position: center;
 				background-size: 60%;
 				background-repeat: no-repeat;
@@ -326,7 +326,7 @@ module.exports = {
 			.liwlCh-header-menu-navigation-heading > a::after {
 				opacity: 0.6;
 				content: "";
-				background-image: url("${cdn}/assets/external-link.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/external-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -353,7 +353,7 @@ module.exports = {
 				content: "";
 				opacity: 0.6;
 
-				background-image: url("${cdn}/assets/internal-link.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/internal-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -432,7 +432,7 @@ module.exports = {
 			.liwlCh-header-menu-navigation-heading > a::after {
 				opacity: 0.6;
 				content: "";
-				background-image: url("${cdn}/assets/external-link.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/external-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -458,7 +458,7 @@ module.exports = {
 				content: "";
 				opacity: 0.6;
 
-				background-image: url("${cdn}/assets/internal-link.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/internal-link.svg");
 				background-size: 80%;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -527,7 +527,7 @@ module.exports = {
 				width: 1.2rem;
 				opacity: 0.4;
 				height: 1.2rem;
-				background-image: url("${cdn}/assets/down-angle.svg?${Date.now()}");
+				background-image: url("${cdn}/assets/down-angle.svg");
 				background-repeat: no-repeat;
 				background-size: 100%;
 				background-position: center;

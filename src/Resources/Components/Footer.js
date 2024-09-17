@@ -79,7 +79,7 @@ module.exports = {
             <ul>
                 <li>
                     <img
-                        src="${cdn}/assets/github.svg?${Date.now()}"
+                        src="${cdn}/assets/github.svg"
                         alt="" />
                     <a
                         target="_blank"
@@ -89,7 +89,7 @@ module.exports = {
                 </li>
                 <li>
                     <img
-                        src="${cdn}/assets/twitter.svg?${Date.now()}"
+                        src="${cdn}/assets/twitter.svg"
                         alt="" />
                     <a
                         target="_blank"
@@ -99,7 +99,7 @@ module.exports = {
                 </li>
                 <li>
                     <img
-                        src="${cdn}/assets/linkedin.svg?${Date.now()}"
+                        src="${cdn}/assets/linkedin.svg"
                         alt="" />
                     <a
                         target="_blank"
@@ -109,7 +109,7 @@ module.exports = {
                 </li>
                 <li>
                     <img
-                        src="${cdn}/assets/codepen.svg?${Date.now()}"
+                        src="${cdn}/assets/codepen.svg"
                         alt="" />
                     <a
                         target="_blank"
@@ -119,7 +119,7 @@ module.exports = {
                 </li>
                 <li>
                     <img
-                        src="${cdn}/assets/tiktok.svg?${Date.now()}"
+                        src="${cdn}/assets/tiktok.svg"
                         alt="" />
                     <a
                         target="_blank"
@@ -129,7 +129,7 @@ module.exports = {
                 </li>
                 <li>
                     <img
-                        src="${cdn}/assets/Instagram.svg?${Date.now()}"
+                        src="${cdn}/assets/Instagram.svg"
                         alt="" />
                     <a
                         target="_blank"
@@ -313,7 +313,7 @@ module.exports = {
 			z-index: -1;
 			height: 100%;
 
-			background-image: url("${cdn}/assets/footer_background.svg?${Date.now()}");
+			background-image: url("${cdn}/assets/footer_background.svg");
 			background-repeat: no-repeat;
 			transform: rotate(180deg);
 			filter: brightness(80%);
@@ -356,7 +356,7 @@ module.exports = {
 			content: "";
 			width: 1.3rem;
 			height: 1.3rem;
-			background-image: url("${cdn}/assets/external-link.svg?${Date.now()}");
+			background-image: url("${cdn}/assets/external-link.svg");
 			background-size: contain;
 			background-repeat: no-repeat;
 			background-position: center;

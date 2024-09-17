@@ -27,7 +27,7 @@ module.exports = async data =>
 	<html lang="en">
 		<head>
  
-				<link rel="stylesheet" href="${cdn}/assets/globals.css?${Date.now()}" />
+				<link rel="stylesheet" href="${cdn}/assets/globals.css" />
 				<link rel="icon" href="${cdn}/assets/logo.svg">
 
 
