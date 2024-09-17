@@ -20,56 +20,16 @@ const construct = async (x, ...values) => {
 	return rendered;
 };
 
-const script = data => construct``;
 
 module.exports = async data =>
 	await construct`
 	<!doctype html>
 	<html lang="en">
 		<head>
-
-
-		<style>
-		.loading-inline {
-display: none;
-width: 100%;
-height: 70px;
-background-repeat: no-repeat;
-background-image: url("${cdn}/assets/loading.svg?${Date.now()}");
-background-position: center;
-background-size: 15%;
-}
-.loading-inline.active {
-display: block;
-}
-
-.loading-block {
-position: fixed;
-z-index:1;
-display: none;
-width: 80vw;
-height: 100%;
-background-repeat: no-repeat;
-background-image: url("${cdn}/assets/loading.svg?${Date.now()}");
-background-position: center;
-background-size: 5%;
-background-color: rgb(11, 11, 11, 0.5);
-}
-.loading-block.active {
-display: block;
-}
-
-                    body{
-font-family: sans-serif;
-
-}
-
-</style>
  
-				<link
-			rel="stylesheet"
-			href="${cdn}/assets/globals.css?${Date.now()}" />
-		<link rel="icon" href="${cdn}/assets/logo.svg">
+				<link rel="stylesheet" href="${cdn}/assets/globals.css?${Date.now()}" />
+				<link rel="icon" href="${cdn}/assets/logo.svg">
+
 
 			${await data.head}
 		</head>

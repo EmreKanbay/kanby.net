@@ -24,10 +24,7 @@ const construct = async (x, ...values) => {
 module.exports = {
 	html: async data =>
 		await Layouts.AdminLayout({
-			head: await construct`
- 
-		<title>Admin</title>
-	`,
+head: await construct``,
 			content: await construct`
 
 

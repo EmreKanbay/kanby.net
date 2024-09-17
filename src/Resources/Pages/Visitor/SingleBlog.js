@@ -36,8 +36,26 @@ module.exports = {
 		await Layouts.VisitorLayout({
 			language: data.language,
 			head: await construct`
+
+			${ async () => {
+
+
+				const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
+
+					const values = [data.language, data.blog_id];
+				
+					var record = await Index.pool.query(text, values);
+
+					return `
+					<meta charset="utf-8">
+					<meta name=”description” content=”${record.rows[0].description}”/>
+					<title>${record.rows[0].title}</title>
+					`
+			}}
  
-			<title>Kanby</title>
+			
+
+
 			`,
 
 			content: await construct`

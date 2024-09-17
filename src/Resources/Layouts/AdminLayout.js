@@ -23,51 +23,13 @@ module.exports = async data =>
     <!doctype html>
             <html lang="en">
                 <head>
-                    <title>Admin Panel</title>
-                    		<link
-			rel="stylesheet"
-			href="${cdn}/assets/globals.css?${Date.now()}" />
-		<link rel="icon" href="${cdn}/assets/logo.svg">
-
+                    <title>Admin</title>
+                	<meta name="robots" content="noindex,nofollow">
+                    <link rel="stylesheet" href="${cdn}/assets/globals.css?${Date.now()}" />
+		            <link rel="icon" href="${cdn}/assets/logo.svg">
                     ${data.head}
-
-                    <style>
-
-
-
-                    .loading-inline {
-	display: none;
-	width: 100%;
-	height: 70px;
-	background-repeat: no-repeat;
-	background-image: url("${cdn}/assets/loading.svg");
-	background-position: center;
-	background-size: 15%;
-}
-.loading-inline.active {
-	display: block;
-}
-
-.loading-block {
-  position: fixed;
-  z-index:1;
-	display: none;
-	width: 80vw;
-	height: 100%;
-	background-repeat: no-repeat;
-	background-image: url("${cdn}/assets/loading.svg?${Date.now()}");
-	background-position: center;
-	background-size: 5%;
-	background-color: rgb(11, 11, 11, 0.5);
-}
-.loading-block.active {
-	display: block;
-}
-
-
-
-    </style>
                 </head>
+
     
                 <body>
                

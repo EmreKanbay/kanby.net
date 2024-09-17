@@ -36,9 +36,23 @@ module.exports = {
 		await Layouts.VisitorLayout({
 			language: data.language,
 			head: await construct`
+						${ async () => {
+
+
+				const text = `SELECT * FROM projects WHERE id = $1`;
+
+					const values = [data.id];
+
+				
+					var record = await Index.pool.query(text, values);
  
-			<title>Kanby</title>
-			`,
+					return `
+					<meta charset="utf-8">
+					<meta name=”description” content=”${record.rows[0][data.language].description}”/>
+					<title>${record.rows[0][data.language].title}</title>
+					`
+			}}
+ 			`,
 
 			content: await construct`
 
@@ -64,7 +78,7 @@ module.exports = {
 					<div class="seperator"></div>
                     <img class="cover-img" src="${record.rows[0][data.language].thumbnail_url}" />
 
-					<div class="content">
+					<div class="markdown-body">
                  ${record.rows[0][data.language].markdown_rendered}
 					</div>
                     

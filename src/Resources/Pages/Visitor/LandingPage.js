@@ -52,7 +52,7 @@ module.exports = {
 			language: data.language,
 			head: await construct`
  
-			<title>Kanby</title>
+			<title>Kanby.net</title>
 			`,
 
 			content: await construct`
