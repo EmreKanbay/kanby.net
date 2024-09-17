@@ -224,7 +224,18 @@ res.send(await Pages.AllProjects.html());
 	.get(async (req, res) => {
 res.send(await Pages.ViewProject.html({ id: req.params.id }));
 	})
-	.delete()
+	.delete(Index.upload.none(), async (req, res) => {
+
+		console.log(req.body)
+
+		const text = `DELETE FROM projects WHERE id= $1`;
+
+		const values = [req.body.id];
+	
+		 var query = await Index.pool.query(text, values);
+
+		res.send()
+	})
 	.patch(
 		Index.upload.none(),async (req, res) => {
 

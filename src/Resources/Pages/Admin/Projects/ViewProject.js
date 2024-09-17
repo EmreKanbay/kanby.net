@@ -284,13 +284,13 @@ document.querySelector("#project-edit-cont").style.display = "block"
 document.querySelector("#project-top-bar").style.display = "none"
 	
 	})
-
+ 
 	 document.querySelector("#delete-project").addEventListener("click", async ()=> {
 	
 
 		const formData = new FormData()
 
-		formData.append("id", "test")
+		formData.append("id", document.querySelector("[data-project-id]").getAttribute("data-project-id"))
 
 		document.querySelector(".loading-block").classList.add("active")
 
