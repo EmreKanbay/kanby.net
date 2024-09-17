@@ -141,8 +141,7 @@ module.exports = {
 						   return "".concat(
 							   ...record.rows.map(t => {
 
-								console.log(t)
- 								   return `
+  								   return `
 
 
 						<div onclick="window.location.href = './projects/${t.id}'" class="all-blogs-item ">

@@ -126,6 +126,7 @@ module.exports = {
 		 margin:auto;
 		 width: 50%;
 		 justify-self: center;
+		 border-radius: 1rem;
 		 
  		 
 		 }
