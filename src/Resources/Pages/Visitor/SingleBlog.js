@@ -113,7 +113,7 @@ module.exports = {
 		 margin: 0;
 		 }
          
-		 @media only screen and (max-width: 700px) {
+		 @media only screen and (max-width: 800px) {
 
 		aside{
 			 padding: 0 1rem;
@@ -147,7 +147,7 @@ module.exports = {
 
 
 	
- @media only screen and (min-width: 700px){
+ @media only screen and (min-width: 800px){
 
  
 		aside{
@@ -164,7 +164,9 @@ module.exports = {
 
 
 		 .cover-img{
+		 width:80%;
 		 justify-self: center;
+		 border-radius: 1rem;
 			 
 		 }
 

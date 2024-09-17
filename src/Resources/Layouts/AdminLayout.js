@@ -25,7 +25,7 @@ module.exports = async data =>
                 <head>
                     <title>Admin</title>
                 	<meta name="robots" content="noindex,nofollow">
-                    <link rel="stylesheet" href="${cdn}/assets/globals.css" />
+                    <link rel="stylesheet" href="/assets/globals.css" />
 		            <link rel="icon" href="${cdn}/assets/logo.svg">
                     ${data.head}
                 </head>
@@ -35,7 +35,7 @@ module.exports = async data =>
                
 
                         <div class="l-sidebar">
-                            <a href="https://kanby.net" class="logo">
+                            <a href="/" class="logo">
                                  <img   style="height:90%" src="${cdn}/assets/logo.svg"/>
                              </a>
                             <div class="l-sidebar__content">

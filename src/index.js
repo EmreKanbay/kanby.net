@@ -102,7 +102,7 @@ root.use("/", (req, res, next) => {
 // remove trailing slash to all requests
 
 root.use((req, res, next) => {
-	var static = ["media", "assets", "robots.txt"];
+	var static = ["assets", "robots.txt"];
 
 	if (!static.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
 		if (req.path.substr(-1) !== "/") {
@@ -149,7 +149,7 @@ root.use("/admin/", async (req, res, next) => {
 });
 
 // Statik medyalar
-// root.use("/assets", express.static(path.join(__dirname, "kanby.net/assets")));
+root.use("/assets", express.static(path.join(__dirname, "Assets")));
 
 // root.use("/media", express.static(path.join(__dirname, "Media")));
 
