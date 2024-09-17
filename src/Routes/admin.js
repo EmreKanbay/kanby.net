@@ -65,21 +65,21 @@ admin.use("/:id", async (req, res, next) => {
 	}
 });
 
-admin.use("/:id", sub_admin);
+ 
 
-sub_admin.get("/dashboard/", async (req, res, next) => {
-	res.send(await Pages.AdminDashboard.html());
+admin.get("/:user_id/dashboard/", async (req, res, next) => {
+	res.send(await Pages.AdminDashboard.html({user_id: req.params.user_id}));
+});
+ 
+admin.get("/:user_id/blogs/add/", async (req, res, next) => {
+	res.send(await Pages.AddBlog.html({user_id: req.params.user_id}));
 });
 
-sub_admin.get("/blogs/add/", async (req, res, next) => {
-	res.send(await Pages.AddBlog.html());
-});
-
-sub_admin
-	.route("/blogs/")
+admin
+	.route("/:user_id/blogs/")
 
 	.get(async (req, res) => {
-		res.send(await Pages.AllBlogs.html());
+		res.send(await Pages.AllBlogs.html({user_id: req.params.user_id}));
 	})
 
 	.post(Index.upload.none(), async (req, res) => {
@@ -154,10 +154,10 @@ sub_admin
 		}
 	});
 
-sub_admin
-	.route("/blogs/:id/")
+	admin
+	.route("/:user_id/blogs/:id/")
 	.get(async (req, res) => {
-		res.send(await Pages.ViewBlog.html({ id: req.params.id }));
+		res.send(await Pages.ViewBlog.html({ id: req.params.id, user_id: req.params.user_id }));
 	})
 	.delete(async (req, res) => {
 		const text = `DELETE FROM "blogs" WHERE id = $1`;
@@ -189,9 +189,9 @@ sub_admin
 	});
 
 
-	sub_admin.route("/projects/")
+	admin.route("/:user_id/projects/")
 	.get(async (req, res) => {
-res.send(await Pages.AllProjects.html());
+res.send(await Pages.AllProjects.html({user_id: req.params.user_id}));
 	})
 	.put(Index.upload.none(), async (req, res) => {
 
@@ -212,17 +212,17 @@ res.send(await Pages.AllProjects.html());
  
 		res.send("dsaasd")
 	})
-	sub_admin.get("/projects/add/", async (req, res) => {
+	admin.get("/:user_id/projects/add/", async (req, res) => {
 
-		res.send(await Pages.AddProject.html());
+		res.send(await Pages.AddProject.html({user_id: req.params.user_id}));
 
 
 
 	})
 
-	sub_admin.route("/projects/:id")
+	admin.route("/:user_id/projects/:id")
 	.get(async (req, res) => {
-res.send(await Pages.ViewProject.html({ id: req.params.id }));
+res.send(await Pages.ViewProject.html({ id: req.params.id, user_id: req.params.user_id }));
 	})
 	.delete(Index.upload.none(), async (req, res) => {
 
@@ -260,10 +260,10 @@ res.send(await Pages.ViewProject.html({ id: req.params.id }));
 
 	
 
-sub_admin
-	.route("/media/")
+	admin
+	.route("/:user_id/media/")
 	.get(async (req, res, next) => {
-		res.send(await Pages.Media.html());
+		res.send(await Pages.Media.html({user_id: req.params.user_id}));
 	})
 	.delete(Index.upload.none(), async (req, res, next) => {
 		const text = "DELETE FROM media WHERE id = $1";
@@ -286,12 +286,12 @@ sub_admin
 		}
 	});
 
-sub_admin.get("/media/add/", async (req, res, next) => {
-	res.send(await Pages.AddMedia.html());
+	admin.get("/:user_id/media/add/", async (req, res, next) => {
+	res.send(await Pages.AddMedia.html({user_id: req.params.user_id}));
 });
 
 admin.get("/:id/blogs", async (req, res) => {
-	res.send(await Components.admin.AdminBlogs.html());
+	res.send(await Components.admin.AdminBlogs.html({user_id: req.params.user_id}));
 });
 admin.use("/:id", async (req, res) => {
 	res.send(await Pages.NotFound.html({ language: "English" }));

@@ -44,19 +44,24 @@ module.exports = async data =>
 
                                         <li  class="nav-menu__item navbar-dashboard "
                                              >
-                                            <div class="nav-menu__item__inner">
-                                                <div  onclick="goTo('/dashboard/')"   class="nav-menu__item__inner_main"> 
+                                             <div class="nav-menu__item__inner">
+
+                           
+                                                <a  href="/admin/${data.user_id}/dashboard/" class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
                                                         style="filter:invert(1)"
                                                         src="${cdn}/assets/dashboard-icon.svg"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Dashboard</span></div>
-                                                </div>
-                                                <div class="nav-menu__item__inner-submenu">
-                                                        <div onclick="goTo('/dashboard/analytics/')"  >Analytics</div>
-                                                 </div>  
+                                                 </a>
+                                                <a href="/admin/${data.user_id}/dashboard/analytics" class="nav-menu__item__inner-submenu">
+                                                        <div>Analytics</div>
+                                                 </a>  
                                             </div>
+
+
+      
                                         </li>
 
 
@@ -64,16 +69,16 @@ module.exports = async data =>
                                             <li class="nav-menu__item  navbar-blogs  "
                                              >
                                             <div class="nav-menu__item__inner">
-                                                <div  onclick="goTo('/blogs/')" class="nav-menu__item__inner_main"> 
+                                                <a href="/admin/${data.user_id}/blogs/" class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
                                                          src="${cdn}/assets/blogs-icon.svg"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Blog</span></div>
-                                                </div>
-                                                <div class="nav-menu__item__inner-submenu">
-                                                         <div onclick="goTo('/blogs/add/')">Add New</div>
-                                                </div>  
+                                                </a>
+                                                <a href="/admin/${data.user_id}/blogs/add/" class="nav-menu__item__inner-submenu">
+                                                         <div>Add New</div>
+                                                </a>  
                                             </div>
                                         </li>
 
@@ -81,16 +86,16 @@ module.exports = async data =>
                                         <li  class="nav-menu__item navbar-projects "
                                              >
                                             <div class="nav-menu__item__inner">
-                                                <div  onclick="goTo('/projects/')"   class="nav-menu__item__inner_main"> 
+                                                <a href="/admin/${data.user_id}/projects/"  class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
                                                          src="${cdn}/assets/pen.svg"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Projects</span></div>
-                                                </div>
-                                                <div class="nav-menu__item__inner-submenu">
-                                                        <div onclick="goTo('/projects/add/')"  >Add</div>
-                                                 </div>  
+                                                </a>
+                                                <a href="/admin/${data.user_id}/projects/add/" class="nav-menu__item__inner-submenu">
+                                                        <div>Add</div>
+                                                 </a>  
                                             </div>
                                         </li>
 
@@ -99,16 +104,16 @@ module.exports = async data =>
                                                         <li class="nav-menu__item  navbar-media  "
                                              >
                                             <div class="nav-menu__item__inner">
-                                                <div  onclick="goTo('/media/')" class="nav-menu__item__inner_main"> 
+                                                <a  href="/admin/${data.user_id}/media/" class="nav-menu__item__inner_main"> 
                                                 
                                                         <img
                                                          src="${cdn}/assets/image-icon.svg"
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Media</span></div>
-                                                </div>
-                                                <div class="nav-menu__item__inner-submenu">
+                                                </a>
+                                                <a  href="/admin/${data.user_id}/media/add/" class="nav-menu__item__inner-submenu">
                                                          <div onclick="goTo('/media/add/')">Add New</div>
-                                                </div>  
+                                                </a>  
                                             </div>
                                         </li>
 
@@ -431,25 +436,6 @@ height:4rem;
             </style>
 
 
-            <script>
-
-
- 
- 
-        const user_id = document.cookie[document.cookie.indexOf("user_id") + 8]
-  
-            const goTo = (target) => {
-
-
-
-                window.location.href = window.location.origin + "/admin" + "/" + user_id  + target 
-                
-                
-                }
-
-                
-            </script>
-            
                 </body>
             </html>
     `;

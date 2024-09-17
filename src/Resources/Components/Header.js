@@ -114,7 +114,7 @@ module.exports = {
 
     <a
         class="liwlCh-header-menu-logo"
-        href="${"https://kanby.net/" + data.language + "/"}"></a>
+        href="${"/" + data.language + "/"}"></a>
 
     <div
         tabindex="0"

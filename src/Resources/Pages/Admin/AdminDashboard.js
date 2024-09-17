@@ -19,6 +19,7 @@ const construct = async (x, ...values) => {
 module.exports = {
 	html: async data =>
 		await Layouts.AdminLayout({
+			user_id: data.user_id,
 head: await construct``,
 			content: await construct`
  

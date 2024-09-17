@@ -57,7 +57,6 @@ module.exports = {
 			content: await construct`
 
  
-			 <div class="blog-body">
 
 				${async () => {
 		
@@ -72,46 +71,122 @@ module.exports = {
 
 					return `
                     
-                    <p class="title" >${record.rows[0][data.language].title}</p>
-                    <p>${record.rows[0][data.language].description}</p>
+			 <div class="blog-container">
+        
+											<aside>
+  				 
+								<img class="cover-img" src="${record.rows[0][data.language].thumbnail_url}" />
+            <p class="blog-title" >${record.rows[0][data.language].title}</p>
+                    <p class="blog-description">${record.rows[0][data.language].description}</p>
 
-					<div class="seperator"></div>
-                    <img class="cover-img" src="${record.rows[0][data.language].thumbnail_url}" />
+
+						</aside>
+
 
 					<div class="markdown-body">
                  ${record.rows[0][data.language].markdown_rendered}
 					</div>
+
+		 </div>
+
+	
+		 
+
+
+
                     
                     `;
 				}}
 				
-		 </div>
 			 
 		 
-         <style>
-         
-         .seperator{
-		 
-		 height:2px;
-		 width:100%;
-		 background-color:black;
-		 margin-bottom:1rem;
-		 }
-         .blog-body{
-         
-         display:flex;
-		 width:100%;
-           flex-direction:column;
-          align-items:center;
+           <style>
+
  
-         }
-				.title{
-				font-size:2rem;
-				font-weight:bold;
-				}
-		
-		 .cover-img{width:80%;max-width:900px}
-         </style>
+
+		 .blog-title{
+		 
+		 font-size: 2rem;
+		 font-weight: bold;
+		 margin: 0;
+		 }
+         
+		 @media only screen and (max-width: 800px) {
+
+		aside{
+			 padding: 0 1rem;
+ 		 display:flex;
+		 flex-direction: column;
+ 
+		 }
+
+		 .cover-img{
+		 margin:auto;
+		 width: 50%;
+		 justify-self: center;
+		 border-radius: 1rem;
+		 
+ 		 
+		 }
+
+
+		 .blog-container{
+		 padding:.7rem;
+		 gap:1rem;
+		 
+		 display: grid;
+		 grid-template-columns: 100%;
+		 grid-template-rows: auto auto;
+ 		 
+		 
+		 }
+
+
+		}
+
+
+	
+ @media only screen and (min-width: 800px){
+
+ 
+		aside{
+			 padding: 0 1rem;
+		 justify-self:left;
+ 		 display:flex;
+		 flex-direction: column;
+		 height:min-content;
+		 grid-area:b;
+		  border-left: 1px solid hsl(0, 0%, 70%);
+
+
+		 }
+
+
+		 .cover-img{
+		 width:80%;
+		 justify-self: center;
+		 border-radius: 1rem;
+			 
+		 }
+
+
+		 .blog-container{
+
+		 margin:0 auto;
+		 max-width: 1200px;		 
+		 padding:1rem;
+		 gap:1rem;
+		 display: grid;
+		 grid-template-columns: 3fr 1fr;
+		 grid-template-rows: auto;
+		 grid-template-areas: "a b";
+		 
+		 
+		 }
+
+		}
+ 
+          </style>
 
       `,
 		}),
