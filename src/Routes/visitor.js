@@ -27,6 +27,15 @@ visitor.get("/:lang/blogs/:id", async (req, res, next) => {
 	res.send(await Pages.SingleBlog.html({ language: req.params.lang, blog_id: req.params.id }));
 });
 
+visitor.get("/:lang/projects/", async (req, res, next) => {
+	res.send(await Pages.Projects.html({ language: req.params.lang }));
+});
+
+visitor.get("/:lang/projects/:id", async (req, res, next) => {
+	res.send(await Pages.SingleProject.html({ language: req.params.lang, id: req.params.id }));
+});
+
+
 visitor.get("/:lang/contact/", async (req, res, next) => {
 	res.send(await Pages.Contact.html({ language: req.params.lang }));
 });

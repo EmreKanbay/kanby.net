@@ -29,6 +29,9 @@ const translation = {
 		key4: "Blog Bulunamadı",
 		key5: "Açık kaynak projeler",
 		key6: "Yönetici",
+		key7: "Projeler",
+		key8: "Proje bulunamadı",
+
 	},
 	English: {
 		key1: "Think, Design, Code",
@@ -37,6 +40,9 @@ const translation = {
 		key4: "No Blog found",
 		key5: "Open Source Projects",
 		key6: "Supervisor",
+		key7: "Projects",
+		key8: "No projects found",
+
 	},
 };
 
@@ -120,44 +126,45 @@ module.exports = {
 					<p style="margin-left:2rem;font-size:2rem">${translation[data.language].key5}</p>
 
 					<div class="all-blogs-list">
-						<div class="all-blogs-item ">
+
+					${async () => {
+ 
+						const text = `SELECT "${data.language}",id FROM projects LIMIT 3`;
+
+					   const values = [];
+				   
+					   var record = await Index.pool.query(text, values);
+
+ 
+					   if (record.rowCount != 0) {
+
+						   return "".concat(
+							   ...record.rows.map(t => {
+
+								console.log(t)
+ 								   return `
+
+
+						<div onclick="window.location.href = './projects/${t.id}'" class="all-blogs-item ">
 							<div class="icon">
-								<img src="${cdn}/assets/advice.svg" />
+								<img src="${t[data.language].thumbnail_url}" />
 							</div>
-
-							<span>Advice Manager</span>
+							<span>${t[data.language].title}</span>
 						</div>
+`;
+							   }),
+						   );
+					   } else {
+						   return `<p>${translation[data.language].key8}</p>`
+					   }
+				   }}
 
-						<div class="all-blogs-item">
-							<div class="icon">
-								<img
-									style="width: 40%;"
-									src="${cdn}/assets/CheatSheet.svg" />
-							</div>
 
-							<span>Cheat Sheet Manager</span>
-						</div>
-
-						<div class="all-blogs-item">
-							<div class="icon">
-								<img src="${cdn}/assets/middleeast-map.svg" />
-							</div>
-
-							<span>Survive in Middle East</span>
-						</div>
-
-						<div class="all-blogs-item">
-							<div class="icon">
-								<img src="${cdn}/assets/external-link-icon.svg" />
-							</div>
-
-							<span>Link Optimiser</span>
-						</div>
 					</div>
 
-					<h1>Yapılacaklar</h1>
-					<p>procekts crud - isim resim, markdown</p>
-				</main>
+					<h1>To Do</h1>
+ 
+					</main>
 
 				<style>
 					.all-blogs-item:has(.icon) {

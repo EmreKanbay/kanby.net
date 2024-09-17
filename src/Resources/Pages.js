@@ -13,6 +13,8 @@ const Contact = require("./Pages/Contact");
 const AddProject = require("./Pages/Admin/Projects/AddProject");
 const AllProjects = require("./Pages/Admin/Projects/AllProjects");
 const ViewProject = require("./Pages/Admin/Projects/ViewProject");
+const Projects = require("./Pages/Visitor/Projects");
+const SingleProject = require("./Pages/Visitor/SingleProject");
 
 module.exports = {
 	LoginPage,
@@ -30,5 +32,7 @@ module.exports = {
 	AddProject,
 	AllProjects,
 	ViewProject,
+	Projects,
+	SingleProject
 
 };
