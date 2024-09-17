@@ -123,7 +123,7 @@ module.exports = {
 						</div>
 					</div>
 
-					<p style="margin-left:2rem;font-size:2rem">${translation[data.language].key5}</p>
+					<p style="margin-left:2rem;font-size:2rem"><a href="./projects">${translation[data.language].key5}</a></p>
 
 					<div class="all-blogs-list">
 

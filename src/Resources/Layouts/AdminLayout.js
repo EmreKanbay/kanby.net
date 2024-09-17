@@ -73,9 +73,9 @@ module.exports = async data =>
                
 
                         <div class="l-sidebar">
-                            <div class="logo">
+                            <a href="https://kanby.net" class="logo">
                                  <img   style="height:90%" src="${cdn}/assets/logo.svg"/>
-                             </div>
+                             </a>
                             <div class="l-sidebar__content">
                                 <nav class="nav-menu js-menu">
                                     <ul class="u-list">

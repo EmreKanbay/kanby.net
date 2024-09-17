@@ -43,7 +43,7 @@ module.exports = {
 			content: await construct`
 
  
-			 <div class="blog-body">
+	 
 
 				${async () => {
 		
@@ -56,24 +56,83 @@ module.exports = {
 
 					return `
                     
-                    <p class="title" >${record.rows[0].title}</p>
-                    <p>${record.rows[0].description}</p>
+                    
+					<div id="blog-container" >
+						<div id="blog-container-text">
+						<p class="blog-title" >${record.rows[0].title}</p>
+						<p class="blog-description">${record.rows[0].description}</p>
+						</div>
+						<img class="cover-img" src="${record.rows[0].thumbnail_url}" />					
+					</div>
+
 
 					<div class="seperator"></div>
-                    <img class="cover-img" src="${record.rows[0].thumbnail_url}" />
+                    
 
-					<div class="content">
+					<div class="markdown-body content">
                  ${record.rows[0].rendered_content}
 					</div>
                     
                     `;
 				}}
-				
-		 </div>
+	 
 			 
 		 
          <style>
          
+		 @media only screen and (max-width: 428px) {
+
+		 .content{
+		padding: 0 1rem;
+		 
+		 }
+
+		 .blog-title{
+		 
+		 font-size: 2rem;
+		 font-weight: bold;
+		 margin: 0;
+		 }
+
+		#blog-container-text{
+			 padding: 0 1rem;
+		 justify-self:center;
+		 display:flex;
+		 flex-direction: column;
+		 grid-area:b;
+
+		 }
+
+
+		 .cover-img{
+		 justify-self: center;
+		 
+		 grid-area: a;
+		 
+		 }
+
+
+		 #blog-container{
+		 
+		 display: grid;
+		 grid-template-columns: 100%;
+		 grid-template-rows: auto auto;
+		 grid-template-areas: "a" "b";
+		 
+		 
+		 }
+
+
+		}
+
+
+	
+
+ 
+
+
+
+
          .seperator{
 		 
 		 height:2px;
@@ -81,14 +140,7 @@ module.exports = {
 		 background-color:black;
 		 margin-bottom:1rem;
 		 }
-         .blog-body{
-         
-         display:flex;
-		 width:100%;
-           flex-direction:column;
-          align-items:center;
- 
-         }
+
 				.title{
 				font-size:2rem;
 				font-weight:bold;
