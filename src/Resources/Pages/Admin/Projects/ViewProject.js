@@ -61,10 +61,11 @@ head: await construct``,
 			return await construct`
 
 			${async () => {
-						return  "".concat(...Object.values(t).map(trx => {
+
+				return "".concat(...(await Promise.all(Object.values(t).map( async trx => {
  						
-						if(trx?.title){
-													return `
+			if(trx?.title){
+									return await construct`
 
 <details>
 
@@ -89,6 +90,45 @@ head: await construct``,
 
 
 
+
+	<h2>${trx?.language} Links</h2>
+				<div class="cont-links-${trx?.language}">
+					<cite>*Link titles must be different, or it will corrupt</cite>
+
+					<div class="cont-links-inner-${trx?.language}">
+					
+	
+							${async () => {
+
+				if(trx?.links){
+
+
+				const links = JSON.parse(trx?.links)
+				
+				return "".concat(...Object.keys(links).map(ytz => {
+					
+					return `<div class="project-link-cont-${trx?.language}"><span>Title: </span> <input value="${ytz}" class="link-title-${trx?.language}" placeholder="title" type="text"> <span>Link: </span> <input  value="${links[ytz]}" class="link-link-${trx?.language}" placeholder="link" type="text"><input onclick="this.parentNode.remove()" class="remove-link" type="button" value="-"></div>`
+					
+					}))
+
+				} else {
+				return `<div class="project-link-cont-${trx?.language}"><span>Title: </span> <input class="link-title-${trx?.language}" placeholder="title" type="text"> <span>Link: </span> <input class="link-link-${trx?.language}" placeholder="link" type="text"><input onclick="this.parentNode.remove()" class="remove-link" type="button" value="-"></div>` 
+				}
+				
+				
+				}}
+					
+					
+						</div>
+
+				<input onclick="addNewLink(this, '${trx?.language}')" type="button" class="add-link" value="+">
+				</div>
+
+
+
+
+
+
 				<h2>${trx?.language} Markdown</h2>
 
 				<textarea   id="project-markdown-content-${trx?.language}"  class="markdown-editor" >${trx?.markdown_raw}</textarea>
@@ -99,18 +139,29 @@ head: await construct``,
 			
 					
 `;
-						}else return null
+						}else return ``
 
-						}))
-						
+						}))))
 						
 					}}
 
 		
 		`;
 		}}
+	
    
 </div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 <div id="project-view-cont">
@@ -137,12 +188,16 @@ ${async () => {
 
 <h2>${trx?.language} Markdown: ${trx?.markdown_raw}</h2>
  
+
+
+
+
 </details>
 
 
 
 `;
-	}else return null
+	}else return ``
 
 	}))
 	
@@ -209,6 +264,54 @@ ${async () => {
 	</style>
  
   <script>
+
+
+  	const addNewLink = (t, lng)=> {
+
+
+		var a = document.createElement("div")
+		var b = document.createElement("span")
+		var c = document.createElement("input")
+		var d = document.createElement("span")
+		var e = document.createElement("input")
+		var f = document.createElement("input")
+
+		a.append(b)
+		a.append(c)
+		a.append(d)
+		a.append(e)
+		a.append(f)
+
+	a.classList.add("project-link-cont-"+ lng)
+	b.innerText = "Title: "
+	c.classList.add("link-title-" + lng)
+	c.setAttribute("placeholder", "Title")	
+	c.setAttribute("type", "text")	
+	d.innerText = "Link: "
+	e.classList.add("link-link-" + lng)
+	e.setAttribute("placeholder", "Link")	
+	e.setAttribute("type", "text")	
+ 	f.setAttribute("type", "button")	
+ 	f.setAttribute("value", "-")	
+	f.addEventListener("click", (e) => {
+
+		e.target.parentNode.remove()		
+		
+		
+		})
+
+
+
+	t.previousElementSibling.append(a)
+ 
+	
+	}
+
+
+
+
+
+
   
 document.querySelectorAll(".form-edit-project").forEach(ety => {ety.addEventListener("submit", async (e)=> {
 	e.preventDefault()
@@ -230,10 +333,18 @@ document.querySelectorAll(".form-edit-project").forEach(ety => {ety.addEventList
 		
 		const formData = new FormData()
 
+	var links = {}
+	document.querySelectorAll(".link-title-" + lngt).forEach(tete => {
+		
+		links[tete.value] = tete.nextElementSibling.nextElementSibling.value
+		
+		})
+
 		if(res.ok){
 
 	  formData.append(lngt, JSON.stringify({
 		
+	  			links: JSON.stringify(links),
 				title: document.querySelector("#project-title-" + lngt).value,
 				markdown_raw:  document.querySelector("#project-markdown-content-" + lngt).value,
 				markdown_rendered: markdown_rndnr,

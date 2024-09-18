@@ -69,15 +69,25 @@ module.exports = {
 
                     
 
-					return `
+					return await construct`
                     
 			 <div class="blog-container">
         
 											<aside>
   				 
 								<img class="cover-img" src="${record.rows[0][data.language].thumbnail_url}" />
-            <p class="blog-title" >${record.rows[0][data.language].title}</p>
+           			 <p class="blog-title" >${record.rows[0][data.language].title}</p>
                     <p class="blog-description">${record.rows[0][data.language].description}</p>
+
+                    ${async () => {
+
+ 						return "".concat(...Object.keys(JSON.parse(record.rows[0][data.language].links)).map( yy => {
+							
+							return `<p>${yy} -> ${JSON.parse(record.rows[0][data.language].links)[yy]}</p>`
+							}))
+						
+						
+						}}
 
 
 						</aside>

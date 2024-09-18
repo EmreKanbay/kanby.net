@@ -195,6 +195,8 @@ res.send(await Pages.AllProjects.html({user_id: req.params.user_id}));
 	})
 	.put(Index.upload.none(), async (req, res) => {
 
+		console.log(req.body)
+
 		const columns = Object.keys(req.body).map(key => `"${key}"`).join(", "); // Get the column names as a string
 		const records = Object.values(req.body); 
 		const placeholders = records.map((_, idx) => `$${idx + 1}`).join(", ");

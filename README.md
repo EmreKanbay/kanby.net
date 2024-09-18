@@ -101,6 +101,21 @@ BUT, if you will run async function inside of map, it will return you an array o
 	}}
 </select>
 ```
+so final touch is this, you can use as much of async awaits and construct tag as you want
+
+```js
+
+	${async () => {
+		return "".concat(...(await Promise.all(
+			[1,2,3,4].map(t => {
+
+})
+		)))
+	}}
+
+```
+
+
 
 #### Running code inside of template literal.
 

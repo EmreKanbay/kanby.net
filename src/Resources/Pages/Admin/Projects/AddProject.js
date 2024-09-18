@@ -49,15 +49,25 @@ head: await construct``,
 				<input id="project-cover-image-${t}"  type="text">
 				<p>*Preferably cover image aspect ratio should be 4/3 (1280 x 960) and filetype should be png or jpg </p>
 
+				<h2>${t} Links</h2>
+				<div class="cont-links-${t}">
+					<cite>*Link titles must be different, or it will corrupt</cite>
 
+					<div class="cont-links-inner-${t}">
+						<div class="project-link-cont-${t}"><span>Title: </span> <input class="link-title-${t}" placeholder="title" type="text"> <span>Link: </span> <input class="link-link-${t}" placeholder="link" type="text"><input onclick="this.parentNode.remove()" class="remove-link" type="button" value="-"></div>
+					</div>
+				<input onclick="addNewLink(this, '${t}')" type="button" class="add-link" value="+">
+				</div>
+				
 
 				<h2>${t} Markdown</h2>
+ 
+				
+
+
 
 				<textarea   id="project-markdown-content-${t}"  class="markdown-editor" ></textarea>
 			<input class="preview-markdown" value="preview" type="button" />
-
-
-	
 
 			
 					
@@ -87,6 +97,49 @@ head: await construct``,
 				
 				</style>
 	<script>
+
+
+	const addNewLink = (t, lng)=> {
+
+
+		var a = document.createElement("div")
+		var b = document.createElement("span")
+		var c = document.createElement("input")
+		var d = document.createElement("span")
+		var e = document.createElement("input")
+		var f = document.createElement("input")
+
+		a.append(b)
+		a.append(c)
+		a.append(d)
+		a.append(e)
+		a.append(f)
+
+	a.classList.add("project-link-cont-"+ lng)
+	b.innerText = "Title: "
+	c.classList.add("link-title-" + lng)
+	c.setAttribute("placeholder", "Title")	
+	c.setAttribute("type", "text")	
+	d.innerText = "Link: "
+	e.classList.add("link-link-" + lng)
+	e.setAttribute("placeholder", "Link")	
+	e.setAttribute("type", "text")	
+ 	f.setAttribute("type", "button")	
+ 	f.setAttribute("value", "-")	
+	f.addEventListener("click", (e) => {
+
+		e.target.parentNode.remove()		
+		
+		
+		})
+
+
+
+	t.previousElementSibling.append(a)
+ 
+	
+	}
+
 
 	document.querySelectorAll(".preview-markdown").forEach(ty => {ty.addEventListener("click",async (e)=> {
 		
@@ -134,7 +187,14 @@ head: await construct``,
 		
 		})
 
+
+			var links = {}
+
+
 await Promise.all(all_langs.map(async yhz => {
+
+  
+
 
 		var res2 = await fetch("https://api.github.com/markdown", {
 			headers: {"accept": "application/vnd.github+json"},
@@ -143,9 +203,11 @@ await Promise.all(all_langs.map(async yhz => {
 			})
 
 		if(res2.ok){
+
+
 		
 				formData.append(yhz, JSON.stringify({
-		
+		links: JSON.stringify(links),
 		title: document.querySelector("#project-title-" + yhz).value,
 		markdown_raw:  document.querySelector("#project-markdown-content-" + yhz).value,
 		markdown_rendered: await res2.text(),

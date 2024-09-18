@@ -113,7 +113,7 @@ module.exports = {
 		 margin: 0;
 		 }
          
-		 @media only screen and (max-width: 800px) {
+		 @media only screen and (max-width: 428px) {
 
 		aside{
 			 padding: 0 1rem;
@@ -148,7 +148,7 @@ module.exports = {
 
 
 	
- @media only screen and (min-width: 800px){
+ @media only screen and (min-width: 428px){
 
  
 		aside{
