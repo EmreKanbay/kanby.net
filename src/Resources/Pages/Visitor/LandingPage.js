@@ -56,8 +56,7 @@ module.exports = {
 						<figure class="image-profile">
 							<img
 								src="${cdn}/assets/EmreKanbay.jpeg"
-								alt="Trulli"
-								style="width:100%" />
+								alt="Emre-Kanbay-kanby.net-software-engineer"/>
 							<figcaption>Emre Kanbay | ${translation[data.language].key6}</figcaption>
 						</figure>
 
@@ -204,9 +203,11 @@ module.exports = {
 
 					.profile-container {
 						display: flex;
-
-						justify-content: space-between;
+						flex-wrap: wrap;
 					}
+					.profile-container >  div {
+						width: 400px;
+					}	
 					.profile-container figure figcaption {
 						white-space: nowrap;
 					}
@@ -215,6 +216,7 @@ module.exports = {
 						flex-grow: 1;
 					}
 					.profile-container figure img {
+					width: 300px;
 						border-radius: 1rem 1rem 1rem 0rem;
 					}
 

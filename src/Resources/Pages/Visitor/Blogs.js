@@ -6,15 +6,15 @@ const Framework = require("#Framework");
 
 const translation = {
 	Turkish: {
-		title:"Bloglar - Freelance Tasarımcı ve Yazılımcı - kanby.net",
-		description:"Ben arayüz tasarlayan ve kod yazan bir yazılımcıyım",
+		title: "Bloglar - Freelance Tasarımcı ve Yazılımcı - kanby.net",
+		description: "Ben arayüz tasarlayan ve kod yazan bir yazılımcıyım",
 
 		key1: "Bloglar",
 		key2: "Blog henüz yok",
 	},
 	English: {
-		title:"Freelance Designer and Programmer - kanby.net",
-		description:"I am a software engineer who writes code and designs interfaces",
+		title: "Freelance Designer and Programmer - kanby.net",
+		description: "I am a software engineer who writes code and designs interfaces",
 
 		key1: "Blogs",
 		key2: "No blog exist yet",
@@ -26,7 +26,7 @@ module.exports = {
 		await Layouts.VisitorLayout({
 			language: data.language,
 			head: await Framework.render`
- 
+
 			<title>${he.encode(translation[data.language].title)}</title>
             <meta name="description" content="${he.encode(translation[data.language].description)}"/>
             <link rel="canonical" href="https://kanby.net/${data.language}/blogs/">
@@ -65,7 +65,7 @@ module.exports = {
 						return `<p>${translation[data.language].key2}</p>`;
 					}
 				}}
-				
+
 				</div>
 
 				<style>
@@ -84,31 +84,31 @@ module.exports = {
 				}
 
 				.all-blogs-item img{
-				
+
 				width:100%
 				}
 
 				.all-blogs-item{
 				display:grid;
 				place-items:center;
-				
+
 				}
-				
+
 				#all-blogs-list{
-				
+
 				width:100%;
 				display:flex;
 				flex-wrap:wrap;
                 padding: .5rem 2rem;
 				gap:1rem;
-				
-				
+
+
 				}
-				
+
 				</style>
 
- 			
-			 
+
+
 
       `,
 		}),
