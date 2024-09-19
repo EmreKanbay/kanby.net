@@ -25,9 +25,12 @@ module.exports = async data =>
 			
 		</head>
 		<body>
+
 			${await Components.visitor.Header.html({ language: data.language })} 
 			
+			<main style="padding-top:3rem">
 			${await data.content} 
+			</main>
 			
 			${await Components.visitor.Footer.html({ language: data.language })}
 		

@@ -95,7 +95,7 @@ root.get("/robots.txt", function (req, res, next) {
 });
 
 root.get("/rss.xml", async function (req, res, next) {
-	res.type("application/rss+xml");
+	res.type("application/xml");
 
 	const rss = await Framework.render
 `<?xml version="1.0" encoding="UTF-8"?>

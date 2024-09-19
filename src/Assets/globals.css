@@ -37,6 +37,7 @@ html {
 	margin: 0;
 	width: 100vw;
 	overflow-x: hidden;
+	overflow-y: visible;
 	scrollbar-gutter: stable;
 }
 

@@ -71,7 +71,7 @@ box-sizing: border-box;
 }
 
 #marquee-cont{
-
+  margin-top:.5rem;
   width:100%;
   overflow: hidden;
   white-space: nowrap;

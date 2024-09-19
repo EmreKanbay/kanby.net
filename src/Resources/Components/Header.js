@@ -41,7 +41,7 @@ module.exports = {
 	html: data => Framework.render`
 	
 	<header class="liwlCh-header-container">
-    <input
+ <input
         class="liwlCh-header-menu-toggle"
         type="checkbox"
         name=""
@@ -98,7 +98,8 @@ module.exports = {
     <div
         tabindex="0"
         class="liwlCh-header-menu-search">
-        <div class="liwlCh-header-menu-search-top-bar">
+		
+        <!-- <div class="liwlCh-header-menu-search-top-bar">
             <form class="liwlCh-header-menu-search-top-bar-form">
                 <span>
                     <input
@@ -114,21 +115,22 @@ module.exports = {
                     value="" />
                 <cite>Not Available</cite>
             </form>
-        </div>
+        </div>-->
     </div>
-</header>
+	
+	</header>
 
 
 
 	<script>
-		const cancelSearchTab = e => {
-			e.blur();
-		};
+		// const cancelSearchTab = e => {
+		// 	e.blur();
+		// };
 
-		document.querySelector(".liwlCh-header-menu-search-top-bar-form").addEventListener("submit", e => {
-			e.preventDefault();
-			alert("Search Not Available Yet");
-		});
+		// document.querySelector(".liwlCh-header-menu-search-top-bar-form").addEventListener("submit", e => {
+		// 	e.preventDefault();
+		// 	alert("Search Not Available Yet");
+		// });
 	</script>
 
 	<style>
@@ -139,6 +141,9 @@ module.exports = {
 			z-index:123
 			}
 			.liwlCh-header-container {
+			position:fixed;
+			width:100vw;
+				background:white;
 				display: grid;
 				--header-height: 3rem;
 				grid-template-rows: var(--header-height);
@@ -188,7 +193,7 @@ module.exports = {
 				background-position: right;
 			}
 
-			.liwlCh-header-menu-search-top-bar {
+			/* .liwlCh-header-menu-search-top-bar {
 				position: absolute;
 				cursor: default;
 
@@ -257,7 +262,7 @@ module.exports = {
 			.liwlCh-header-menu-search-top-bar-form cite {
 				text-align: center;
 				grid-area: 2 / 1 / span 1 / span 2;
-			}
+			}*/
 		}
 
 		/* @For Mobile Devices */
@@ -302,19 +307,19 @@ module.exports = {
 				text-decoration: none;
 			}
 
-			// .liwlCh-header-menu-navigation-heading > span::after {
-			// 	opacity: 0.6;
-			// 	content: "";
-			// 	background-image: url("${cdn}/assets/external-link.svg");
-			// 	background-size: 80%;
-			// 	background-repeat: no-repeat;
-			// 	background-position: center;
-			// 	width: 2rem;
-			// 	left: 100%;
-			// 	height: 2rem;
+			/*.liwlCh-header-menu-navigation-heading > span::after {
+				opacity: 0.6;
+				content: "";
+				background-image: url("${cdn}/assets/external-link.svg");
+				background-size: 80%;
+				background-repeat: no-repeat;
+				background-position: center;
+				width: 2rem;
+				left: 100%;
+				height: 2rem;
 
-			// 	position: absolute;
-			// }
+				position: absolute;
+			}*/
 
 			.liwlCh-header-menu-navigation-heading ul {
 				margin: 0;
@@ -408,18 +413,18 @@ module.exports = {
 				text-decoration: none;
 			}
 
-			// .liwlCh-header-menu-navigation-heading > span::after {
-			// 	opacity: 0.6;
-			// 	content: "";
-			// 	background-image: url("${cdn}/assets/external-link.svg");
-			// 	background-size: 80%;
-			// 	background-repeat: no-repeat;
-			// 	background-position: center;
-			// 	width: 2rem;
-			// 	left: 100%;
-			// 	height: 2rem;
-			// 	position: absolute;
-			// }
+			/*.liwlCh-header-menu-navigation-heading > span::after {
+				opacity: 0.6;
+				content: "";
+				background-image: url("${cdn}/assets/external-link.svg");
+				background-size: 80%;
+				background-repeat: no-repeat;
+				background-position: center;
+				width: 2rem;
+				left: 100%;
+				height: 2rem;
+				position: absolute;
+			}*/
 
 			.liwlCh-header-menu-navigation-heading ul {
 				margin: 0;
@@ -499,19 +504,19 @@ module.exports = {
 				width: max-content;
 				padding: 0 0.5rem;
 			}
-			// .liwlCh-header-menu-navigation-heading > span::before {
-			// 	content: "";
-			// 	left: 100%;
-			// 	position: absolute;
-			// 	width: 1.2rem;
-			// 	opacity: 0.4;
-			// 	height: 1.2rem;
-			// 	background-image: url("${cdn}/assets/down-angle.svg");
-			// 	background-repeat: no-repeat;
-			// 	background-size: 100%;
-			// 	background-position: center;
-			// 	margin-left: 0.3rem;
-			// }
+			/*.liwlCh-header-menu-navigation-heading > span::before {
+				content: "";
+				left: 100%;
+				position: absolute;
+				width: 1.2rem;
+				opacity: 0.4;
+				height: 1.2rem;
+				background-image: url("${cdn}/assets/down-angle.svg");
+				background-repeat: no-repeat;
+				background-size: 100%;
+				background-position: center;
+				margin-left: 0.3rem;
+			}*/
 
 			.liwlCh-header-menu-navigation-heading > span {
 				position: relative;
@@ -527,22 +532,22 @@ module.exports = {
 				margin: 0;
 			}
 
-			// .liwlCh-header-menu-navigation-heading > span::after {
-			// 	transform: scaleX(0);
-			// 	position: absolute;
-			// 	transform-origin: center;
-			// 	left: 0;
-			// 	top: 100%;
-			// 	transition: transform 0.1s linear;
-			// 	width: 100%;
-			// 	height: 3px;
-			// 	background-color: rgb(33, 33, 33, 0.4);
-			// 	content: "";
-			// }
+			/*.liwlCh-header-menu-navigation-heading > span::after {
+				transform: scaleX(0);
+				position: absolute;
+				transform-origin: center;
+				left: 0;
+				top: 100%;
+				transition: transform 0.1s linear;
+				width: 100%;
+				height: 3px;
+				background-color: rgb(33, 33, 33, 0.4);
+				content: "";
+			}*/
 
-			// .liwlCh-header-menu-navigation-heading:hover > span::after {
-			// 	transform: scaleX(1);
-			// }
+			.liwlCh-header-menu-navigation-heading:hover > span::after {
+				transform: scaleX(1);
+			}
 
 			.liwlCh-header-menu-navigation-heading:hover > ul {
 				opacity: 1;
