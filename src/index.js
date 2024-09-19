@@ -12,20 +12,29 @@ const crypto = require("crypto");
 const { Pool } = pg;
 
 //configure libraries
-const pool = new Pool({
-	user: process.env.PG_USER,
-	host: process.env.PG_HOST,
-	port: process.env.PG_PORT,
-	password: process.env.PG_PASSWORD,
-	database: process.env.PG_DATABASE,
-});
+try {
+	
+	const pool = new Pool({
+		user: process.env.PG_USER,
+		host: process.env.PG_HOST,
+		port: process.env.PG_PORT,
+		password: process.env.PG_PASSWORD,
+		database: process.env.PG_DATABASE,
+	});
+
+} catch (error) {
+	console.log(error)
+}
+
 
 var DB_connected = false;
+
 (async () => {
 	try {
 		await pool.query("SELECT * FROM users LIMIT 1");
 		await pool.query("SELECT * FROM blogs LIMIT 1");
 		await pool.query("SELECT * FROM variables LIMIT 1");
+		await pool.query("SELECT * FROM projects LIMIT 1");
 		await pool.query("SELECT * FROM media LIMIT 1");
 		console.log("DB connected succesfully");
 		DB_connected = true;
@@ -58,12 +67,9 @@ const auth = async (req, res) => {
 
 
 	if (record.rows.length == 1) {
-		res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: false });
-		res.cookie("password_hash", record.rows[0].password_hash, {
-			expires: new Date(Date.now() + 36000000),
-			httpOnly: false,
-		});
-		res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: false });
+		res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true });
+		res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true });
+		res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: true });
 
 		return { authenticated: true, record: record };
 	} else return { authenticated: false };
@@ -94,20 +100,18 @@ root.get("/robots.txt", function (req, res, next) {
 	res.send("User-agent: *\nDisallow: /");
 });
 
+//DB check
 root.use("/", (req, res, next) => {
 	if (DB_connected) next();
 	else res.send("DB is not connected");
 });
 
 // remove trailing slash to all requests
-
 root.use((req, res, next) => {
 	var static = ["assets", "robots.txt"];
 
 	if (!static.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
 		if (req.path.substr(-1) !== "/") {
-			// req.url = .slice(0,-1)
-			// root.handle(req, res, next)
 			res.redirect(req.path + "/");
 			return;
 		} else {
@@ -121,7 +125,6 @@ root.use((req, res, next) => {
 });
 
 // Admin'e gelince credential kontrol ediyor Çünki yetki gerektiren tek admin var
-
 root.use("/admin/", async (req, res, next) => {
 	if (DB_connected) {
 	} else {
@@ -132,8 +135,6 @@ root.use("/admin/", async (req, res, next) => {
 
 	if (checkAuth.authenticated) {
 		if (req.path == "/login/") {
-			res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard`, req.protocol + "://" + req.get("host")));
-		} else if (req.path == "/") {
 			res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard`, req.protocol + "://" + req.get("host")));
 		} else {
 			next();

@@ -20,51 +20,21 @@ const construct = async (x, ...values) => {
 const translation = {
 	Turkish: {
 		key1: "Sosyal Medya",
-		key2: "Bağlantılar",
+		key2: "İçerikler",
 		key2_1: "Bloglar",
-		key2_2: "Haberler",
-		key2_3: "İçerikler",
-		key2_4: "Medya Galerisi",
-		key3: "Hizmetler",
-		key3_1: "Özel İnternet Uygulaması",
-		key3_2: "IOS Uygulaması",
-		key3_3: "Android Uygulaması",
-		key3_4: "Masaüstü Uygulaması",
-		key4: "Ürünler",
-		key4_1: "Restoran Yönetimi",
-		key4_2: "İçerik Yönetim Sistemi",
-		key4_3: "Kurumsal Kaynak Yönetimi",
-		key4_4: "Server Kurulumu",
-		key4_5: "Muhasebe Otomasyonu",
-		key5: "Ücretsiz Araçlar",
-		key5_1: "Tavsiye Yönetim Aracı",
-		key5_2: "Not Yönetim Aracı",
-		key5_3: "Finans Yönetim Aracı",
-		key5_4: "İnsan İlişkileri Yönetim Aracı",
+		key2_2: "Projeler",
+
+
 	},
 	English: {
 		key1: "Social Media",
-		key2: "Links",
+		key2: "Content",
 		key2_1: "Blogs",
-		key2_2: "News",
-		key2_3: "Contents",
-		key2_4: "Media Gallery",
-		key3: "Services",
-		key3_1: "Custom Web App",
-		key3_2: "IOS App",
-		key3_3: "Android App",
-		key3_4: "Desktop App",
-		key4: "Products",
-		key4_1: "Restaurant Management",
-		key4_2: "Content Management System",
-		key4_3: "Enterprise resource planning",
-		key4_4: "Server Setup",
-		key4_5: "Accountant Automation",
-		key5: "Free Tools",
-		key5_1: "Advice Manager",
-		key5_2: "Cheat Sheet Manager",
-		key5_3: "Finance Manager",
-		key5_4: "Personal Relations Manager",
+		key2_2: "Projects",
+
+
+
+	
 	},
 };
 
@@ -77,7 +47,7 @@ module.exports = {
         <div class="K0e6gd-heading">
             <p>${translation[data.language].key1}</p>
             <ul>
-                <li>
+                <li class="external-link">
                     <img
                         src="${cdn}/assets/github.svg"
                         alt="" />
@@ -87,7 +57,7 @@ module.exports = {
                         Github
                     </a>
                 </li>
-                <li>
+                <li class="external-link">
                     <img
                         src="${cdn}/assets/twitter.svg"
                         alt="" />
@@ -97,7 +67,7 @@ module.exports = {
                         Twitter / X
                     </a>
                 </li>
-                <li>
+                <li class="external-link">
                     <img
                         src="${cdn}/assets/linkedin.svg"
                         alt="" />
@@ -107,7 +77,7 @@ module.exports = {
                         LinkedIn
                     </a>
                 </li>
-                <li>
+                <li class="external-link">
                     <img
                         src="${cdn}/assets/codepen.svg"
                         alt="" />
@@ -117,7 +87,7 @@ module.exports = {
                         CodePen
                     </a>
                 </li>
-                <li>
+                <li class="external-link">
                     <img
                         src="${cdn}/assets/tiktok.svg"
                         alt="" />
@@ -127,7 +97,7 @@ module.exports = {
                         Tiktok
                     </a>
                 </li>
-                <li>
+                <li class="external-link">
                     <img
                         src="${cdn}/assets/Instagram.svg"
                         alt="" />
@@ -140,149 +110,25 @@ module.exports = {
             </ul>
         </div>
 
-        <div class="K0e6gd-heading">
-            <p>${translation[data.language].key2}</p>
-            <ul>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/company">
-                        ${translation[data.language].key2_1}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/team">
-                        ${translation[data.language].key2_2}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/careers">
-                        ${translation[data.language].key2_3}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/press">
-                        ${translation[data.language].key2_4}
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-
-        <div class="K0e6gd-heading">
-            <p>${translation[data.language].key3}</p>
-            <ul>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/company">
-                        ${translation[data.language].key3_1}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/team">
-                        ${translation[data.language].key3_2}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/careers">
-                        ${translation[data.language].key3_3}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/press">
-                        ${translation[data.language].key3_4}
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-
-
-        <div class="K0e6gd-heading">
-            <p>${translation[data.language].key4}</p>
-            <ul>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/company">
-                        ${translation[data.language].key4_1}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/team">
-                        ${translation[data.language].key4_2}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/careers">
-                        ${translation[data.language].key4_3}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/press">
-                        ${translation[data.language].key4_4}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/press">
-                        ${translation[data.language].key4_5}
-                    </a>
-                </li>
-            </ul>
-        </div>
+      
 
 
 
                 <div class="K0e6gd-heading">
-            <p>${translation[data.language].key5}</p>
+            <p>${translation[data.language].key2}</p>
             <ul>
+
                 <li>
                     <a
-                        target="_blank"
-                        href="/company">
-                        ${translation[data.language].key5_1}
+                         href="/${data.language}/blogs">
+                        ${translation[data.language].key2_1}
                     </a>
                 </li>
-                <li>
+
+                               <li>
                     <a
-                        target="_blank"
-                        href="/team">
-                        ${translation[data.language].key5_2}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/careers">
-                        ${translation[data.language].key5_3}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        target="_blank"
-                        href="/press">
-                        ${translation[data.language].key5_4}
+                         href="/${data.language}/projects">
+                        ${translation[data.language].key2_2}
                     </a>
                 </li>
 
@@ -352,7 +198,7 @@ module.exports = {
 			width: 1.5rem;
 		}
 
-		.K0e6gd-heading > ul > li::after {
+		.K0e6gd-heading > ul > li.external-link::after {
 			content: "";
 			width: 1.3rem;
 			height: 1.3rem;

@@ -10,31 +10,42 @@ const cdn = process.env.CDN_DOMAIN;
 
 const admin = Index.express.Router();
 
-const sub_admin = Index.express.Router();
-
 admin.get("/login/", async (req, res) => {
-	res.send(await Pages.LoginPage.html({language: "English"}));
+	try {
+		res.send(await Pages.LoginPage.html({language: "English"}));
+		
+	} catch (error) {
+		console.log(error)
+		res.status().send("Error")
+	}
 });
 
 admin.post("/login/", Index.upload.none(), async (req, res) => {
 
-	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name= $1 AND password_hash= $2`;
+	try {
+		const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name= $1 AND password_hash= $2`;
+	
+		const values = [req?.body?.login_name, Index.sha256(req?.body?.login_password)];
+	
+		var record = await Index.pool.query(text, values);
+	
+		if (record.rows.length == 1) {
+			res.cookie("login_name", req?.body?.login_name, { expires: new Date(Date.now() + 36000000), httpOnly: false });
+			res.cookie("password_hash", Index.sha256(req?.body?.login_password), {
+				expires: new Date(Date.now() + 36000000),
+				httpOnly: false,
+			});
+			res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: false });
+			res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard/`, req.protocol + "://" + req.get("host")));
+		} else {
+			res.statusCode = 404;
+			res.send(await Components.visitor.ErrorBox.html({ message: "login failed" }));
+		}
+		
+	} catch (error) {
+		console.log(error)
+		res.status(500).send()
 
-	const values = [req?.body?.login_name, Index.sha256(req?.body?.login_password)];
-
-	var record = await Index.pool.query(text, values);
-
-	if (record.rows.length == 1) {
-		res.cookie("login_name", req?.body?.login_name, { expires: new Date(Date.now() + 36000000), httpOnly: false });
-		res.cookie("password_hash", Index.sha256(req?.body?.login_password), {
-			expires: new Date(Date.now() + 36000000),
-			httpOnly: false,
-		});
-		res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: false });
-		res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard/`, "https://" + req.get("host")));
-	} else {
-		res.statusCode = 404;
-		res.send(await Components.visitor.ErrorBox.html({ message: "login failed" }));
 	}
 });
 

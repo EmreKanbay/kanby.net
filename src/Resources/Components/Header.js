@@ -23,39 +23,33 @@ const translation = {
 		key1: "Ücretsiz Araçlar",
 		key1_1: "Tavsiye Yönetim Aracı",
 		key1_2: "Not Yönetim Aracı",
-		key1_3: "Finans Yönetim Aracı",
-		key1_4: "İnsan İlişkileri Yönetim Aracı",
 		key2: "Sosyal Medya",
 		key2_1: "Github",
 		key2_2: "Twitter / X",
 		key2_3: "Linkedin",
-		key2_4: "Codepen",
-		key2_5: "Tiktok",
-		key2_6: "Instagram",
+		key2_4: "Tiktok",
+		key2_5: "Instagram",
 		key3: "Bağlantılar",
 		key3_1: "Bloglar",
-		key3_2: "Haberler",
-		key3_3: "İçerikler",
-		key3_4: "Medya Galerisi",
+		key3_2: "Projeler",
+		key3_3: "Yönetici Paneli",
+	
 	},
 	English: {
 		key1: "Free Tools",
 		key1_1: "Advice Manager",
 		key1_2: "Cheat Sheet Manager",
-		key1_3: "Finance Manager",
-		key1_4: "Personal Relations Manager",
 		key2: "Social Media",
 		key2_1: "Github",
 		key2_2: "Twitter / X",
 		key2_3: "Linkedin",
-		key2_4: "Codepen",
-		key2_5: "Tiktok",
-		key2_6: "Instagram",
+		key2_4: "Tiktok",
+		key2_5: "Instagram",
 		key3: "Links",
 		key3_1: "Blogs",
-		key3_2: "News",
-		key3_3: "Contents",
-		key3_4: "Media Gallery",
+		key3_2: "Projects",
+		key3_3: "Admin Panel",
+
 	},
 };
 
@@ -73,37 +67,38 @@ module.exports = {
 
 
             <div class="liwlCh-header-menu-navigation-heading">
-                <a href="">${translation[data.language].key1}</a>
+                <span>${translation[data.language].key1}</span>
                 <ul>
                     <li><a href="">${translation[data.language].key1_1}</a></li>
                     <li><a href="">${translation[data.language].key1_2}</a></li>
-                    <li><a href="">${translation[data.language].key1_3}</a></li>
-                    <li><a href="">${translation[data.language].key1_4}</a></li>
                 </ul>
             </div>
 
 
             <div class="liwlCh-header-menu-navigation-heading">
-                <a href="">${translation[data.language].key2}</a>
+                <span>${translation[data.language].key2}</span>
                 <ul>
-                    <li><a href="">${translation[data.language].key2_1}</a></li>
-                    <li><a href="">${translation[data.language].key2_2}</a></li>
-                    <li><a href="">${translation[data.language].key2_3}</a></li>
-                    <li><a href="">${translation[data.language].key2_4}</a></li>
-                    <li><a href="">${translation[data.language].key2_5}</a></li>
-                    <li><a href="">${translation[data.language].key2_6}</a></li>
-                </ul>
+                    <li><a target="_blank"
+ href="https://github.com/EmreKanbay">${translation[data.language].key2_1}</a></li>
+                    <li><a target="_blank"
+ href="https://x.com/_EmreKanbay_">${translation[data.language].key2_2}</a></li>
+                    <li><a target="_blank"
+ href="https://www.linkedin.com/in/EmreKanbay/">${translation[data.language].key2_3}</a></li>
+                    <li><a target="_blank"
+ href="https://www.tiktok.com/@Emre_Kanbay">${translation[data.language].key2_4}</a></li>
+                    <li><a target="_blank"
+ href="https://www.instagram.com/_emrekanbay_">${translation[data.language].key2_5}</a></li>
+                 </ul>
             </div>
 
 
 			            <div class="liwlCh-header-menu-navigation-heading">
-                <a href="">${translation[data.language].key3}</a>
+                <span>${translation[data.language].key3}</span>
                 <ul>
-                    <li><a href="">${translation[data.language].key3_1}</a></li>
-                    <li><a href="">${translation[data.language].key3_2}</a></li>
-                    <li><a href="">${translation[data.language].key3_3}</a></li>
-                    <li><a href="">${translation[data.language].key3_4}</a></li>
-                </ul>
+                    <li><a href="/${data.language}/blogs/">${translation[data.language].key3_1}</a></li>
+                    <li><a href="/${data.language}/projects/">${translation[data.language].key3_2}</a></li>
+                    <li><a href="/admin/login/">${translation[data.language].key3_3}</a></li>
+                 </ul>
             </div>
             
             
@@ -312,7 +307,7 @@ module.exports = {
 				font-style: normal;
 				margin: 0;
 			}
-			.liwlCh-header-menu-navigation-heading > a {
+			.liwlCh-header-menu-navigation-heading > span {
 				margin-left: 1rem;
 				position: relative;
 				display: flex;
@@ -323,19 +318,19 @@ module.exports = {
 				text-decoration: none;
 			}
 
-			.liwlCh-header-menu-navigation-heading > a::after {
-				opacity: 0.6;
-				content: "";
-				background-image: url("${cdn}/assets/external-link.svg");
-				background-size: 80%;
-				background-repeat: no-repeat;
-				background-position: center;
-				width: 2rem;
-				left: 100%;
-				height: 2rem;
+			// .liwlCh-header-menu-navigation-heading > span::after {
+			// 	opacity: 0.6;
+			// 	content: "";
+			// 	background-image: url("${cdn}/assets/external-link.svg");
+			// 	background-size: 80%;
+			// 	background-repeat: no-repeat;
+			// 	background-position: center;
+			// 	width: 2rem;
+			// 	left: 100%;
+			// 	height: 2rem;
 
-				position: absolute;
-			}
+			// 	position: absolute;
+			// }
 
 			.liwlCh-header-menu-navigation-heading ul {
 				margin: 0;
@@ -418,7 +413,7 @@ module.exports = {
 				margin: 0;
 			}
 
-			.liwlCh-header-menu-navigation-heading > a {
+			.liwlCh-header-menu-navigation-heading > span {
 				margin-left: 1rem;
 				position: relative;
 				display: flex;
@@ -429,18 +424,18 @@ module.exports = {
 				text-decoration: none;
 			}
 
-			.liwlCh-header-menu-navigation-heading > a::after {
-				opacity: 0.6;
-				content: "";
-				background-image: url("${cdn}/assets/external-link.svg");
-				background-size: 80%;
-				background-repeat: no-repeat;
-				background-position: center;
-				width: 2rem;
-				left: 100%;
-				height: 2rem;
-				position: absolute;
-			}
+			// .liwlCh-header-menu-navigation-heading > span::after {
+			// 	opacity: 0.6;
+			// 	content: "";
+			// 	background-image: url("${cdn}/assets/external-link.svg");
+			// 	background-size: 80%;
+			// 	background-repeat: no-repeat;
+			// 	background-position: center;
+			// 	width: 2rem;
+			// 	left: 100%;
+			// 	height: 2rem;
+			// 	position: absolute;
+			// }
 
 			.liwlCh-header-menu-navigation-heading ul {
 				margin: 0;
@@ -520,21 +515,21 @@ module.exports = {
 				width: max-content;
 				padding: 0 0.5rem;
 			}
-			.liwlCh-header-menu-navigation-heading > a::before {
-				content: "";
-				left: 100%;
-				position: absolute;
-				width: 1.2rem;
-				opacity: 0.4;
-				height: 1.2rem;
-				background-image: url("${cdn}/assets/down-angle.svg");
-				background-repeat: no-repeat;
-				background-size: 100%;
-				background-position: center;
-				margin-left: 0.3rem;
-			}
+			// .liwlCh-header-menu-navigation-heading > span::before {
+			// 	content: "";
+			// 	left: 100%;
+			// 	position: absolute;
+			// 	width: 1.2rem;
+			// 	opacity: 0.4;
+			// 	height: 1.2rem;
+			// 	background-image: url("${cdn}/assets/down-angle.svg");
+			// 	background-repeat: no-repeat;
+			// 	background-size: 100%;
+			// 	background-position: center;
+			// 	margin-left: 0.3rem;
+			// }
 
-			.liwlCh-header-menu-navigation-heading > a {
+			.liwlCh-header-menu-navigation-heading > span {
 				position: relative;
 				font-family: "Roboto", sans-serif;
 				font-weight: 400;
@@ -548,22 +543,22 @@ module.exports = {
 				margin: 0;
 			}
 
-			.liwlCh-header-menu-navigation-heading > a::after {
-				transform: scaleX(0);
-				position: absolute;
-				transform-origin: center;
-				left: 0;
-				top: 100%;
-				transition: transform 0.1s linear;
-				width: 100%;
-				height: 3px;
-				background-color: rgb(33, 33, 33, 0.4);
-				content: "";
-			}
+			// .liwlCh-header-menu-navigation-heading > span::after {
+			// 	transform: scaleX(0);
+			// 	position: absolute;
+			// 	transform-origin: center;
+			// 	left: 0;
+			// 	top: 100%;
+			// 	transition: transform 0.1s linear;
+			// 	width: 100%;
+			// 	height: 3px;
+			// 	background-color: rgb(33, 33, 33, 0.4);
+			// 	content: "";
+			// }
 
-			.liwlCh-header-menu-navigation-heading:hover > a::after {
-				transform: scaleX(1);
-			}
+			// .liwlCh-header-menu-navigation-heading:hover > span::after {
+			// 	transform: scaleX(1);
+			// }
 
 			.liwlCh-header-menu-navigation-heading:hover > ul {
 				opacity: 1;

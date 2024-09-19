@@ -160,8 +160,6 @@ module.exports = {
 
 
 					</div>
-
-					<h1>To Do</h1>
  
 					</main>
 
