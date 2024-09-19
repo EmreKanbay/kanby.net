@@ -18,7 +18,7 @@ const translation = {
 		key3: "En Yeni Bloglar",
 		key4: "Blog Bulunamadı",
 		key5: "Açık kaynak projeler",
-		key6: "Yönetici",
+ 
 		key7: "Projeler",
 		key8: "Proje bulunamadı",
 	},
@@ -31,7 +31,7 @@ const translation = {
 		key3: "New Blogs",
 		key4: "No Blog found",
 		key5: "Open Source Projects",
-		key6: "Supervisor",
+ 
 		key7: "Projects",
 		key8: "No projects found",
 	},
@@ -59,7 +59,7 @@ module.exports = {
 							<img
 								src="${cdn}/assets/EmreKanbay.jpeg"
 								alt="Emre-Kanbay-kanby.net-software-engineer"/>
-							<figcaption>Emre Kanbay | ${translation[data.language].key6}</figcaption>
+							<figcaption>Emre Kanbay</figcaption>
 						</figure>
 
 						<div>
@@ -204,16 +204,30 @@ module.exports = {
 					}
 
 					.profile-container {
-						display: flex;
+						display: grid;
+						grid-template-columns: 1fr 1fr;
+						grid-template-rows: auto auto;
 						justify-content:center;
-						flex-wrap: wrap;
+						grid-template-areas: "a b" "a b";
+
+ 					}
+
+					@media only screen and (max-width: 600px){
+
+					.profile-container {
+					grid-template-areas: "a a" "b b"
+
+					}
 					}
 					.profile-container >  div {
-						width: 400px;
+					grid-area: b;
+					margin: 1rem;
+					
 					}
 
 					.profile-container figure  {
-					width: 40%;
+					margin: 1rem;
+					grid-area: a;
 					}
 
 					.profile-container figure img {
@@ -223,8 +237,8 @@ module.exports = {
 
 					.profile-heading {
 						font-size: 2rem;
-						white-space: nowrap;
-						font-weight: bold;
+						margin:0;
+ 						font-weight: bold;
 					}
 				</style>
 			`,
