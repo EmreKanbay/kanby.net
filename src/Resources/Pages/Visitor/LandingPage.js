@@ -10,8 +10,9 @@ const cdn = process.env.CDN_DOMAIN;
 
 const translation = {
 	Turkish: {
-		title:"kanby.net - Freelance tasarım ve yazılım",
-		description:"Burada, yaratıcı tasarım projelerimden ve özelleştirilmiş yazılım çözümlerimden örnekler bulabilirsiniz. Web tasarımı, kullanıcı deneyimi (UX), ve yazılım geliştirme konularında sunduğum hizmetlerle, projelerinize estetik ve işlevsellik katmayı amaçlıyorum",
+		title: "kanby.net - Freelance tasarım ve yazılım",
+		description:
+			"Burada, yaratıcı tasarım projelerimden ve özelleştirilmiş yazılım çözümlerimden örnekler bulabilirsiniz. Web tasarımı, kullanıcı deneyimi (UX), ve yazılım geliştirme konularında sunduğum hizmetlerle, projelerinize estetik ve işlevsellik katmayı amaçlıyorum",
 		key1: "Düşünce, Tasarım, Yazılım",
 		key2: "Talep üzerine uygulamalar geliştiriyorum. Bu uygulamalar web uygulamaları, iOS ve Android uygulamaları, masaüstü ve mobil için oyunlar, IoT projeleri, sunucu kurulumu, hosting, bulut sunucu kurulumu ve SQL sunucu kurulumu içeriyor",
 		key3: "En Yeni Bloglar",
@@ -22,8 +23,9 @@ const translation = {
 		key8: "Proje bulunamadı",
 	},
 	English: {
-		title:"kanby.net - freelance designer and programmer",
-		description:"Here, you can find examples of my creative design projects and custom software solutions. With my services in web design, user experience (UX), and software development, I aim to add both aesthetics and functionality to your projects",
+		title: "kanby.net - freelance designer and programmer",
+		description:
+			"Here, you can find examples of my creative design projects and custom software solutions. With my services in web design, user experience (UX), and software development, I aim to add both aesthetics and functionality to your projects",
 		key1: "Think, Design, Code",
 		key2: "I develop apps from on demand. These apps contains web apps, IOS and Android apps, Games for desktop and mobile, Iot projects, Server setup, hosting, cloud server setup, SQL server setup",
 		key3: "New Blogs",
@@ -50,7 +52,7 @@ module.exports = {
 
 			content: await Framework.render`
 
-			${await Components.visitor.Marquee.html({ text: '<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">RSS Available<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">', time: 20 })} 
+			${await Components.visitor.Marquee.html({ text: '<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">RSS Available<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">', time: 20 })}
 				<main id="page-container">
 					<div class="profile-container">
 						<figure class="image-profile">
@@ -147,7 +149,7 @@ module.exports = {
 
 
 					</div>
- 
+
 					</main>
 
 				<style>
@@ -203,20 +205,19 @@ module.exports = {
 
 					.profile-container {
 						display: flex;
+						justify-content:center;
 						flex-wrap: wrap;
 					}
 					.profile-container >  div {
 						width: 400px;
-					}	
-					.profile-container figure figcaption {
-						white-space: nowrap;
 					}
 
-					.profile-container figure {
-						flex-grow: 1;
+					.profile-container figure  {
+					width: 40%;
 					}
+
 					.profile-container figure img {
-					width: 300px;
+					width: 100%;
 						border-radius: 1rem 1rem 1rem 0rem;
 					}
 
