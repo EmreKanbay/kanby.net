@@ -3,7 +3,7 @@ const Layouts = require("#Layouts");
 require("dotenv").config();
 const cdn = process.env.CDN_DOMAIN;
 
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -33,10 +33,10 @@ module.exports = {
 		await Layouts.VisitorLayout({
 			language: data.language,
 
-			head: await construct`
+			head: await render`
 		<title>404 | Not Found</title>
 	`,
-			content: await construct`
+			content: await render`
 
 
 			<main style="width:100%; display:flex;align-items:center;flex-direction:column;margin:2rem 0rem">

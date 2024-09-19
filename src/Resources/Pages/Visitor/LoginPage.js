@@ -1,6 +1,6 @@
 const Layouts = require("#Layouts");
 
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -22,11 +22,11 @@ module.exports = {
 		await Layouts.VisitorLayout({
 			language: data.language,
 
-			head: await construct`
+			head: await render`
  
 	<title>Login</title>
 `,
-			content: await construct`
+			content: await render`
 <div class="ge0yN5-container">
 	<form class="ge0yN5-form">
 		<h1>Admin Panel Login</h1>

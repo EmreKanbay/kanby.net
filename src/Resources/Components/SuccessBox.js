@@ -1,4 +1,4 @@
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -15,7 +15,7 @@ const construct = async (x, ...values) => {
 };
 
 module.exports = {
-	html: data => construct`
+	html: data => render`
 	<div id="qMQEbc-container">
 		<div>
 			<svg
@@ -72,5 +72,5 @@ module.exports = {
 		}
 	</style>
 `,
-	js: data => construct``,
+	js: data => render``,
 };

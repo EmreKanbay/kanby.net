@@ -97,15 +97,39 @@ root.get("/robots.txt", function (req, res, next) {
 	res.send("User-agent: *\nDisallow: /");
 });
 
+root.get("/rss.xml", function (req, res, next) {
+	res.type("application/rss+xml");
+
+	const rss = `<?xml version="1.0" encoding="UTF-8"?>
+	<rss version="2.0">
+	  <channel>
+		<title>Kanby.net</title>
+		<link>https://kanby.net</link>
+
+   <item>
+      <title>Server side rendering</title>
+      <link>https://kanby.net/English/blogs/12/</link>
+      <description>JS server side rendering</description>
+      <pubDate>Tue, 20 Sep 2024 10:00:00 +0000</pubDate>
+      <guid>https://kanby.net/English/blogs/12/</guid>
+    </item>
+
+		</channel>
+	</rss>`;
+	
+	res.send(rss);
+  });
+
+
 //DB check
 root.use("/", (req, res, next) => {
 	if (DB_connected) next();
 	else res.send("DB is not connected");
 });
 
-// remove trailing slash to all requests
+// These are the endpoints which should not add trailing slashes
 root.use((req, res, next) => {
-	var static = ["assets", "robots.txt"];
+	var static = ["robots.txt", "rss.xml"];
 
 	if (!static.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
 		if (req.path.substr(-1) !== "/") {

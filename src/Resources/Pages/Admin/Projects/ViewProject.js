@@ -5,7 +5,7 @@ const he = require("he");
 require("dotenv").config();
 const cdn = process.env.CDN_DOMAIN;
 
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -26,8 +26,8 @@ module.exports = {
 		await Layouts.AdminLayout({
 			user_id: data.user_id,
 
-head: await construct``,
-			content: await construct`
+head: await render``,
+			content: await render`
 
 
 
@@ -58,14 +58,14 @@ head: await construct``,
 			
 			t = query.rows[0];
 
-			return await construct`
+			return await render`
 
 			${async () => {
 
 				return "".concat(...(await Promise.all(Object.values(t).map( async trx => {
  						
 			if(trx?.title){
-									return await construct`
+									return await render`
 
 <details>
 

@@ -1,38 +1,42 @@
 # Source code of kanby.net
 
-### Author Zayd al-Muqaddim al-Qamar al-‘Aarabi
-
-## Tech stack:
-
-```markdown
-1. FRONTEND
-
-- Vanilla JS - For better speed and Better SEO
-
-2. Backend
-
-- Node JS,
-- Express JS,
-
-3. DATABASE
-
-- Postgres SQL
-```
+> Thanks to "Zayd al-Muqaddim al-Qamar al-‘Aarabi" for all his invaluable support
 
 
+## What is this
 
+- Source code of my personal website
+- Has an admin panel and lets creating blogs and projects
+- this is **not** a website builder
 
+## How that works?
 
+There are 3 levels
 
+- Layout level,
+- Page level,
+- Component level
 
+1. Pages are positioned in layouts.
+2. components may be positioned in both.
 
+for example there are 2 layouts i use today, admin layout and visitor layout. Those are the frontend interface which is same in common pages like contact, landing page, about us page may be contained by visitor layout and add project page, add blog page, modify blogs page, delete projects page may be contained by admin layout.
 
+All pages, layouts, components are javascript files, which exports its content after rendering it.
 
+and all pages, layouts, components has the ability to render in server side by just sending html css js to client.
+
+we can fetch components from client side, it sends fully rendered html string from server to client.
+
+All rendering happens in template strings, which has all the power that web frameworks and templating languages has.
+
+Database is postgres SQL.
 
 
 ### SQL db setup codes
 
-without this tables set up, code will throw error :)
+To be able to use this, you need to create these tables
+and manually insert at least one user to be able to log in
 
 ```SQL
 
@@ -55,72 +59,46 @@ without this tables set up, code will throw error :)
 
 ### Template literal guides,
 
-#### To list html repetadly
+1. Tagged Template
+2. Rendering Lists
+3. Running Syncronus Functions
+4. Running Asyncronus Functions
+
+#### Tagged Template
+
+This is the code block which lets us to do all the things below
 
 ```js
-String(
-	(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
-		return `
-<option value="" selected disabled hidden>language</option>
-
-	<option value="${t}">${t}</option>
-`;
-	}),
-).replaceAll(",", "\n");
-```
-
-![alt text](./ReadmeImages/image-3.png)
-
-it is similar to React, we use string instead of JSX.
-
-this code does not let us use comma(,) inside strings, and that is a problem.
-
-use this ->
-
-```js
-console.log(
-	"".concat(
-		...[1, 2, 3, 4, 6].map(t => {
-			return `tetetetet`;
-		}),
-	),
-);
-```
-
-BUT, if you will run async function inside of map, it will return you an array of promises, you need to resolve it with Promise.all(array of promises).
-
-```js
-<select
-	required
-	id="blog-form-language-edit">
-	$
-	{async () => {
-		return await Promise.all(
-			(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(async r => {
-				return await construct`
-
-	<option ${() => {
-		if (t.language == r) {
-			return "selected";
-		} else {
-			return "";
+const render = async (x, ...values) => {
+	var rendered = "";
+	for (let u = 0; u < x.length; u++) {
+		rendered = rendered.concat(x[u]);
+		if (u < x.length - 1) {
+			if (typeof values[u] == "function") {
+				rendered = rendered.concat(await values[u]());
+			} else {
+				rendered = rendered.concat(values[u]);
+			}
 		}
-	}}  value="${() => r}">${() => r}</option>
-`;
-			}),
-		);
-	}}
-</select>
+	}
+
+	return rendered;
+};
 ```
-so final touch is this, you can use as much of async awaits and construct tag as you want
+
+if you want to render a string just do this
+
+```js
+var renderedString = render`I am rendered`
+```
+#### Rendering Lists
 
 ```js
 
 	${async () => {
 		return "".concat(...(await Promise.all(
-			[1,2,3,4].map(t => {
+			[1,2,3,4].map(t => {})
 
-})
 		)))
 	}}
 
@@ -304,3 +282,94 @@ Or you can create blob of js string and append script tag inside head tag with a
 - tutorial for markdown syntax
 - custom component shortcodes for inserting html, css and js into markdown especially in Blogs, News, Contents
 ```
+
+
+
+## Tech stack:
+
+```markdown
+1. FRONTEND
+
+- Vanilla JS - For better speed and Better SEO
+
+2. Backend
+
+- Node JS,
+- Express JS,
+
+3. DATABASE
+
+- Postgres SQL
+```
+
+### Legacy
+```js
+String(
+	(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
+		return `
+<option value="" selected disabled hidden>language</option>
+
+	<option value="${t}">${t}</option>
+`;
+	}),
+).replaceAll(",", "\n");
+```
+
+![alt text](./ReadmeImages/image-3.png)
+
+it is similar to React, we use string instead of JSX.
+
+this code does not let us use comma(,) inside strings, and that is a problem.
+
+use this ->
+
+```js
+console.log(
+	"".concat(
+		...[1, 2, 3, 4, 6].map(t => {
+			return `tetetetet`;
+		}),
+	),
+);
+```
+
+BUT, if you will run async function inside of map, it will return you an array of promises, you need to resolve it with Promise.all(array of promises).
+
+```js
+<select
+	required
+	id="blog-form-language-edit">
+	$
+	{async () => {
+		return await Promise.all(
+			(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(async r => {
+				return await render`
+
+	<option ${() => {
+		if (t.language == r) {
+			return "selected";
+		} else {
+			return "";
+		}
+	}}  value="${() => r}">${() => r}</option>
+`;
+			}),
+		);
+	}}
+</select>
+```
+so final touch is this, you can use as much of async awaits and render tag as you want
+
+```js
+
+	${async () => {
+		return "".concat(...(await Promise.all(
+			[1,2,3,4].map(t => {
+
+})
+		)))
+	}}
+
+```
+
+

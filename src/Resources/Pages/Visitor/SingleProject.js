@@ -2,7 +2,7 @@ const Layouts = require("#Layouts");
 const Index = require("#Index");
 const he = require("he");
 
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -35,7 +35,7 @@ module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
 			language: data.language,
-			head: await construct`
+			head: await render`
 						${ async () => {
 
 
@@ -54,7 +54,7 @@ module.exports = {
 			}}
  			`,
 
-			content: await construct`
+			content: await render`
 
  
 
@@ -69,7 +69,7 @@ module.exports = {
 
                     
 
-					return await construct`
+					return await render`
                     
 			 <div class="blog-container">
         

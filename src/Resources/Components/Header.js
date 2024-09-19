@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const cdn = process.env.CDN_DOMAIN;
 
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -54,7 +54,7 @@ const translation = {
 };
 
 module.exports = {
-	html: data => construct`
+	html: data => render`
 	
 	<header class="liwlCh-header-container">
     <input
@@ -602,5 +602,5 @@ module.exports = {
 		}
 	</style>
 `,
-	js: data => construct``,
+	js: data => render``,
 };

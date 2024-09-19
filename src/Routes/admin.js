@@ -218,6 +218,8 @@ admin
 		}
 	})
 
+	
+
 	.patch(Index.upload.none(), async (req, res) => {
 
 		try {

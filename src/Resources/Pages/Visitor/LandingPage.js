@@ -5,7 +5,7 @@ const he = require("he");
 require("dotenv").config();
 
 const cdn = process.env.CDN_DOMAIN;
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -50,12 +50,12 @@ module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
 			language: data.language,
-			head: await construct`
+			head: await render`
  
 			<title>Kanby.net</title>
 			`,
 
-			content: await construct`
+			content: await render`
 				<main id="page-container">
 					<div class="profile-container">
 						<figure class="image-profile">

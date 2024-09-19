@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const cdn = process.env.CDN_DOMAIN;
 
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -22,13 +22,14 @@ const construct = async (x, ...values) => {
 
 
 module.exports = async data =>
-	await construct`
+	await render`
 	<!doctype html>
 	<html lang="en">
 		<head>
  
 				<link rel="stylesheet" href="/assets/globals.css" />
 				<link rel="icon" href="${cdn}/assets/logo.svg">
+				<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
 
 
 			${await data.head}

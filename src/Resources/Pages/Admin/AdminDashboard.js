@@ -1,6 +1,6 @@
 const Layouts = require("#Layouts");
 
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -20,8 +20,8 @@ module.exports = {
 	html: async data =>
 		await Layouts.AdminLayout({
 			user_id: data.user_id,
-head: await construct``,
-			content: await construct`
+head: await render``,
+			content: await render`
  
 	This is dashboard
 

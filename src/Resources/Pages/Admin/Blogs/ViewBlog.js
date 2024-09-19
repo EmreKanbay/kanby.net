@@ -5,7 +5,7 @@ const he = require("he");
 require("dotenv").config();
 const cdn = process.env.CDN_DOMAIN;
 
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -26,8 +26,8 @@ module.exports = {
 		await Layouts.AdminLayout({
 			user_id: data.user_id,
 
-			head: await construct``,
-			content: await construct`
+			head: await render``,
+			content: await render`
 
 
 
@@ -57,7 +57,7 @@ module.exports = {
 			
 			t = query.rows[0];
 
-			return await construct`
+			return await render`
 		
 
 			<form data-blog-id="${data.id}" style="display:none" id="edit-blog-form">
@@ -70,7 +70,7 @@ module.exports = {
 				${async () => {
 					return await Promise.all(
 						(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(async r => {
-							return await construct`
+							return await render`
  
 						<option ${() => {
 							if (t.language == r) {

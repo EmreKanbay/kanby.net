@@ -3,7 +3,7 @@ const Index = require("#Index");
 var he = require("he");
 
 
-const construct = async (x, ...values) => {
+const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {
 		rendered = rendered.concat(x[u]);
@@ -24,8 +24,8 @@ module.exports = {
 		await Layouts.AdminLayout({
 			user_id: data.user_id,
 
-			head: await construct``,
-			content: await construct`
+			head: await render``,
+			content: await render`
 
 <h1  class="page-title">Projects</h1>
 
