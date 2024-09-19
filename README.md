@@ -3,11 +3,11 @@
 > Thanks to "Zayd al-Muqaddim al-Qamar al-‘Aarabi" for all his invaluable support
 
 # TODO
+
 ```
 Rss.xml needs to be dynamicly generated
 Simplify everything with a simple library or framework
 ```
-
 
 ## What is this
 
@@ -37,7 +37,6 @@ we can fetch components from client side, it sends fully rendered html string fr
 All rendering happens in template strings, which has all the power that web frameworks and templating languages has.
 
 Database is postgres SQL.
-
 
 ### SQL db setup codes
 
@@ -70,7 +69,7 @@ and manually insert at least one user to be able to log in
 
 #### Tagged Template
 
-This is the code block which lets us to do all the things below, it simply extract the functions from template string, run them, and put the output back in string. 
+This is the code block which lets us to do all the things below, it simply extract the functions from template string, run them, and put the output back in string.
 
 So it is possible to run async and sync functions in strings.
 
@@ -95,47 +94,44 @@ const render = async (x, ...values) => {
 if you want to render a string just do this
 
 ```js
-var renderedString = render`I am rendered`
+var renderedString = render`I am rendered`;
 ```
-
 
 #### Rendering Lists
 
-We can render a template html repetadly, for example fetch data from sql server and list all records. 
-```js
+We can render a template html repetadly, for example fetch data from sql server and list all records.
 
+```js
 render`
 <div id="blog-list">
 
 ${async () => {
-
 	const text = `SELECT title,description,id FROM "blogs"`;
 	const values = [];
 	var record = await pool.query(text, values);
-		return "".concat(...(await Promise.all(
+	return "".concat(
+		...(await Promise.all(
 			record.rows.map(t => {
-				return`
+				return `
 				<h1>Title: ${t.title}</h1>
 				<h1>description: ${t.description}</h1>
-				`
-			})
-
-		)))
-	}}
+				`;
+			}),
+		)),
+	);
+}}
 
 </div>
 
-`
-	
-
+`;
 ```
+
 You can run render function in a render function in a render function and so on.
 Just do not forget to resolve promises
 
 **Warning:** be careful using " ` ' inside of render, those may result errors in html side.
 
 <code>&#96;document.querySelector(".class").innerHTML = &#92;&#96; &lt;div&gt;Complex HTML&lt;/div&gt; &#92;&#96; &#96;</code>
-
 
 ## Fetch component from server and render it on client
 
@@ -170,9 +166,6 @@ fetch("/get-component/admin/AdminBlogs", {
 
 Or you can create blob of js string and append script tag inside head tag with a src pointing to blob url
 
-
-
-
 ### Features
 
 1. All development progress of this software will be available on this git repository.
@@ -200,8 +193,6 @@ Or you can create blob of js string and append script tag inside head tag with a
 - custom component shortcodes for inserting html, css and js into markdown especially in Blogs, News, Contents
 ```
 
-
-
 ## Tech stack:
 
 ```markdown
@@ -219,29 +210,11 @@ Or you can create blob of js string and append script tag inside head tag with a
 - Postgres SQL
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <details>
 <summary>Legacy</summary>
 
 ### Legacy
+
 ```js
 String(
 	(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
@@ -297,6 +270,7 @@ BUT, if you will run async function inside of map, it will return you an array o
 	}}
 </select>
 ```
+
 so final touch is this, you can use as much of async awaits and render tag as you want
 
 ```js
@@ -310,7 +284,5 @@ so final touch is this, you can use as much of async awaits and render tag as yo
 	}}
 
 ```
+
 </details>
-
-
-

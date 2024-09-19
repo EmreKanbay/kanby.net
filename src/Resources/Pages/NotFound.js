@@ -5,7 +5,6 @@ const cdn = process.env.CDN_DOMAIN;
 
 const Framework = require("#Framework");
 
-
 const translation = {
 	Turkish: {
 		key1: "Sayfa Bulunamadı",

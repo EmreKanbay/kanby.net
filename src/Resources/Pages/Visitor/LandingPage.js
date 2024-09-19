@@ -8,7 +8,6 @@ require("dotenv").config();
 
 const cdn = process.env.CDN_DOMAIN;
 
-
 const translation = {
 	Turkish: {
 		key1: "Düşünce, Tasarım, Yazılım",
@@ -19,7 +18,6 @@ const translation = {
 		key6: "Yönetici",
 		key7: "Projeler",
 		key8: "Proje bulunamadı",
-
 	},
 	English: {
 		key1: "Think, Design, Code",
@@ -30,7 +28,6 @@ const translation = {
 		key6: "Supervisor",
 		key7: "Projects",
 		key8: "No projects found",
-
 	},
 };
 
@@ -83,16 +80,13 @@ module.exports = {
 
 						<div class="all-blogs-list">
 							${async () => {
- 
- 								const text = `SELECT * FROM blogs WHERE language= $1 LIMIT 3`;
+								const text = `SELECT * FROM blogs WHERE language= $1 LIMIT 3`;
 
 								const values = [data.language];
-							
+
 								var record = await Index.pool.query(text, values);
 
-
 								if (record.rowCount != 0) {
- 
 									return "".concat(
 										...record.rows.map(t => {
 											return `
@@ -107,7 +101,7 @@ module.exports = {
 										}),
 									);
 								} else {
-									return `<p>${translation[data.language].key4}</p>`
+									return `<p>${translation[data.language].key4}</p>`;
 								}
 							}}
 						</div>
@@ -118,20 +112,16 @@ module.exports = {
 					<div class="all-blogs-list">
 
 					${async () => {
- 
 						const text = `SELECT "${data.language}",id FROM projects LIMIT 3`;
 
-					   const values = [];
-				   
-					   var record = await Index.pool.query(text, values);
+						const values = [];
 
- 
-					   if (record.rowCount != 0) {
+						var record = await Index.pool.query(text, values);
 
-						   return "".concat(
-							   ...record.rows.map(t => {
-
-  								   return `
+						if (record.rowCount != 0) {
+							return "".concat(
+								...record.rows.map(t => {
+									return `
 
 
 						<div onclick="window.location.href = './projects/${t.id}'" class="all-blogs-item ">
@@ -141,12 +131,12 @@ module.exports = {
 							<span>${t[data.language].title}</span>
 						</div>
 `;
-							   }),
-						   );
-					   } else {
-						   return `<p>${translation[data.language].key8}</p>`
-					   }
-				   }}
+								}),
+							);
+						} else {
+							return `<p>${translation[data.language].key8}</p>`;
+						}
+					}}
 
 
 					</div>

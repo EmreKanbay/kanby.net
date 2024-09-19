@@ -3,7 +3,6 @@ const Index = require("#Index");
 
 const Framework = require("#Framework");
 
-
 module.exports = {
 	html: async data =>
 		await Layouts.AdminLayout({

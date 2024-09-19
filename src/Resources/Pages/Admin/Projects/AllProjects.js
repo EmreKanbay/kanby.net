@@ -2,9 +2,7 @@ const Layouts = require("#Layouts");
 const Index = require("#Index");
 var he = require("he");
 
-
 const Framework = require("#Framework");
-
 
 module.exports = {
 	html: async data =>
@@ -22,21 +20,19 @@ module.exports = {
 
 				<div id="all-blogs-list">
 			
-				${async ()=> {
-
+				${async () => {
 					const text = `SELECT * FROM projects`;
 
 					const values = [];
-				
-					var record = await Index.pool.query(text, values);
- 
 
-		if (record.rowCount == 0) {
-			return "<h1>No Project exist</h1>";
-		} else {
-			return	"".concat(
-					...record.rows.map(t => {
-						return `
+					var record = await Index.pool.query(text, values);
+
+					if (record.rowCount == 0) {
+						return "<h1>No Project exist</h1>";
+					} else {
+						return "".concat(
+							...record.rows.map(t => {
+								return `
 
  <div onclick="window.location.href = './${t.id}'"  class="all-blogs-item">
 
@@ -45,12 +41,9 @@ module.exports = {
 			<span>${t["English"].title}</span>
 			</div>
 		`;
-					}),
-				)
-			
-		}
-
-
+							}),
+						);
+					}
 				}}
 				
 				</div>

@@ -4,16 +4,15 @@ const he = require("he");
 
 const Framework = require("#Framework");
 
-
 const translation = {
 	Turkish: {
 		key1: "Oluşturulma Tarihi: ",
 		key2: "Son Güncellenme Tarihi: ",
- 	},
+	},
 	English: {
 		key1: "Creation Date: ",
 		key2: "Last Modify Date",
- 	},
+	},
 };
 
 module.exports = {
@@ -22,20 +21,18 @@ module.exports = {
 			language: data.language,
 			head: await Framework.render`
 
-			${ async () => {
-
-
+			${async () => {
 				const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
 
-					const values = [data.language, data.blog_id];
-				
-					var record = await Index.pool.query(text, values);
+				const values = [data.language, data.blog_id];
 
-					return `
+				var record = await Index.pool.query(text, values);
+
+				return `
 					<meta charset="utf-8">
 					<meta name=”description” content=”${record.rows[0].description}”/>
 					<title>${record.rows[0].title}</title>
-					`
+					`;
 			}}
  
 			
@@ -49,17 +46,11 @@ module.exports = {
 	 
 
 				${async () => {
-		
-
 					const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
 
 					const values = [data.language, data.blog_id];
-				
+
 					var record = await Index.pool.query(text, values);
-
-
-
-
 
 					return `
                     
@@ -71,8 +62,8 @@ module.exports = {
 						<p class="blog-title" >${record.rows[0].title}</p>
 						<p class="blog-description">${record.rows[0].description}</p>
  						<span style="display:flex;height:3rem;align-items:center;gap:1rem"><img  style="border-radius:50%;height:100%" src="https://avatars.githubusercontent.com/u/80778171?v=4"><p class="blog-author">${record.rows[0].author}</p></span>
- 						<p class="blog-author">${translation[data.language].key1} ${new Date(record.rows[0].creation_date * 1).toLocaleDateString('en-GB').replace(/\//g, '-')}</p>
- 						<p class="blog-author">${translation[data.language].key2} ${new Date(record.rows[0].last_modify_date * 1).toLocaleDateString('en-GB').replace(/\//g, '-')}</p>
+ 						<p class="blog-author">${translation[data.language].key1} ${new Date(record.rows[0].creation_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
+ 						<p class="blog-author">${translation[data.language].key2} ${new Date(record.rows[0].last_modify_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
 
 
 						</aside>

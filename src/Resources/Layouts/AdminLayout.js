@@ -4,7 +4,6 @@ const cdn = process.env.CDN_DOMAIN;
 
 const Framework = require("#Framework");
 
-
 module.exports = async data =>
 	await Framework.render`
     <!doctype html>

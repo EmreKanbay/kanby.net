@@ -11,7 +11,7 @@ module.exports = {
 		Footer,
 		ErrorBox,
 		SuccessBox,
-		Marquee
+		Marquee,
 	},
 	admin: {},
 };

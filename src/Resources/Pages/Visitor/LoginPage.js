@@ -2,8 +2,6 @@ const Layouts = require("#Layouts");
 
 const Framework = require("#Framework");
 
-
- 
 module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({

@@ -3,20 +3,20 @@ const Index = require("#Index");
 
 const Framework = require("#Framework");
 
-
 module.exports = {
 	html: async data =>
 		await Layouts.AdminLayout({
 			user_id: data.user_id,
 
-head: await Framework.render``,
+			head: await Framework.render``,
 			content: await Framework.render`
  	<form id="add-project-form" >
 
 
 						${async () => {
-						return  "".concat(...((await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value).map(t => {
-							return `
+							return "".concat(
+								...(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
+									return `
 
 								
  
@@ -59,10 +59,9 @@ head: await Framework.render``,
 			
 					
 `;
-						}))
-						
-						
-					}}
+								}),
+							);
+						}}
 			
 
 				<input type="submit" />
@@ -258,5 +257,3 @@ await Promise.all(all_langs.map(async yhz => {
   `,
 		}),
 };
-
-

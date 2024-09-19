@@ -14,5 +14,4 @@ const render = async (x, ...values) => {
 	return rendered;
 };
 
-
-module.exports = {render}
+module.exports = { render };

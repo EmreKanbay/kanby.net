@@ -33,6 +33,5 @@ module.exports = {
 	AllProjects,
 	ViewProject,
 	Projects,
-	SingleProject
-
+	SingleProject,
 };

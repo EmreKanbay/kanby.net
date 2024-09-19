@@ -4,7 +4,6 @@ const he = require("he");
 
 const Framework = require("#Framework");
 
-
 const translation = {
 	Turkish: {
 		key1: "İletişim / Sosyal Medya",

@@ -1,6 +1,5 @@
 const Framework = require("#Framework");
 
-
 module.exports = {
 	html: data => Framework.render`
 	<div id="qMQEbc-container">

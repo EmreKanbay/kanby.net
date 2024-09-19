@@ -7,22 +7,20 @@ const sha256 = require("js-sha256");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
+const Framework = require("#Framework");
 
 //Initalize libraries
 const { Pool } = pg;
 
 //configure libraries
 
-	
-	const pool = new Pool({
-		user: process.env.PG_USER,
-		host: process.env.PG_HOST,
-		port: process.env.PG_PORT,
-		password: process.env.PG_PASSWORD,
-		database: process.env.PG_DATABASE,
-	});
-
-
+const pool = new Pool({
+	user: process.env.PG_USER,
+	host: process.env.PG_HOST,
+	port: process.env.PG_PORT,
+	password: process.env.PG_PASSWORD,
+	database: process.env.PG_DATABASE,
+});
 
 var DB_connected = false;
 
@@ -53,19 +51,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const auth = async (req, res) => {
-
-
-
 	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name= $1 AND password_hash= $2`;
 
 	const values = [req?.cookies?.login_name, req?.cookies?.password_hash];
 
 	var record = await pool.query(text, values);
 
-
 	if (record.rows.length == 1) {
 		res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true });
-		res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true });
+		res.cookie("password_hash", record.rows[0].password_hash, {
+			expires: new Date(Date.now() + 36000000),
+			httpOnly: true,
+		});
 		res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: true });
 
 		return { authenticated: true, record: record };
@@ -97,29 +94,68 @@ root.get("/robots.txt", function (req, res, next) {
 	res.send("User-agent: *\nDisallow: /");
 });
 
-root.get("/rss.xml", function (req, res, next) {
+root.get("/rss.xml", async function (req, res, next) {
 	res.type("application/rss+xml");
 
-	const rss = `<?xml version="1.0" encoding="UTF-8"?>
+	const rss = await Framework.render
+`<?xml version="1.0" encoding="UTF-8"?>
 	<rss version="2.0">
 	  <channel>
-		<title>Kanby.net</title>
-		<link>https://kanby.net</link>
+		<title>Blogs</title>
+		<link>https://kanby.net/English/blogs/</link>
+		${async () => {
+			const text = `SELECT * FROM blogs Where language='English'`;
 
-   <item>
-      <title>Server side rendering</title>
-      <link>https://kanby.net/English/blogs/12/</link>
-      <description>JS server side rendering</description>
-      <pubDate>Tue, 20 Sep 2024 10:00:00 +0000</pubDate>
-      <guid>https://kanby.net/English/blogs/12/</guid>
-    </item>
+			const values = [];
 
+			var record = await pool.query(text, values);
+
+			return "".concat(
+				...(await Promise.all(
+					record.rows.map(t => {
+						return `
+			<item>
+				<title>${t.title}</title>
+				<link>https://kanby.net/English/blogs/${t.id}/</link>
+				<description>${t.description}</description>
+				<pubDate>${new Date(t.creation_date * 1)}</pubDate>
+			</item>
+						`;
+					}),
+				)),
+			);
+		}}
 		</channel>
-	</rss>`;
-	
-	res.send(rss);
-  });
 
+		<channel>
+		<title>Projects</title>
+		<link>https://kanby.net/English/projects/</link>
+		${async () => {
+			const text = `SELECT * FROM projects`;
+
+			const values = [];
+
+			var record = await pool.query(text, values);
+
+			return "".concat(
+				...(await Promise.all(
+					record.rows.map(t => {
+						return `
+			<item>
+				<title>${t["English"].title}</title>
+				<link>https://kanby.net/English/projects/${t.id}/</link>
+				<description>${t["English"].description}</description>
+			</item>
+						`;
+					}),
+				)),
+			);
+		}}
+		</channel>
+</rss>`
+
+	res.send(rss);
+});
 
 //DB check
 root.use("/", (req, res, next) => {
@@ -129,7 +165,7 @@ root.use("/", (req, res, next) => {
 
 // These are the endpoints which should not add trailing slashes
 root.use((req, res, next) => {
-	var static = ["assets","robots.txt", "rss.xml"];
+	var static = ["sitemap.xml", "assets", "robots.txt", "rss.xml"];
 
 	if (!static.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
 		if (req.path.substr(-1) !== "/") {

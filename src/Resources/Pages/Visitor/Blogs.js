@@ -4,7 +4,6 @@ const he = require("he");
 
 const Framework = require("#Framework");
 
-
 const translation = {
 	Turkish: {
 		key1: "Bloglar",
@@ -32,16 +31,11 @@ module.exports = {
 				<div id="all-blogs-list">
 
 				${async () => {
- 
-					
-
 					const text = `SELECT * FROM blogs WHERE language= $1`;
 
 					const values = [data.language];
-				
+
 					var record = await Index.pool.query(text, values);
-
-
 
 					if (record.rowCount != 0) {
 						return "".concat(

@@ -4,7 +4,6 @@ const cdn = process.env.CDN_DOMAIN;
 
 const Framework = require("#Framework");
 
-
 const translation = {
 	Turkish: {
 		key1: "Ücretsiz Araçlar",
@@ -20,7 +19,6 @@ const translation = {
 		key3_1: "Bloglar",
 		key3_2: "Projeler",
 		key3_3: "Yönetici Paneli",
-	
 	},
 	English: {
 		key1: "Free Tools",
@@ -36,7 +34,6 @@ const translation = {
 		key3_1: "Blogs",
 		key3_2: "Projects",
 		key3_3: "Admin Panel",
-
 	},
 };
 

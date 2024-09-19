@@ -7,7 +7,6 @@ const cdn = process.env.CDN_DOMAIN;
 
 const Framework = require("#Framework");
 
-
 module.exports = {
 	html: async data =>
 		await Layouts.AdminLayout({

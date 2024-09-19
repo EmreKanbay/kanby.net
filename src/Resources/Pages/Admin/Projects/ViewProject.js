@@ -7,13 +7,12 @@ const cdn = process.env.CDN_DOMAIN;
 
 const Framework = require("#Framework");
 
-
 module.exports = {
 	html: async data =>
 		await Layouts.AdminLayout({
 			user_id: data.user_id,
 
-head: await Framework.render``,
+			head: await Framework.render``,
 			content: await Framework.render`
 
 
@@ -35,24 +34,22 @@ head: await Framework.render``,
 	
    
     ${async () => {
-
-
 			const text = `SELECT * FROM projects WHERE id= $1`;
 
 			const values = [data.id];
-		
+
 			var query = await Index.pool.query(text, values);
-			
+
 			t = query.rows[0];
 
 			return await Framework.render`
 
 			${async () => {
-
-				return "".concat(...(await Promise.all(Object.values(t).map( async trx => {
- 						
-			if(trx?.title){
-									return await Framework.render`
+				return "".concat(
+					...(await Promise.all(
+						Object.values(t).map(async trx => {
+							if (trx?.title) {
+								return await Framework.render`
 
 <details>
 
@@ -86,24 +83,18 @@ head: await Framework.render``,
 					
 	
 							${async () => {
+								if (trx?.links) {
+									const links = JSON.parse(trx?.links);
 
-				if(trx?.links){
-
-
-				const links = JSON.parse(trx?.links)
-				
-				return "".concat(...Object.keys(links).map(ytz => {
-					
-					return `<div class="project-link-cont-${trx?.language}"><span>Title: </span> <input value="${ytz}" class="link-title-${trx?.language}" placeholder="title" type="text"> <span>Link: </span> <input  value="${links[ytz]}" class="link-link-${trx?.language}" placeholder="link" type="text"><input onclick="this.parentNode.remove()" class="remove-link" type="button" value="-"></div>`
-					
-					}))
-
-				} else {
-				return `<div class="project-link-cont-${trx?.language}"><span>Title: </span> <input class="link-title-${trx?.language}" placeholder="title" type="text"> <span>Link: </span> <input class="link-link-${trx?.language}" placeholder="link" type="text"><input onclick="this.parentNode.remove()" class="remove-link" type="button" value="-"></div>` 
-				}
-				
-				
-				}}
+									return "".concat(
+										...Object.keys(links).map(ytz => {
+											return `<div class="project-link-cont-${trx?.language}"><span>Title: </span> <input value="${ytz}" class="link-title-${trx?.language}" placeholder="title" type="text"> <span>Link: </span> <input  value="${links[ytz]}" class="link-link-${trx?.language}" placeholder="link" type="text"><input onclick="this.parentNode.remove()" class="remove-link" type="button" value="-"></div>`;
+										}),
+									);
+								} else {
+									return `<div class="project-link-cont-${trx?.language}"><span>Title: </span> <input class="link-title-${trx?.language}" placeholder="title" type="text"> <span>Link: </span> <input class="link-link-${trx?.language}" placeholder="link" type="text"><input onclick="this.parentNode.remove()" class="remove-link" type="button" value="-"></div>`;
+								}
+							}}
 					
 					
 						</div>
@@ -126,11 +117,11 @@ head: await Framework.render``,
 			
 					
 `;
-						}else return ``
-
-						}))))
-						
-					}}
+							} else return ``;
+						}),
+					)),
+				);
+			}}
 
 		
 		`;
@@ -153,10 +144,10 @@ head: await Framework.render``,
 
 <div id="project-view-cont">
 ${async () => {
-	return  "".concat(...Object.values(t).map(trx => {
- 	
-	if(trx?.title){
-								return `
+	return "".concat(
+		...Object.values(t).map(trx => {
+			if (trx?.title) {
+				return `
 
 <details>
 <summary>${trx?.language}</summary>
@@ -184,11 +175,9 @@ ${async () => {
 
 
 `;
-	}else return ``
-
-	}))
-	
-	
+			} else return ``;
+		}),
+	);
 }}
 
 
@@ -421,9 +410,3 @@ document.querySelector("#project-top-bar").style.display = "none"
 	`,
 		}),
 };
-
-
-
-
-
-

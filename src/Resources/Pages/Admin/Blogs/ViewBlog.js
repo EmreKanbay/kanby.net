@@ -7,7 +7,6 @@ const cdn = process.env.CDN_DOMAIN;
 
 const Framework = require("#Framework");
 
-
 module.exports = {
 	html: async data =>
 		await Layouts.AdminLayout({
@@ -34,14 +33,12 @@ module.exports = {
 	
    
     ${async () => {
-
-
 			const text = `SELECT * FROM blogs WHERE id= $1`;
 
 			const values = [data.id];
-		
+
 			var query = await Index.pool.query(text, values);
-			
+
 			t = query.rows[0];
 
 			return await Framework.render`

@@ -4,7 +4,6 @@ const he = require("he");
 
 const Framework = require("#Framework");
 
-
 const translation = {
 	Turkish: {
 		key1: "Bloglar",
@@ -23,22 +22,19 @@ module.exports = {
 		await Layouts.VisitorLayout({
 			language: data.language,
 			head: await Framework.render`
-						${ async () => {
+						${async () => {
+							const text = `SELECT * FROM projects WHERE id = $1`;
 
+							const values = [data.id];
 
-				const text = `SELECT * FROM projects WHERE id = $1`;
+							var record = await Index.pool.query(text, values);
 
-					const values = [data.id];
-
-				
-					var record = await Index.pool.query(text, values);
- 
-					return `
+							return `
 					<meta charset="utf-8">
 					<meta name=”description” content=”${record.rows[0][data.language].description}”/>
 					<title>${record.rows[0][data.language].title}</title>
-					`
-			}}
+					`;
+						}}
  			`,
 
 			content: await Framework.render`
@@ -46,15 +42,11 @@ module.exports = {
  
 
 				${async () => {
-		
-
 					const text = `SELECT "${data.language}",id FROM projects WHERE id = ${data.id}`;
 
 					const values = [];
-				
-					var record = await Index.pool.query(text, values);
 
-                    
+					var record = await Index.pool.query(text, values);
 
 					return await Framework.render`
                     
@@ -67,14 +59,12 @@ module.exports = {
                     <p class="blog-description">${record.rows[0][data.language].description}</p>
 
                     ${async () => {
-
- 						return "".concat(...Object.keys(JSON.parse(record.rows[0][data.language].links)).map( yy => {
-							
-							return `<p>${yy} -> ${JSON.parse(record.rows[0][data.language].links)[yy]}</p>`
-							}))
-						
-						
-						}}
+											return "".concat(
+												...Object.keys(JSON.parse(record.rows[0][data.language].links)).map(yy => {
+													return `<p>${yy} -> ${JSON.parse(record.rows[0][data.language].links)[yy]}</p>`;
+												}),
+											);
+										}}
 
 
 						</aside>

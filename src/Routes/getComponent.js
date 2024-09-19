@@ -8,11 +8,10 @@ getComponents.post("/admin/:component_name", Index.express.json(), async (req, r
 	var record;
 	try {
 		if (typeof req.cookies?.login_name != "undefined" && typeof req.cookies?.password_hash != "undefined") {
-
 			const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name= $1 AND password_hash= $2`;
 
 			const values = [req?.cookies?.login_name, req?.cookies?.password_hash];
-		
+
 			var record = await Index.pool.query(text, values);
 
 			if (record.rows.length == 1) {

@@ -3,25 +3,18 @@ require("dotenv").config();
 const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
-
 const translation = {
 	Turkish: {
 		key1: "Sosyal Medya",
 		key2: "İçerikler",
 		key2_1: "Bloglar",
 		key2_2: "Projeler",
-
-
 	},
 	English: {
 		key1: "Social Media",
 		key2: "Content",
 		key2_1: "Blogs",
 		key2_2: "Projects",
-
-
-
-	
 	},
 };
 
