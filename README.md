@@ -2,6 +2,12 @@
 
 > Thanks to "Zayd al-Muqaddim al-Qamar al-‘Aarabi" for all his invaluable support
 
+# TODO
+```
+Rss.xml needs to be dynamicly generated
+Simplify everything with a simple library or framework
+```
+
 
 ## What is this
 
@@ -61,12 +67,12 @@ and manually insert at least one user to be able to log in
 
 1. Tagged Template
 2. Rendering Lists
-3. Running Syncronus Functions
-4. Running Asyncronus Functions
 
 #### Tagged Template
 
-This is the code block which lets us to do all the things below
+This is the code block which lets us to do all the things below, it simply extract the functions from template string, run them, and put the output back in string. 
+
+So it is possible to run async and sync functions in strings.
 
 ```js
 const render = async (x, ...values) => {
@@ -91,137 +97,45 @@ if you want to render a string just do this
 ```js
 var renderedString = render`I am rendered`
 ```
+
+
 #### Rendering Lists
 
+We can render a template html repetadly, for example fetch data from sql server and list all records. 
 ```js
 
-	${async () => {
+render`
+<div id="blog-list">
+
+${async () => {
+
+	const text = `SELECT title,description,id FROM "blogs"`;
+	const values = [];
+	var record = await pool.query(text, values);
 		return "".concat(...(await Promise.all(
-			[1,2,3,4].map(t => {})
+			record.rows.map(t => {
+				return`
+				<h1>Title: ${t.title}</h1>
+				<h1>description: ${t.description}</h1>
+				`
+			})
 
 		)))
 	}}
 
-```
+</div>
 
-
-
-#### Running code inside of template literal.
-
-- #### Syncronus
-
-```js
-
-${(()=> {return 1+1})()}
-
-```
-
-- #### asyncronus
-
-Template literals does not support async await or .then, so we will take an extra step.
-
-the way i use template literal requires Tagged Templates, which is running template literal in a function and manipulate it. I was using it for prettier support but i realized that it will make Async operations possible too.
-
-code for prettier support:
-
-```js
-const html = (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) rendered = rendered.concat(values[u]);
-	}
-	return rendered;
-};
-
-console.log(html`
-	Template String
-`);
-```
-
-Or
-
-```js
-const html = (x, ...values) => {
-	return strings.reduce((acc, str, i) => acc + str + (i < values.length ? values[i] : ""), "");
-};
-
-console.log(html`
-	Template String
-`);
-```
-
-We need to change this function a little bit and we will change the way we write functions in template strings.
-
-```js
-const html = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
-
-	return rendered;
-};
-```
-
-so basically the snippet above lets us write pure functions inside template literals, and if that function returns something, it will put that into string
-
-```js
-
-${() => {return "test"}}
-
-
-```
-
-```js
-console.log(
-	await html`
-		<div class="A5ueMP-cotnainer">
-			${async () => {
-				return String(
-					(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(
-						t => `
-						<h1>${t}</h1>
-					`,
-					),
-				).replaceAll(",", "\n");
-			}}
-			${() => {
-				return "<h1>My fancy header</h1>";
-			}}
-
-			<h1>Blogs</h1>
-		</div>
-	`,
-);
-/* Output ->
-
-<div class="A5ueMP-cotnainer">
- 
-<h1>Data1</h1>
-<h1>Data2</h1>
-<h1>Data3</h1>
-<h1>Data4</h1>
-
-		<h1>Blogs</h1>
+`
 	
-    </div>
 
-    */
 ```
+You can run render function in a render function in a render function and so on.
+Just do not forget to resolve promises
 
-basically, our tag function runs the function we provided in templated string and add its value to rendered string in order.
-
-#### to render html that contains squarebrackets(&#34;) inside js with innerHTML
+**Warning:** be careful using " ` ' inside of render, those may result errors in html side.
 
 <code>&#96;document.querySelector(".class").innerHTML = &#92;&#96; &lt;div&gt;Complex HTML&lt;/div&gt; &#92;&#96; &#96;</code>
+
 
 ## Fetch component from server and render it on client
 
@@ -255,6 +169,9 @@ fetch("/get-component/admin/AdminBlogs", {
 ```
 
 Or you can create blob of js string and append script tag inside head tag with a src pointing to blob url
+
+
+
 
 ### Features
 
@@ -301,6 +218,28 @@ Or you can create blob of js string and append script tag inside head tag with a
 
 - Postgres SQL
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details>
+<summary>Legacy</summary>
 
 ### Legacy
 ```js
@@ -371,5 +310,7 @@ so final touch is this, you can use as much of async awaits and render tag as yo
 	}}
 
 ```
+</details>
+
 
 

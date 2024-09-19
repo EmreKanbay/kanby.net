@@ -1,25 +1,12 @@
 const Layouts = require("#Layouts");
+const Framework = require("#Framework");
 const Index = require("#Index");
 const he = require("he");
 
 require("dotenv").config();
 
 const cdn = process.env.CDN_DOMAIN;
-const render = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
 
-	return rendered;
-};
 
 const translation = {
 	Turkish: {
@@ -50,12 +37,12 @@ module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
 			language: data.language,
-			head: await render`
+			head: await Framework.render`
  
 			<title>Kanby.net</title>
 			`,
 
-			content: await render`
+			content: await Framework.render`
 				<main id="page-container">
 					<div class="profile-container">
 						<figure class="image-profile">

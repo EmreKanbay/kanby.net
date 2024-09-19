@@ -1,21 +1,8 @@
-const render = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
+const Framework = require("#Framework");
 
-	return rendered;
-};
 
 module.exports = {
-	html: data => render`
+	html: data => Framework.render`
 	<div id="qMQEbc-container">
 		<div>
 			<svg
@@ -65,5 +52,5 @@ module.exports = {
 		}
 	</style>
 `,
-	js: data => render``,
+	js: data => Framework.render``,
 };

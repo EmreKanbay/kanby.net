@@ -2,21 +2,8 @@ const Layouts = require("#Layouts");
 const Index = require("#Index");
 const he = require("he");
 
-const render = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
+const Framework = require("#Framework");
 
-	return rendered;
-};
 
 const translation = {
 	Turkish: {
@@ -35,7 +22,7 @@ module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
 			language: data.language,
-			head: await render`
+			head: await Framework.render`
 						${ async () => {
 
 
@@ -54,7 +41,7 @@ module.exports = {
 			}}
  			`,
 
-			content: await render`
+			content: await Framework.render`
 
  
 
@@ -69,7 +56,7 @@ module.exports = {
 
                     
 
-					return await render`
+					return await Framework.render`
                     
 			 <div class="blog-container">
         

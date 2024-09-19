@@ -13,7 +13,8 @@
 		"#Index": "./src/index.js",
 		"#Components": "./src/Resources/Components.js",
 		"#Layouts": "./src/Resources/Layouts.js",
-		"#Pages": "./src/Resources/Pages.js"
+		"#Pages": "./src/Resources/Pages.js",
+		"#Framework": "./src/Framework.js"
 	},
 	"dependencies": {
 		"cookie-parser": "^1.4.6",

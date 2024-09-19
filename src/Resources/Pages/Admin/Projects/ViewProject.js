@@ -5,29 +5,16 @@ const he = require("he");
 require("dotenv").config();
 const cdn = process.env.CDN_DOMAIN;
 
-const render = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
+const Framework = require("#Framework");
 
-	return rendered;
-};
 
 module.exports = {
 	html: async data =>
 		await Layouts.AdminLayout({
 			user_id: data.user_id,
 
-head: await render``,
-			content: await render`
+head: await Framework.render``,
+			content: await Framework.render`
 
 
 
@@ -58,14 +45,14 @@ head: await render``,
 			
 			t = query.rows[0];
 
-			return await render`
+			return await Framework.render`
 
 			${async () => {
 
 				return "".concat(...(await Promise.all(Object.values(t).map( async trx => {
  						
 			if(trx?.title){
-									return await render`
+									return await Framework.render`
 
 <details>
 

@@ -3,21 +3,8 @@ const Layouts = require("#Layouts");
 require("dotenv").config();
 const cdn = process.env.CDN_DOMAIN;
 
-const render = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
+const Framework = require("#Framework");
 
-	return rendered;
-};
 
 const translation = {
 	Turkish: {
@@ -33,10 +20,10 @@ module.exports = {
 		await Layouts.VisitorLayout({
 			language: data.language,
 
-			head: await render`
+			head: await Framework.render`
 		<title>404 | Not Found</title>
 	`,
-			content: await render`
+			content: await Framework.render`
 
 
 			<main style="width:100%; display:flex;align-items:center;flex-direction:column;margin:2rem 0rem">

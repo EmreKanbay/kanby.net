@@ -2,24 +2,11 @@ require("dotenv").config();
 
 const cdn = process.env.CDN_DOMAIN;
 
-const render = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
+const Framework = require("#Framework");
 
-	return rendered;
-};
 
 module.exports = async data =>
-	await render`
+	await Framework.render`
     <!doctype html>
             <html lang="en">
                 <head>

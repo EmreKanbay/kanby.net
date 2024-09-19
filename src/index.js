@@ -129,7 +129,7 @@ root.use("/", (req, res, next) => {
 
 // These are the endpoints which should not add trailing slashes
 root.use((req, res, next) => {
-	var static = ["robots.txt", "rss.xml"];
+	var static = ["assets","robots.txt", "rss.xml"];
 
 	if (!static.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
 		if (req.path.substr(-1) !== "/") {

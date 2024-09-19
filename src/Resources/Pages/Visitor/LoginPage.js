@@ -1,20 +1,7 @@
 const Layouts = require("#Layouts");
 
-const render = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
+const Framework = require("#Framework");
 
-	return rendered;
-};
 
  
 module.exports = {
@@ -22,11 +9,11 @@ module.exports = {
 		await Layouts.VisitorLayout({
 			language: data.language,
 
-			head: await render`
+			head: await Framework.render`
  
 	<title>Login</title>
 `,
-			content: await render`
+			content: await Framework.render`
 <div class="ge0yN5-container">
 	<form class="ge0yN5-form">
 		<h1>Admin Panel Login</h1>

@@ -2,21 +2,8 @@ require("dotenv").config();
 
 const cdn = process.env.CDN_DOMAIN;
 
-const render = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
+const Framework = require("#Framework");
 
-	return rendered;
-};
 
 const translation = {
 	Turkish: {
@@ -54,7 +41,7 @@ const translation = {
 };
 
 module.exports = {
-	html: data => render`
+	html: data => Framework.render`
 	
 	<header class="liwlCh-header-container">
     <input
@@ -602,5 +589,5 @@ module.exports = {
 		}
 	</style>
 `,
-	js: data => render``,
+	js: data => Framework.render``,
 };
