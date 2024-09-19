@@ -10,6 +10,8 @@ module.exports = {
 			head: await Framework.render`
  
 	<title>Login</title>
+	<meta name="robots" content="noindex,nofollow">
+
 `,
 			content: await Framework.render`
 <div class="ge0yN5-container">

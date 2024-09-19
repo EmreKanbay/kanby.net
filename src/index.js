@@ -157,6 +157,167 @@ root.get("/rss.xml", async function (req, res, next) {
 	res.send(rss);
 });
 
+root.get("/sitemap.xml", async function (req, res, next) {
+	res.type("application/xml");
+
+	const sitemap = await Framework.render
+`<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
+    http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"   
+>
+	<url>
+		<loc>http://localhost:3000/Turkish/contact/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/contact/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/contact/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/English/contact/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/contact/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/contact/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/Turkish/services/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/services/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/services/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/English/services/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/services/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/services/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/Turkish/about/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/about/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/about/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/English/about/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/about/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/about/" />
+	</url>
+
+
+	<url>
+		<loc>http://localhost:3000/Turkish/projects/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/projects/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/projects/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/English/projects/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/projects/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/projects/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/Turkish/blogs/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/blogs/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/blogs/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/English/blogs/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/blogs/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/blogs/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/Turkish/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/" />
+	</url>
+
+	<url>
+		<loc>http://localhost:3000/English/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/" />
+		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/" />
+	</url>
+
+		${async () => {
+			const text = `SELECT * FROM blogs Where language='English'`;
+
+			const values = [];
+
+			var record = await pool.query(text, values);
+
+			return "".concat(
+				...(await Promise.all(
+					record.rows.map(t => {
+						return `
+	<url>
+		<loc>https://kanby.net/English/blogs/${t.id}/</loc>   
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/${t.id}/" />
+	</url>
+							`;
+					}),
+				)),
+			);
+		}}
+
+				${async () => {
+			const text = `SELECT * FROM blogs Where language='Turkish'`;
+
+			const values = [];
+
+			var record = await pool.query(text, values);
+
+			return "".concat(
+				...(await Promise.all(
+					record.rows.map(t => {
+						return `
+	<url>
+		<loc>https://kanby.net/Turkish/blogs/${t.id}/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/English/Turkish/${t.id}/" />
+	</url>
+						`;
+					}),
+				)),
+			);
+		}}
+
+
+						${async () => {
+			const text = `SELECT * FROM projects`;
+
+			const values = [];
+
+			var record = await pool.query(text, values);
+
+			return "".concat(
+				...(await Promise.all(
+					record.rows.map(t => {
+						return `
+	<url>
+		<loc>https://kanby.net/Turkish/projects/${t.id}/</loc>   
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${t.id}/" />
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/${t.id}/" />
+	</url>
+	<url>
+		<loc>https://kanby.net/English/projects/${t.id}/</loc>   
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${t.id}/" />
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/${t.id}/" />
+	</url>
+						`;
+					}),
+				)),
+			);
+		}}
+</urlset>
+`
+
+	res.send(sitemap);
+});
+
 //DB check
 root.use("/", (req, res, next) => {
 	if (DB_connected) next();

@@ -6,10 +6,14 @@ const Framework = require("#Framework");
 
 const translation = {
 	Turkish: {
+		title: "Aktif Projeler - kanby.net",
+		description: "Her bir projemiz, kullanıcılarımızın geri bildirimleri doğrultusunda şekillenir ve gelişir. Biz, yenilikçi bir yaklaşım benimseyerek, sürdürülebilir çözümler üretmeye devam edeceğiz",
 		key1: "Projeler",
 		key2: "Proje henüz yok",
 	},
 	English: {
+		title: "Active Projects - kanby.net",
+		description: "Each of our projects is shaped and developed based on the feedback from our users. We continue to adopt an innovative approach and produce sustainable solutions",
 		key1: "Projects",
 		key2: "No Project exist yet",
 	},
@@ -21,7 +25,11 @@ module.exports = {
 			language: data.language,
 			head: await Framework.render`
  
-			<title>Kanby | ${translation[data.language].key1}</title>
+			<title>Kanby | ${he.encode(translation[data.language].title)}</title>
+            <meta name="description" content="${he.encode(translation[data.language].description)}">
+            <link rel="canonical" href="https://kanby.net/${data.language}/projects/">
+	        <meta name="robots" content="index,follow">
+
 			`,
 
 			content: await Framework.render`

@@ -30,9 +30,10 @@ module.exports = {
 							var record = await Index.pool.query(text, values);
 
 							return `
-					<meta charset="utf-8">
-					<meta name=”description” content=”${record.rows[0][data.language].description}”/>
-					<title>${record.rows[0][data.language].title}</title>
+					<meta name="description" content="${he.encode(record.rows[0][data.language].description)}"/>
+					<title>${he.encode(record.rows[0][data.language].title)}</title>
+					<link rel="canonical" href="https://kanby.net/${data.language}/projects/${record.rows[0].id}">
+	    		    <meta name="robots" content="index,follow">
 					`;
 						}}
  			`,

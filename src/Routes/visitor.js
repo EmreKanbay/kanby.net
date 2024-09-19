@@ -75,6 +75,34 @@ visitor.get("/:lang/contact/", async (req, res, next) => {
 	}
 });
 
+
+
+
+
+visitor.get("/:lang/about/", async (req, res, next) => {
+	try {
+		res.send(await Pages.About.html({ language: req.params.lang }));
+	} catch (error) {
+		console.log(error);
+		res.send("Error");
+	}
+});
+
+visitor.get("/:lang/services/", async (req, res, next) => {
+	try {
+		res.send(await Pages.Services.html({ language: req.params.lang }));
+	} catch (error) {
+		console.log(error);
+		res.send("Error");
+	}
+});
+
+
+
+
+
+
+
 visitor.use("/:lang", async (req, res, next) => {
 	try {
 		const query = await Index.pool.query("SELECT * FROM variables");

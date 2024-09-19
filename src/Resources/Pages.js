@@ -9,12 +9,14 @@ const AddMedia = require("./Pages/Admin/Media/AddMedia");
 const ViewBlog = require("./Pages/Admin/Blogs/ViewBlog");
 const Blogs = require("./Pages/Visitor/Blogs");
 const SingleBlog = require("./Pages/Visitor/SingleBlog");
-const Contact = require("./Pages/Contact");
+const Contact = require("./Pages/Visitor/Contact");
 const AddProject = require("./Pages/Admin/Projects/AddProject");
 const AllProjects = require("./Pages/Admin/Projects/AllProjects");
 const ViewProject = require("./Pages/Admin/Projects/ViewProject");
 const Projects = require("./Pages/Visitor/Projects");
 const SingleProject = require("./Pages/Visitor/SingleProject");
+const Services = require("./Pages/Visitor/Services");
+const About = require("./Pages/Visitor/About");
 
 module.exports = {
 	LoginPage,
@@ -34,4 +36,6 @@ module.exports = {
 	ViewProject,
 	Projects,
 	SingleProject,
+	Services,
+	About
 };

@@ -9,12 +9,23 @@ const translation = {
 		key2: "İçerikler",
 		key2_1: "Bloglar",
 		key2_2: "Projeler",
+		key3: "Bağlatılar",
+		key3_1: "İletişim",
+		key3_2: "Hakkında",
+		key3_3: "Hizmetler",
+
 	},
 	English: {
 		key1: "Social Media",
 		key2: "Content",
 		key2_1: "Blogs",
 		key2_2: "Projects",
+		key3: "Links",
+		key3_1: "Contact",
+		key3_2: "About",
+		key3_3: "Services",
+
+
 	},
 };
 
@@ -114,6 +125,37 @@ module.exports = {
 
             </ul>
         </div>
+
+
+		 <div class="K0e6gd-heading">
+            <p>${translation[data.language].key3}</p>
+            <ul>
+
+                <li>
+                    <a
+                         href="/${data.language}/contact">
+                        ${translation[data.language].key3_1}
+                    </a>
+                </li>
+
+                               <li>
+                    <a
+                         href="/${data.language}/about">
+                        ${translation[data.language].key3_2}
+                    </a>
+                </li>
+
+				    </li>
+
+                               <li>
+                    <a
+                         href="/${data.language}/services">
+                        ${translation[data.language].key3_3}
+                    </a>
+                </li>
+            </ul>
+        </div>
+
 
 
 

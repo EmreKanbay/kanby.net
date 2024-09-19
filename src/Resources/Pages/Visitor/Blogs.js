@@ -6,10 +6,16 @@ const Framework = require("#Framework");
 
 const translation = {
 	Turkish: {
+		title:"Bloglar - Freelance Tasarımcı ve Yazılımcı - kanby.net",
+		description:"Ben arayüz tasarlayan ve kod yazan bir yazılımcıyım",
+
 		key1: "Bloglar",
 		key2: "Blog henüz yok",
 	},
 	English: {
+		title:"Freelance Designer and Programmer - kanby.net",
+		description:"I am a software engineer who writes code and designs interfaces",
+
 		key1: "Blogs",
 		key2: "No blog exist yet",
 	},
@@ -21,7 +27,11 @@ module.exports = {
 			language: data.language,
 			head: await Framework.render`
  
-			<title>Kanby | ${translation[data.language].key1}</title>
+			<title>${he.encode(translation[data.language].title)}</title>
+            <meta name="description" content="${he.encode(translation[data.language].description)}"/>
+            <link rel="canonical" href="https://kanby.net/${data.language}/blogs/">
+	        <meta name="robots" content="index,follow">
+
 			`,
 
 			content: await Framework.render`
