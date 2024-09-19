@@ -246,7 +246,7 @@ admin
 
 		var record = await Index.pool.query(text, values);
 
-		res.send("dsaasd");
+		res.send();
 	});
 admin.get("/:user_id/projects/add/", async (req, res) => {
 	res.send(await Pages.AddProject.html({ user_id: req.params.user_id }));

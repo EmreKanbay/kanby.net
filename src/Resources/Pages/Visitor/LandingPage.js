@@ -96,19 +96,28 @@ module.exports = {
 								var record = await Index.pool.query(text, values);
 
 								if (record.rowCount != 0) {
-									return "".concat(
-										...record.rows.map(t => {
-											return `
+									return "".concat(...await Promise.all(record.rows.map(async t => {
+									
+									try{
+            		const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
+            		const values1 = [t.thumbnail_url.trim()];
+             		var record1 = await Index.pool.query(text1, values1);
+            		alt_text = record1.rows[0].alt_text
+            }
+            catch(e){
+              alt_text = "kanby.net-freelance-developer-designer"
+            }
+            
+										return `
 
-<div onclick="window.location.href = './blogs/${t.id}'" data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" class="all-blogs-item">
+<div onclick="window.location.href = '/${data.language}/blogs/${t.id}'"  class="all-blogs-item">
 
-        <img  src="${t.thumbnail_url}" />
+        <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 
         <span>${t.title}</span>
         </div>
     `;
-										}),
-									);
+									})));
 								} else {
 									return `<p>${translation[data.language].key4}</p>`;
 								}
@@ -122,25 +131,31 @@ module.exports = {
 
 					${async () => {
 						const text = `SELECT "${data.language}",id FROM projects LIMIT 3`;
-
 						const values = [];
-
 						var record = await Index.pool.query(text, values);
-
+						
 						if (record.rowCount != 0) {
-							return "".concat(
-								...record.rows.map(t => {
-									return `
-
-
-						<div onclick="window.location.href = './projects/${t.id}'" class="all-blogs-item ">
-							<div class="icon">
-								<img src="${t[data.language].thumbnail_url}" />
-							</div>
-							<span>${t[data.language].title}</span>
+							return "".concat(...await Promise.all(record.rows.map(async t => {
+                var alt_text = ""
+            try{
+            		const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
+            		const values1 = [t[data.language].thumbnail_url.trim()];
+             		var record1 = await Index.pool.query(text1, values1);
+            		alt_text = record1.rows[0].alt_text
+            }
+            catch(e){
+              alt_text = "kanby.net-freelance-developer-designer"
+            }
+							
+ 									return `
+					<div onclick="window.location.href = '/${data.language}/projects/${t.id}'" class="all-blogs-item ">
+						<div class="icon">
+							<img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
 						</div>
+						<span>${t[data.language].title}</span>
+					</div>
 `;
-								}),
+							}))
 							);
 						} else {
 							return `<p>${translation[data.language].key8}</p>`;

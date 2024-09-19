@@ -46,19 +46,30 @@ module.exports = {
 					var record = await Index.pool.query(text, values);
 
 					if (record.rowCount != 0) {
-						return "".concat(
-							...record.rows.map(t => {
-								return `
+						return "".concat(...await Promise.all(record.rows.map(async t => {
+						
+						try{
+            		const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
+             		const values1 = [t[data.language].thumbnail_url.trim()];
+             		var record1 = await Index.pool.query(text1, values1);
+            		alt_text = record1.rows[0].alt_text
+						}
+            catch(e){
+              console.log(e)
+              alt_text = "kanby.net-freelance-developer-designer"
+            }
+            
+            
+							return `
 
-<div onclick="window.location.href = './${t.id}'"  class="all-blogs-item">
+<div onclick="window.location.href = '/${data.language}/projects/${t.id}'"  class="all-blogs-item">
 
-        <img  src="${t[data.language].thumbnail_url}" />
+        <img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
 
         <span>${t[data.language].title}</span>
         </div>
     `;
-							}),
-						);
+						}))						);
 					} else {
 						return `<p>${translation[data.language].key2}</p>`;
 					}
