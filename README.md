@@ -4,20 +4,31 @@
 
 ## Tech stack:
 
-### FRONTEND
+```markdown
+1. FRONTEND
 
 - Vanilla JS - For better speed and Better SEO
 
-### Backend
+2. Backend
 
 - Node JS,
 - Express JS,
 
-### DATABASE
+3. DATABASE
 
 - Postgres SQL
+```
 
----
+
+
+
+
+
+
+
+
+
+
 
 ### SQL db setup codes
 

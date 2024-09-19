@@ -36,7 +36,7 @@ admin.post("/login/", Index.upload.none(), async (req, res) => {
 				httpOnly: false,
 			});
 			res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: false });
-			res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard/`, req.protocol + "://" + req.get("host")));
+			res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard/`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
 		} else {
 			res.statusCode = 404;
 			res.send(await Components.visitor.ErrorBox.html({ message: "login failed" }));
@@ -63,7 +63,7 @@ admin.use("/:id", async (req, res, next) => {
 
 		if (record.rows.length == 1 && req.params.id == record.rows[0].id) {
 			if (req.path == "/")
-				res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard`, "https://" + req.get("host")));
+				res.redirect(new URL(`/admin/${record.rows[0]["id"]}/dashboard`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
 			else next();
 		} else {
 			res.statusMessage = "Not Authorized";
@@ -71,57 +71,81 @@ admin.use("/:id", async (req, res, next) => {
 		}
 	} catch (error) {
 		console.log(error);
-		res.statusMessage = "Internal Server Error";
-		res.status(401).send("<h1>Internal Server Error</h1>");
+		res.send("Error");
 	}
 });
 
  
 
 admin.get("/:user_id/dashboard/", async (req, res, next) => {
-	res.send(await Pages.AdminDashboard.html({user_id: req.params.user_id}));
+	try {
+		
+		res.send(await Pages.AdminDashboard.html({user_id: req.params.user_id}));
+	} catch (error) {
+		console.log(error)
+		res.send("error")
+	}
 });
  
 admin.get("/:user_id/blogs/add/", async (req, res, next) => {
-	res.send(await Pages.AddBlog.html({user_id: req.params.user_id}));
+
+	try {
+		
+		res.send(await Pages.AddBlog.html({user_id: req.params.user_id}));
+	} catch (error) {
+		console.log(error)
+		res.send("error")
+	}
+	
 });
 
 admin
 	.route("/:user_id/blogs/")
 
 	.get(async (req, res) => {
-		res.send(await Pages.AllBlogs.html({user_id: req.params.user_id}));
+		try {
+		
+			res.send(await Pages.AllBlogs.html({user_id: req.params.user_id}));
+		} catch (error) {
+			console.log(error)
+			res.send("error")
+		}
 	})
 
 	.post(Index.upload.none(), async (req, res) => {
  
 
-		const text = `SELECT * FROM "blogs" WHERE language= $1`;
-
-		const values = [req.body.language];
+		try {
+			const text = `SELECT * FROM "blogs" WHERE language= $1`;
 	
-		var record = await Index.pool.query(text, values);
-
-
-
-		if (record.rowCount == 0) {
-			res.send("<h1>No blog exist</h1>");
-		} else {
-			res.send(
-				"".concat(
-					...record.rows.map(t => {
-						return `
-
- <div onclick="window.location.href = './${t.id}'" data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" data-raw-content="${he.encode(t.raw_content)}"  class="all-blogs-item">
-
-			<img  src="${t.thumbnail_url}" />
-
-			<span>${t.title}</span>
-			</div>
-		`;
-					}),
-				),
-			);
+			const values = [req.body.language];
+		
+			var record = await Index.pool.query(text, values);
+	
+	
+	
+			if (record.rowCount == 0) {
+				res.send("<h1>No blog exist</h1>");
+			} else {
+				res.send(
+					"".concat(
+						...record.rows.map(t => {
+							return `
+	 <div onclick="window.location.href = './${t.id}'" data-title="${he.encode(t.title)}"
+	 	data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}"
+	 	data-raw-content="${he.encode(t.raw_content)}" class="all-blogs-item">
+	 	<img src="${t.thumbnail_url}" />
+	 	<span>${t.title}</span>
+	 </div>
+			`;
+						}),
+					),
+				);
+			}
+			
+		} catch (error) {
+			console.log(error)
+			res.status(500).send()
 		}
 	})
 
@@ -168,35 +192,56 @@ admin
 	admin
 	.route("/:user_id/blogs/:id/")
 	.get(async (req, res) => {
-		res.send(await Pages.ViewBlog.html({ id: req.params.id, user_id: req.params.user_id }));
+
+		try {
+			
+			res.send(await Pages.ViewBlog.html({ id: req.params.id, user_id: req.params.user_id }));
+		} catch (error) {
+			console.log(error)
+			res.send("error")
+		}
 	})
 	.delete(async (req, res) => {
-		const text = `DELETE FROM "blogs" WHERE id = $1`;
+	
+		try {
+			const text = `DELETE FROM "blogs" WHERE id = $1`;
 
-		const values = [req.params.id];
-
-		await Index.pool.query(text, values);
-
-		res.send();
+			const values = [req.params.id];
+	
+			await Index.pool.query(text, values);
+	
+			res.send();
+		} catch (error) {
+			console.log(error)
+			res.status(500).send();
+			
+		}
 	})
 
 	.patch(Index.upload.none(), async (req, res) => {
-		const text = `UPDATE "blogs" SET title = $1 , description = $2,rendered_content = $3, raw_content = $4, thumbnail_url = $5, last_modify_date = $6, language = $7 WHERE id= $8`;
 
-		const values = [
-			req.body.blog_title,
-			req.body.blog_description,
-			req.body.blog_markdown_rendered,
-			req.body.blog_markdwon_raw,
-			req.body.blog_cover_image,
-			Date.now(),
-			req.body.blog_language,
-			req.body.blog_id,
-		];
+		try {
+			const text = `UPDATE "blogs" SET title = $1 , description = $2,rendered_content = $3, raw_content = $4, thumbnail_url = $5, last_modify_date = $6, language = $7 WHERE id= $8`;
 
-		await Index.pool.query(text, values);
+			const values = [
+				req.body.blog_title,
+				req.body.blog_description,
+				req.body.blog_markdown_rendered,
+				req.body.blog_markdwon_raw,
+				req.body.blog_cover_image,
+				Date.now(),
+				req.body.blog_language,
+				req.body.blog_id,
+			];
+	
+			await Index.pool.query(text, values);
+	
+			res.send();
+		} catch (error) {
+			console.log(error)
+			res.status(500).send()
+		}
 
-		res.send();
 	});
 
 
