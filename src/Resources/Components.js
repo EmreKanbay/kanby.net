@@ -3,6 +3,7 @@ const Header = require("./Components/Header");
 const Footer = require("./Components/Footer");
 
 const SuccessBox = require("./Components/SuccessBox");
+const Marquee = require("./Components/Marquee");
 
 module.exports = {
 	visitor: {
@@ -10,6 +11,7 @@ module.exports = {
 		Footer,
 		ErrorBox,
 		SuccessBox,
+		Marquee
 	},
 	admin: {},
 };

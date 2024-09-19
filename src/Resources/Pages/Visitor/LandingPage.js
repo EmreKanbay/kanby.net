@@ -1,5 +1,6 @@
 const Layouts = require("#Layouts");
 const Framework = require("#Framework");
+const Components = require("#Components");
 const Index = require("#Index");
 const he = require("he");
 
@@ -43,6 +44,8 @@ module.exports = {
 			`,
 
 			content: await Framework.render`
+
+			${await Components.visitor.Marquee.html({ text: '<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">RSS Available<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">', time: 20 })} 
 				<main id="page-container">
 					<div class="profile-container">
 						<figure class="image-profile">
