@@ -171,76 +171,76 @@ root.get("/sitemap.xml", async function (req, res, next) {
     xmlns:xhtml="http://www.w3.org/1999/xhtml"   
 >
 	<url>
-		<loc>http://localhost:3000/Turkish/contact/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/contact/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/contact/" />
+		<loc>https://kanby.net/Turkish/contact/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/contact/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/contact/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/English/contact/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/contact/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/contact/" />
+		<loc>https://kanby.net/English/contact/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/contact/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/contact/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/Turkish/services/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/services/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/services/" />
+		<loc>https://kanby.net/Turkish/services/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/services/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/services/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/English/services/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/services/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/services/" />
+		<loc>https://kanby.net/English/services/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/services/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/services/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/Turkish/about/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/about/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/about/" />
+		<loc>https://kanby.net/Turkish/about/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/about/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/about/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/English/about/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/about/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/about/" />
+		<loc>https://kanby.net/English/about/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/about/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/about/" />
 	</url>
 
 
 	<url>
-		<loc>http://localhost:3000/Turkish/projects/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/projects/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/projects/" />
+		<loc>https://kanby.net/Turkish/projects/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/English/projects/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/projects/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/projects/" />
+		<loc>https://kanby.net/English/projects/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/Turkish/blogs/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/blogs/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/blogs/" />
+		<loc>https://kanby.net/Turkish/blogs/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/blogs/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/English/blogs/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/blogs/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/blogs/" />
+		<loc>https://kanby.net/English/blogs/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/blogs/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/Turkish/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/" />
+		<loc>https://kanby.net/Turkish/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/" />
 	</url>
 
 	<url>
-		<loc>http://localhost:3000/English/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="http://localhost:3000/Turkish/" />
-		<xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/English/" />
+		<loc>https://kanby.net/English/</loc>   
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/" />
 	</url>
 
 		${async () => {
