@@ -12,7 +12,7 @@ const crypto = require("crypto");
 const { Pool } = pg;
 
 //configure libraries
-try {
+
 	
 	const pool = new Pool({
 		user: process.env.PG_USER,
@@ -22,9 +22,6 @@ try {
 		database: process.env.PG_DATABASE,
 	});
 
-} catch (error) {
-	console.log(error)
-}
 
 
 var DB_connected = false;
