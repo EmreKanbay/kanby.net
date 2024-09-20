@@ -59,15 +59,13 @@ const auth = async (req, res) => {
 
 	try{
 	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1 AND password_hash= $2`;
-    var values = "";
-	
-if(req.method == "POST") values = [req?.body?.login_name, sha256(req?.body?.login_password)];
-else if(req.method == "GET")  values = [req?.cookies?.login_name, req?.cookies?.password_hash];  
-
+    var values = [];
+ if(req.method == "POST" && req.originalUrl == "/admin/login/") values = [req?.body?.login_name, sha256(req?.body?.login_password)];
+else values = [req?.cookies?.login_name, req?.cookies?.password_hash];  
+ 
 var record = await pool.query(text, values);
 
-
-	if (record.rows.length == 1 && (req.params.id == record.rows[0].id || req.params.id == "login")) {
+	if (record.rows.length == 1 && (req.params.id == record.rows[0].id || req.originalUrl.split("/")[2] == "login")) {
 		res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
 		res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
 		res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: true });
@@ -434,22 +432,38 @@ try{
 });
 
 
-root.use("/admin/:id", upload.none(), async (req, res, next) => {
+root.post("/admin/login/", upload.none(), async (req, res, next) => {
   
-	var record;
+  try{
+ 	var checkAuth = await auth(req, res);
+    
+ 	if (checkAuth.authenticated) {
+    res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard/`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
+ } else {
+res.status(401).send(await Components.visitor.ErrorBox.html({ message: "login failed" }))
+
+ }
+  
+  }catch(e){
+  		console.log(e);
+		res.status(500).send("Error");
+    
+  }
+
+  
+})
+root.use("/admin/:id", async (req, res, next) => {
+  
 	try {
-	
-	
+
 	var checkAuth = await auth(req, res);
 	
 	
 	if (checkAuth.authenticated) {
 	if (req.originalUrl == `/admin/${checkAuth.record.rows[0]["id"]}/`) res.redirect(new URL(`/admin/${checkAuth.record.rows[0]["id"]}/dashboard`,	req.protocol == "https" ? "https://" : "http://" + req.get("host")));
-	else if (req.originalUrl == "/admin/login/") res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard/`, req.protocol + "://" + req.get("host")));
-	else next();
+	else if (req.originalUrl == "/admin/login/") res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard/`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
+    else next(); 
 } else {
-
-  if(req.method == "POST") {res.status(401).send(await Components.visitor.ErrorBox.html({ message: "login failed" }));return}
   if (req.originalUrl == "/admin/login/") res.send(await LoginPage.html({langCode: "en", language: "English"}));
 	else 	res.status(401).send("<h1>Not Authorized</h1>");
 

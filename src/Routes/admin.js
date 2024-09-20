@@ -43,7 +43,7 @@ admin
 
 	.post(Index.upload.none(), async (req, res) => {
 		try {
-			const text = `SELECT * FROM "blogs" WHERE language= $1`;
+ 			const text = `SELECT * FROM "blogs" WHERE language= $1`;
 
 			const values = [req.body.language];
 
