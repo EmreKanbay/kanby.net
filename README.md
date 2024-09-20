@@ -19,6 +19,59 @@ But displaying that text in the <- title -> element of every single page on your
 
 - use meta open graph tags to be able to be appealing on social platforms
 
+- Open Graph is important
+
+- Structed data and rich search results 
+
+-  Structed data and rich search results However, it is more important to supply fewer but complete and accurate recommended properties rather than trying to provide every possible recommended property with less complete, badly-formed, or inaccurate data.
+
+- rich text results have so many sub branches, like for softwares, organisations, educational courses and way much more
+
+
+For images as links, Google uses the alt attribute of the img element as anchor text, so be sure to add descriptive alt text to your images:
+
+Good:
+
+```html
+<a href="/add-to-cart.html"><img src="enchiladas-in-shopping-cart.jpg" alt="add enchiladas to your cart"/></a>
+```
+Bad (empty alt text and empty link text):
+```html
+<a href="/add-to-cart.html"><img src="enchiladas-in-shopping-cart.jpg" alt=""/></a>
+```
+# Write good anchor text
+
+Good anchor text is descriptive, reasonably concise, and relevant to the page that it's on and to the page it links to. It provides context for the link, and sets the expectation for your readers. The better your anchor text, the easier it is for people to navigate your site and for Google to understand what the page you're linking to is about.
+
+**Bad (too generic):**
+[**Click here**](https://example.com) to learn more.
+[**Read more**](https://example.com).
+Learn more about our cheese on our [**website**](https://example.com).
+We have an [**article**](https://example.com) that provides more background on how the cheese is made.
+
+**Tip**: Try reading only the anchor text (out of context) and check if it's specific enough to make sense by itself. If you don't know what the page could be about, you need more descriptive anchor text.
+
+**Better (more descriptive):**
+For a full list of cheese available for purchase, see the [**list of cheese types**](https://example.com).
+
+**Bad (weirdly long):**
+Starting next Tuesday, the [**Knitted Cow invites local residents of Wisconsin to their grand re-opening by also offering complimentary cow-shaped ice sculptures**](https://example.com) to the first 20 customers.
+
+**Better (more concise):**
+Starting next Tuesday, the [**Knitted Cow invites local residents of Wisconsin**](https://example.com) to their grand re-opening by also offering complimentary cow-shaped ice sculptures to the first 20 customers.
+
+Write as naturally as possible, and resist the urge to cram every keyword that's related to the page that you're linking to (remember, keyword stuffing is a violation of our spam policies). Ask yourself, does the reader need these keywords to understand the next page? If it feels like you're forcing keywords into the anchor text, then it's probably too much.
+
+Remember to give context to your links: the words before and after links matter, so pay attention to the sentence as a whole. Don't chain up links next to each other; it's harder for your readers to distinguish between links, and you lose surrounding text for each link.
+
+**Bad (too many links next to each other):**
+I've written about cheese [**so**](https://example.com/page1) [**many**](https://example.com/page2) [**times**](https://example.com/page3) [**this**](https://example.com/page4) [**year**](https://example.com/page5).
+
+**Better (links are spaced out with context):**
+I've written about cheese so many times this year: who can forget the [**controversy over blue cheese and gorgonzola**](https://example.com/blue-cheese-vs-gorgonzola), the [**world's oldest brie**](https://example.com/worlds-oldest-brie) piece that won the Cheesiest Research Medal, the epic retelling of [**The Lost Cheese**](https://example.com/the-lost-cheese), and my personal favorite, [**A Boy and His Cheese: a story of two unlikely friends**](https://example.com/boy-and-his-cheese).
+
+
+- Internal links: cross-reference your own content
 ## What is this
 
 - Source code of my personal website

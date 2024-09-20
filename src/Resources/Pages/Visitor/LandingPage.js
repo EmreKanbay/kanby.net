@@ -45,6 +45,22 @@ module.exports = {
 			head: await Framework.render`
 
 			<title>${he.encode(translation[data.language].title)}</title>
+			
+		 <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "kanby.net",
+      "name": "Freelance solo developer",
+      "author": {
+        "@type": "Person",
+        "name": "Emre Kanbay"
+      },
+      "datePublished": "2018-03-10",
+      "description": "This coffee cake is awesome and perfect for parties.",
+      "prepTime": "PT20M"
+    }
+    </script>
+			
       <meta name="description" content="${he.encode(translation[data.language].description)}"/>
       <meta name="robots" content="index,follow">
       
