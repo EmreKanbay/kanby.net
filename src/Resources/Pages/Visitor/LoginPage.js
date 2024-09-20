@@ -5,6 +5,7 @@ const Framework = require("#Framework");
 module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
+	    langCode:data.langCode,
 			language: data.language,
 
 			head: await Framework.render`

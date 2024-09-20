@@ -24,6 +24,7 @@ const translation = {
 module.exports = {
 	html: async data =>
 		await Layouts.VisitorLayout({
+      langCode:data.langCode,
 			language: data.language,
 			head: await Framework.render`
 			<title>${he.encode(translation[data.language].title)}</title>

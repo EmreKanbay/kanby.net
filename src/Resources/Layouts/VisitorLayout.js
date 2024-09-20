@@ -9,7 +9,7 @@ const Framework = require("#Framework");
 module.exports = async data =>
 	await Framework.render`
 	<!doctype html>
-	<html lang="en">
+	<html lang="${data.langCode}">
 		<head>
 				<meta charset="utf-8">
        	<meta name="viewport" content="width=device-width, initial-scale=1.0">
