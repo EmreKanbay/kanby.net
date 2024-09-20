@@ -40,7 +40,8 @@ module.exports = {
 	    		    <meta name="robots" content="index,follow">
 											
 											
-			        <meta property="og:title" content="${he.encode(record.rows[0][data.language].title)}" />
+	        <meta property="og:title" content="${he.encode(record.rows[0][data.language].title)}" />
+					<meta property="og:description" content="${he.encode(record.rows[0][data.language].description)}" />
           <meta property="og:type" content="article" />
           <meta property="og:url" content="https://kanby.net/${data.language}/projects/${data.id}" />
           <meta property="og:image" content="${he.encode(record.rows[0][data.language].thumbnail_url)}" />

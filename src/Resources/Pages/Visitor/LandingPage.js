@@ -52,6 +52,15 @@ module.exports = {
 			<link rel="alternate" hreflang="en" href="https://kanby.net/English/" >
 			<link rel="alternate" href="https://kanby.net/English/" hreflang="x-default" />
 
+			
+   <meta property="og:title" content="${he.encode(translation[data.language].title)}" />
+<meta property="og:description" content="${he.encode(translation[data.language].description)}" />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content="https://kanby.net/${data.language}/" />
+          <meta property="og:image" content="${cdn}/assets/logo-128.png" />
+
+          
+          
 			`,
 
 			content: await Framework.render`

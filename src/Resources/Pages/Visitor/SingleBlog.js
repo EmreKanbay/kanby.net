@@ -40,6 +40,8 @@ module.exports = {
 								
 								
         <meta property="og:title" content="${he.encode(record.rows[0].title)}" />
+        <meta property="og:description" content="${he.encode(record.rows[0].description)}" />
+
           <meta property="og:type" content="article" />
           <meta property="og:url" content="https://kanby.net/${data.language}/blogs/${data.blog_id}" />
           <meta property="og:image" content="${he.encode(record.rows[0].thumbnail_url)}" />
