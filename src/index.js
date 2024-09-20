@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const Framework = require("#Framework");
 
+
 //Initalize libraries
 const { Pool } = pg;
 
@@ -87,6 +88,7 @@ const admin = require("./Routes/admin");
 const visitor = require("./Routes/visitor");
 const getComponents = require("./Routes/getComponent");
 
+
 // Setup Middlewares
 root.use(cookieParser());
 
@@ -106,19 +108,40 @@ root.get("/manifest.json", function (req, res, next) {
 
 	res.send(JSON.stringify({
  "manifest_version": 3,
- "name": "kanby.net",
- "description": "Freelance desing and development",
+ "name": "kanby.net - freelance design and development",
+ "short_name": "kanby.net",
+ "description": "Freelance desinger and developer",
   "version": "1.0.0",
 	"author": "Emre Kanbay",
-	"icons": {
-    "any": cdn + "/assets/logo.svg",
-    "128": cdn + "/assets/logo-128.png",
-    "64": cdn + "/assets/logo-64.png",
-    "48": cdn + "/assets/logo-48.png",
-    "32": cdn + "/assets/logo-32.png",
-    "16": cdn + "/assets/logo-16.png",  
-  },
+	"icons": [
 	
+    {
+      "src": cdn + "/assets/logo-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": cdn + "/assets/logo-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": cdn + "/assets/logo-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": cdn + "/assets/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "portrait",
+
 	
 	
 	

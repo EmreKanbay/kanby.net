@@ -16,11 +16,19 @@ module.exports = async data =>
         <meta name="robots" content="index,follow">
         
         <!--Stylesheet for markdown-->
-        <link rel="preload" href="https://raw.githubusercontent.com/sindresorhus/github-markdown-css/refs/heads/main/github-markdown-light.css" as="style" />
+        <link rel="preload" href="${cdn}/assets/github-markdown-light.css" as="style" />
         
         <link href="${cdn}" rel="dns-prefetch">
 				<link rel="stylesheet" href="/assets/globals.css" />
-				<link rel="icon" href="${cdn}/assets/logo.svg">
+				
+				
+				<link rel="apple-touch-icon" sizes="128x128" href="${cdn}/assets/logo-128.png">
+				<link rel="icon" type="image/svg+xml" href="${cdn}/assets/logo.svg">
+        <link rel="icon" type="image/png" href="${cdn}/assets/logo-16.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="${cdn}/assets/logo-32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="${cdn}/assets/logo-48.png" sizes="48x48">
+
+
 				<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
 				<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" >
 				<link rel="alternate" hreflang="en" href="https://kanby.net/English/" >

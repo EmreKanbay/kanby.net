@@ -1,7 +1,9 @@
 const Layouts = require("#Layouts");
 const Index = require("#Index");
 const he = require("he");
+require("dotenv").config();
 
+const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 const translation = {
@@ -30,7 +32,7 @@ module.exports = {
 
 				return `
 				  <!--Stylesheet for markdown-->
-					<link rel="stylesheet" href="https://raw.githubusercontent.com/sindresorhus/github-markdown-css/refs/heads/main/github-markdown-light.css" />
+					<link rel="stylesheet" href="${cdn}/assets/github-markdown-light.css" />
 					<meta name="description" content="${he.encode(record.rows[0].description)}"/>
 					<title>${he.encode(record.rows[0].title)}</title>
 					<link rel="canonical" href="https://kanby.net/${data.language}/blogs/${record.rows[0].id}">
