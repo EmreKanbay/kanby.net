@@ -111,12 +111,12 @@ module.exports = {
             
 										return `
 
-<div onclick="window.location.href = '/${data.language}/blogs/${t.id}'"  class="all-blogs-item">
+<a rel="ugc" href="/${data.language}/blogs/${t.id}/"  class="all-blogs-item">
 
         <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 
         <span>${t.title}</span>
-        </div>
+        </a>
     `;
 									})));
 								} else {
@@ -126,7 +126,7 @@ module.exports = {
 						</div>
 					</div>
 
-					<p style="margin-left:2rem;font-size:2rem"><a href="./projects">${translation[data.language].key5}</a></p>
+					<p style="margin-left:2rem;font-size:2rem"><a href="/${data.language}/projects">${translation[data.language].key5}</a></p>
 
 					<div class="all-blogs-list">
 
@@ -149,12 +149,12 @@ module.exports = {
             }
 							
  									return `
-					<div onclick="window.location.href = '/${data.language}/projects/${t.id}'" class="all-blogs-item ">
+					<a rel="ugc" href="/${data.language}/projects/${t.id}/"  class="all-blogs-item">
 						<div class="icon">
 							<img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
 						</div>
 						<span>${t[data.language].title}</span>
-					</div>
+					</a>
 `;
 							}))
 							);
@@ -186,7 +186,6 @@ module.exports = {
 					}
 
 					.all-blogs-item {
-						cursor: pointer;
 						display: grid;
 						min-width: 200px;
 						max-width: 240px;

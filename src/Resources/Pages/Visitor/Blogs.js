@@ -57,12 +57,12 @@ module.exports = {
             }
  							return `
 
-<div onclick="window.location.href = '/${data.language}/blogs/${t.id}'"   class="all-blogs-item">
+<a rel="ugc" href="/${data.language}/blogs/${t.id}/"   class="all-blogs-item">
 
         <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 
         <span>${t.title}</span>
-        </div>
+        </a>
     `;
 						}))
 							
