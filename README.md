@@ -8,6 +8,17 @@
  Simplify everything with a simple library or framework
 ```
 
+## SEO tips
+- Avoid repeated or boilerplate text in <- title -> elements. It's important to have distinct text that describes the content of the page in the <- title -> element for each page on your site. Titling every page on a commerce site "Cheap products for sale", for example, makes it impossible for users to distinguish between two pages. Long text in the <- title -> element that varies by only a single piece of information ("boilerplate" titles) is also bad; for example, a common <- title -> element for all pages with text like "Band Name - See videos, lyrics, posters, albums, reviews and concerts" contains a lot of uninformative text
+
+- Brand your titles concisely. The <- title -> element on your site's home page is a reasonable place to include some additional information about your site. For example:
+<- title ->ExampleSocialSite, a place for people to meet and mingle<- /title ->
+But displaying that text in the <- title -> element of every single page on your site will look repetitive if several pages from your site are returned for the same query. In this case, consider including just your site name at the beginning or end of each <- title -> element, separated from the rest of the text with a delimiter such as a hyphen, colon, or pipe, like this:
+  
+- Avoid including flight price information in <- title -> elements. Our systems will likely not show price information when generating title links for flight pages. This is because pricing for flights can change so fast (sometimes every few minutes), that what's shown in title links may not correspond to the actual price on the landing page.
+
+- use meta open graph tags to be able to be appealing on social platforms
+
 ## What is this
 
 - Source code of my personal website

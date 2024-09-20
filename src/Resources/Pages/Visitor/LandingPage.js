@@ -10,7 +10,7 @@ const cdn = process.env.CDN_DOMAIN;
 
 const translation = {
 	Turkish: {
-		title: "kanby.net - Freelance tasarım ve yazılım",
+		title: "Freelance Yazılımcı - kanby.net",
 		description:
 			"Burada, yaratıcı tasarım projelerimden ve özelleştirilmiş yazılım çözümlerimden örnekler bulabilirsiniz. Web tasarımı, kullanıcı deneyimi (UX), ve yazılım geliştirme konularında sunduğum hizmetlerle, projelerinize estetik ve işlevsellik katmayı amaçlıyorum",
 		key1: "Düşünce, Tasarım, Yazılım",
@@ -23,7 +23,7 @@ const translation = {
 		key8: "Proje bulunamadı",
 	},
 	English: {
-		title: "kanby.net - freelance designer and programmer",
+		title: "Freelance Programmer - kanby.net",
 		description:
 			"Here, you can find examples of my creative design projects and custom software solutions. With my services in web design, user experience (UX), and software development, I aim to add both aesthetics and functionality to your projects",
 		key1: "Think, Design, Code",
@@ -45,8 +45,12 @@ module.exports = {
 			head: await Framework.render`
 
 			<title>${he.encode(translation[data.language].title)}</title>
-        <meta name="description" content="${he.encode(translation[data.language].description)}"/>
+      <meta name="description" content="${he.encode(translation[data.language].description)}"/>
       <meta name="robots" content="index,follow">
+      
+  		<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" >
+			<link rel="alternate" hreflang="en" href="https://kanby.net/English/" >
+			<link rel="alternate" href="https://kanby.net/English/" hreflang="x-default" />
 
 			`,
 
@@ -86,7 +90,7 @@ module.exports = {
   					</ul>
 
 					<div>
-						<p style="margin-left:2rem;font-size:2rem"><a href="blogs/">${translation[data.language].key3}</a></p>
+						<p style="margin-left:2rem;font-size:2rem"><a hreflang="${data.langCode}" href="blogs/">${translation[data.language].key3}</a></p>
 
 						<div class="all-blogs-list">
 							${async () => {
@@ -111,7 +115,7 @@ module.exports = {
             
 										return `
 
-<a rel="ugc" href="blogs/${t.id}/"  class="all-blogs-item">
+<a rel="ugc" hreflang="${data.langCode}" href="blogs/${t.id}/"  class="all-blogs-item">
 
         <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 
@@ -126,7 +130,7 @@ module.exports = {
 						</div>
 					</div>
 
-					<p style="margin-left:2rem;font-size:2rem"><a href="projects/">${translation[data.language].key5}</a></p>
+					<p style="margin-left:2rem;font-size:2rem"><a hreflang="${data.langCode}" href="projects/">${translation[data.language].key5}</a></p>
 
 					<div class="all-blogs-list">
 
@@ -149,7 +153,7 @@ module.exports = {
             }
 							
  									return `
-					<a rel="ugc" href="projects/${t.id}/"  class="all-blogs-item">
+					<a rel="ugc" hreflang="${data.langCode}" href="projects/${t.id}/"  class="all-blogs-item">
 						<div class="icon">
 							<img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
 						</div>

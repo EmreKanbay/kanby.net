@@ -9,7 +9,7 @@ const Framework = require("#Framework");
 module.exports = async data =>
 	await Framework.render`
 	<!doctype html>
-	<html lang="en">
+	<html lang="${data.langCode}">
 		<head>
 		
 
@@ -35,8 +35,9 @@ module.exports = async data =>
 
 
 				<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
-				<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" >
-				<link rel="alternate" hreflang="en" href="https://kanby.net/English/" >
+				
+
+
 				<link rel="preconnect" href="${cdn}" />
 
 
@@ -46,13 +47,13 @@ module.exports = async data =>
 		</head>
 		<body>
 
-			${await Components.visitor.Header.html({ language: data.language })} 
+			${await Components.visitor.Header.html({ language: data.language, langCode: data.langCode })} 
 			
 			<main style="padding-top:3rem">
 			${await data.content} 
 			</main>
 			
-			${await Components.visitor.Footer.html({ language: data.language })}
+			${await Components.visitor.Footer.html({ language: data.language, langCode: data.langCode })}
 		
 
 			</body>

@@ -141,10 +141,6 @@ root.get("/manifest.json", function (req, res, next) {
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "orientation": "portrait",
-
-	
-	
-	
 	}));
 });
 
@@ -331,7 +327,7 @@ root.get("/sitemap.xml", async function (req, res, next) {
 						return `
 	<url>
 		<loc>https://kanby.net/Turkish/blogs/${t.id}/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/English/Turkish/${t.id}/" />
+		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/${t.id}/" />
 	</url>
 						`;
 					}),

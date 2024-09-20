@@ -79,8 +79,8 @@ module.exports = {
 			            <div class="liwlCh-header-menu-navigation-heading">
                 <span>${translation[data.language].key3}</span>
                 <ul>
-                    <li><a href="/${data.language}/blogs/">${translation[data.language].key3_1}</a></li>
-                    <li><a href="/${data.language}/projects/">${translation[data.language].key3_2}</a></li>
+                    <li><a hreflang="${data.langCode}" href="blogs/">${translation[data.language].key3_1}</a></li>
+                    <li><a hreflang="${data.langCode}" href="projects/">${translation[data.language].key3_2}</a></li>
                     <li><a rel="nofollow" href="/admin/login/">${translation[data.language].key3_3}</a></li>
                  </ul>
             </div>

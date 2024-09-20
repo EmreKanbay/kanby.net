@@ -23,7 +23,7 @@ visitor.use("/:lang", async (req, res, next) => {
 	
 		next()
 		} else {
-			next();
+		res.send(await Pages.NotFound.html({ language: "English", langCode:"en"}));
 		}
 	} catch (e) {
 		console.log(e);

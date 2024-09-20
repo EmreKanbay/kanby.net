@@ -37,6 +37,16 @@ module.exports = {
 					<meta name="description" content="${he.encode(record.rows[0].description)}"/>
 					<title>${he.encode(record.rows[0].title)}</title>
 	    		 <meta name="robots" content="index,follow">
+								
+								
+        <meta property="og:title" content="${he.encode(record.rows[0].title)}" />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content="https://kanby.net/${data.language}/blogs/${data.blog_id}" />
+          <meta property="og:image" content="${he.encode(record.rows[0].thumbnail_url)}" />
+          
+          
+          
+       	<link rel="alternate" hreflang="${data.langCode}" href="https://kanby.net/${data.language}/projects/${data.blog_id}/" >
 					`;
 			}}
  

@@ -29,6 +29,11 @@ module.exports = {
 			<title>Kanby | ${he.encode(translation[data.language].title)}</title>
             <meta name="description" content="${he.encode(translation[data.language].description)}">
 	        <meta name="robots" content="index,follow">
+									
+									
+        	<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/" >
+		<link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/" >
+		<link rel="alternate" href="https://kanby.net/English/projects/" hreflang="x-default" />
 
 			`,
 
@@ -62,7 +67,7 @@ module.exports = {
             
 							return `
 
-<a rel="ugc" href="projects/${t.id}/"  class="all-blogs-item">
+<a rel="ugc" hreflang="${data.langCode}" href="projects/${t.id}/"  class="all-blogs-item">
 
         <img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
 

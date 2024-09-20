@@ -38,6 +38,16 @@ module.exports = {
 					<meta name="description" content="${he.encode(record.rows[0][data.language].description)}"/>
 					<title>${he.encode(record.rows[0][data.language].title)}</title>
 	    		    <meta name="robots" content="index,follow">
+											
+											
+			        <meta property="og:title" content="${he.encode(record.rows[0][data.language].title)}" />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content="https://kanby.net/${data.language}/projects/${data.id}" />
+          <meta property="og:image" content="${he.encode(record.rows[0][data.language].thumbnail_url)}" />
+          
+		        	<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/${data.id}/" >
+				<link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${data.id}/" >
+				<link rel="alternate" href="https://kanby.net/English/projects/${data.id}/" hreflang="x-default" />
 					`;
 						}}
  			`,

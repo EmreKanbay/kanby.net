@@ -117,6 +117,7 @@ module.exports = {
 
                 <li>
                     <a
+                    hreflang="${data.langCode}"
                          href="/blogs">
                         ${translation[data.language].key2_1}
                     </a>
@@ -124,6 +125,7 @@ module.exports = {
 
                                <li>
                     <a
+                    hreflang="${data.langCode}"
                          href="/projects">
                         ${translation[data.language].key2_2}
                     </a>
@@ -139,6 +141,7 @@ module.exports = {
 
                 <li>
                     <a
+                    hreflang="${data.langCode}"
                          href="/contact">
                         ${translation[data.language].key3_1}
                     </a>
@@ -146,6 +149,7 @@ module.exports = {
 
                                <li>
                     <a
+                    hreflang="${data.langCode}"
                          href="/about">
                         ${translation[data.language].key3_2}
                     </a>
@@ -155,6 +159,7 @@ module.exports = {
 
                                <li>
                     <a
+                    hreflang="${data.langCode}"
                          href="/services">
                         ${translation[data.language].key3_3}
                     </a>

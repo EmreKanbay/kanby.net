@@ -28,6 +28,10 @@ module.exports = {
 			<title>Kanby | ${he.encode(translation[data.language].title)}</title>
    <meta name="description" content="${he.encode(translation[data.language].description)}">
  	        <meta name="robots" content="index,follow">
+                   
+         	<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/blogs/" >
+			<link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/" >
+			<link rel="alternate" href="https://kanby.net/English/blogs/" hreflang="x-default" />
 			`,
 
 			content: await Framework.render`
@@ -62,7 +66,7 @@ module.exports = {
             }
  							return `
 
-<a rel="ugc" href="blogs/${t.id}/"   class="all-blogs-item">
+<a rel="ugc" hreflang="${data.langCode}" href="blogs/${t.id}/"   class="all-blogs-item">
 
         <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 
