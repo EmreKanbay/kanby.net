@@ -5,7 +5,7 @@ const Pages = require("#Pages");
 const visitor = Index.express.Router();
 
 visitor.get("/", async (req, res, next) => {
-	try {
+ 	try {
 		res.redirect(new URL(`/Turkish/`, req.protocol + "://" + req.get("host")));
 	} catch (e) {
 		res.send("Error");

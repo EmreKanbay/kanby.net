@@ -8,13 +8,11 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const Framework = require("#Framework");
+const Components = require("#Components");
+const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
 
 
-//Initalize libraries
 const { Pool } = pg;
-
-//configure libraries
-
 const pool = new Pool({
 	user: process.env.PG_USER,
 	host: process.env.PG_HOST,
@@ -22,8 +20,8 @@ const pool = new Pool({
 	password: process.env.PG_PASSWORD,
 	database: process.env.PG_DATABASE,
 });
-
- const cdn = process.env.CDN_DOMAIN;
+ 
+const cdn = process.env.CDN_DOMAIN;
 
 var DB_connected = false;
 
@@ -45,31 +43,45 @@ var DB_connected = false;
 
 const storage = multer.diskStorage({
 	filename: async function (req, file, cb) {
-		var [main, ext] = file.originalname.split(".");
+	try{
+  	var [main, ext] = file.originalname.split(".");
+  
+  	cb(null, main + "-" + crypto.randomUUID().split("-")[1] + "." + ext);
 
-		cb(null, main + "-" + crypto.randomUUID().split("-")[1] + "." + ext);
+	}catch(e) {console.log(e)}
 	},
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 const auth = async (req, res) => {
-	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name= $1 AND password_hash= $2`;
+  
 
-	const values = [req?.cookies?.login_name, req?.cookies?.password_hash];
+	try{
+	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1 AND password_hash= $2`;
+    var values = "";
+	
+if(req.method == "POST") values = [req?.body?.login_name, sha256(req?.body?.login_password)];
+else if(req.method == "GET")  values = [req?.cookies?.login_name, req?.cookies?.password_hash];  
 
-	var record = await pool.query(text, values);
+var record = await pool.query(text, values);
 
-	if (record.rows.length == 1) {
-		res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true });
-		res.cookie("password_hash", record.rows[0].password_hash, {
-			expires: new Date(Date.now() + 36000000),
-			httpOnly: true,
-		});
+
+	if (record.rows.length == 1 && (req.params.id == record.rows[0].id || req.params.id == "login")) {
+		res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
+		res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
 		res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: true });
 
 		return { authenticated: true, record: record };
 	} else return { authenticated: false };
+	
+	}
+	catch(e){
+	
+	console.log(e)
+		}
+
+
 };
 
 //Global variables
@@ -84,82 +96,97 @@ module.exports = {
 
 // Setup Routes
 const root = express();
-const admin = require("./Routes/admin");
 const visitor = require("./Routes/visitor");
 const getComponents = require("./Routes/getComponent");
+const admin = require("./Routes/admin");
 
 
 // Setup Middlewares
 root.use(cookieParser());
 
 root.get("/robots.txt", function (req, res, next) {
-	res.type("text/plain");
-
+  
+  try{
+   	res.type("text/plain");
+   
 	res.send(`User-agent: *
-Allow: /Turkish/
-Allow: /English/
-Sitemap https://kanby.net/sitemap.xml
-Disallow: /admin/
-	`);
+   Disallow: /admin/
+   Sitemap https://kanby.net/sitemap.xml
+   `);
+  }catch(e){
+    
+    console.log(e)
+    res.status(500).send("<h1>Error</h1>")
+  }
+
 });
 
 root.get("/manifest.json", function (req, res, next) {
-	res.type("application/json");
-
-	res.send(JSON.stringify({
- "manifest_version": 3,
- "name": "kanby.net - freelance design and development",
- "short_name": "kanby.net",
- "description": "Freelance desinger and developer",
-  "version": "1.0.0",
+  try{
+    res.type("application/json");
+    res.send(JSON.stringify(
+	{
+    "manifest_version": 3,
+    "name": "kanby.net - freelance design and development",
+    "short_name": "kanby.net",
+    "description": "Freelance desinger and developer",
+     "version": "1.0.0",
 	"author": "Emre Kanbay",
 	"icons": [
 	
-    {
-      "src": cdn + "/assets/logo-16.png",
-      "sizes": "16x16",
-      "type": "image/png"
-    },
-    {
-      "src": cdn + "/assets/logo-64.png",
-      "sizes": "64x64",
-      "type": "image/png"
-    },
-    {
-      "src": cdn + "/assets/logo-128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": cdn + "/assets/logo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
-    }
-  ],
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "orientation": "portrait",
-	}));
-});
+       {
+         "src": cdn + "/assets/logo-16.png",
+         "sizes": "16x16",
+         "type": "image/png"
+       },
+       {
+         "src": cdn + "/assets/logo-64.png",
+         "sizes": "64x64",
+         "type": "image/png"
+       },
+       {
+         "src": cdn + "/assets/logo-128.png",
+         "sizes": "128x128",
+         "type": "image/png"
+       },
+       {
+         "src": cdn + "/assets/logo.svg",
+         "sizes": "any",
+         "type": "image/svg+xml"
+       }
+     ],
+     "start_url": "/",
+     "display": "standalone",
+     "background_color": "#ffffff",
+     "theme_color": "#ffffff",
+     "orientation": "portrait",
+	}))
+    
+  }catch(e){
+    res.status(500).send("<h1>Error</h1>")
+    console.log(e)
+  }
+
+	;});
 
 root.get("/rss.xml", async function (req, res, next) {
-	res.type("application/xml");
-
+  
+try{
+ 	res.type("application/xml");
+ 
 	const rss = await Framework.render
-`<?xml version="1.0" encoding="UTF-8"?>
+ `<?xml version="1.0" encoding="UTF-8"?>
 	<rss version="2.0">
 	  <channel>
 		<title>Blogs</title>
 		<link>https://kanby.net/English/blogs/</link>
 		${async () => {
 			const text = `SELECT * FROM blogs Where language='English'`;
-
+ 
 			const values = [];
-
+ 
 			var record = await pool.query(text, values);
-
+ 
 			return "".concat(
 				...(await Promise.all(
 					record.rows.map(t => {
@@ -176,17 +203,17 @@ root.get("/rss.xml", async function (req, res, next) {
 			);
 		}}
 		</channel>
-
+ 
 		<channel>
 		<title>Projects</title>
 		<link>https://kanby.net/English/projects/</link>
 		${async () => {
 			const text = `SELECT * FROM projects`;
-
+ 
 			const values = [];
-
+ 
 			var record = await pool.query(text, values);
-
+ 
 			return "".concat(
 				...(await Promise.all(
 					record.rows.map(t => {
@@ -202,104 +229,109 @@ root.get("/rss.xml", async function (req, res, next) {
 			);
 		}}
 		</channel>
-</rss>`
-
+ </rss>`
+ 
 	res.send(rss);
+}catch(e){
+  console.log(e)
+  res.status(500).send("<h1>Error</h1>")
+}
 });
 
 root.get("/sitemap.xml", async function (req, res, next) {
-	res.type("application/xml");
-
+try{
+ 	res.type("application/xml");
+ 
 	const sitemap = await Framework.render
-`<?xml version="1.0" encoding="UTF-8"?>
-
-<urlset 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
-    http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd"
-    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-    xmlns:xhtml="http://www.w3.org/1999/xhtml"   
->
+ `<?xml version="1.0" encoding="UTF-8"?>
+ 
+ <urlset 
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
+     http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd"
+     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+     xmlns:xhtml="http://www.w3.org/1999/xhtml"   
+ >
 	<url>
 		<loc>https://kanby.net/Turkish/contact/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/contact/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/contact/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/English/contact/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/contact/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/contact/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/Turkish/services/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/services/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/services/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/English/services/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/services/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/services/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/Turkish/about/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/about/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/about/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/English/about/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/about/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/about/" />
 	</url>
-
-
+ 
+ 
 	<url>
 		<loc>https://kanby.net/Turkish/projects/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/English/projects/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/Turkish/blogs/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/blogs/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/English/blogs/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/blogs/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/Turkish/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/" />
 	</url>
-
+ 
 	<url>
 		<loc>https://kanby.net/English/</loc>   
 		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/" />
 	</url>
-
+ 
 		${async () => {
 			const text = `SELECT * FROM blogs Where language='English'`;
-
+ 
 			const values = [];
-
+ 
 			var record = await pool.query(text, values);
-
+ 
 			return "".concat(
 				...(await Promise.all(
 					record.rows.map(t => {
@@ -313,14 +345,14 @@ root.get("/sitemap.xml", async function (req, res, next) {
 				)),
 			);
 		}}
-
+ 
 				${async () => {
 			const text = `SELECT * FROM blogs Where language='Turkish'`;
-
+ 
 			const values = [];
-
+ 
 			var record = await pool.query(text, values);
-
+ 
 			return "".concat(
 				...(await Promise.all(
 					record.rows.map(t => {
@@ -334,15 +366,15 @@ root.get("/sitemap.xml", async function (req, res, next) {
 				)),
 			);
 		}}
-
-
+ 
+ 
 						${async () => {
 			const text = `SELECT * FROM projects`;
-
+ 
 			const values = [];
-
+ 
 			var record = await pool.query(text, values);
-
+ 
 			return "".concat(
 				...(await Promise.all(
 					record.rows.map(t => {
@@ -362,23 +394,28 @@ root.get("/sitemap.xml", async function (req, res, next) {
 				)),
 			);
 		}}
-</urlset>
-`
-
+ </urlset>
+ `
+ 
 	res.send(sitemap);
+}catch(e){
+  console.log(e)
+  res.status(500).send("<h1>Error</h1>")
+}
 });
 
 //DB check
-root.use("/", (req, res, next) => {
+root.use((req, res, next) => {
 	if (DB_connected) next();
 	else res.send("DB is not connected");
 });
 
 // These are the endpoints which should not add trailing slashes
 root.use((req, res, next) => {
-	var static = ["mainfest.json", "sitemap.xml", "assets", "robots.txt", "rss.xml"];
+	var preservedPaths = ["mainfest.json", "sitemap.xml", "assets", "robots.txt", "rss.xml"];
 
-	if (!static.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
+try{
+ 	if (!preservedPaths.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
 		if (req.path.substr(-1) !== "/") {
 			res.redirect(req.path + "/");
 			return;
@@ -390,43 +427,46 @@ root.use((req, res, next) => {
 		next();
 		return;
 	}
+}catch(e){
+  console.log(e)
+  res.status(500).send("<h1>Error</h1>")
+}
 });
 
-// Admin'e gelince credential kontrol ediyor Çünki yetki gerektiren tek admin var
-root.use("/admin/", async (req, res, next) => {
-	if (DB_connected) {
-	} else {
-		res.send("DB CONENCTİON ERROR");
-		return;
-	}
+
+root.use("/admin/:id", upload.none(), async (req, res, next) => {
+  
+	var record;
+	try {
+	
+	
 	var checkAuth = await auth(req, res);
-
+	
+	
 	if (checkAuth.authenticated) {
-		if (req.path == "/login/") {
-			res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard`, req.protocol + "://" + req.get("host")));
-		} else {
-			next();
-		}
-	} else {
-		if (req.path == "/login/") {
-			next();
-		} else {
-			res.statusMessage = "Not Authorized";
-			res.status(401).send("<h1>Not Authorized</h1>");
-		}
+	if (req.originalUrl == `/admin/${checkAuth.record.rows[0]["id"]}/`) res.redirect(new URL(`/admin/${checkAuth.record.rows[0]["id"]}/dashboard`,	req.protocol == "https" ? "https://" : "http://" + req.get("host")));
+	else if (req.originalUrl == "/admin/login/") res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard/`, req.protocol + "://" + req.get("host")));
+	else next();
+} else {
+
+  if(req.method == "POST") {res.status(401).send(await Components.visitor.ErrorBox.html({ message: "login failed" }));return}
+  if (req.originalUrl == "/admin/login/") res.send(await LoginPage.html({langCode: "en", language: "English"}));
+	else 	res.status(401).send("<h1>Not Authorized</h1>");
+
+}
+
+	} catch (error) {
+		console.log(error);
+		res.status(500).send("Error");
 	}
 });
-
-// Statik medyalar
-root.use("/assets", express.static(path.join(__dirname, "Assets")));
 
 // root.use("/media", express.static(path.join(__dirname, "Media")));
 
 // Route Handlers
+root.use("/assets", express.static(path.join(__dirname, "Assets")));
 root.use("/admin", admin);
-
 root.use("/get-component", getComponents);
-
 root.use("/", visitor);
 
 // start server
