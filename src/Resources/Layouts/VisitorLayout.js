@@ -12,13 +12,20 @@ module.exports = async data =>
 	<html lang="en">
 		<head>
 				<meta charset="utf-8">
-            	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <meta name="robots" content="index,follow">
+       	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="robots" content="index,follow">
+        
+        <!--Stylesheet for markdown-->
+        <link rel="preload" href="https://raw.githubusercontent.com/sindresorhus/github-markdown-css/refs/heads/main/github-markdown-light.css" as="style" />
+        
+        <link href="${cdn}" rel="dns-prefetch">
 				<link rel="stylesheet" href="/assets/globals.css" />
 				<link rel="icon" href="${cdn}/assets/logo.svg">
 				<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
 				<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" >
 				<link rel="alternate" hreflang="en" href="https://kanby.net/English/" >
+				<link rel="preconnect" href="${cdn}" />
+
 
 				${await data.head}
 

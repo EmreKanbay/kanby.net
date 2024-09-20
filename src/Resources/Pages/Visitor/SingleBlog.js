@@ -29,6 +29,8 @@ module.exports = {
 				var record = await Index.pool.query(text, values);
 
 				return `
+				  <!--Stylesheet for markdown-->
+					<link rel="stylesheet" href="https://raw.githubusercontent.com/sindresorhus/github-markdown-css/refs/heads/main/github-markdown-light.css" />
 					<meta name="description" content="${he.encode(record.rows[0].description)}"/>
 					<title>${he.encode(record.rows[0].title)}</title>
 					<link rel="canonical" href="https://kanby.net/${data.language}/blogs/${record.rows[0].id}">

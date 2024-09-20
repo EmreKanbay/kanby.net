@@ -5,8 +5,7 @@
 # TODO
 
 ```
-Rss.xml needs to be dynamicly generated
-Simplify everything with a simple library or framework
+ Simplify everything with a simple library or framework
 ```
 
 ## What is this

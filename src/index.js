@@ -22,6 +22,8 @@ const pool = new Pool({
 	database: process.env.PG_DATABASE,
 });
 
+ const cdn = process.env.CDN_DOMAIN;
+
 var DB_connected = false;
 
 (async () => {
@@ -91,7 +93,36 @@ root.use(cookieParser());
 root.get("/robots.txt", function (req, res, next) {
 	res.type("text/plain");
 
-	res.send("User-agent: *\nDisallow: /");
+	res.send(`User-agent: *
+Allow: /Turkish/
+Allow: /English/
+Sitemap https://kanby.net/sitemap.xml
+Disallow: /admin/
+	`);
+});
+
+root.get("/manifest.json", function (req, res, next) {
+	res.type("application/json");
+
+	res.send(JSON.stringify({
+ "manifest_version": 3,
+ "name": "kanby.net",
+ "description": "Freelance desing and development",
+  "version": "1.0.0",
+	"author": "Emre Kanbay",
+	"icons": {
+    "any": cdn + "/assets/logo.svg",
+    "128": cdn + "/assets/logo-128.png",
+    "64": cdn + "/assets/logo-64.png",
+    "48": cdn + "/assets/logo-48.png",
+    "32": cdn + "/assets/logo-32.png",
+    "16": cdn + "/assets/logo-16.png",  
+  },
+	
+	
+	
+	
+	}));
 });
 
 root.get("/rss.xml", async function (req, res, next) {
@@ -326,7 +357,7 @@ root.use("/", (req, res, next) => {
 
 // These are the endpoints which should not add trailing slashes
 root.use((req, res, next) => {
-	var static = ["sitemap.xml", "assets", "robots.txt", "rss.xml"];
+	var static = ["mainfest.json", "sitemap.xml", "assets", "robots.txt", "rss.xml"];
 
 	if (!static.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
 		if (req.path.substr(-1) !== "/") {
