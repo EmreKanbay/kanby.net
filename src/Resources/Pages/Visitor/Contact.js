@@ -25,7 +25,6 @@ module.exports = {
 			head: await Framework.render`
           <title>${he.encode(translation[data.language].title)}</title>
           <meta name="description" content="${he.encode(translation[data.language].description)}">
-          <link rel="canonical" href="https://kanby.net/${data.language}/contact/">
 	        <meta name="robots" content="index,follow">
 			`,
 

@@ -62,15 +62,15 @@ module.exports = {
             <div class="liwlCh-header-menu-navigation-heading">
                 <span>${translation[data.language].key2}</span>
                 <ul>
-                    <li><a target="_blank"
+                    <li><a rel="nofollow" target="_blank"
  href="https://github.com/EmreKanbay">${translation[data.language].key2_1}</a></li>
-                    <li><a target="_blank"
+                    <li><a rel="nofollow" target="_blank"
  href="https://x.com/_EmreKanbay_">${translation[data.language].key2_2}</a></li>
-                    <li><a target="_blank"
+                    <li><a rel="nofollow" target="_blank"
  href="https://www.linkedin.com/in/EmreKanbay/">${translation[data.language].key2_3}</a></li>
-                    <li><a target="_blank"
+                    <li><a  rel="nofollow" target="_blank"
  href="https://www.tiktok.com/@Emre_Kanbay">${translation[data.language].key2_4}</a></li>
-                    <li><a target="_blank"
+                    <li><a rel="nofollow" target="_blank"
  href="https://www.instagram.com/_emrekanbay_">${translation[data.language].key2_5}</a></li>
                  </ul>
             </div>
@@ -81,7 +81,7 @@ module.exports = {
                 <ul>
                     <li><a href="/${data.language}/blogs/">${translation[data.language].key3_1}</a></li>
                     <li><a href="/${data.language}/projects/">${translation[data.language].key3_2}</a></li>
-                    <li><a href="/admin/login/">${translation[data.language].key3_3}</a></li>
+                    <li><a rel="nofollow" href="/admin/login/">${translation[data.language].key3_3}</a></li>
                  </ul>
             </div>
             

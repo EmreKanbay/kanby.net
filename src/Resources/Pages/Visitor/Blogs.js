@@ -6,10 +6,14 @@ const he = require("he");
 
 const translation = {
 	Turkish: {
+ title:"Bloglar - kanby.net",
+    description:"kanby.net mevcut bloglar",
 		key1: "Bloglar",
 		key2: "Blog henüz yok",
 	},
 	English: {
+ title:"Blogs - kanby.net",
+    description:"kanby.net all available blogs",
 		key1: "Blogs",
 		key2: "No blog exist yet",
 	},
@@ -21,8 +25,9 @@ module.exports = {
 	    langCode:data.langCode,
 			language: data.language,
 			head: await Framework.render`
- 
-			<title>Kanby | ${translation[data.language].key1}</title>
+			<title>Kanby | ${he.encode(translation[data.language].title)}</title>
+   <meta name="description" content="${he.encode(translation[data.language].description)}">
+ 	        <meta name="robots" content="index,follow">
 			`,
 
 			content: await Framework.render`

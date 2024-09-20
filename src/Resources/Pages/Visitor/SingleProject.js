@@ -37,7 +37,6 @@ module.exports = {
   				<link rel="stylesheet" href="${cdn}/assets/github-markdown-light.css" />
 					<meta name="description" content="${he.encode(record.rows[0][data.language].description)}"/>
 					<title>${he.encode(record.rows[0][data.language].title)}</title>
-					<link rel="canonical" href="https://kanby.net/${data.language}/projects/${record.rows[0].id}">
 	    		    <meta name="robots" content="index,follow">
 					`;
 						}}

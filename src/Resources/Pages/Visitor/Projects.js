@@ -28,7 +28,6 @@ module.exports = {
  
 			<title>Kanby | ${he.encode(translation[data.language].title)}</title>
             <meta name="description" content="${he.encode(translation[data.language].description)}">
-            <link rel="canonical" href="https://kanby.net/${data.language}/projects/">
 	        <meta name="robots" content="index,follow">
 
 			`,

@@ -43,6 +43,7 @@ module.exports = {
                         src="${cdn}/assets/github.svg"
                         alt="" />
                     <a
+                    rel="nofollow"
                         target="_blank"
                         href="https://github.com/EmreKanbay">
                         Github
@@ -53,6 +54,7 @@ module.exports = {
                         src="${cdn}/assets/twitter.svg"
                         alt="" />
                     <a
+                    rel="nofollow"
                         target="_blank"
                         href="https://x.com/_EmreKanbay_">
                         Twitter / X
@@ -63,6 +65,7 @@ module.exports = {
                         src="${cdn}/assets/linkedin.svg"
                         alt="" />
                     <a
+                    rel="nofollow"
                         target="_blank"
                         href="https://www.linkedin.com/in/EmreKanbay/">
                         LinkedIn
@@ -73,6 +76,7 @@ module.exports = {
                         src="${cdn}/assets/codepen.svg"
                         alt="" />
                     <a
+                    rel="nofollow"
                         target="_blank"
                         href="https://codepen.io/Emre-Kanbay">
                         CodePen
@@ -83,6 +87,7 @@ module.exports = {
                         src="${cdn}/assets/tiktok.svg"
                         alt="" />
                     <a
+                    rel="nofollow"
                         target="_blank"
                         href="https://www.tiktok.com/@Emre_Kanbay">
                         Tiktok
@@ -93,6 +98,7 @@ module.exports = {
                         src="${cdn}/assets/Instagram.svg"
                         alt="" />
                     <a
+                    rel="nofollow"
                         target="_blank"
                         href="https://www.instagram.com/_emrekanbay_">
                         Instagram
@@ -111,14 +117,14 @@ module.exports = {
 
                 <li>
                     <a
-                         href="/${data.language}/blogs">
+                         href="/blogs">
                         ${translation[data.language].key2_1}
                     </a>
                 </li>
 
                                <li>
                     <a
-                         href="/${data.language}/projects">
+                         href="/projects">
                         ${translation[data.language].key2_2}
                     </a>
                 </li>
@@ -133,14 +139,14 @@ module.exports = {
 
                 <li>
                     <a
-                         href="/${data.language}/contact">
+                         href="/contact">
                         ${translation[data.language].key3_1}
                     </a>
                 </li>
 
                                <li>
                     <a
-                         href="/${data.language}/about">
+                         href="/about">
                         ${translation[data.language].key3_2}
                     </a>
                 </li>
@@ -149,7 +155,7 @@ module.exports = {
 
                                <li>
                     <a
-                         href="/${data.language}/services">
+                         href="/services">
                         ${translation[data.language].key3_3}
                     </a>
                 </li>

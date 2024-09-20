@@ -45,9 +45,8 @@ module.exports = {
 			head: await Framework.render`
 
 			<title>${he.encode(translation[data.language].title)}</title>
-            <meta name="description" content="${he.encode(translation[data.language].description)}"/>
-            <link rel="canonical" href="https://kanby.net/${data.language}/">
-	        <meta name="robots" content="index,follow">
+        <meta name="description" content="${he.encode(translation[data.language].description)}"/>
+      <meta name="robots" content="index,follow">
 
 			`,
 
@@ -86,7 +85,7 @@ module.exports = {
   					</ul>
 
 					<div>
-						<p style="margin-left:2rem;font-size:2rem"><a href="./blogs">${translation[data.language].key3}</a></p>
+						<p style="margin-left:2rem;font-size:2rem"><a href="/blogs">${translation[data.language].key3}</a></p>
 
 						<div class="all-blogs-list">
 							${async () => {
@@ -111,7 +110,7 @@ module.exports = {
             
 										return `
 
-<a rel="ugc" href="/${data.language}/blogs/${t.id}/"  class="all-blogs-item">
+<a rel="ugc" href="/blogs/${t.id}/"  class="all-blogs-item">
 
         <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 
@@ -126,7 +125,7 @@ module.exports = {
 						</div>
 					</div>
 
-					<p style="margin-left:2rem;font-size:2rem"><a href="/${data.language}/projects">${translation[data.language].key5}</a></p>
+					<p style="margin-left:2rem;font-size:2rem"><a href="/projects">${translation[data.language].key5}</a></p>
 
 					<div class="all-blogs-list">
 
@@ -149,7 +148,7 @@ module.exports = {
             }
 							
  									return `
-					<a rel="ugc" href="/${data.language}/projects/${t.id}/"  class="all-blogs-item">
+					<a rel="ugc" href="/projects/${t.id}/"  class="all-blogs-item">
 						<div class="icon">
 							<img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
 						</div>
