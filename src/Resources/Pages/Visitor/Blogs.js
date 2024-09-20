@@ -62,7 +62,7 @@ module.exports = {
             }
  							return `
 
-<a rel="ugc" href="/${data.language}/blogs/${t.id}/"   class="all-blogs-item">
+<a rel="ugc" href="blogs/${t.id}/"   class="all-blogs-item">
 
         <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 

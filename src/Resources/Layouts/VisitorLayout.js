@@ -9,13 +9,14 @@ const Framework = require("#Framework");
 module.exports = async data =>
 	await Framework.render`
 	<!doctype html>
-	<html lang="${data.langCode}">
+	<html lang="en">
 		<head>
 		
-        <base href="https://kanby.net/${data.language}/">
 
   
+				<base href="/${data.language}/">
 				<meta charset="utf-8">
+				
        	<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="robots" content="index,follow">
         

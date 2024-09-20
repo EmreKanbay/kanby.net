@@ -54,6 +54,7 @@ module.exports = {
 
 			${await Components.visitor.Marquee.html({ text: '<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">RSS Available<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">', time: 20 })}
 				<main id="page-container">
+				
 					<div class="profile-container">
 						<figure class="image-profile">
 							<img
@@ -85,7 +86,7 @@ module.exports = {
   					</ul>
 
 					<div>
-						<p style="margin-left:2rem;font-size:2rem"><a href="/blogs">${translation[data.language].key3}</a></p>
+						<p style="margin-left:2rem;font-size:2rem"><a href="blogs/">${translation[data.language].key3}</a></p>
 
 						<div class="all-blogs-list">
 							${async () => {
@@ -110,7 +111,7 @@ module.exports = {
             
 										return `
 
-<a rel="ugc" href="/blogs/${t.id}/"  class="all-blogs-item">
+<a rel="ugc" href="blogs/${t.id}/"  class="all-blogs-item">
 
         <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 
@@ -125,7 +126,7 @@ module.exports = {
 						</div>
 					</div>
 
-					<p style="margin-left:2rem;font-size:2rem"><a href="/projects">${translation[data.language].key5}</a></p>
+					<p style="margin-left:2rem;font-size:2rem"><a href="projects/">${translation[data.language].key5}</a></p>
 
 					<div class="all-blogs-list">
 
@@ -148,7 +149,7 @@ module.exports = {
             }
 							
  									return `
-					<a rel="ugc" href="/projects/${t.id}/"  class="all-blogs-item">
+					<a rel="ugc" href="projects/${t.id}/"  class="all-blogs-item">
 						<div class="icon">
 							<img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
 						</div>
