@@ -12,6 +12,7 @@ const Components = require("#Components");
 const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
 const jwt = require("jsonwebtoken")
  
+const JWT_SECRET = crypto.randomBytes(64).toString('hex')
 
 dotenv.config();
 const { Pool } = pg;
@@ -73,8 +74,8 @@ const auth = async (req, res, next) => {
 	
 		if (record.rows.length == 1) {
 
-			const token = jwt.sign({username: req?.body?.login_name}, process.env.JWT_SECRET, { expiresIn: '100s' });
-			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 1000000), httpOnly: true, secure: true });
+			const token = jwt.sign({username: req?.body?.login_name}, JWT_SECRET, { expiresIn: '3600s' });
+			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60), httpOnly: true, secure: true });
 			req.customData = {record}
 			next()
 			return
@@ -99,7 +100,7 @@ const auth = async (req, res, next) => {
 	var ret;
 	
 	try{
-		ret = jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+		ret = jwt.verify(token, JWT_SECRET, (err, payload) => {
 			if (err) {
 				return { pass:false }}
 			return { pass:true, payload: payload}
@@ -163,6 +164,8 @@ const admin = require("./Routes/admin");
 
 // Setup Middlewares
 root.use(cookieParser());
+
+root.use((req, res, next) => {console.log(req.ip); next()})
 
 root.get("/robots.txt", function (req, res, next) {
   

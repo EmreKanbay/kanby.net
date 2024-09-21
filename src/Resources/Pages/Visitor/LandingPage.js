@@ -67,7 +67,7 @@ module.exports = {
           <meta property="og:image" content="${cdn}/assets/logo-128.png" />
 
 
-		  
+
           <!-- REACT CDN START -->
 		  <script defer crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script defer crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -98,7 +98,7 @@ module.exports = {
 					function handleClick() {
 					  setCount(count + 1);
 					}
-					  return (<button onClick={handleClick}>Click Count {count}</button> )
+					  return (<button onClick={handleClick}>YOUR IP = ${data.reqIp} - Click Count {count} </button>)
 					}
 				  
 					// Render the component to the DOM
