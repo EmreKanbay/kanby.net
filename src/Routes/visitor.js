@@ -117,10 +117,6 @@ visitor.get("/:lang/services/", async (req, res, next) => {
 
 
 
-
-
-
-
 visitor.use("/:lang", async (req, res, next) => {
 	try {
 		const query = await Index.pool.query("SELECT * FROM variables");

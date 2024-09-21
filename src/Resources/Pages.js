@@ -1,5 +1,5 @@
 const LoginPage = require("./Pages/Visitor/LoginPage");
-const LandingPage = require("./Pages/Visitor/LandingPage");
+const LandingPage = require("./Pages/Visitor/LandingPage.js");
 const AdminDashboard = require("./Pages/Admin/AdminDashboard");
 const NotFound = require("./Pages/NotFound");
 const AllBlogs = require("./Pages/Admin/Blogs/AllBlogs");

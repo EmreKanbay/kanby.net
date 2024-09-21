@@ -4,7 +4,12 @@ const Components = require("#Components");
 const Index = require("#Index");
 const he = require("he");
 
+
+
+ 
+
 require("dotenv").config();
+
 
 const cdn = process.env.CDN_DOMAIN;
 
@@ -46,20 +51,6 @@ module.exports = {
 
 			<title>${he.encode(translation[data.language].title)}</title>
 			
-		 <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "kanby.net",
-      "name": "Freelance solo developer",
-      "author": {
-        "@type": "Person",
-        "name": "Emre Kanbay"
-      },
-      "datePublished": "2018-03-10",
-      "description": "This coffee cake is awesome and perfect for parties.",
-      "prepTime": "PT20M"
-    }
-    </script>
 			
       <meta name="description" content="${he.encode(translation[data.language].description)}"/>
       <meta name="robots" content="index,follow">
@@ -75,7 +66,14 @@ module.exports = {
           <meta property="og:url" content="https://kanby.net/${data.language}/" />
           <meta property="og:image" content="${cdn}/assets/logo-128.png" />
 
-          
+
+		  
+          <!-- REACT CDN START -->
+		  <script defer crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script defer crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script defer type="text/javascript" src="https://unpkg.com/babel-standalone@6/babel.js"></script>
+			<!-- REACT CDN END -->
+
           
 			`,
 
@@ -83,7 +81,36 @@ module.exports = {
 
 			${await Components.visitor.Marquee.html({ text: '<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">RSS Available<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">', time: 20 })}
 				<main id="page-container">
-				
+					
+					
+				<!-- REACT COMPONENT START -->
+				<div id="customReactComponent"></div>
+
+				<script type="text/babel">
+					const { useState } = React
+
+
+					function Increment() {
+				  
+				  
+				  
+					const [count, setCount] = useState(10);
+					function handleClick() {
+					  setCount(count + 1);
+					}
+					  return (<button onClick={handleClick}>Click Count {count}</button> )
+					}
+				  
+					// Render the component to the DOM
+					ReactDOM.render(
+					  <Increment />,
+					  document.getElementById("customReactComponent")
+					);
+</script>
+				<!-- REACT COMPONENT END -->
+
+
+
 					<div class="profile-container">
 						<figure class="image-profile">
 							<img
@@ -97,6 +124,8 @@ module.exports = {
 							<p class="profile-description">${translation[data.language].key2}</p>
 						</div>
 					</div>
+
+
 
 					<h1>What I Do?</h1>
 
