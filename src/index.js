@@ -12,22 +12,22 @@ const Components = require("#Components");
 const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
 const jwt = require("jsonwebtoken")
 
-const redis = require('redis');
-const client = redis.createClient();
+// const redis = require('redis');
+// const client = redis.createClient();
 
-client.on('error', err => console.log('Redis Client Error', err));
+// client.on('error', err => console.log('Redis Client Error', err));
 
-(async ()=> {
+// (async ()=> {
 
-	try {
-		await client.connect();
-		console.log("redis connected succesfully")
+// 	try {
+// 		await client.connect();
+// 		console.log("redis connected succesfully")
 		
-	} catch (error) {
-console.log(error)		
-	}
+// 	} catch (error) {
+// console.log(error)		
+// 	}
 	
-})()
+// })()
  
 const JWT_SECRET = crypto.randomBytes(64).toString('hex')
 
