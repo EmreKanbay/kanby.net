@@ -99,7 +99,7 @@ document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 			document.querySelector(".ge0yN5-loading").classList.add("active");
 			document.querySelector(".ge0yN5-login-error").innerHTML = "";
 
-			const res = await fetch(window.location.href, {
+			const res = await fetch("/admin/login/", {
 				body: formData,
 				method: "POST",
 			});

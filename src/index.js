@@ -2,7 +2,7 @@
 const express = require("express");
 const multer = require("multer");
 const pg = require("pg");
-require("dotenv").config();
+const dotenv = require("dotenv")
 const sha256 = require("js-sha256");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -10,8 +10,10 @@ const crypto = require("crypto");
 const Framework = require("#Framework");
 const Components = require("#Components");
 const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
+const jwt = require("jsonwebtoken")
+ 
 
-
+dotenv.config();
 const { Pool } = pg;
 const pool = new Pool({
 	user: process.env.PG_USER,
@@ -54,28 +56,89 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const auth = async (req, res) => {
-  
-
+const auth = async (req, res, next) => {
 	try{
-	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1 AND password_hash= $2`;
-    var values = [];
- if(req.method == "POST" && req.originalUrl == "/admin/login/") values = [req?.body?.login_name, sha256(req?.body?.login_password)];
-else values = [req?.cookies?.login_name, req?.cookies?.password_hash];  
+
+
+ 	const token = req?.cookies?.SessionToken
+
+	 if(req.method == "POST" && req.originalUrl == "/admin/login/") {
  
+		if (token){
+			res.clearCookie("SessionToken")
+			res.send("Existing token found, token removed.")
+			return;
+		}
+		const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1 AND password_hash= $2`;
+		const values = [req?.body?.login_name, sha256(req?.body?.login_password)];
+		var record = await pool.query(text, values);
+	
+		if (record.rows.length == 1) {
+
+			const token = jwt.sign({username: req?.body?.login_name}, process.env.JWT_SECRET, { expiresIn: '100s' });
+			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 1000000), httpOnly: true, secure: true });
+			req.customData = {record}
+			next()
+			return
+	// res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
+	// res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
+	// res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: true });
+	} else  {  
+		
+		res.status(401).send(await Components.visitor.ErrorBox.html({ message: "login failed" }))
+		return;
+	};
+	
+	
+	 }
+
+  	if (!token){
+		res.send(await LoginPage.html({langCode: "en", language: "English"}));	
+		return
+	}
+
+
+	var ret;
+	
+	try{
+		ret = jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+			if (err) {
+				return { pass:false }}
+			return { pass:true, payload: payload}
+	})
+	}catch(e){console.log(e); ret = { pass:false }}
+
+
+
+
+if (ret.pass) {
+
+	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1`;
+
+const values = [ret?.payload?.username];
+
 var record = await pool.query(text, values);
 
-	if (record.rows.length == 1 && (req.params.id == record.rows[0].id || req.originalUrl.split("/")[2] == "login")) {
-		res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
-		res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
-		res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: true });
-
-		return { authenticated: true, record: record };
-	} else return { authenticated: false };
+if(req.params.id == record.rows[0].id){
 	
+	req.customData = {record}
+		next()
+		return;
+
+}else{
+	res.status(401).send("<h1>Not Authorized</h1>");
+	return
+}
+}
+else{
+	res.clearCookie("SessionToken")
+	 res.send("Credentials not accepted, try again");
+	 return
+} 
+// else values = [req?.cookies?.login_name, req?.cookies?.password_hash];  
+ 	
 	}
 	catch(e){
-	
 	console.log(e)
 		}
 
@@ -179,26 +242,33 @@ try{
 		<title>Blogs</title>
 		<link>https://kanby.net/English/blogs/</link>
 		${async () => {
-			const text = `SELECT * FROM blogs Where language='English'`;
+try {
+	
+	const text = `SELECT * FROM blogs Where language='English'`;
  
-			const values = [];
- 
-			var record = await pool.query(text, values);
- 
-			return "".concat(
-				...(await Promise.all(
-					record.rows.map(t => {
-						return `
-			<item>
-				<title>${t.title}</title>
-				<link>https://kanby.net/English/blogs/${t.id}/</link>
-				<description>${t.description}</description>
-				<pubDate>${new Date(t.creation_date * 1)}</pubDate>
-			</item>
-						`;
-					}),
-				)),
-			);
+	const values = [];
+
+	var record = await pool.query(text, values);
+
+	return "".concat(
+		...(await Promise.all(
+			record.rows.map(t => {
+				return `
+	<item>
+		<title>${t.title}</title>
+		<link>https://kanby.net/English/blogs/${t.id}/</link>
+		<description>${t.description}</description>
+		<pubDate>${new Date(t.creation_date * 1)}</pubDate>
+	</item>
+				`;
+			}),
+		)),
+	);
+
+} catch (error) {
+	console.log(error)
+	return ``
+}
 		}}
 		</channel>
  
@@ -206,25 +276,30 @@ try{
 		<title>Projects</title>
 		<link>https://kanby.net/English/projects/</link>
 		${async () => {
-			const text = `SELECT * FROM projects`;
+try {
+	const text = `SELECT * FROM projects`;
  
-			const values = [];
- 
-			var record = await pool.query(text, values);
- 
-			return "".concat(
-				...(await Promise.all(
-					record.rows.map(t => {
-						return `
-			<item>
-				<title>${t["English"].title}</title>
-				<link>https://kanby.net/English/projects/${t.id}/</link>
-				<description>${t["English"].description}</description>
-			</item>
-						`;
-					}),
-				)),
-			);
+	const values = [];
+
+	var record = await pool.query(text, values);
+
+	return "".concat(
+		...(await Promise.all(
+			record.rows.map(t => {
+				return `
+	<item>
+		<title>${t["English"].title}</title>
+		<link>https://kanby.net/English/projects/${t.id}/</link>
+		<description>${t["English"].description}</description>
+	</item>
+				`;
+			}),
+		)),
+	);
+} catch (error) {
+	console.log(error)
+	return``
+}
 		}}
 		</channel>
  </rss>`
@@ -324,73 +399,91 @@ try{
 	</url>
  
 		${async () => {
-			const text = `SELECT * FROM blogs Where language='English'`;
+try {
+	
+	const text = `SELECT * FROM blogs Where language='English'`;
  
-			const values = [];
- 
-			var record = await pool.query(text, values);
- 
-			return "".concat(
-				...(await Promise.all(
-					record.rows.map(t => {
-						return `
-	<url>
-		<loc>https://kanby.net/English/blogs/${t.id}/</loc>   
-		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/${t.id}/" />
-	</url>
-							`;
-					}),
-				)),
-			);
+	const values = [];
+
+	var record = await pool.query(text, values);
+
+	return "".concat(
+		...(await Promise.all(
+			record.rows.map(t => {
+				return `
+<url>
+<loc>https://kanby.net/English/blogs/${t.id}/</loc>   
+<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/${t.id}/" />
+</url>
+					`;
+			}),
+		)),
+	);
+
+} catch (error) {
+	console.log(error)
+	return``
+}
 		}}
  
 				${async () => {
-			const text = `SELECT * FROM blogs Where language='Turkish'`;
+try {
+	const text = `SELECT * FROM blogs Where language='Turkish'`;
  
-			const values = [];
- 
-			var record = await pool.query(text, values);
- 
-			return "".concat(
-				...(await Promise.all(
-					record.rows.map(t => {
-						return `
-	<url>
-		<loc>https://kanby.net/Turkish/blogs/${t.id}/</loc>   
-		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/${t.id}/" />
-	</url>
-						`;
-					}),
-				)),
-			);
+	const values = [];
+
+	var record = await pool.query(text, values);
+
+	return "".concat(
+		...(await Promise.all(
+			record.rows.map(t => {
+				return `
+<url>
+<loc>https://kanby.net/Turkish/blogs/${t.id}/</loc>   
+<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/${t.id}/" />
+</url>
+				`;
+			}),
+		)),
+	);
+} catch (error) {
+	console.log(error)
+	return ``
+}
 		}}
  
  
 						${async () => {
-			const text = `SELECT * FROM projects`;
+try {
+	const text = `SELECT * FROM projects`;
  
-			const values = [];
- 
-			var record = await pool.query(text, values);
- 
-			return "".concat(
-				...(await Promise.all(
-					record.rows.map(t => {
-						return `
-	<url>
-		<loc>https://kanby.net/Turkish/projects/${t.id}/</loc>   
-		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${t.id}/" />
-		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/${t.id}/" />
-	</url>
-	<url>
-		<loc>https://kanby.net/English/projects/${t.id}/</loc>   
-		<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${t.id}/" />
-		<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/${t.id}/" />
-	</url>
-						`;
-					}),
-				)),
-			);
+	const values = [];
+
+	var record = await pool.query(text, values);
+
+	return "".concat(
+		...(await Promise.all(
+			record.rows.map(t => {
+				return `
+<url>
+<loc>https://kanby.net/Turkish/projects/${t.id}/</loc>   
+<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${t.id}/" />
+<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/${t.id}/" />
+</url>
+<url>
+<loc>https://kanby.net/English/projects/${t.id}/</loc>   
+<xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${t.id}/" />
+<xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/${t.id}/" />
+</url>
+				`;
+			}),
+		)),
+	);
+} catch (error) {
+	console.log(error)
+	return``
+	
+}
 		}}
  </urlset>
  `
@@ -431,49 +524,38 @@ try{
 }
 });
 
-
-root.post("/admin/login/", upload.none(), async (req, res, next) => {
+root.post("/admin/login/", upload.none(), auth , async (req, res, next) => {
   
-  try{
- 	var checkAuth = await auth(req, res);
-    
- 	if (checkAuth.authenticated) {
-    res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard/`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
- } else {
-res.status(401).send(await Components.visitor.ErrorBox.html({ message: "login failed" }))
-
- }
+	try{	  
+	  res.redirect(new URL(`/admin/${req.customData.record.rows[0]?.id}/dashboard/`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
+	}catch(e){
+			console.log(e);
+		  res.status(500).send("Error");
+	  
+	}
   
-  }catch(e){
-  		console.log(e);
-		res.status(500).send("Error");
-    
-  }
+	
+  })
 
-  
-})
-root.use("/admin/:id", async (req, res, next) => {
+root.use("/admin/:id", auth, async (req, res, next) => {
   
 	try {
 
-	var checkAuth = await auth(req, res);
+		if(req.method == "POST" && req.originalUrl == "/admin/login/") {return}
 	
-	
-	if (checkAuth.authenticated) {
-	if (req.originalUrl == `/admin/${checkAuth.record.rows[0]["id"]}/`) res.redirect(new URL(`/admin/${checkAuth.record.rows[0]["id"]}/dashboard`,	req.protocol == "https" ? "https://" : "http://" + req.get("host")));
-	else if (req.originalUrl == "/admin/login/") res.redirect(new URL(`/admin/${checkAuth.record.rows[0]?.id}/dashboard/`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
+	if (req.originalUrl == `/admin/${req.customData.record.rows[0]["id"]}/`) res.redirect(new URL(`/admin/${req.customData.record.rows[0]["id"]}/dashboard`,	req.protocol == "https" ? "https://" : "http://" + req.get("host")));
+	else if (req.originalUrl == "/admin/login/") res.redirect(new URL(`/admin/${req.customData.record.rows[0]?.id}/dashboard/`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
     else next(); 
-} else {
-  if (req.originalUrl == "/admin/login/") res.send(await LoginPage.html({langCode: "en", language: "English"}));
-	else 	res.status(401).send("<h1>Not Authorized</h1>");
 
-}
-
+	
 	} catch (error) {
 		console.log(error);
 		res.status(500).send("Error");
 	}
 });
+
+
+
 
 // root.use("/media", express.static(path.join(__dirname, "Media")));
 
