@@ -282,15 +282,28 @@ admin.get("/:user_id/media/add/", async (req, res, next) => {
 	}
 });
 
-admin.get("/:id/blogs", async (req, res) => {
+
+
+admin.get("/:user_id/security", async (req, res) => {
 	try {
-	res.send(await Components.admin.AdminBlogs.html({ user_id: req.params.user_id }));
+		res.send(await Pages.Security.html({ user_id: req.params.user_id }));
 		
 	} catch (e) {
 		console.log(e);
 		res.status(500).send(`<h1>Error: </h1> \n ${e}`)
 	}
 });
+
+admin.get("/:user_id/settings", async (req, res) => {
+	try {
+		res.send(await Pages.Settings.html({ user_id: req.params.user_id }));
+		
+	} catch (e) {
+		console.log(e);
+		res.status(500).send(`<h1>Error: </h1> \n ${e}`)
+	}
+});
+
 admin.use("/:id", async (req, res) => {
 	try {
 	res.send(await Pages.NotFound.html({ language: "English" }));

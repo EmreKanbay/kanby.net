@@ -11,6 +11,23 @@ const Framework = require("#Framework");
 const Components = require("#Components");
 const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
 const jwt = require("jsonwebtoken")
+
+const redis = require('redis');
+const client = redis.createClient();
+
+client.on('error', err => console.log('Redis Client Error', err));
+
+(async ()=> {
+
+	try {
+		await client.connect();
+		console.log("redis connected succesfully")
+		
+	} catch (error) {
+console.log(error)		
+	}
+	
+})()
  
 const JWT_SECRET = crypto.randomBytes(64).toString('hex')
 
@@ -30,6 +47,7 @@ var DB_connected = false;
 
 (async () => {
 	try {
+
 		await pool.query("SELECT * FROM users LIMIT 1");
 		await pool.query("SELECT * FROM blogs LIMIT 1");
 		await pool.query("SELECT * FROM variables LIMIT 1");
@@ -75,7 +93,7 @@ const auth = async (req, res, next) => {
 		if (record.rows.length == 1) {
 
 			const token = jwt.sign({username: req?.body?.login_name}, JWT_SECRET, { expiresIn: '3600s' });
-			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60), httpOnly: true, secure: true });
+			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60*10), httpOnly: true, secure: true });
 			req.customData = {record}
 			next()
 			return
@@ -165,7 +183,6 @@ const admin = require("./Routes/admin");
 // Setup Middlewares
 root.use(cookieParser());
 
-root.use((req, res, next) => {console.log(req.ip); next()})
 
 root.get("/robots.txt", function (req, res, next) {
   
@@ -173,8 +190,8 @@ root.get("/robots.txt", function (req, res, next) {
    	res.type("text/plain");
    
 	res.send(`User-agent: *
-   Disallow: /admin/
-   Sitemap https://kanby.net/sitemap.xml
+Disallow: /admin/
+Sitemap https://kanby.net/sitemap.xml
    `);
   }catch(e){
 	console.log(e)

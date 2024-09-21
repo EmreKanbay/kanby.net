@@ -17,6 +17,8 @@ const Projects = require("./Pages/Visitor/Projects");
 const SingleProject = require("./Pages/Visitor/SingleProject");
 const Services = require("./Pages/Visitor/Services");
 const About = require("./Pages/Visitor/About");
+const Security = require("./Pages/Admin/Security.js");
+const Settings = require("./Pages/Admin/Settings.js");
 
 module.exports = {
 	LoginPage,
@@ -37,5 +39,7 @@ module.exports = {
 	Projects,
 	SingleProject,
 	Services,
-	About
+	About,
+	Security,
+	Settings
 };

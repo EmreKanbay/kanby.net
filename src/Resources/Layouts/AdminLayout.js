@@ -14,6 +14,13 @@ module.exports = async data =>
                     <link rel="stylesheet" href="/assets/globals.css" />
 		            <link rel="icon" href="${cdn}/assets/logo.svg">
                     ${data.head}
+
+
+                              <!-- REACT CDN START -->
+		    <script defer crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+            <script defer crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+            <script defer type="text/javascript" src="https://unpkg.com/babel-standalone@6/babel.js"></script>
+			<!-- REACT CDN END -->
                 </head>
 
     
@@ -102,6 +109,53 @@ module.exports = async data =>
                                                 </a>  
                                             </div>
                                         </li>
+
+
+
+                                    <li  class="nav-menu__item navbar-security "
+                                             >
+                                             <div class="nav-menu__item__inner">
+
+                           
+                                                <a  href="/admin/${data.user_id}/security/" class="nav-menu__item__inner_main"> 
+                                                
+                                                        <img
+                                                        src="${cdn}/assets/shield.svg"
+                                                        class="sidebar-menu-icons" />
+                                                    <div class="nav-menu-item__title"><span>Security</span></div>
+                                                 </a>
+                                                <a href="/admin/${data.user_id}/dashboard/analytics" class="nav-menu__item__inner-submenu">
+                                                        <div>Analytics</div>
+                                                 </a>  
+                                            </div>
+
+
+      
+                                        </li>
+
+
+
+
+                                    <li  class="nav-menu__item navbar-settings "
+                                    >
+                                    <div class="nav-menu__item__inner">
+
+                  
+                                       <a  href="/admin/${data.user_id}/settings/" class="nav-menu__item__inner_main"> 
+                                       
+                                               <img
+                                               src="${cdn}/assets/settings.svg"
+                                               class="sidebar-menu-icons" />
+                                           <div class="nav-menu-item__title"><span>Settings</span></div>
+                                        </a>
+                                       <a href="/admin/${data.user_id}/dashboard/analytics" class="nav-menu__item__inner-submenu">
+                                               <div>Analytics</div>
+                                        </a>  
+                                   </div>
+
+
+
+                               </li>
 
     
 
