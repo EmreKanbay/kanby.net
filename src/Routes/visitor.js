@@ -37,7 +37,7 @@ visitor.get("/:lang/", async (req, res, next) => {
 		const query = await Index.pool.query("SELECT * FROM variables");
 		if (query.rows[0].value.includes(req.params.lang)) {
 				
-			res.send(await Pages.LandingPage.html({ language: req.params.lang, langCode:req.langCode, reqIp: req.header('x-forwarded-for')}));
+			res.send(await Pages.LandingPage.html({ language: req.params.lang, langCode:req.langCode, reqIp: req.header('x-forwarded-for').split(", ")[0]}));
 		} else {
 			next();
 		}
