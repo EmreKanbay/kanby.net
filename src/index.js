@@ -12,27 +12,26 @@ const Components = require("#Components");
 const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
 const jwt = require("jsonwebtoken")
 
-// const redis = require('redis');
-// const client = redis.createClient({
-// 		host: process.env.REDIS_HOST,  // e.g. '192.168.1.100'
-// 		port: process.env.REDIS_PORT                      // default Redis port, adjust if needed
-// });
+const redis = require('redis');
+const client = redis.createClient({
+		url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,  // e.g. '192.168.1.100'
+});
 
 
-// client.on('error', err => console.log('Redis Client Error', err));
+client.on('error', err => console.log('Redis Client Error', err));
 
  
-// (async ()=> {
+(async ()=> {
 
-// 	try {
-// 		await client.connect();
-// 		console.log("redis connected succesfully")
+	try {
+		await client.connect();
+		console.log("redis connected succesfully")
 		
-// 	} catch (error) {
-// console.log(error)		
-// 	}
+	} catch (error) {
+console.log(error)		
+	}
 	
-// })()
+})()
  
 const JWT_SECRET = crypto.randomBytes(64).toString('hex')
 
