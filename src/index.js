@@ -58,8 +58,6 @@ const upload = multer({ storage });
 
 const auth = async (req, res, next) => {
 	try{
-
-
  	const token = req?.cookies?.SessionToken
 
 	 if(req.method == "POST" && req.originalUrl == "/admin/login/") {
@@ -119,7 +117,7 @@ const values = [ret?.payload?.username];
 
 var record = await pool.query(text, values);
 
-if(req.params.id == record.rows[0].id){
+if(req.params.id == record.rows[0].id || req.params.id == "login" ){
 	
 	req.customData = {record}
 		next()
@@ -527,7 +525,7 @@ try{
 root.post("/admin/login/", upload.none(), auth , async (req, res, next) => {
   
 	try{	  
-	  res.redirect(new URL(`/admin/${req.customData.record.rows[0]?.id}/dashboard/`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
+		res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
 	}catch(e){
 			console.log(e);
 		  res.status(500).send("Error");
@@ -540,11 +538,10 @@ root.post("/admin/login/", upload.none(), auth , async (req, res, next) => {
 root.use("/admin/:id", auth, async (req, res, next) => {
   
 	try {
-
 		if(req.method == "POST" && req.originalUrl == "/admin/login/") {return}
-	
-	if (req.originalUrl == `/admin/${req.customData.record.rows[0]["id"]}/`) res.redirect(new URL(`/admin/${req.customData.record.rows[0]["id"]}/dashboard`,	req.protocol == "https" ? "https://" : "http://" + req.get("host")));
-	else if (req.originalUrl == "/admin/login/") res.redirect(new URL(`/admin/${req.customData.record.rows[0]?.id}/dashboard/`, req.protocol == "https" ? "https://" : "http://" + req.get("host")));
+
+ 	if (req.originalUrl == `/admin/${req.customData.record.rows[0]["id"]}/`) res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
+	else if (req.originalUrl == "/admin/login/") res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
     else next(); 
 
 	
