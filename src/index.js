@@ -130,15 +130,16 @@ if(req.params.id == record.rows[0].id || req.params.id == "login" ){
 }
 else{
 	res.clearCookie("SessionToken")
-	 res.send("Credentials not accepted, try again");
-	 return
+	res.send(await LoginPage.html({langCode: "en", language: "English"}));	
+	return
 } 
 // else values = [req?.cookies?.login_name, req?.cookies?.password_hash];  
  	
 	}
 	catch(e){
-	console.log(e)
-		}
+		res.send(`<h1>Error: </h1> \n ${e}`)
+		return
+	}
 
 
 };
@@ -173,10 +174,12 @@ root.get("/robots.txt", function (req, res, next) {
    Sitemap https://kanby.net/sitemap.xml
    `);
   }catch(e){
+	console.log(e)
     
-    console.log(e)
-    res.status(500).send("<h1>Error</h1>")
-  }
+    res.type("text/html");
+
+	res.send(`<h1>Error: </h1> \n ${e}`)
+}
 
 });
 
@@ -222,7 +225,9 @@ root.get("/manifest.json", function (req, res, next) {
 	}))
     
   }catch(e){
-    res.status(500).send("<h1>Error</h1>")
+    res.type("text/html");
+
+	res.send(`<h1>Error: </h1> \n ${e}`)
     console.log(e)
   }
 
@@ -304,9 +309,10 @@ try {
  
 	res.send(rss);
 }catch(e){
+	res.type("text/html");
+	res.send(`<h1>Error: </h1> \n ${e}`)
   console.log(e)
-  res.status(500).send("<h1>Error</h1>")
-}
+ }
 });
 
 root.get("/sitemap.xml", async function (req, res, next) {
@@ -488,8 +494,9 @@ try {
  
 	res.send(sitemap);
 }catch(e){
+	res.type("text/html");
+	res.send(`<h1>Error: </h1> \n ${e}`)
   console.log(e)
-  res.status(500).send("<h1>Error</h1>")
 }
 });
 
@@ -517,8 +524,8 @@ try{
 		return;
 	}
 }catch(e){
+ 	res.send(`<h1>Error: </h1> \n ${e}`)
   console.log(e)
-  res.status(500).send("<h1>Error</h1>")
 }
 });
 
@@ -527,8 +534,8 @@ root.post("/admin/login/", upload.none(), auth , async (req, res, next) => {
 	try{	  
 		res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
 	}catch(e){
-			console.log(e);
-		  res.status(500).send("Error");
+		res.send(`<h1>Error: </h1> \n ${e}`)
+		console.log(e)
 	  
 	}
   
@@ -545,9 +552,9 @@ root.use("/admin/:id", auth, async (req, res, next) => {
     else next(); 
 
 	
-	} catch (error) {
-		console.log(error);
-		res.status(500).send("Error");
+	} catch (e) {
+		res.send(`<h1>Error: </h1> \n ${e}`)
+		console.log(e)
 	}
 });
 
