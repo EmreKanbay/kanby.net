@@ -68,12 +68,6 @@ module.exports = {
 
 
 
-          <!-- REACT CDN START -->
-		  <script defer crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script defer crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script defer type="text/javascript" src="https://unpkg.com/babel-standalone@6/babel.js"></script>
-			<!-- REACT CDN END -->
-
           
 			`,
 
@@ -82,35 +76,7 @@ module.exports = {
 			${await Components.visitor.Marquee.html({ text: '<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">RSS Available<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">', time: 20 })}
 				<main id="page-container">
 					
-					
-				<!-- REACT COMPONENT START -->
-				<div id="customReactComponent"></div>
-
-				<script type="text/babel">
-					const { useState } = React
-
-
-					function Increment() {
-				  
-				  
-				  
-					const [count, setCount] = useState(10);
-					function handleClick() {
-					  setCount(count + 1);
-					}
-					  return (<button onClick={handleClick}>YOUR IP = ${data.reqIp} - Click Count {count} </button>)
-					}
-				  
-					// Render the component to the DOM
-					ReactDOM.render(
-					  <Increment />,
-					  document.getElementById("customReactComponent")
-					);
-</script>
-				<!-- REACT COMPONENT END -->
-
-
-
+				
 					<div class="profile-container">
 						<figure class="image-profile">
 							<img

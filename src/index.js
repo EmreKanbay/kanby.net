@@ -13,25 +13,46 @@ const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
 const jwt = require("jsonwebtoken")
 
 const redis = require('redis');
-const client = redis.createClient({
+const client =  redis.createClient({
 		url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,  // e.g. '192.168.1.100'
-});
+}).on('error', err => console.log('Redis Client Error', err))
+.on('connect', () => {
+	console.log('Connected to Redis');
+});;
 
 
-client.on('error', err => console.log('Redis Client Error', err));
 
  
 (async ()=> {
 
 	try {
-		await client.connect();
-		console.log("redis connected succesfully")
+
+	await client.connect(); 
+	await client.flushDb();
+
+
+ 
 		
 	} catch (error) {
+		console.log("redis connection ERROR")
+
 console.log(error)		
 	}
 	
 })()
+
+
+
+process.on('SIGINT', async () => {
+    console.log('Reddis shutting down...');
+    await client.quit();
+    console.log('Redis connection closed');
+
+	console.log('Postgres shutting down...');
+	await pool.end()
+    console.log('Postgres connection closed');
+    process.exit(0); // Exit the process after cleanup
+});
  
 const JWT_SECRET = crypto.randomBytes(64).toString('hex')
 
@@ -57,7 +78,7 @@ var DB_connected = false;
 		await pool.query("SELECT * FROM variables LIMIT 1");
 		await pool.query("SELECT * FROM projects LIMIT 1");
 		await pool.query("SELECT * FROM media LIMIT 1");
-		console.log("DB connected succesfully");
+		console.log("Postgres connected succesfully");
 		DB_connected = true;
 	} catch (e) {
 		DB_connected = false;
@@ -175,6 +196,7 @@ module.exports = {
 	express,
 	auth,
 	sha256,
+	client,
 };
 
 // Setup Routes
@@ -187,7 +209,50 @@ const admin = require("./Routes/admin");
 // Setup Middlewares
 root.use(cookieParser());
 
+//DB check
+root.use((req, res, next) => {
+	if (DB_connected) next();
+	else res.send("DB is not connected");
+});
 
+
+// Too many request prevent
+root.use(async (req, res, next) => {
+	try{
+		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""})}:count`
+		
+		
+		const currentCount = await client.get(redisKey);
+ 
+
+	
+		if(isNaN(Number(String(await currentCount)))){
+ 			await client.set(redisKey, "0" )
+			await client.expire(redisKey, 60); 
+			next()
+ 			return;
+	
+		}else{
+			if(Number(await currentCount) > 50){
+				res.send("too many requests")
+				return;
+			}else{
+				await client.incr(redisKey); // Increments by 1
+ 				
+				next()
+				return
+			}	
+		}
+
+	}catch(e){
+
+		console.log(e)
+		res.send(`<h1>Error: \n ${e}</h1>`)
+		return
+	}
+
+})
+ 
 root.get("/robots.txt", function (req, res, next) {
   
   try{
@@ -524,11 +589,6 @@ try {
 }
 });
 
-//DB check
-root.use((req, res, next) => {
-	if (DB_connected) next();
-	else res.send("DB is not connected");
-});
 
 // These are the endpoints which should not add trailing slashes
 root.use((req, res, next) => {
@@ -555,7 +615,8 @@ try{
 
 root.post("/admin/login/", upload.none(), auth , async (req, res, next) => {
   
-	try{	  
+	try{	
+
 		res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
 	}catch(e){
 		res.send(`<h1>Error: </h1> \n ${e}`)

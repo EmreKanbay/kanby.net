@@ -20,7 +20,9 @@ ENV PG_USER ""
 ENV PG_PASSWORD ""	
 ENV PG_DATABASE ""
 ENV PG_HOST ""
-
+ENV CDN_DOMAIN ""
+ENV REDIS_HOST ""
+ENV REDIS_PORT ""
 
  
 # there is no trailing slash on CDN domain. do NOT do that -> http://abc.com/
