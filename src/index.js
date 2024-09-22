@@ -143,8 +143,8 @@ const auth = async (req, res, next) => {
 	
 		if (record.rows.length == 1) {
 
-			const token = jwt.sign({username: req?.body?.login_name}, JWT_SECRET, { expiresIn: '3600s' });
-			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60*10), httpOnly: true, secure: true });
+			const token = jwt.sign({username: req?.body?.login_name, ip: typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}, JWT_SECRET, { expiresIn: '3600s' });
+			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60*10), httpOnly: true, secure: true, sameSite:"strict" });
 			req.customData = {record}
 			next()
 			await client.set(redisKey, "0" )
@@ -173,6 +173,8 @@ const auth = async (req, res, next) => {
 		ret = jwt.verify(token, JWT_SECRET, (err, payload) => {
 			if (err) {
 				return { pass:false }}
+
+			console.log(payload)
 			return { pass:true, payload: payload}
 	})
 	}catch(e){console.log(e); ret = { pass:false }}

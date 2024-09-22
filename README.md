@@ -5,6 +5,8 @@
 # TODO
 
 ```
+[] user ip needs to be included in JWT payload and checked if it is stolen
+[] landing page is loading slow
 [] for contentSecurityPolicy header, nonce may be added for scripts and styles
 
 [] Create LOGS, and save them to database properly 
