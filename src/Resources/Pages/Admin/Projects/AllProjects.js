@@ -34,12 +34,12 @@ module.exports = {
 							...record.rows.map(t => {
 								return `
 
- <div onclick="window.location.href = './${t.id}'"  class="all-blogs-item">
+ <a href="/admin/${data.user_id}/projects/${t.id}/"  class="all-blogs-item">
 
 			<img  src="${t["English"].thumbnail_url}" />
 
 			<span>${t["English"].title}</span>
-			</div>
+			</a>
 		`;
 							}),
 						);

@@ -20,7 +20,7 @@ module.exports = async data =>
 		    <script defer crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
             <script defer crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
             <script defer type="text/javascript" src="https://unpkg.com/babel-standalone@6/babel.js"></script>
-			<!-- REACT CDN END -->
+			                <!-- REACT CDN END -->
                 </head>
 
     

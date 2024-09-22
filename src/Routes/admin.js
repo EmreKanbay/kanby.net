@@ -56,12 +56,12 @@ admin
 					"".concat(
 						...record.rows.map(t => {
 							return `
-	 <div onclick="window.location.href = './${t.id}'" data-title="${he.encode(t.title)}"
+	 <a href="/admin/${req.params.user_id}/blogs/${t.id}/" data-title="${he.encode(t.title)}"
 	 	data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}"
 	 	data-raw-content="${he.encode(t.raw_content)}" class="all-blogs-item">
 	 	<img src="${t.thumbnail_url}" />
 	 	<span>${t.title}</span>
-	 </div>
+	 </a>
 			`;
 						}),
 					),
@@ -78,6 +78,12 @@ admin
 			const text = `INSERT INTO "blogs" (title, description, 
 		language,  author, creation_date, 
 		rendered_content, raw_content, thumbnail_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
+
+
+		const text1 = `SELECT * FROM users WHERE id= $1`;
+
+		var record = await Index.pool.query(text1, [req.params.user_id]);
+
 
 			const values = [
 				req.body.blog_title,
