@@ -104,17 +104,39 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+
 const auth = async (req, res, next) => {
 	try{
  	const token = req?.cookies?.SessionToken
 
 	 if(req.method == "POST" && req.originalUrl == "/admin/login/") {
+
+		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""})}:login`
+		const currentCount = await client.get(redisKey);
+
+ 		if(isNaN(Number(String(await currentCount)))){
+			await client.set(redisKey, "0" )
+		  await client.expire(redisKey, 36000);  
+ 
+	  }else{
+		  if(Number(await currentCount) >= 10){
+ 
+			  res.status(401).send("too many requests")
+			  return;
+		  }else{
+
+			  await client.incr(redisKey); // Increments by 1
+ 			
+			}	
+	  }
+
  
 		if (token){
 			res.clearCookie("SessionToken")
 			res.send("Existing token found, token removed.")
 			return;
 		}
+
 		const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1 AND password_hash= $2`;
 		const values = [req?.body?.login_name, sha256(req?.body?.login_password)];
 		var record = await pool.query(text, values);
@@ -216,7 +238,6 @@ const admin = require("./Routes/admin");
 
 root.use(cookieParser());
 root.use(cors({origin:"https://kanby.net/"}));
-
 root.use(helmet({
 	contentSecurityPolicy:  {
 		directives: {
@@ -254,7 +275,7 @@ root.use(async (req, res, next) => {
  			return;
 	
 		}else{
-			if(Number(await currentCount) > 50){
+			if(Number(await currentCount) >= 50){
 				res.send("too many requests")
 				return;
 			}else{
@@ -634,10 +655,10 @@ try{
 }
 });
 
+
 root.post("/admin/login/", upload.none(), auth , async (req, res, next) => {
   
 	try{	
-
 		res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
 	}catch(e){
 		res.send(`<h1>Error: </h1> \n ${e}`)
@@ -647,6 +668,9 @@ root.post("/admin/login/", upload.none(), auth , async (req, res, next) => {
   
 	
   })
+
+
+
 
 root.use("/admin/:id", auth, async (req, res, next) => {
   
