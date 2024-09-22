@@ -247,11 +247,16 @@ root.use(helmet({
 		  objectSrc: ["'none'"],
 		  frameAncestors: ["'none'"],
 		  fontSrc: ["'self'", "https://cdn.kanby.net"],
-		  scriptSrc: ["'self'", "'unsafe-inline'" ], // Allow scripts from self and CDN
+		  scriptSrc: [
+			"self", 
+			"'unsafe-inline'", 
+			"https://unpkg.com/react@18/umd/react.production.min.js",
+			"https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
+			'https://unpkg.com/babel-standalone@6/babel.js' ], // Allow scripts from self and CDN
 		  upgradeInsecureRequests: [], 
 		  styleSrc: ["'self'", "'unsafe-inline'" , "https://cdn.kanby.net"], // Allow styles from self and inline styles
 		  imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
-		  connectSrc: ["'self'", "https://cdn.kanby.net"], // Allow connections to CDN
+		  connectSrc: ["'self'", "https://cdn.kanby.net", 'https://api.github.com/markdown'], // Allow connections, fetch requests
 		  // Add other directives as needed
 		},
 	  },
