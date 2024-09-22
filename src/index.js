@@ -20,7 +20,7 @@ const client =  redis.createClient({
 		url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,  // e.g. '192.168.1.100'
 }).on('error', err => console.log('Redis Client Error', err))
 .on('connect', () => {
-	console.log('Connected to Redis');
+	console.log('Redis connected succesfully');
 });;
 
 
@@ -699,6 +699,9 @@ root.use("/assets", express.static(path.join(__dirname, "Assets")));
 root.use("/admin", admin);
 root.use("/get-component", getComponents);
 root.use("/", visitor);
+
+
+
 
 // start server
 root.listen(3000, () => {
