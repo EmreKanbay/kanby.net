@@ -7,6 +7,7 @@ const sha256 = require("js-sha256");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
+const cors = require('cors');
 const Framework = require("#Framework");
 const Components = require("#Components");
 const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
@@ -57,7 +58,8 @@ process.on('SIGINT', async () => {
 });
  
 const JWT_SECRET = crypto.randomBytes(64).toString('hex')
-
+const nonce_value = crypto.randomBytes(16).toString('hex')
+ 
 dotenv.config();
 const { Pool } = pg;
 const pool = new Pool({
@@ -199,6 +201,7 @@ module.exports = {
 	auth,
 	sha256,
 	client,
+	nonce_value,
 };
 
 // Setup Routes
@@ -209,9 +212,23 @@ const admin = require("./Routes/admin");
 
 
 // Setup Middlewares
-root.use(cookieParser());
+ 
 
-root.use(helmet())
+root.use(cookieParser());
+root.use(cors({origin:"https://kanby.net/"}));
+
+root.use(helmet({
+	contentSecurityPolicy:  {
+		directives: {
+		  defaultSrc: ["'self'", "https://cdn.kanby.net"], // Allow self and CDN
+		  scriptSrc: ["'self'", "'unsafe-inline'" ], // Allow scripts from self and CDN
+		  styleSrc: ["'self'", "'unsafe-inline'" , "https://cdn.kanby.net"], // Allow styles from self and inline styles
+		  imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
+		  connectSrc: ["'self'", "https://cdn.kanby.net"], // Allow connections to CDN
+		  // Add other directives as needed
+		},
+	  },
+}))
 
 //DB check
 root.use((req, res, next) => {

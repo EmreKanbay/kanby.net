@@ -24,7 +24,7 @@ module.exports = async data =>
         <link rel="preload" href="${cdn}/assets/github-markdown-light.css" as="style" />
         
         <link href="${cdn}" rel="dns-prefetch">
-				<link rel="stylesheet" href="https://kanby.net/assets/globals.css" />
+				<link rel="stylesheet" href="/assets/globals.css" />
 				
 				
 				<link rel="apple-touch-icon" sizes="128x128" href="${cdn}/assets/logo-128.png">

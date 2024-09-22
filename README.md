@@ -5,8 +5,10 @@
 # TODO
 
 ```
-Create LOGS, and save them to database properly 
- Simplify everything with a simple library or framework
+[] for contentSecurityPolicy header, nonce may be added for scripts and styles
+
+[] Create LOGS, and save them to database properly 
+[] Simplify everything with a simple library or framework
 ```
 
 ## SEO tips

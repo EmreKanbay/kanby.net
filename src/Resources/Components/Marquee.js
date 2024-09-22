@@ -20,10 +20,7 @@ module.exports = {
 <!--  Do Not Play With Preceeding HTML   -->
 
 <style>
-    body{
-  margin:0;
-  overflow: hidden;
-}
+
 
 #marquee-cont-part-one{
     width: 100%;
