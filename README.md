@@ -2,10 +2,13 @@
 
 > Thanks to "Zayd al-Muqaddim al-Qamar al-‘Aarabi" for all his invaluable support
 
+
+>Important, Ip is getting from x-forwarded-from header, so you must use a reverse proxy server like nginx to work
+
 # TODO
 
 ```
-[] user ip needs to be included in JWT payload and checked if it is stolen
+[x] user ip needs to be included in JWT payload and checked if it is stolen
 [] landing page is loading slow
 [] for contentSecurityPolicy header, nonce may be added for scripts and styles
 

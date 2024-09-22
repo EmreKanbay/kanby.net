@@ -16,17 +16,15 @@ module.exports = {
 <form id="media-form">
 
 
-<input id="media-upload" type="file"/><br>
-
-
+<cite>*File name must have an accurate extention. Eg. image.png </cite>
+<br>
+<cite>*Only use Dashes(-) and underscores(_) for filename, do not use anything else  </cite>
+<br>
 <p style="display:inline">File name:</p>
 <input placeholder="my-image" id="media-name" type="text"/><br> 
 <p style="display:inline">Alt Text:</p>
 <input placeholder="my-alt-text" id="alt_text" type="text"/><br>
 
-
-
-<img id="preview" /> <br>
 
  
  <input type="submit"/>
@@ -53,7 +51,7 @@ document.querySelector("#media-form").addEventListener("submit", async (e)=> {
 
 	const formData = new FormData();
  
-	formData.append("media", document.querySelector("#media-upload").files[0], document.querySelector("#media-name").value + "." + document.querySelector("#media-upload").files[0].name.split(".")[document.querySelector("#media-upload").files[0].name.split(".").length - 1])
+	formData.append("file_name", document.querySelector("#media-name").value)
 	formData.append("alt_text", document.querySelector("#alt_text").value)
  
 		document.querySelector(".loading-block").classList.add("active")
@@ -83,20 +81,6 @@ document.querySelector("#media-form").addEventListener("submit", async (e)=> {
 
 
 
-
-
-document.querySelector("#media-upload").addEventListener("change", (e) => {
-	
-	const [file] = document.querySelector("#media-upload").files
-
-	if (file) {
-	
-	document.querySelector("#preview").src = URL.createObjectURL(file)
-
-	
-	}
-	
-	})
 
  
 

@@ -259,10 +259,15 @@ admin
 
 	})
 
-	.put(Index.upload.single("media"), async (req, res, next) => {
+	.put(Index.upload.none(), async (req, res, next) => {
 		try {
+
+			var [main, ext] = req.body.file_name.split(".");
+  
+			const mediaName = main + "-" + Index.crypto.randomUUID().split("-")[1] + "." + ext
+	  
 			const text = "INSERT  INTO media VALUES (DEFAULT, $1, $2)";
-			const values = [`${cdn}/media/${req.file.filename}`, req.body.alt_text];
+			const values = [`${cdn}/media/${mediaName}`, req.body.alt_text];
 
 			await Index.pool.query(text, values);
 			res.send();

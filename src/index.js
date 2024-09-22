@@ -119,15 +119,10 @@ const auth = async (req, res, next) => {
 		  await client.expire(redisKey, 36000);  
  
 	  }else{
-		  if(Number(await currentCount) >= 10){
- 
-			  res.status(401).send("too many requests")
-			  return;
-		  }else{
 
 			  await client.incr(redisKey); // Increments by 1
  			
-			}	
+			
 	  }
 
  
@@ -171,11 +166,16 @@ const auth = async (req, res, next) => {
 	
 	try{
 		ret = jwt.verify(token, JWT_SECRET, (err, payload) => {
-			if (err) {
-				return { pass:false }}
+			if (err) {return { pass:false }}
+				
 
-			console.log(payload)
-			return { pass:true, payload: payload}
+  		
+			if(String(payload.ip) == String(typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : "")){
+					return { pass:true, payload: payload}
+				}else{
+					return { pass:false }
+
+				}
 	})
 	}catch(e){console.log(e); ret = { pass:false }}
 
@@ -227,6 +227,7 @@ module.exports = {
 	sha256,
 	client,
 	nonce_value,
+	crypto
 };
 
 // Setup Routes
@@ -241,11 +242,23 @@ const admin = require("./Routes/admin");
 
 root.use(cookieParser());
 root.use(cors({origin:"https://kanby.net/"}));
+root.disable("x-powered-by");
+ 
 root.use(helmet({
+
+	xFrameOptions: { action: "deny" },
+	referrerPolicy: {
+		policy: "no-referrer",
+	  },
+	xPoweredBy: false,
 	contentSecurityPolicy:  {
 		directives: {
-		  defaultSrc: ["'self'", "https://cdn.kanby.net"], // Allow self and CDN
+		  defaultSrc: ["'none'"], 
+		  objectSrc: ["'none'"],
+		  frameAncestors: ["'none'"],
+		  fontSrc: ["'self'", "https://cdn.kanby.net"],
 		  scriptSrc: ["'self'", "'unsafe-inline'" ], // Allow scripts from self and CDN
+		  upgradeInsecureRequests: [], 
 		  styleSrc: ["'self'", "'unsafe-inline'" , "https://cdn.kanby.net"], // Allow styles from self and inline styles
 		  imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
 		  connectSrc: ["'self'", "https://cdn.kanby.net"], // Allow connections to CDN
@@ -264,13 +277,20 @@ root.use((req, res, next) => {
 // Too many request prevent
 root.use(async (req, res, next) => {
 	try{
+
 		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""})}:count`
-		
-		
 		const currentCount = await client.get(redisKey);
  
+		const redisKey_login = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""})}:login`
+		const currentCount_login = await client.get(redisKey_login);
 
-	
+
+		if(Number(await currentCount_login) >= 10){
+			res.status(401).send("too many requests")
+			return;
+		}
+
+
 		if(isNaN(Number(String(await currentCount)))){
   			await client.set(redisKey, "0" )
 			await client.expire(redisKey, 60); 
