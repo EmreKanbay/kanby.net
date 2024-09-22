@@ -147,6 +147,7 @@ const auth = async (req, res, next) => {
 			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60*10), httpOnly: true, secure: true });
 			req.customData = {record}
 			next()
+			await client.set(redisKey, "0" )
 			return
 	// res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
 	// res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
