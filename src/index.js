@@ -91,18 +91,8 @@ var DB_connected = false;
 	}
 })();
 
-const storage = multer.diskStorage({
-	filename: async function (req, file, cb) {
-	try{
-  	var [main, ext] = file.originalname.split(".");
-  
-  	cb(null, main + "-" + crypto.randomUUID().split("-")[1] + "." + ext);
 
-	}catch(e) {console.log(e)}
-	},
-});
-
-const upload = multer({ storage });
+const upload = multer();
 
 
 const auth = async (req, res, next) => {
@@ -210,7 +200,7 @@ else{
  	
 	}
 	catch(e){
-		res.send(`<h1>Error: </h1> \n ${e}`)
+		res.send(`<h1>Error: </h1> \n  `)
 		return
 	}
 
@@ -239,7 +229,7 @@ const admin = require("./Routes/admin");
 
 // Setup Middlewares
  
-
+root.set('env', 'production');
 root.use(cookieParser());
 root.use(cors({origin:"https://kanby.net/"}));
 root.disable("x-powered-by");
@@ -277,7 +267,7 @@ root.use((req, res, next) => {
 // Too many request prevent
 root.use(async (req, res, next) => {
 	try{
-
+	
 		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""})}:count`
 		const currentCount = await client.get(redisKey);
  
@@ -312,7 +302,7 @@ root.use(async (req, res, next) => {
 	}catch(e){
 
 		console.log(e)
-		res.send(`<h1>Error: \n ${e}</h1>`)
+		res.send(`<h1>Error: \n  </h1>`)
 		return
 	}
 
@@ -332,7 +322,7 @@ Sitemap https://kanby.net/sitemap.xml
     
     res.type("text/html");
 
-	res.send(`<h1>Error: </h1> \n ${e}`)
+	res.send(`<h1>Error: </h1> \n  `)
 }
 
 });
@@ -381,7 +371,7 @@ root.get("/manifest.json", function (req, res, next) {
   }catch(e){
     res.type("text/html");
 
-	res.send(`<h1>Error: </h1> \n ${e}`)
+	res.send(`<h1>Error: </h1> \n  `)
     console.log(e)
   }
 
@@ -464,7 +454,7 @@ try {
 	res.send(rss);
 }catch(e){
 	res.type("text/html");
-	res.send(`<h1>Error: </h1> \n ${e}`)
+	res.send(`<h1>Error: </h1> \n  `)
   console.log(e)
  }
 });
@@ -649,7 +639,7 @@ try {
 	res.send(sitemap);
 }catch(e){
 	res.type("text/html");
-	res.send(`<h1>Error: </h1> \n ${e}`)
+	res.send(`<h1>Error: </h1> \n  `)
   console.log(e)
 }
 });
@@ -673,7 +663,7 @@ try{
 		return;
 	}
 }catch(e){
- 	res.send(`<h1>Error: </h1> \n ${e}`)
+ 	res.send(`<h1>Error: </h1> \n  `)
   console.log(e)
 }
 });
@@ -684,7 +674,7 @@ root.post("/admin/login/", upload.none(), auth , async (req, res, next) => {
 	try{	
 		res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
 	}catch(e){
-		res.send(`<h1>Error: </h1> \n ${e}`)
+		res.send(`<h1>Error: </h1> \n  `)
 		console.log(e)
 	  
 	}
@@ -706,7 +696,7 @@ root.use("/admin/:id", auth, async (req, res, next) => {
 
 	
 	} catch (e) {
-		res.send(`<h1>Error: </h1> \n ${e}`)
+		res.send(`<h1>Error: </h1> \n  `)
 		console.log(e)
 	}
 });

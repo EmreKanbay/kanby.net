@@ -17,16 +17,25 @@ visitor.get("/", async (req, res, next) => {
 
 visitor.use("/:lang", async (req, res, next) => {
 	try {
-		const query = await Index.pool.query("SELECT * FROM variables");
-		if (query.rows[0].value.includes(req.params.lang)) {
-		req.langCode = query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)]
-		req.language = req.params.lang
-		req.clientIP = typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""
 
-		next()
-		} else {
-		res.send(await Pages.NotFound.html({ language: "English", langCode:"en"}));
-		}
+
+		if(/^([A-Z]{1}[a-z]+)$/.test(req.params.lang)){
+
+			const query = await Index.pool.query("SELECT * FROM variables");
+			if (query.rows[0].value.includes(req.params.lang)) {
+			req.langCode = query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)]
+			req.language = req.params.lang
+			req.clientIP = typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""
+	
+			next()
+			} else {
+			res.send(await Pages.NotFound.html({ language: "English", langCode:"en"}));
+			}
+
+		}else {
+			res.send(await Pages.NotFound.html({ language: "English", langCode:"en"}));
+			}
+
 	} catch (e) {
 		console.log(e);
 		res.send("Error");
@@ -61,15 +70,21 @@ subVisitor.get("/blogs/", async (req, res, next) => {
 subVisitor.get("/blogs/:id", async (req, res, next) => {
 	try {
 
+		 
 		const text = `SELECT ARRAY(SELECT id FROM blogs WHERE language= $1) AS ids`;
 		var record = await Index.pool.query(text, [req.language]);
 
-
-		if(record.rows[0].ids.includes(Number(req.params.id))){
-			res.send(await Pages.SingleBlog.html({ language: req.language, blog_id: req.params.id, langCode:req.langCode }));
+		if(/^[0-9]+$/.test(req.params.id)){
+			if(record.rows[0].ids.includes(Number(req.params.id))){
+				res.send(await Pages.SingleBlog.html({ language: req.language, blog_id: req.params.id, langCode:req.langCode }));
+			}else{
+				res.send(await Pages.NotFound.html({ language: req.language, langCode: req.langCode}));
+			}
 		}else{
 			res.send(await Pages.NotFound.html({ language: req.language, langCode: req.langCode}));
 		}
+
+	
 	} catch (error) {
 		console.log(error);
 		res.send("Error");
@@ -93,14 +108,21 @@ subVisitor.get("/projects/:id", async (req, res, next) => {
 		var record = await Index.pool.query(text);
 
 
+		if(/^[0-9]+$/.test(req.params.id)){
 
-		if(record.rows[0].ids.includes(Number(req.params.id))){
+			if(record.rows[0].ids.includes(Number(req.params.id))){
 
-			res.send(await Pages.SingleProject.html({ language: req.language, id: req.params.id, langCode:req.langCode }));
+				res.send(await Pages.SingleProject.html({ language: req.language, id: req.params.id, langCode:req.langCode }));
+			}else{
+				res.send(await Pages.NotFound.html({ language: req.language, langCode: req.langCode}));
+	
+			}
 		}else{
 			res.send(await Pages.NotFound.html({ language: req.language, langCode: req.langCode}));
 
 		}
+
+
 	} catch (error) {
 		console.log(error);
 		res.send("Error");

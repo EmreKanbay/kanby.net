@@ -16,7 +16,7 @@ admin.get("/:user_id/dashboard/", async (req, res, next) => {
 		res.send(await Pages.AdminDashboard.html({ user_id: req.params.user_id }));
 	} catch (error) {
 		console.log(error);
-		res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+		res.status(500).send(`<h1>Error: </h1> \n  `)
 	}
 });
 
@@ -25,7 +25,7 @@ admin.get("/:user_id/blogs/add/", async (req, res, next) => {
 		res.send(await Pages.AddBlog.html({ user_id: req.params.user_id }));
 	} catch (error) {
 		console.log(error);
-		res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+		res.status(500).send(`<h1>Error: </h1> \n  `)
 	}
 });
 
@@ -37,7 +37,7 @@ admin
 			res.send(await Pages.AllBlogs.html({ user_id: req.params.user_id }));
 		} catch (error) {
 			console.log(error);
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	})
 
@@ -69,7 +69,7 @@ admin
 			}
 		} catch (error) {
 			console.log(error);
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	})
 
@@ -95,7 +95,7 @@ admin
 			res.send();
 		} catch (e) {
 			console.log(e);
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	});
 
@@ -106,7 +106,7 @@ admin
 			res.send(await Pages.ViewBlog.html({ id: req.params.id, user_id: req.params.user_id }));
 		} catch (error) {
 			console.log(error);
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	})
 	.delete(async (req, res) => {
@@ -120,7 +120,7 @@ admin
 			res.send();
 		} catch (error) {
 			console.log(error);
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	})
 
@@ -144,7 +144,7 @@ admin
 			res.send();
 		} catch (error) {
 			console.log(error);
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	});
 
@@ -156,7 +156,7 @@ admin
 			
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	})
 	.put(Index.upload.none(), async (req, res) => {
@@ -177,7 +177,7 @@ admin
 		res.send();
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	});
 admin.get("/:user_id/projects/add/", async (req, res) => {
@@ -186,7 +186,7 @@ admin.get("/:user_id/projects/add/", async (req, res) => {
 		
 	} catch (error) {
 		console.log(error)
-		res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+		res.status(500).send(`<h1>Error: </h1> \n  `)
 	}
 });
 
@@ -198,7 +198,7 @@ admin
 			res.send(await Pages.ViewProject.html({ id: req.params.id, user_id: req.params.user_id }));
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	})
 	.delete(Index.upload.none(), async (req, res) => {
@@ -213,7 +213,7 @@ admin
 			
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	})
 	.patch(Index.upload.none(), async (req, res) => {
@@ -228,7 +228,7 @@ admin
 			res.send();
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 
 	});
@@ -241,7 +241,7 @@ admin
 			
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	})
 	.delete(Index.upload.none(), async (req, res, next) => {
@@ -254,7 +254,7 @@ admin
 			res.send();
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n ${error}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 
 	})
@@ -273,7 +273,7 @@ admin
 			res.send();
 		} catch (e) {
 			console.log(e);
-			res.status(500).send(`<h1>Error: </h1> \n ${e}`)
+			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	});
 
@@ -283,7 +283,7 @@ admin.get("/:user_id/media/add/", async (req, res, next) => {
 		
 	} catch (e) {
 		console.log(e);
-		res.status(500).send(`<h1>Error: </h1> \n ${e}`)
+		res.status(500).send(`<h1>Error: </h1> \n  `)
 	}
 });
 
@@ -295,7 +295,7 @@ admin.get("/:user_id/security", async (req, res) => {
 		
 	} catch (e) {
 		console.log(e);
-		res.status(500).send(`<h1>Error: </h1> \n ${e}`)
+		res.status(500).send(`<h1>Error: </h1> \n  `)
 	}
 });
 
@@ -305,7 +305,7 @@ admin.get("/:user_id/settings", async (req, res) => {
 		
 	} catch (e) {
 		console.log(e);
-		res.status(500).send(`<h1>Error: </h1> \n ${e}`)
+		res.status(500).send(`<h1>Error: </h1> \n  `)
 	}
 });
 
@@ -315,7 +315,7 @@ admin.use("/:id", async (req, res) => {
 		
 	} catch (e) {
 		console.log(e);
-		res.status(500).send(`<h1>Error: </h1> \n ${e}`)
+		res.status(500).send(`<h1>Error: </h1> \n  `)
 	}
 });
 
