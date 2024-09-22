@@ -11,6 +11,8 @@ const Framework = require("#Framework");
 const Components = require("#Components");
 const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
 const jwt = require("jsonwebtoken")
+const helmet = require('helmet');
+
 
 const redis = require('redis');
 const client =  redis.createClient({
@@ -186,7 +188,7 @@ else{
 	}
 
 
-};
+}; 
 
 //Global variables
 module.exports = {
@@ -209,6 +211,8 @@ const admin = require("./Routes/admin");
 // Setup Middlewares
 root.use(cookieParser());
 
+root.use(helmet())
+
 //DB check
 root.use((req, res, next) => {
 	if (DB_connected) next();
@@ -227,7 +231,7 @@ root.use(async (req, res, next) => {
 
 	
 		if(isNaN(Number(String(await currentCount)))){
- 			await client.set(redisKey, "0" )
+  			await client.set(redisKey, "0" )
 			await client.expire(redisKey, 60); 
 			next()
  			return;

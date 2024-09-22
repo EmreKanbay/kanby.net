@@ -5,6 +5,7 @@
 # TODO
 
 ```
+Create LOGS, and save them to database properly 
  Simplify everything with a simple library or framework
 ```
 
