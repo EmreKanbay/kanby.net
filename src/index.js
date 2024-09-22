@@ -3,7 +3,6 @@ const express = require("express");
 const multer = require("multer");
 const pg = require("pg");
 const dotenv = require("dotenv")
-const sha256 = require("js-sha256");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
@@ -13,6 +12,7 @@ const Components = require("#Components");
 const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
 const jwt = require("jsonwebtoken")
 const helmet = require('helmet');
+
 
 
 const redis = require('redis');
@@ -123,7 +123,8 @@ const auth = async (req, res, next) => {
 		}
 
 		const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1 AND password_hash= $2`;
-		const values = [req?.body?.login_name, sha256(req?.body?.login_password)];
+
+		const values = [req?.body?.login_name, crypto.createHash("sha256").update(req?.body?.login_password).digest("hex")];
 		var record = await pool.query(text, values);
 	
 		if (record.rows.length == 1) {
@@ -200,7 +201,7 @@ else{
  	
 	}
 	catch(e){
-		res.send(`<h1>Error: </h1> \n  `)
+		res.send(`<h1>Error: </h1> \n ${e} `)
 		return
 	}
 
@@ -214,7 +215,6 @@ module.exports = {
 	upload,
 	express,
 	auth,
-	sha256,
 	client,
 	nonce_value,
 	crypto
