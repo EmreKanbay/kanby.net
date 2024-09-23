@@ -234,7 +234,7 @@ root.use(cookieParser());
 root.use(cors({origin:"https://kanby.net/"}));
 root.disable("x-powered-by");
  
-root.use(helmet({
+root.use( "/:lang/" ,helmet({
 
 	xFrameOptions: { action: "deny" },
 	referrerPolicy: {
@@ -247,8 +247,32 @@ root.use(helmet({
 		  objectSrc: ["'none'"],
 		  frameAncestors: ["'none'"],
 		  fontSrc: ["'self'", "https://cdn.kanby.net"],
+		  scriptSrc: ["'self'", "'unsafe-inline'"],
+		  upgradeInsecureRequests: [], 
+		  styleSrc: ["'self'", "'unsafe-inline'" , "https://cdn.kanby.net"], // Allow styles from self and inline styles
+		  imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
+		  connectSrc: ["'self'", "https://cdn.kanby.net"], // Allow connections, fetch requests
+		  // Add other directives as needed
+		},
+	  },
+}))
+
+root.use( "/admin/",helmet({
+
+	xFrameOptions: { action: "deny" },
+	referrerPolicy: {
+		policy: "no-referrer",
+	  },
+	xPoweredBy: false,
+	contentSecurityPolicy:  {
+		directives: {
+		  defaultSrc: ["'none'"], 
+		  objectSrc: ["'none'"],
+		  frameAncestors: ["'none'"],
+		  fontSrc: ["'self'", "https://cdn.kanby.net"],
+		  scriptSrcAttr: ["self", "'unsafe-inline'"],
 		  scriptSrc: [
-			"self", 
+			"'self'", 
 			"'unsafe-inline'", 
 			"https://unpkg.com/react@18/umd/react.production.min.js",
 			"https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
@@ -261,6 +285,8 @@ root.use(helmet({
 		},
 	  },
 }))
+
+
 
 //DB check
 root.use((req, res, next) => {

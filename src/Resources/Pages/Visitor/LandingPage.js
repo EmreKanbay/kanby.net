@@ -51,7 +51,7 @@ module.exports = {
 
 			<title>${he.encode(translation[data.language].title)}</title>
 			
-			
+
       <meta name="description" content="${he.encode(translation[data.language].description)}"/>
       <meta name="robots" content="index,follow">
       
@@ -76,7 +76,7 @@ module.exports = {
 			${await Components.visitor.Marquee.html({ text: '<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">RSS Available<img style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">', time: 20 })}
 				<main id="page-container">
 					
-				
+
 					<div class="profile-container">
 						<figure class="image-profile">
 							<img

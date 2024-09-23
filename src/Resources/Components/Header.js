@@ -110,7 +110,6 @@ module.exports = {
                         value="" />
                 </span>
                 <input
-                    onclick="cancelSearchTab(this)"
                     type="button"
                     value="" />
                 <cite>Not Available</cite>

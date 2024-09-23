@@ -105,7 +105,7 @@ module.exports = async data =>
                                                     <div class="nav-menu-item__title"><span>Media</span></div>
                                                 </a>
                                                 <a  href="/admin/${data.user_id}/media/add/" class="nav-menu__item__inner-submenu">
-                                                         <div onclick="goTo('/media/add/')">Add New</div>
+                                                         <div>Add New</div>
                                                 </a>  
                                             </div>
                                         </li>
