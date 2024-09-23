@@ -129,12 +129,6 @@ module.exports = {
 
 }
 
-@supports (-webkit-text-stroke: 1px black) {
-  .title-d457 {
-    -webkit-text-stroke: 1.5px black;
-    -webkit-text-fill-color: white;
-  }
-}
 .title-d457{
   color:white;
   margin-bottom: .5rem;

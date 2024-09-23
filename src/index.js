@@ -126,20 +126,20 @@ const auth = async (req, res, next) => {
 			return;
 		}
 
-		const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1 AND password_hash= $2`;
+		const text = `SELECT id, password_hash,salt  FROM "users" WHERE login_name = $1`;
 
-		const values = [req?.body?.login_name, crypto.createHash("sha256").update(req?.body?.login_password).digest("hex")];
+		const values = [String(req?.body?.login_name)];
 		var record = await pool.query(text, values);
 	
-		if (record.rows.length == 1) {
+		if (record.rows.length == 1 && record.rows[0].password_hash == crypto.createHash("sha256").update(String(record.rows[0].salt) + ""  + String(req?.body?.login_password)).digest("hex")) {
 
-			const token = jwt.sign({username: req?.body?.login_name, ip: typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}, JWT_SECRET, { expiresIn: '3600s' });
-			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60*10), httpOnly: true, secure: true, sameSite:"strict" });
-			req.customData = {record}
-			next()
-			await client.set(redisKey, "0")
-			await client.expire(redisKey, 172800)
-			return
+				const token = jwt.sign({username: req?.body?.login_name, ip: typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}, JWT_SECRET, { expiresIn: '7200s' });
+				res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60*10), httpOnly: true, secure: true, sameSite:"strict" });
+				req.customData = {record}
+				next()
+				await client.set(redisKey, "0")
+				await client.expire(redisKey, 172800)
+				return
 	// res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
 	// res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
 	// res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: true });
