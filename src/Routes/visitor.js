@@ -151,7 +151,7 @@ subVisitor.get("/about/", async (req, res, next) => {
 	}
 });
 
-subVisitor.get("/:lang/services/", async (req, res, next) => {
+subVisitor.get("/services/", async (req, res, next) => {
 	try {
 		res.send(await Pages.Services.html({ language: req.language, langCode:req.langCode }));
 	} catch (error) {

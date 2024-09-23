@@ -10,31 +10,7 @@ module.exports = {
 			content: await Framework.render`
 
 Settings
-    				<!-- REACT COMPONENT START -->
-				<div id="customReactComponent"></div>
 
-				<script type="text/babel">
-					const { useState } = React
-
-
-					function Increment() {
-				  
-				  
-				  
-					const [count, setCount] = useState(10);
-					function handleClick() {
-					  setCount(count + 1);
-					}
-					  return (<button onClick={handleClick}>YOUR IP = ${data.reqIp} - Click Count {count} </button>)
-					}
-				  
-					// Render the component to the DOM
-					ReactDOM.render(
-					  <Increment />,
-					  document.getElementById("customReactComponent")
-					);
-</script>
-				<!-- REACT COMPONENT END -->
 
 
 	<script>

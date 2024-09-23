@@ -37,7 +37,7 @@ module.exports = {
 
       <div class="container-d457">
   
-  <p class="title-d457">Contact Options / Social Presence<p>
+  <p class="title-d457">${translation[data.language].key1}<p>
   
   
   <div class="content-d457">
@@ -46,7 +46,7 @@ module.exports = {
     
     <div class="element-d457">
       
-      <img class="image-d457" src="https://cdn-icons-png.freepik.com/512/3536/3536445.png" />
+      <img class="image-d457" src="https://cdn.kanby.net/assets/whatsapp.svg" />
       <p>+90 533 308 34 23<p>
       
 
@@ -55,7 +55,7 @@ module.exports = {
      <a target="_blank" >
     <div class="element-d457">
       
-      <img class="image-d457" src="https://cdn-icons-png.flaticon.com/512/3178/3178158.png" />
+      <img class="image-d457" src="https://cdn.kanby.net/assets/mail-icon.svg" />
       <p>example@user.com<p>
       
 
@@ -63,7 +63,7 @@ module.exports = {
      </a>
       <a > <div class="element-d457">
       
-      <img class="image-d457" src="https://cdn-icons-png.freepik.com/512/12942/12942327.png" />
+      <img class="image-d457" src="https://cdn.kanby.net/assets/facebook.svg" />
       <p>Not Available yet, Soon...<p>
       
 
@@ -71,7 +71,7 @@ module.exports = {
 
       <a target="_blank" href="https://www.instagram.com/_emrekanbay_"><div  class="element-d457">
       
-      <img class="image-d457" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" />
+      <img class="image-d457" src="https://cdn.kanby.net/assets/instagram.svg" />
       <p>@_emrekanbay_<p>
      
     </div> </a>
@@ -80,7 +80,7 @@ module.exports = {
       
                <div class="element-d457">
       
-      <img  class="image-d457" src="https://static-00.iconduck.com/assets.00/github-icon-512x489-i96zunkj.png" />
+      <img  class="image-d457" src="https://cdn.kanby.net/assets/github.svg" />
       <p>@EmreKanbay<p>
       
 
@@ -91,7 +91,7 @@ module.exports = {
       
                <div class="element-d457">
       
-      <img  class="image-d457" src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/x-social-media-logo-icon.png" />
+      <img  class="image-d457" src="https://cdn.kanby.net/assets/x-icon.svg" />
       <p>@_EmreKanbay_<p>
       
 
