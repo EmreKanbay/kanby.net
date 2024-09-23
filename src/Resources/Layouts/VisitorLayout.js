@@ -22,9 +22,10 @@ module.exports = async data =>
         
         <!--Stylesheet for markdown-->
         <link rel="preload" href="${cdn}/assets/github-markdown-light.css" as="style" />
+        <link rel="preload" href="${cdn}/assets/loading.svg" as="image" type="image/svg+xml"/>
         
         <link href="${cdn}" rel="dns-prefetch">
-				<link rel="stylesheet" href="/assets/globals.css" />
+				<link rel="stylesheet" href="${cdn}/assets/globals.css" />
 				
 				
 				<link rel="apple-touch-icon" sizes="128x128" href="${cdn}/assets/logo-128.png">
@@ -43,6 +44,7 @@ module.exports = async data =>
 
 				${await data.head}
 
+	
 			
 		</head>
 		<body>

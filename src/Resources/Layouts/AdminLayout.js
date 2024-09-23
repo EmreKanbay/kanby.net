@@ -11,7 +11,7 @@ module.exports = async data =>
                 <head>
                     <title>Admin</title>
                 	<meta name="robots" content="noindex,nofollow">
-                    <link rel="stylesheet" href="/assets/globals.css" />
+                    <link rel="stylesheet" href="${cdn}/assets/globals.css" />
 		            <link rel="icon" href="${cdn}/assets/logo.svg">
                     ${data.head}
 

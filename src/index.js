@@ -31,11 +31,8 @@ const client =  redis.createClient({
 	try {
 
 	await client.connect(); 
-	await client.flushDb();
+	// await client.flushDb(); 
 
-
- 
-		
 	} catch (error) {
 		console.log("redis connection ERROR")
 
@@ -99,19 +96,26 @@ const auth = async (req, res, next) => {
 	try{
  	const token = req?.cookies?.SessionToken
 
+
 	 if(req.method == "POST" && req.originalUrl == "/admin/login/") {
 
-		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""})}:login`
+		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}:login`
 		const currentCount = await client.get(redisKey);
 
+		var temp = typeof req?.header('x-forwarded-for') == "string" ? `${req?.header('x-forwarded-for').split(",")[0]}` : "undefined"
+		var tempLogin = `login_attempts:${temp}:${Date.now()}`
+		await client.set(tempLogin, temp)  
+		await client.expire(tempLogin, 172800)
+
  		if(isNaN(Number(String(await currentCount)))){
-			await client.set(redisKey, "0" )
-		  await client.expire(redisKey, 36000);  
+			await client.set(redisKey, "0")
+			await client.expire(redisKey, 172800)
+
+
  
 	  }else{
 
 			  await client.incr(redisKey); // Increments by 1
- 			
 			
 	  }
 
@@ -133,7 +137,8 @@ const auth = async (req, res, next) => {
 			res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60*10), httpOnly: true, secure: true, sameSite:"strict" });
 			req.customData = {record}
 			next()
-			await client.set(redisKey, "0" )
+			await client.set(redisKey, "0")
+			await client.expire(redisKey, 172800)
 			return
 	// res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
 	// res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
@@ -299,12 +304,25 @@ root.use((req, res, next) => {
 root.use(async (req, res, next) => {
 	try{
 	
-		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""})}:count`
+		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}:count`
 		const currentCount = await client.get(redisKey);
  
-		const redisKey_login = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""})}:login`
+		const redisKey_login = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}:login`
 		const currentCount_login = await client.get(redisKey_login);
 
+	
+		var temp = typeof req?.header('x-forwarded-for') == "string" ? `${req?.header('x-forwarded-for').split(",")[0]}` : "undefined"
+		var tempRequest = `request_ips:${temp}:${Date.now()}:${req.path}`
+
+		console.log(await client.keys('request_ips*'))
+
+ 
+		if(req.path.split("/")?.[1] != "admin") {
+ 
+			await client.set(tempRequest, temp)
+			await client.expire(tempRequest, 172800)
+
+		}
 
 		if(Number(await currentCount_login) >= 10){
 			res.status(401).send("too many requests")
@@ -313,9 +331,10 @@ root.use(async (req, res, next) => {
 
 
 		if(isNaN(Number(String(await currentCount)))){
-  			await client.set(redisKey, "0" )
-			await client.expire(redisKey, 60); 
-			next()
+  			await client.set(redisKey, "0")
+			await client.expire(redisKey, 60)
+
+ 			next()
  			return;
 	
 		}else{
@@ -324,7 +343,7 @@ root.use(async (req, res, next) => {
 				return;
 			}else{
 				await client.incr(redisKey); // Increments by 1
- 				
+	
 				next()
 				return
 			}	

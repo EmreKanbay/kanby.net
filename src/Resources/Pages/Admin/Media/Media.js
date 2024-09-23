@@ -25,9 +25,11 @@ module.exports = {
 				return `
 	
 		<div data-media-id="${t.id}" data-media-full-url="${t.full_url}" data-media-alt-text="${t.alt_text}"  class="media-element">
+
 		<img src="${t.full_url}" alt="${t.alt_text}" />
 
-		<span>${t.full_url}</span>
+		<a target="_blank" href="${t.full_url}">${t.full_url}</a>
+
 		<button class="media-delete">delete</button>
 	</div>
 		`;

@@ -11,6 +11,7 @@ const cdn = process.env.CDN_DOMAIN;
 const admin = Index.express.Router();
 
 
+
 admin.get("/:user_id/dashboard/", async (req, res, next) => {
 	try {
 		res.send(await Pages.AdminDashboard.html({ user_id: req.params.user_id }));
