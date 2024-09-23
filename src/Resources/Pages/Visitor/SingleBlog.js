@@ -69,6 +69,18 @@ module.exports = {
 
 					var record = await Index.pool.query(text, values);
 
+
+
+					const text1 = `SELECT profile_picture_url FROM users WHERE public_name = $1`;
+
+					const values1 = [record.rows[0].author];
+
+					var record1 = await Index.pool.query(text1, values1);
+
+					
+
+
+
 					return `
                     
                      
@@ -78,7 +90,7 @@ module.exports = {
 						<img class="cover-img" src="${record.rows[0].thumbnail_url}" />					
 						<p class="blog-title" >${record.rows[0].title}</p>
 						<p class="blog-description">${record.rows[0].description}</p>
- 						<span style="display:flex;height:3rem;align-items:center;gap:1rem"><img  style="border-radius:50%;height:100%" src="https://avatars.githubusercontent.com/u/80778171?v=4"><p class="blog-author">${record.rows[0].author}</p></span>
+ 						<span style="display:flex;height:3rem;align-items:center;gap:1rem"><img  style="border-radius:50%;height:100%" src="${record1.rows[0].profile_picture_url}"><p class="blog-author">${record.rows[0].author}</p></span>
  						<p class="blog-author">${translation[data.language].key1} ${new Date(record.rows[0].creation_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
  						<p class="blog-author">${translation[data.language].key2} ${new Date(record.rows[0].last_modify_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
 

@@ -313,9 +313,6 @@ root.use(async (req, res, next) => {
 	
 		var temp = typeof req?.header('x-forwarded-for') == "string" ? `${req?.header('x-forwarded-for').split(",")[0]}` : "undefined"
 		var tempRequest = `request_ips:${temp}:${Date.now()}:${req.path}`
-
-		console.log(await client.keys('request_ips*'))
-
  
 		if(req.path.split("/")?.[1] != "admin") {
  
@@ -332,7 +329,7 @@ root.use(async (req, res, next) => {
 
 		if(isNaN(Number(String(await currentCount)))){
   			await client.set(redisKey, "0")
-			await client.expire(redisKey, 60)
+			await client.expire(redisKey, 100)
 
  			next()
  			return;
@@ -365,7 +362,7 @@ root.get("/robots.txt", function (req, res, next) {
    
 	res.send(`User-agent: *
 Disallow: /admin/
-Sitemap https://kanby.net/sitemap.xml
+Sitemap: https://kanby.net/sitemap.xml
    `);
   }catch(e){
 	console.log(e)
