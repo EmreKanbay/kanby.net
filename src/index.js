@@ -49,6 +49,17 @@ var SQL_works = false;
 // Connect Redis and Postgres
 (async () => {
   try {
+    await client.connect();
+    REDIS_works = true
+    // await client.flushDb();
+  } catch (error) {
+    console.log("redis connection ERROR");
+    REDIS_works = false
+
+    console.log(error);
+  }
+
+  try {
     await pool.query("SELECT * FROM users LIMIT 1");
     await pool.query("SELECT * FROM blogs LIMIT 1");
     await pool.query("SELECT * FROM variables LIMIT 1");
@@ -61,36 +72,17 @@ var SQL_works = false;
 
     console.log(e);
   }
-
-  try {
-    await client.connect();
-    REDIS_works = true
-    // await client.flushDb();
-  } catch (error) {
-    console.log("redis connection ERROR");
-    REDIS_works = false
-
-    console.log(error);
-  }
 })();
 
 // Shutdown DBs properly
 process.on("SIGINT", async () => {
-  console.log("Reddis shutting down...");
   await client.quit();
-  console.log("Redis connection closed");
-  console.log("Postgres shutting down...");
   await pool.end();
-  console.log("Postgres connection closed");
   process.exit(0); // Exit the process after cleanup
 });
 process.on("SIGTERM", async () => {
-  console.log("Reddis shutting down...");
   await client.quit();
-  console.log("Redis connection closed");
-  console.log("Postgres shutting down...");
   await pool.end();
-  console.log("Postgres connection closed");
   process.exit(0); // Exit the process after cleanup
 });
 
@@ -109,7 +101,7 @@ root.use((req, res, next) => {
 root.use(cookieParser());
 
 // Cors Policy
-root.use(cors({ origin: "https://kanby.net/" }));
+root.use(cors({ origin: "https://kanby.net" }));
 
 // Hide "express.js" from visible on headers
 root.disable("x-powered-by");
@@ -229,153 +221,6 @@ root.use(async (req, res, next) => {
     return;
   }
 });
-
-// Authemtication For Logged In Users
-const auth = async (req, res, next) => {
-  try {
-    const token = req?.cookies?.SessionToken;
-
-    var JWT_SECRET;
-
-    if (await client.get("JWT_SECRET")) {
-      JWT_SECRET = await client.get("JWT_SECRET");
-    } else {
-      JWT_SECRET = crypto.randomBytes(64).toString("hex");
-      await client.set("JWT_SECRET", JWT_SECRET);
-      await client.expire("JWT_SECRET", 60 * 60 * 24 * 7);
-    }
-
-    if (req.method == "POST" && req.originalUrl == "/admin/login/") {
-      const redisKey = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
-      const currentCount = await client.get(redisKey);
-
-      var temp =
-        typeof req?.header("x-forwarded-for") == "string"
-          ? `${req?.header("x-forwarded-for").split(",")[0]}`
-          : "undefined";
-      var tempLogin = `login_attempts:${temp}:${Date.now()}`;
-      await client.set(tempLogin, temp);
-      await client.expire(tempLogin, 172800);
-
-      if (isNaN(Number(String(await currentCount)))) {
-        await client.set(redisKey, "0");
-        await client.expire(redisKey, 172800);
-      } else {
-        await client.incr(redisKey); // Increments by 1
-      }
-
-      if (token) {
-        res.clearCookie("SessionToken");
-        res.send("Existing token found, token removed.");
-        return;
-      }
-
-      const text = `SELECT id, password_hash,salt  FROM "users" WHERE login_name = $1`;
-
-      const values = [String(req?.body?.login_name)];
-      var record = await pool.query(text, values);
-
-      if (
-        record.rows.length == 1 &&
-        record.rows[0].password_hash ==
-          crypto
-            .createHash("sha256")
-            .update(
-              String(record.rows[0].salt) +
-                "" +
-                String(req?.body?.login_password),
-            )
-            .digest("hex")
-      ) {
-        const token = jwt.sign(
-          {
-            username: req?.body?.login_name,
-            ip:
-              typeof req?.header("x-forwarded-for") == "string"
-                ? req?.header("x-forwarded-for").split(",")[0]
-                : "",
-          },
-          JWT_SECRET,
-          { expiresIn: "7200s" },
-        );
-        res.cookie("SessionToken", token, {
-          expires: new Date(Date.now() + 3600 * 60 * 10),
-          httpOnly: true,
-          secure: true,
-          sameSite: "strict",
-        });
-        req.customData = { record };
-        next();
-        await client.set(redisKey, "0");
-        await client.expire(redisKey, 172800);
-        return;
-      } else {
-        res
-          .status(401)
-          .send(
-            await Components.visitor.ErrorBox.html({ message: "login failed" }),
-          );
-        return;
-      }
-    }
-
-    if (!token) {
-      res.send(await LoginPage.html({ langCode: "en", language: "English" }));
-      return;
-    }
-
-    var ret;
-
-    try {
-      ret = jwt.verify(token, JWT_SECRET, (err, payload) => {
-        if (err) {
-          return { pass: false };
-        }
-
-        if (
-          String(payload.ip) ==
-          String(
-            typeof req?.header("x-forwarded-for") == "string"
-              ? req?.header("x-forwarded-for").split(",")[0]
-              : "",
-          )
-        ) {
-          return { pass: true, payload: payload };
-        } else {
-          return { pass: false };
-        }
-      });
-    } catch (e) {
-      console.log(e);
-      ret = { pass: false };
-    }
-
-    if (ret.pass) {
-      const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1`;
-
-      const values = [ret?.payload?.username];
-
-      var record = await pool.query(text, values);
-
-      if (req.params.id == record.rows[0].id || req.params.id == "login") {
-        req.customData = { record };
-        next();
-        return;
-      } else {
-        res.status(401).send("<h1>Not Authorized</h1>");
-        return;
-      }
-    } else {
-      res.clearCookie("SessionToken");
-      res.send(await LoginPage.html({ langCode: "en", language: "English" }));
-      return;
-    }
-    // else values = [req?.cookies?.login_name, req?.cookies?.password_hash];
-  } catch (e) {
-    res.send(`<h1>Error: </h1> \n ${e} `);
-    return;
-  }
-};
 
 // Robots.txt
 root.get("/robots.txt", function (req, res, next) {
@@ -738,6 +583,154 @@ root.use((req, res, next) => {
   }
 });
 
+
+// Authemtication middleware For Logged In Users
+const auth = async (req, res, next) => {
+  try {
+    const token = req?.cookies?.SessionToken;
+
+    var JWT_SECRET;
+
+    if (await client.get("JWT_SECRET")) {
+      JWT_SECRET = await client.get("JWT_SECRET");
+    } else {
+      JWT_SECRET = crypto.randomBytes(64).toString("hex");
+      await client.set("JWT_SECRET", JWT_SECRET);
+      await client.expire("JWT_SECRET", 60 * 60 * 24 * 7);
+    }
+
+    if (req.method == "POST" && req.originalUrl == "/admin/login/") {
+      const redisKey = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
+      const currentCount = await client.get(redisKey);
+
+      var temp =
+        typeof req?.header("x-forwarded-for") == "string"
+          ? `${req?.header("x-forwarded-for").split(",")[0]}`
+          : "undefined";
+      var tempLogin = `login_attempts:${temp}:${Date.now()}`;
+      await client.set(tempLogin, temp);
+      await client.expire(tempLogin, 172800);
+
+      if (isNaN(Number(String(await currentCount)))) {
+        await client.set(redisKey, "0");
+        await client.expire(redisKey, 172800);
+      } else {
+        await client.incr(redisKey); // Increments by 1
+      }
+
+      if (token) {
+        res.clearCookie("SessionToken");
+        res.send("Existing token found, token removed.");
+        return;
+      }
+
+      const text = `SELECT id, password_hash,salt  FROM "users" WHERE login_name = $1`;
+
+      const values = [String(req?.body?.login_name)];
+      var record = await pool.query(text, values);
+
+      if (
+        record.rows.length == 1 &&
+        record.rows[0].password_hash ==
+          crypto
+            .createHash("sha256")
+            .update(
+              String(record.rows[0].salt) +
+                "" +
+                String(req?.body?.login_password),
+            )
+            .digest("hex")
+      ) {
+        const token = jwt.sign(
+          {
+            username: req?.body?.login_name,
+            ip:
+              typeof req?.header("x-forwarded-for") == "string"
+                ? req?.header("x-forwarded-for").split(",")[0]
+                : "",
+          },
+          JWT_SECRET,
+          { expiresIn: "7200s" },
+        );
+        res.cookie("SessionToken", token, {
+          expires: new Date(Date.now() + 3600 * 60 * 10),
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+        });
+        req.customData = { record };
+        next();
+        await client.set(redisKey, "0");
+        await client.expire(redisKey, 172800);
+        return;
+      } else {
+        res
+          .status(401)
+          .send(
+            await Components.visitor.ErrorBox.html({ message: "login failed" }),
+          );
+        return;
+      }
+    }
+
+    if (!token) {
+      res.send(await LoginPage.html({ langCode: "en", language: "English" }));
+      return;
+    }
+
+    var ret;
+
+    try {
+      ret = jwt.verify(token, JWT_SECRET, (err, payload) => {
+        if (err) {
+          return { pass: false };
+        }
+
+        if (
+          String(payload.ip) ==
+          String(
+            typeof req?.header("x-forwarded-for") == "string"
+              ? req?.header("x-forwarded-for").split(",")[0]
+              : "",
+          )
+        ) {
+          return { pass: true, payload: payload };
+        } else {
+          return { pass: false };
+        }
+      });
+    } catch (e) {
+      console.log(e);
+      ret = { pass: false };
+    }
+
+    if (ret.pass) {
+      const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1`;
+
+      const values = [ret?.payload?.username];
+
+      var record = await pool.query(text, values);
+
+      if (req.params.id == record.rows[0].id || req.params.id == "login") {
+        req.customData = { record };
+        next();
+        return;
+      } else {
+        res.status(401).send("<h1>Not Authorized</h1>");
+        return;
+      }
+    } else {
+      res.clearCookie("SessionToken");
+      res.send(await LoginPage.html({ langCode: "en", language: "English" }));
+      return;
+    }
+    // else values = [req?.cookies?.login_name, req?.cookies?.password_hash];
+  } catch (e) {
+    res.send(`<h1>Error: </h1> \n ${e} `);
+    return;
+  }
+};
+
 // Process Login attemt
 root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
   try {
@@ -750,7 +743,7 @@ root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
   }
 });
 
-// Admin Page
+// Check authentication for admin page
 root.use("/admin/:id", auth, async (req, res, next) => {
   try {
     if (req.method == "POST" && req.originalUrl == "/admin/login/") {

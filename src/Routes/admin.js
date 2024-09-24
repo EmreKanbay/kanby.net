@@ -5,38 +5,58 @@ var he = require("he");
 require("dotenv").config();
 
 const cdn = process.env.CDN_DOMAIN;
-
 const admin = Index.express.Router();
 
+const errorPage = (error)=> {
 
 
-admin.get("/:user_id/dashboard/", async (req, res, next) => {
+	return `
+	<h1>🤠Aw shit🤠</h1>
+				<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please please report this error code to developer: </h2>
+								<h2>Meanwhile developer: 😱🤕😓😭</h2>
+				<p>Message: ${error.message}</p>
+				<p>Detais: ${error.stack}</p>
+	`
+}
+
+admin.use("/:user_id", async (req, res, next) => {
+	req.userID = req.params.user_id
+	next()
+})
+
+
+const subAdmin = Index.express.Router();
+admin.use("/:user_id/", subAdmin);
+
+
+
+subAdmin.get("/dashboard/", async (req, res, next) => {
 	try {
-		res.send(await Pages.AdminDashboard.html({ user_id: req.params.user_id }));
+		res.send(await Pages.AdminDashboard.html({ user_id: req.userID }));
 	} catch (error) {
 		console.log(error);
-		res.status(500).send(`<h1>Error: </h1> \n  `)
+		res.status(500).send(errorPage(error))
 	}
 });
 
-admin.get("/:user_id/blogs/add/", async (req, res, next) => {
+subAdmin.get("/blogs/add/", async (req, res, next) => {
 	try {
-		res.send(await Pages.AddBlog.html({ user_id: req.params.user_id }));
+		res.send(await Pages.AddBlog.html({ user_id: req.userID }));
 	} catch (error) {
 		console.log(error);
-		res.status(500).send(`<h1>Error: </h1> \n  `)
+		res.status(500).send(errorPage(error))
 	}
 });
 
-admin
-	.route("/:user_id/blogs/")
+subAdmin
+	.route("/blogs/")
 
 	.get(async (req, res) => {
 		try {
-			res.send(await Pages.AllBlogs.html({ user_id: req.params.user_id }));
+			res.send(await Pages.AllBlogs.html({ user_id: req.userID }));
 		} catch (error) {
 			console.log(error);
-			res.status(500).send(`<h1>Error: </h1> \n  `)
+			res.status(500).send(errorPage(error))
 		}
 	})
 
@@ -55,7 +75,7 @@ admin
 					"".concat(
 						...record.rows.map(t => {
 							return `
-	 <a href="/admin/${req.params.user_id}/blogs/${t.id}/" data-title="${he.encode(t.title)}"
+	 <a href="/admin/${req.userID}/blogs/${t.id}/" data-title="${he.encode(t.title)}"
 	 	data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}"
 	 	data-raw-content="${he.encode(t.raw_content)}" class="all-blogs-item">
 	 	<img src="${t.thumbnail_url}" />
@@ -81,7 +101,7 @@ admin
 
 		const text1 = `SELECT * FROM users WHERE id= $1`;
 
-		var record = await Index.pool.query(text1, [req.params.user_id]);
+		var record = await Index.pool.query(text1, [req.userID]);
 
 
 			const values = [
@@ -104,14 +124,14 @@ admin
 		}
 	});
 
-admin
-	.route("/:user_id/blogs/:id/")
+	subAdmin
+	.route("/blogs/:id/")
 	.get(async (req, res) => {
 		try {
-			res.send(await Pages.ViewBlog.html({ id: req.params.id, user_id: req.params.user_id }));
+			res.send(await Pages.ViewBlog.html({ id: req.params.id, user_id: req.userID }));
 		} catch (error) {
 			console.log(error);
-			res.status(500).send(`<h1>Error: </h1> \n  `)
+			res.status(500).send(errorPage(error))
 		}
 	})
 	.delete(async (req, res) => {
@@ -153,15 +173,15 @@ admin
 		}
 	});
 
-admin
-	.route("/:user_id/projects/")
+	subAdmin
+	.route("/projects/")
 	.get(async (req, res) => {
 		try {
-		res.send(await Pages.AllProjects.html({ user_id: req.params.user_id }));
+		res.send(await Pages.AllProjects.html({ user_id: req.userID }));
 			
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n  `)
+			res.status(500).send(errorPage(error))
 		}
 	})
 	.put(Index.upload.none(), async (req, res) => {
@@ -185,25 +205,25 @@ admin
 			res.status(500).send(`<h1>Error: </h1> \n  `)
 		}
 	});
-admin.get("/:user_id/projects/add/", async (req, res) => {
+	subAdmin.get("/projects/add/", async (req, res) => {
 	try {
-		res.send(await Pages.AddProject.html({ user_id: req.params.user_id }));
+		res.send(await Pages.AddProject.html({ user_id: req.userID }));
 		
 	} catch (error) {
 		console.log(error)
-		res.status(500).send(`<h1>Error: </h1> \n  `)
+		res.status(500).send(errorPage(error))
 	}
 });
 
-admin
-	.route("/:user_id/projects/:id")
+subAdmin
+	.route("/projects/:id")
 	.get(async (req, res) => {
 		try {
 			
-			res.send(await Pages.ViewProject.html({ id: req.params.id, user_id: req.params.user_id }));
+			res.send(await Pages.ViewProject.html({ id: req.params.id, user_id: req.userID }));
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n  `)
+			res.status(500).send(errorPage(error))
 		}
 	})
 	.delete(Index.upload.none(), async (req, res) => {
@@ -238,15 +258,15 @@ admin
 
 	});
 
-admin
-	.route("/:user_id/media/")
+	subAdmin
+	.route("/media/")
 	.get(async (req, res, next) => {
 		try {
-		res.send(await Pages.Media.html({ user_id: req.params.user_id }));
+		res.send(await Pages.Media.html({ user_id: req.userID }));
 			
 		} catch (error) {
 			console.log(error)
-			res.status(500).send(`<h1>Error: </h1> \n  `)
+			res.status(500).send(errorPage(error))
 		}
 	})
 	.delete(Index.upload.none(), async (req, res, next) => {
@@ -282,35 +302,35 @@ admin
 		}
 	});
 
-admin.get("/:user_id/media/add/", async (req, res, next) => {
+	subAdmin.get("/media/add/", async (req, res, next) => {
 	try {
-	res.send(await Pages.AddMedia.html({ user_id: req.params.user_id }));
+	res.send(await Pages.AddMedia.html({ user_id: req.userID }));
 		
-	} catch (e) {
-		console.log(e);
-		res.status(500).send(`<h1>Error: </h1> \n  `)
+	} catch (error) {
+		console.log(error);
+		res.status(500).send(errorPage(error))
 	}
 });
 
 
 
-admin.get("/:user_id/security", async (req, res) => {
+subAdmin.get("/security", async (req, res) => {
 	try {
-		res.send(await Pages.Security.html({ user_id: req.params.user_id }));
+		res.send(await Pages.Security.html({ user_id: req.userID }));
 		
-	} catch (e) {
-		console.log(e);
-		res.status(500).send(`<h1>Error: </h1> \n  `)
+	} catch (error) {
+		console.log(error);
+		res.status(500).send(errorPage(error))
 	}
 });
 
-admin.get("/:user_id/settings", async (req, res) => {
+subAdmin.get("/settings", async (req, res) => {
 	try {
-		res.send(await Pages.Settings.html({ user_id: req.params.user_id }));
+		res.send(await Pages.Settings.html({ user_id: req.userID }));
 		
-	} catch (e) {
-		console.log(e);
-		res.status(500).send(`<h1>Error: </h1> \n  `)
+	} catch (error) {
+		console.log(error);
+		res.status(500).send(errorPage(error))
 	}
 });
 
