@@ -218,6 +218,8 @@ root.get("/robots.txt", function (req, res, next) {
     res.set("content-type", "text/plain; charset=utf-8");
 
     res.send(`User-agent: *
+Disallow: /rss.xml
+Disallow: /manifest.json
 Disallow: /admin/
 Sitemap: https://kanby.net/sitemap.xml
    `);
