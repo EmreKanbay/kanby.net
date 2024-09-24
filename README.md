@@ -2,8 +2,7 @@
 
 > Thanks to "Zayd al-Muqaddim al-Qamar al-‘Aarabi" for all his invaluable support
 
-
->Important, Ip is getting from x-forwarded-from header, so you must use a reverse proxy server like nginx to work
+> Important, Ip is getting from x-forwarded-from header, so you must use a reverse proxy server like nginx to work
 
 # TODO
 
@@ -12,41 +11,47 @@
 [] landing page is loading slow
 [] for contentSecurityPolicy header, nonce may be added for scripts and styles
 
-[] Create LOGS, and save them to database properly 
+[] Create LOGS, and save them to database properly
 [] Simplify everything with a simple library or framework
 ```
 
 ## SEO tips
+
 - Avoid repeated or boilerplate text in <- title -> elements. It's important to have distinct text that describes the content of the page in the <- title -> element for each page on your site. Titling every page on a commerce site "Cheap products for sale", for example, makes it impossible for users to distinguish between two pages. Long text in the <- title -> element that varies by only a single piece of information ("boilerplate" titles) is also bad; for example, a common <- title -> element for all pages with text like "Band Name - See videos, lyrics, posters, albums, reviews and concerts" contains a lot of uninformative text
 
 - Brand your titles concisely. The <- title -> element on your site's home page is a reasonable place to include some additional information about your site. For example:
-<- title ->ExampleSocialSite, a place for people to meet and mingle<- /title ->
-But displaying that text in the <- title -> element of every single page on your site will look repetitive if several pages from your site are returned for the same query. In this case, consider including just your site name at the beginning or end of each <- title -> element, separated from the rest of the text with a delimiter such as a hyphen, colon, or pipe, like this:
-  
+  <- title ->ExampleSocialSite, a place for people to meet and mingle<- /title ->
+  But displaying that text in the <- title -> element of every single page on your site will look repetitive if several pages from your site are returned for the same query. In this case, consider including just your site name at the beginning or end of each <- title -> element, separated from the rest of the text with a delimiter such as a hyphen, colon, or pipe, like this:
 - Avoid including flight price information in <- title -> elements. Our systems will likely not show price information when generating title links for flight pages. This is because pricing for flights can change so fast (sometimes every few minutes), that what's shown in title links may not correspond to the actual price on the landing page.
 
 - use meta open graph tags to be able to be appealing on social platforms
 
 - Open Graph is important
 
-- Structed data and rich search results 
+- Structed data and rich search results
 
--  Structed data and rich search results However, it is more important to supply fewer but complete and accurate recommended properties rather than trying to provide every possible recommended property with less complete, badly-formed, or inaccurate data.
+- Structed data and rich search results However, it is more important to supply fewer but complete and accurate recommended properties rather than trying to provide every possible recommended property with less complete, badly-formed, or inaccurate data.
 
 - rich text results have so many sub branches, like for softwares, organisations, educational courses and way much more
-
 
 For images as links, Google uses the alt attribute of the img element as anchor text, so be sure to add descriptive alt text to your images:
 
 Good:
 
 ```html
-<a href="/add-to-cart.html"><img src="enchiladas-in-shopping-cart.jpg" alt="add enchiladas to your cart"/></a>
+<a href="/add-to-cart.html"
+  ><img src="enchiladas-in-shopping-cart.jpg" alt="add enchiladas to your cart"
+/></a>
 ```
+
 Bad (empty alt text and empty link text):
+
 ```html
-<a href="/add-to-cart.html"><img src="enchiladas-in-shopping-cart.jpg" alt=""/></a>
+<a href="/add-to-cart.html"
+  ><img src="enchiladas-in-shopping-cart.jpg" alt=""
+/></a>
 ```
+
 # Write good anchor text
 
 Good anchor text is descriptive, reasonably concise, and relevant to the page that it's on and to the page it links to. It provides context for the link, and sets the expectation for your readers. The better your anchor text, the easier it is for people to navigate your site and for Google to understand what the page you're linking to is about.
@@ -78,8 +83,8 @@ I've written about cheese [**so**](https://example.com/page1) [**many**](https:/
 **Better (links are spaced out with context):**
 I've written about cheese so many times this year: who can forget the [**controversy over blue cheese and gorgonzola**](https://example.com/blue-cheese-vs-gorgonzola), the [**world's oldest brie**](https://example.com/worlds-oldest-brie) piece that won the Cheesiest Research Medal, the epic retelling of [**The Lost Cheese**](https://example.com/the-lost-cheese), and my personal favorite, [**A Boy and His Cheese: a story of two unlikely friends**](https://example.com/boy-and-his-cheese).
 
-
 - Internal links: cross-reference your own content
+
 ## What is this
 
 - Source code of my personal website
@@ -146,19 +151,19 @@ So it is possible to run async and sync functions in strings.
 
 ```js
 const render = async (x, ...values) => {
-	var rendered = "";
-	for (let u = 0; u < x.length; u++) {
-		rendered = rendered.concat(x[u]);
-		if (u < x.length - 1) {
-			if (typeof values[u] == "function") {
-				rendered = rendered.concat(await values[u]());
-			} else {
-				rendered = rendered.concat(values[u]);
-			}
-		}
-	}
+  var rendered = "";
+  for (let u = 0; u < x.length; u++) {
+    rendered = rendered.concat(x[u]);
+    if (u < x.length - 1) {
+      if (typeof values[u] == "function") {
+        rendered = rendered.concat(await values[u]());
+      } else {
+        rendered = rendered.concat(values[u]);
+      }
+    }
+  }
 
-	return rendered;
+  return rendered;
 };
 ```
 
@@ -177,19 +182,19 @@ render`
 <div id="blog-list">
 
 ${async () => {
-	const text = `SELECT title,description,id FROM "blogs"`;
-	const values = [];
-	var record = await pool.query(text, values);
-	return "".concat(
-		...(await Promise.all(
-			record.rows.map(t => {
-				return `
+  const text = `SELECT title,description,id FROM "blogs"`;
+  const values = [];
+  var record = await pool.query(text, values);
+  return "".concat(
+    ...(await Promise.all(
+      record.rows.map((t) => {
+        return `
 				<h1>Title: ${t.title}</h1>
 				<h1>description: ${t.description}</h1>
 				`;
-			}),
-		)),
-	);
+      }),
+    )),
+  );
 }}
 
 </div>
@@ -288,13 +293,15 @@ Or you can create blob of js string and append script tag inside head tag with a
 
 ```js
 String(
-	(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
-		return `
+  (await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(
+    (t) => {
+      return `
 <option value="" selected disabled hidden>language</option>
 
 	<option value="${t}">${t}</option>
 `;
-	}),
+    },
+  ),
 ).replaceAll(",", "\n");
 ```
 
@@ -308,37 +315,37 @@ use this ->
 
 ```js
 console.log(
-	"".concat(
-		...[1, 2, 3, 4, 6].map(t => {
-			return `tetetetet`;
-		}),
-	),
+  "".concat(
+    ...[1, 2, 3, 4, 6].map((t) => {
+      return `tetetetet`;
+    }),
+  ),
 );
 ```
 
 BUT, if you will run async function inside of map, it will return you an array of promises, you need to resolve it with Promise.all(array of promises).
 
 ```js
-<select
-	required
-	id="blog-form-language-edit">
-	$
-	{async () => {
-		return await Promise.all(
-			(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(async r => {
-				return await render`
+<select required id="blog-form-language-edit">
+  $
+  {async () => {
+    return await Promise.all(
+      (await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(
+        async (r) => {
+          return await render`
 
 	<option ${() => {
-		if (t.language == r) {
-			return "selected";
-		} else {
-			return "";
-		}
-	}}  value="${() => r}">${() => r}</option>
+    if (t.language == r) {
+      return "selected";
+    } else {
+      return "";
+    }
+  }}  value="${() => r}">${() => r}</option>
 `;
-			}),
-		);
-	}}
+        },
+      ),
+    );
+  }}
 </select>
 ```
 

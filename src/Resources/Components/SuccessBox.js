@@ -1,7 +1,7 @@
 const Framework = require("#Framework");
 
 module.exports = {
-	html: data => Framework.render`
+  html: (data) => Framework.render`
 	<div id="qMQEbc-container">
 		<div>
 			<svg
@@ -58,5 +58,5 @@ module.exports = {
 		}
 	</style>
 `,
-	js: data => Framework.render``,
+  js: (data) => Framework.render``,
 };

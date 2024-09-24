@@ -3,27 +3,22 @@ const Pages = require("#Pages");
 
 const visitor = Index.express.Router();
 
-
-const errorPage = ()=> {
-
-
-	return `
+const errorPage = () => {
+  return `
 	<h1>🤠kanby.net has encountered with an error🤠</h1>
 	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please report this error to Developer at emre@kanby.net </h2>
 	<h2>Meanwhile developer: 😱🤕😓😭</h2>
   <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">
-	`
-}
-
+	`;
+};
 
 // redirect / to /Turkish
 visitor.get("/", async (req, res, next) => {
   try {
     res.redirect(new URL(`/Turkish/`, req.protocol + "://" + req.get("host")));
-
-   } catch (e) {
+  } catch (e) {
     res.status(500).send(errorPage());
-    console.log(e);
+    
   }
 
   // res.send(await Pages.LandingPage.html({}))
@@ -32,33 +27,41 @@ visitor.get("/", async (req, res, next) => {
 // validate :lang and if it is valid and exist in SQL db redirect to relevant page
 visitor.use("/:lang", async (req, res, next) => {
   try {
-      if (/^([A-Z]{1}[a-z]+)$/.test(req.params.lang)) {
-        const query = await Index.pool.query("SELECT * FROM variables");
-        if (query.rows[0].value.includes(req.params.lang)) {
-          req.langCode =
-            query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)];
-          req.language = req.params.lang;
-          req.clientIP =
-            typeof req?.header("x-forwarded-for") == "string"
-              ? req?.header("x-forwarded-for").split(",")[0]
-              : "";
+    if (/^([A-Z]{1}[a-z]+)$/.test(req.params.lang)) {
+      const query = await Index.pool.query("SELECT * FROM variables");
+      if (query.rows[0].value.includes(req.params.lang)) {
+        req.langCode =
+          query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)];
+        req.language = req.params.lang;
+        req.clientIP =
+          typeof req?.header("x-forwarded-for") == "string"
+            ? req?.header("x-forwarded-for").split(",")[0]
+            : "";
 
-          next();
-        } else {
-          next();
-        }
-      } else {
         next();
+      } else {
+        res.send(
+          await Pages.NotFound.html({
+            language: "English",
+            langCode: "en",
+          }),
+        );
       }
-
-  } catch (e) {
-    console.log(e);
-    if(req.method == "GET"){
-      res.status(500).send(errorPage());
-    }else{
-      res.status(500).send(JSON.stringify({"Message": "Error"}));
+    } else {
+      res.send(
+        await Pages.NotFound.html({
+          language: "English",
+          langCode: "en",
+        }),
+      );
     }
-
+  } catch (e) {
+    
+    if (req.method == "GET") {
+      res.status(500).send(errorPage());
+    } else {
+      res.status(500).send(JSON.stringify({ Message: "Error" }));
+    }
   }
 });
 
@@ -76,7 +79,7 @@ subVisitor.get("/", async (req, res, next) => {
       }),
     );
   } catch (e) {
-    console.log(e);
+    
     res.status(500).send(errorPage());
   }
 });
@@ -91,12 +94,11 @@ subVisitor.get("/blogs/", async (req, res, next) => {
       }),
     );
   } catch (error) {
-    console.log(error);
+    
 
     res.status(500).send(errorPage());
   }
 });
-
 
 // single blog
 subVisitor.get("/blogs/:id", async (req, res, next) => {
@@ -130,11 +132,10 @@ subVisitor.get("/blogs/:id", async (req, res, next) => {
       );
     }
   } catch (error) {
-    console.log(error);
+    
     res.status(500).send(errorPage());
   }
 });
-
 
 // projects page
 subVisitor.get("/projects/", async (req, res, next) => {
@@ -146,11 +147,10 @@ subVisitor.get("/projects/", async (req, res, next) => {
       }),
     );
   } catch (error) {
-    console.log(error);
+    
     res.status(500).send(errorPage());
   }
 });
-
 
 // single project
 subVisitor.get("/projects/:id", async (req, res, next) => {
@@ -184,7 +184,7 @@ subVisitor.get("/projects/:id", async (req, res, next) => {
       );
     }
   } catch (error) {
-    console.log(error);
+    
     res.status(500).send(errorPage());
   }
 });
@@ -199,12 +199,10 @@ subVisitor.get("/contact/", async (req, res, next) => {
       }),
     );
   } catch (error) {
-    console.log(error);
+    
     res.status(500).send(errorPage());
   }
 });
-
-
 
 // about page
 subVisitor.get("/about/", async (req, res, next) => {
@@ -216,11 +214,10 @@ subVisitor.get("/about/", async (req, res, next) => {
       }),
     );
   } catch (error) {
-    console.log(error);
+    
     res.status(500).send(errorPage());
   }
 });
-
 
 //services page
 subVisitor.get("/services/", async (req, res, next) => {
@@ -232,10 +229,9 @@ subVisitor.get("/services/", async (req, res, next) => {
       }),
     );
   } catch (error) {
-    console.log(error);
+    
     res.status(500).send(errorPage());
   }
 });
-
 
 module.exports = visitor;

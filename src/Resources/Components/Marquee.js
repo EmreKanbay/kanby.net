@@ -5,7 +5,7 @@ const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 module.exports = {
-	html: data => Framework.render`
+  html: (data) => Framework.render`
 	    
     <!-- Enter Text Below  -->
 <span id="marquee-text">${data.text}</span>
@@ -139,5 +139,5 @@ window.addEventListener('resize', function(event) {
   }
 </script>
 `,
-	js: data => Framework.render``,
+  js: (data) => Framework.render``,
 };

@@ -4,12 +4,11 @@ const Index = require("#Index");
 const Framework = require("#Framework");
 
 module.exports = {
-	html: async data =>
-		{
-			return await Layouts.AdminLayout({
-				user_id: data.user_id,
-				head: await Framework.render``,
-				content: await Framework.render`
+  html: async (data) => {
+    return await Layouts.AdminLayout({
+      user_id: data.user_id,
+      head: await Framework.render``,
+      content: await Framework.render`
 
 <h1>Security</h1>
     				<!-- REACT COMPONENT START -->
@@ -38,7 +37,11 @@ module.exports = {
 							  const [list, setList] = useState(<Loading />);
 
 								useEffect(()=> {
-									const responses =  ${async () => { return await JSON.stringify(await Index.client.keys('request_ips:*')); } }
+									const responses =  ${async () => {
+                    return await JSON.stringify(
+                      await Index.client.keys("request_ips:*"),
+                    );
+                  }}
 
 
 										new Promise(async (resolve, reject) => {
@@ -102,6 +105,6 @@ module.exports = {
 
 
   `,
-			});
-		},
+    });
+  },
 };

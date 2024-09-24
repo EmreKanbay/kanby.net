@@ -4,33 +4,30 @@ const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 const translation = {
-	Turkish: {
-		key1: "Sosyal Medya",
-		key2: "İçerikler",
-		key2_1: "Bloglar",
-		key2_2: "Projeler",
-		key3: "Bağlatılar",
-		key3_1: "İletişim",
-		key3_2: "Hakkında",
-		key3_3: "Hizmetler",
-
-	},
-	English: {
-		key1: "Social Media",
-		key2: "Content",
-		key2_1: "Blogs",
-		key2_2: "Projects",
-		key3: "Links",
-		key3_1: "Contact",
-		key3_2: "About",
-		key3_3: "Services",
-
-
-	},
+  Turkish: {
+    key1: "Sosyal Medya",
+    key2: "İçerikler",
+    key2_1: "Bloglar",
+    key2_2: "Projeler",
+    key3: "Bağlatılar",
+    key3_1: "İletişim",
+    key3_2: "Hakkında",
+    key3_3: "Hizmetler",
+  },
+  English: {
+    key1: "Social Media",
+    key2: "Content",
+    key2_1: "Blogs",
+    key2_2: "Projects",
+    key3: "Links",
+    key3_1: "Contact",
+    key3_2: "About",
+    key3_3: "Services",
+  },
 };
 
 module.exports = {
-	html: data => Framework.render`
+  html: (data) => Framework.render`
 
 
     <footer class="K0e6gd-container">
@@ -259,5 +256,5 @@ module.exports = {
 		}
 	</style>
 `,
-	js: data => Framework.render``,
+  js: (data) => Framework.render``,
 };

@@ -5,24 +5,24 @@ const he = require("he");
 const Framework = require("#Framework");
 
 const translation = {
-	Turkish: {
-    title:"iletişim - kanby.net",
-    description:"kanby.net iletişim sayfası",
-		key1: "İletişim / Sosyal Medya",
-	},
-	English: {
-    title:"contact - kanby.net",
-    description:"kanby.net contact page",
-		key1: "Contact / Social Media",
-	},
+  Turkish: {
+    title: "iletişim - kanby.net",
+    description: "kanby.net iletişim sayfası",
+    key1: "İletişim / Sosyal Medya",
+  },
+  English: {
+    title: "contact - kanby.net",
+    description: "kanby.net contact page",
+    key1: "Contact / Social Media",
+  },
 };
 
 module.exports = {
-	html: async data =>
-		await Layouts.VisitorLayout({
-	    langCode:data.langCode,
-			language: data.language,
-			head: await Framework.render`
+  html: async (data) =>
+    await Layouts.VisitorLayout({
+      langCode: data.langCode,
+      language: data.language,
+      head: await Framework.render`
           <title>${he.encode(translation[data.language].title)}</title>
           <meta name="description" content="${he.encode(translation[data.language].description)}">
 	        <meta name="robots" content="index,follow">
@@ -32,8 +32,7 @@ module.exports = {
 		<link rel="alternate" href="https://kanby.net/English/contact/" hreflang="x-default" />
 			`,
 
-			content: await Framework.render
-      `
+      content: await Framework.render`
 
       <div class="container-d457">
   
@@ -172,5 +171,5 @@ W
 
 </style>
       `,
-		}),
+    }),
 };

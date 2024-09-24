@@ -5,40 +5,40 @@ const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 const translation = {
-	Turkish: {
-		key1: "Ücretsiz Araçlar",
-		key1_1: "Tavsiye Yönetim Aracı",
-		key1_2: "Not Yönetim Aracı",
-		key2: "Sosyal Medya",
-		key2_1: "Github",
-		key2_2: "Twitter / X",
-		key2_3: "Linkedin",
-		key2_4: "Tiktok",
-		key2_5: "Instagram",
-		key3: "Bağlantılar",
-		key3_1: "Bloglar",
-		key3_2: "Projeler",
-		key3_3: "Yönetici Paneli",
-	},
-	English: {
-		key1: "Free Tools",
-		key1_1: "Advice Manager",
-		key1_2: "Cheat Sheet Manager",
-		key2: "Social Media",
-		key2_1: "Github",
-		key2_2: "Twitter / X",
-		key2_3: "Linkedin",
-		key2_4: "Tiktok",
-		key2_5: "Instagram",
-		key3: "Links",
-		key3_1: "Blogs",
-		key3_2: "Projects",
-		key3_3: "Admin Panel",
-	},
+  Turkish: {
+    key1: "Ücretsiz Araçlar",
+    key1_1: "Tavsiye Yönetim Aracı",
+    key1_2: "Not Yönetim Aracı",
+    key2: "Sosyal Medya",
+    key2_1: "Github",
+    key2_2: "Twitter / X",
+    key2_3: "Linkedin",
+    key2_4: "Tiktok",
+    key2_5: "Instagram",
+    key3: "Bağlantılar",
+    key3_1: "Bloglar",
+    key3_2: "Projeler",
+    key3_3: "Yönetici Paneli",
+  },
+  English: {
+    key1: "Free Tools",
+    key1_1: "Advice Manager",
+    key1_2: "Cheat Sheet Manager",
+    key2: "Social Media",
+    key2_1: "Github",
+    key2_2: "Twitter / X",
+    key2_3: "Linkedin",
+    key2_4: "Tiktok",
+    key2_5: "Instagram",
+    key3: "Links",
+    key3_1: "Blogs",
+    key3_2: "Projects",
+    key3_3: "Admin Panel",
+  },
 };
 
 module.exports = {
-	html: data => Framework.render`
+  html: (data) => Framework.render`
 	
 	<header class="liwlCh-header-container">
  <input
@@ -590,5 +590,5 @@ module.exports = {
 		}
 	</style>
 `,
-	js: data => Framework.render``,
+  js: (data) => Framework.render``,
 };

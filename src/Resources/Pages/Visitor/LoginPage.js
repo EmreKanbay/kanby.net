@@ -2,18 +2,18 @@ const Layouts = require("#Layouts");
 const Framework = require("#Framework");
 
 module.exports = {
-	html: async data =>
-		await Layouts.VisitorLayout({
-	    langCode:data.langCode,
-			language: data.language,
+  html: async (data) =>
+    await Layouts.VisitorLayout({
+      langCode: data.langCode,
+      language: data.language,
 
-			head: await Framework.render`
+      head: await Framework.render`
  
 	<title>Login</title>
 	<meta name="robots" content="noindex,nofollow">
 
 `,
-			content: await Framework.render`
+      content: await Framework.render`
 <div class="ge0yN5-container">
 	<form class="ge0yN5-form">
 		<h1>Admin Panel Login</h1>
@@ -122,5 +122,5 @@ document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 </script>
 
 `,
-		}),
+    }),
 };

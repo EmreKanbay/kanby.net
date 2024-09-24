@@ -20,25 +20,24 @@ const Components = require("#Components");
 const NotFound = require("./Resources/Pages/NotFound");
 
 const errorPage = () =>
-   `<h1>🤠kanby.net has encountered with an error🤠</h1>
+  `<h1>🤠kanby.net has encountered with an error🤠</h1>
 	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please report this error to Developer at emre@kanby.net </h2>
 	<h2>Meanwhile developer: 😱🤕😓😭</h2>
-  <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">`
-
+  <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">`;
 
 const cdn = process.env.CDN_DOMAIN;
 const upload = multer();
 
 // Setup REDİS Server
 const client = redis
-  .createClient({url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`})
+  .createClient({
+    url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  })
   .on("error", (err) => console.log("Redis Client Error", err))
   .on("connect", () => {
     console.log("Redis connected succesfully");
   });
 var REDIS_works = false;
-
-
 
 // Setup POSTGRES Server
 const { Pool } = pg;
@@ -57,13 +56,13 @@ var SQL_works = false;
 (async () => {
   try {
     await client.connect();
-    REDIS_works = true
+    REDIS_works = true;
     // await client.flushDb();
   } catch (error) {
     console.log("redis connection ERROR");
-    REDIS_works = false
+    REDIS_works = false;
 
-    console.log(error);
+    
   }
 
   try {
@@ -77,7 +76,7 @@ var SQL_works = false;
   } catch (e) {
     SQL_works = false;
 
-    console.log(e);
+    
   }
 })();
 
@@ -151,11 +150,7 @@ root.use(
         upgradeInsecureRequests: [],
         styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
         imgSrc: ["'self'", cdn], // Allow images from self and data URIs
-        connectSrc: [
-          "'self'",
-          cdn,
-          "https://api.github.com/markdown",
-        ], // Allow connections, fetch requests
+        connectSrc: ["'self'", cdn, "https://api.github.com/markdown"], // Allow connections, fetch requests
         // Add other directives as needed
       },
     },
@@ -164,7 +159,6 @@ root.use(
 
 //DB check
 root.use((req, res, next) => {
-  
   if (SQL_works && REDIS_works) next();
   else res.send("DB is not connected");
 });
@@ -212,7 +206,7 @@ root.use(async (req, res, next) => {
       }
     }
   } catch (e) {
-    console.log(e);
+    
     res.send(`<h1>Error: \n  </h1>`);
     return;
   }
@@ -228,7 +222,7 @@ Disallow: /admin/
 Sitemap: https://kanby.net/sitemap.xml
    `);
   } catch (e) {
-    console.log(e);
+    
 
     res.type("text/html");
 
@@ -281,7 +275,7 @@ root.get("/manifest.json", function (req, res, next) {
     res.type("text/html");
 
     res.send(`<h1>Error: </h1> \n  `);
-    console.log(e);
+    
   }
 });
 
@@ -318,7 +312,7 @@ root.get("/rss.xml", async function (req, res, next) {
           )),
         );
       } catch (error) {
-        console.log(error);
+        
         return ``;
       }
     }}
@@ -349,7 +343,7 @@ root.get("/rss.xml", async function (req, res, next) {
           )),
         );
       } catch (error) {
-        console.log(error);
+        
         return ``;
       }
     }}
@@ -360,7 +354,7 @@ root.get("/rss.xml", async function (req, res, next) {
   } catch (e) {
     res.type("text/html");
     res.send(`<h1>Error: </h1> \n  `);
-    console.log(e);
+    
   }
 });
 
@@ -473,7 +467,7 @@ root.get("/sitemap.xml", async function (req, res, next) {
           )),
         );
       } catch (error) {
-        console.log(error);
+        
         return ``;
       }
     }}
@@ -499,7 +493,7 @@ root.get("/sitemap.xml", async function (req, res, next) {
               )),
             );
           } catch (error) {
-            console.log(error);
+            
             return ``;
           }
         }}
@@ -532,7 +526,7 @@ root.get("/sitemap.xml", async function (req, res, next) {
                   )),
                 );
               } catch (error) {
-                console.log(error);
+                
                 return ``;
               }
             }}
@@ -543,19 +537,19 @@ root.get("/sitemap.xml", async function (req, res, next) {
   } catch (e) {
     res.type("text/html");
     res.send(`<h1>Error: </h1> \n  `);
-    console.log(e);
+    
   }
 });
 
 // Security of Root endpoint
 root.all("/", (req, res, next) => {
-
-if(req.method == "GET") next()
-else {  res.status(405).send({
-  message: `The method ${req.method} is not allowed for the requested endpoint.`,
-});}
-
-})
+  if (req.method == "GET") next();
+  else {
+    res.status(405).send({
+      message: `The method ${req.method} is not allowed for the requested endpoint.`,
+    });
+  }
+});
 
 // These are the endpoints which should not add trailing slashes
 // Rest endpoints will have trailing slashes to be consistent
@@ -568,9 +562,7 @@ root.use((req, res, next) => {
   ];
 
   try {
-
-    if(req.method == "GET"){
-
+    if (req.method == "GET") {
       if (
         !preservedPaths.includes(req.path.split("/")[1]) ||
         typeof req.path.split("/")[1] == "undefined"
@@ -586,19 +578,18 @@ root.use((req, res, next) => {
         next();
         return;
       }
-    }else { next()}
-
+    } else {
+      next();
+    }
   } catch (e) {
     res.send(`<h1>Error: </h1> \n  `);
-    console.log(e);
+    
   }
 });
-
 
 // Authemtication middleware For Logged In Users
 const auth = async (req, res, next) => {
   try {
-
     const token = req?.cookies?.SessionToken;
 
     var JWT_SECRET;
@@ -610,7 +601,6 @@ const auth = async (req, res, next) => {
       await client.set("JWT_SECRET", JWT_SECRET);
       await client.expire("JWT_SECRET", 60 * 60 * 24 * 7);
     }
-
 
     if (req.method == "POST" && req.originalUrl == "/admin/login/") {
       const redisKey = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
@@ -687,22 +677,19 @@ const auth = async (req, res, next) => {
       }
     }
 
-
     if (!token) {
-
-      if(req.method == "GET"){
+      if (req.method == "GET") {
         res.send(await LoginPage.html({ langCode: "en", language: "English" }));
-      }else{
+      } else {
         res.status(405).send({
           error: "Not Autherized",
         });
-        
       }
-            return;
+      return;
     }
 
     var ret;
-// Verifies The Token
+    // Verifies The Token
     try {
       ret = jwt.verify(token, JWT_SECRET, (err, payload) => {
         if (err) {
@@ -723,12 +710,11 @@ const auth = async (req, res, next) => {
         }
       });
     } catch (e) {
-      console.log(e);
+      
       ret = { pass: false };
     }
 
-
-// if token is valid and ip address is same and user id is accurate, continiue with next()
+    // if token is valid and ip address is same and user id is accurate, continiue with next()
     if (ret.pass) {
       const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1`;
 
@@ -741,31 +727,27 @@ const auth = async (req, res, next) => {
         next();
         return;
       } else {
-        if(req.method == "GET"){
-          res.status(401).send("<h1>Not autherized</h1>")
-        }else{
+        if (req.method == "GET") {
+          res.status(401).send("<h1>Not autherized</h1>");
+        } else {
           res.status(401).send({
             error: "Not autherized",
           });
-          
         }
         return;
       }
     } else {
       res.clearCookie("SessionToken");
-      if(req.method == "GET"){
+      if (req.method == "GET") {
         res.send(await LoginPage.html({ langCode: "en", language: "English" }));
-      }else{
+      } else {
         res.status(401).send({
           error: "Not autherized",
         });
-        
       }
       return;
     }
     // else values = [req?.cookies?.login_name, req?.cookies?.password_hash];
-
-
   } catch (e) {
     res.status(500).send(errorPage());
     return;
@@ -780,7 +762,7 @@ root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
     );
   } catch (e) {
     res.send(`<h1>Error: </h1> \n  `);
-    console.log(e);
+    
   }
 });
 
@@ -798,7 +780,7 @@ root.use("/admin/:id", auth, async (req, res, next) => {
     else next();
   } catch (e) {
     res.status(500).send(errorPage());
-    console.log(e);
+    
   }
 });
 
@@ -812,21 +794,17 @@ module.exports = {
   crypto,
 };
 
-
-
 // Route Handlers
 const visitor = require("./Routes/visitor");
 const admin = require("./Routes/admin");
 root.use("/admin", admin);
 root.use("/", visitor);
 
-
-
 // not found page
 root.use("/:lang", async (req, res, next) => {
   try {
     if (req.method == "GET") {
-      console.log(1234)
+      
       const query = await pool.query("SELECT * FROM variables");
       if (query.rows[0].value.includes(req.params.lang)) {
         const langCode =
@@ -839,9 +817,7 @@ root.use("/:lang", async (req, res, next) => {
           }),
         );
       } else {
-        res.send(
-          await NotFound.html({ language: "English", langCode: "en" }),
-        );
+        res.send(await NotFound.html({ language: "English", langCode: "en" }));
       }
     } else {
       res.status(405).send({
@@ -849,36 +825,34 @@ root.use("/:lang", async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    
     res.status(500).send(errorPage());
   }
 });
-
 
 // start server
 const server = root.listen(3000, () => {
   console.log("Server Connected");
 });
 
-
 // Shutdown DBs properly
 process.on("SIGINT", async () => {
   await client.quit();
   await pool.end();
   server.close(() => {
-    console.log('EXPRESS server closed')
-    console.log('REDIS server closed')
-    console.log('SQL server closed')
-    process.exit(0); 
-  })
+    console.log("EXPRESS server closed");
+    console.log("REDIS server closed");
+    console.log("SQL server closed");
+    process.exit(0);
+  });
 });
 process.on("SIGTERM", async () => {
   await client.quit();
   await pool.end();
   server.close(() => {
-    console.log('EXPRESS server closed')
-    console.log('REDIS server closed')
-    console.log('SQL server closed')
+    console.log("EXPRESS server closed");
+    console.log("REDIS server closed");
+    console.log("SQL server closed");
     process.exit(0);
-  })
+  });
 });

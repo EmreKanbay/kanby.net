@@ -5,26 +5,28 @@ const he = require("he");
 const Framework = require("#Framework");
 
 const translation = {
-	Turkish: {
-		title: "Aktif Projeler - kanby.net",
-		description: "Her bir projemiz, kullanıcılarımızın geri bildirimleri doğrultusunda şekillenir ve gelişir. Biz, yenilikçi bir yaklaşım benimseyerek, sürdürülebilir çözümler üretmeye devam edeceğiz",
-		key1: "Projeler",
-		key2: "Proje henüz yok",
-	},
-	English: {
-		title: "Active Projects - kanby.net",
-		description: "Each of our projects is shaped and developed based on the feedback from our users. We continue to adopt an innovative approach and produce sustainable solutions",
-		key1: "Projects",
-		key2: "No Project exist yet",
-	},
+  Turkish: {
+    title: "Aktif Projeler - kanby.net",
+    description:
+      "Her bir projemiz, kullanıcılarımızın geri bildirimleri doğrultusunda şekillenir ve gelişir. Biz, yenilikçi bir yaklaşım benimseyerek, sürdürülebilir çözümler üretmeye devam edeceğiz",
+    key1: "Projeler",
+    key2: "Proje henüz yok",
+  },
+  English: {
+    title: "Active Projects - kanby.net",
+    description:
+      "Each of our projects is shaped and developed based on the feedback from our users. We continue to adopt an innovative approach and produce sustainable solutions",
+    key1: "Projects",
+    key2: "No Project exist yet",
+  },
 };
 
 module.exports = {
-	html: async data =>
-		await Layouts.VisitorLayout({
-	    langCode:data.langCode,
-			language: data.language,
-			head: await Framework.render`
+  html: async (data) =>
+    await Layouts.VisitorLayout({
+      langCode: data.langCode,
+      language: data.language,
+      head: await Framework.render`
  
 			<title>Kanby | ${he.encode(translation[data.language].title)}</title>
             <meta name="description" content="${he.encode(translation[data.language].description)}">
@@ -37,35 +39,34 @@ module.exports = {
 
 			`,
 
-			content: await Framework.render`
+      content: await Framework.render`
 
 
             <h1 style="text-align:center">${translation[data.language].key1}</h1>
 				<div id="all-blogs-list">
 
 				${async () => {
-					const text = `SELECT "${data.language}",id FROM projects`;
+          const text = `SELECT "${data.language}",id FROM projects`;
 
-					const values = [];
+          const values = [];
 
-					var record = await Index.pool.query(text, values);
+          var record = await Index.pool.query(text, values);
 
-					if (record.rowCount != 0) {
-						return "".concat(...await Promise.all(record.rows.map(async t => {
-						
-						try{
-            		const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
-             		const values1 = [t[data.language].thumbnail_url.trim()];
-             		var record1 = await Index.pool.query(text1, values1);
-            		alt_text = record1.rows[0].alt_text
-						}
-            catch(e){
-              console.log(e)
-              alt_text = "kanby.net-freelance-developer-designer"
-            }
-            
-            
-							return `
+          if (record.rowCount != 0) {
+            return "".concat(
+              ...(await Promise.all(
+                record.rows.map(async (t) => {
+                  try {
+                    const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
+                    const values1 = [t[data.language].thumbnail_url.trim()];
+                    var record1 = await Index.pool.query(text1, values1);
+                    alt_text = record1.rows[0].alt_text;
+                  } catch (e) {
+                    
+                    alt_text = "kanby.net-freelance-developer-designer";
+                  }
+
+                  return `
 
 <a rel="ugc" hreflang="${data.langCode}" href="projects/${t.id}/"  class="all-blogs-item">
 
@@ -74,11 +75,13 @@ module.exports = {
         <span>${t[data.language].title}</span>
         </a>
     `;
-						}))						);
-					} else {
-						return `<p>${translation[data.language].key2}</p>`;
-					}
-				}}
+                }),
+              )),
+            );
+          } else {
+            return `<p>${translation[data.language].key2}</p>`;
+          }
+        }}
 				
 				</div>
 
@@ -125,5 +128,5 @@ module.exports = {
 			 
 
       `,
-		}),
+    }),
 };

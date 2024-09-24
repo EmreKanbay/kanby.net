@@ -6,12 +6,12 @@ const SuccessBox = require("./Components/SuccessBox");
 const Marquee = require("./Components/Marquee");
 
 module.exports = {
-	visitor: {
-		Header,
-		Footer,
-		ErrorBox,
-		SuccessBox,
-		Marquee,
-	},
-	admin: {},
+  visitor: {
+    Header,
+    Footer,
+    ErrorBox,
+    SuccessBox,
+    Marquee,
+  },
+  admin: {},
 };

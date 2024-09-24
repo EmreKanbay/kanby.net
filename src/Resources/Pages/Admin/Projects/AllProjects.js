@@ -5,12 +5,12 @@ var he = require("he");
 const Framework = require("#Framework");
 
 module.exports = {
-	html: async data =>
-		await Layouts.AdminLayout({
-			user_id: data.user_id,
+  html: async (data) =>
+    await Layouts.AdminLayout({
+      user_id: data.user_id,
 
-			head: await Framework.render``,
-			content: await Framework.render`
+      head: await Framework.render``,
+      content: await Framework.render`
 
 <h1  class="page-title">Projects</h1>
 
@@ -21,18 +21,18 @@ module.exports = {
 				<div id="all-blogs-list">
 			
 				${async () => {
-					const text = `SELECT * FROM projects`;
+          const text = `SELECT * FROM projects`;
 
-					const values = [];
+          const values = [];
 
-					var record = await Index.pool.query(text, values);
+          var record = await Index.pool.query(text, values);
 
-					if (record.rowCount == 0) {
-						return "<h1>No Project exist</h1>";
-					} else {
-						return "".concat(
-							...record.rows.map(t => {
-								return `
+          if (record.rowCount == 0) {
+            return "<h1>No Project exist</h1>";
+          } else {
+            return "".concat(
+              ...record.rows.map((t) => {
+                return `
 
  <a href="/admin/${data.user_id}/projects/${t.id}/"  class="all-blogs-item">
 
@@ -41,10 +41,10 @@ module.exports = {
 			<span>${t["English"].title}</span>
 			</a>
 		`;
-							}),
-						);
-					}
-				}}
+              }),
+            );
+          }
+        }}
 				
 				</div>
 
@@ -98,5 +98,5 @@ module.exports = {
 
 
   `,
-		}),
+    }),
 };

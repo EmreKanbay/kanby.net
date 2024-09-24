@@ -4,12 +4,12 @@ const Index = require("#Index");
 const Framework = require("#Framework");
 
 module.exports = {
-	html: async data =>
-		await Layouts.AdminLayout({
-			user_id: data.user_id,
+  html: async (data) =>
+    await Layouts.AdminLayout({
+      user_id: data.user_id,
 
-			head: await Framework.render``,
-			content: await Framework.render`
+      head: await Framework.render``,
+      content: await Framework.render`
  
 	<h1>add media</h1>
 
@@ -94,5 +94,5 @@ document.querySelector("#media-form").addEventListener("submit", async (e)=> {
 
 
   `,
-		}),
+    }),
 };

@@ -8,21 +8,21 @@ const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 module.exports = {
-	html: async data =>
-		await Layouts.AdminLayout({
-			user_id: data.user_id,
+  html: async (data) =>
+    await Layouts.AdminLayout({
+      user_id: data.user_id,
 
-			head: await Framework.render``,
-			content: await Framework.render`
+      head: await Framework.render``,
+      content: await Framework.render`
  
 	<h1>Media page</h1>
 
 	<div id="media-display-cont">
 
 	${async () => {
-		return String(
-			(await Index.pool.query(`SELECT * FROM media`)).rows.map(t => {
-				return `
+    return String(
+      (await Index.pool.query(`SELECT * FROM media`)).rows.map((t) => {
+        return `
 	
 		<div data-media-id="${t.id}" data-media-full-url="${t.full_url}" data-media-alt-text="${t.alt_text}"  class="media-element">
 
@@ -33,20 +33,22 @@ module.exports = {
 		<button class="media-delete">delete</button>
 	</div>
 		`;
-			}),
-		).replaceAll(",", "\n");
-	}}
+      }),
+    ).replaceAll(",", "\n");
+  }}
 
 
 
 	${String(
-		[2, 3, 1, 1, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3].map(t => {
-			return `
+    [2, 3, 1, 1, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3].map(
+      (t) => {
+        return `
 			  <div style="height:0" class="media-element placeholder">      
 			  </div>
 	  `;
-		}),
-	).replaceAll(",", "\n")}
+      },
+    ),
+  ).replaceAll(",", "\n")}
 
 
 	</div>
@@ -115,5 +117,5 @@ document.querySelectorAll(".media-delete").forEach(t => {t.addEventListener("cli
 
 
   `,
-		}),
+    }),
 };

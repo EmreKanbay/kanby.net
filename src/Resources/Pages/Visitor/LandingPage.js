@@ -4,50 +4,45 @@ const Components = require("#Components");
 const Index = require("#Index");
 const he = require("he");
 
-
-
- 
-
 require("dotenv").config();
-
 
 const cdn = process.env.CDN_DOMAIN;
 
 const translation = {
-	Turkish: {
-		title: "Freelance Yazılımcı - kanby.net",
-		description:
-			"Burada, yaratıcı tasarım projelerimden ve özelleştirilmiş yazılım çözümlerimden örnekler bulabilirsiniz. Web tasarımı, kullanıcı deneyimi (UX), ve yazılım geliştirme konularında sunduğum hizmetlerle, projelerinize estetik ve işlevsellik katmayı amaçlıyorum",
-		key1: "Düşünce, Tasarım, Yazılım",
-		key2: "Talep üzerine uygulamalar geliştiriyorum. Bu uygulamalar web uygulamaları, iOS ve Android uygulamaları, masaüstü ve mobil için oyunlar, IoT projeleri, sunucu kurulumu, hosting, bulut sunucu kurulumu ve SQL sunucu kurulumu içeriyor",
-		key3: "En Yeni Bloglar",
-		key4: "Blog Bulunamadı",
-		key5: "Açık kaynak projeler",
- 
-		key7: "Projeler",
-		key8: "Proje bulunamadı",
-	},
-	English: {
-		title: "Freelance Programmer - kanby.net",
-		description:
-			"Here, you can find examples of my creative design projects and custom software solutions. With my services in web design, user experience (UX), and software development, I aim to add both aesthetics and functionality to your projects",
-		key1: "Think, Design, Code",
-		key2: "I develop apps from on demand. These apps contains web apps, IOS and Android apps, Games for desktop and mobile, Iot projects, Server setup, hosting, cloud server setup, SQL server setup",
-		key3: "New Blogs",
-		key4: "No Blog found",
-		key5: "Open Source Projects",
- 
-		key7: "Projects",
-		key8: "No projects found",
-	},
+  Turkish: {
+    title: "Freelance Yazılımcı - kanby.net",
+    description:
+      "Burada, yaratıcı tasarım projelerimden ve özelleştirilmiş yazılım çözümlerimden örnekler bulabilirsiniz. Web tasarımı, kullanıcı deneyimi (UX), ve yazılım geliştirme konularında sunduğum hizmetlerle, projelerinize estetik ve işlevsellik katmayı amaçlıyorum",
+    key1: "Düşünce, Tasarım, Yazılım",
+    key2: "Talep üzerine uygulamalar geliştiriyorum. Bu uygulamalar web uygulamaları, iOS ve Android uygulamaları, masaüstü ve mobil için oyunlar, IoT projeleri, sunucu kurulumu, hosting, bulut sunucu kurulumu ve SQL sunucu kurulumu içeriyor",
+    key3: "En Yeni Bloglar",
+    key4: "Blog Bulunamadı",
+    key5: "Açık kaynak projeler",
+
+    key7: "Projeler",
+    key8: "Proje bulunamadı",
+  },
+  English: {
+    title: "Freelance Programmer - kanby.net",
+    description:
+      "Here, you can find examples of my creative design projects and custom software solutions. With my services in web design, user experience (UX), and software development, I aim to add both aesthetics and functionality to your projects",
+    key1: "Think, Design, Code",
+    key2: "I develop apps from on demand. These apps contains web apps, IOS and Android apps, Games for desktop and mobile, Iot projects, Server setup, hosting, cloud server setup, SQL server setup",
+    key3: "New Blogs",
+    key4: "No Blog found",
+    key5: "Open Source Projects",
+
+    key7: "Projects",
+    key8: "No projects found",
+  },
 };
 
 module.exports = {
-	html: async data =>
-		await Layouts.VisitorLayout({
-	    langCode:data.langCode,
-			language: data.language,
-			head: await Framework.render`
+  html: async (data) =>
+    await Layouts.VisitorLayout({
+      langCode: data.langCode,
+      language: data.language,
+      head: await Framework.render`
 
 			<title>${he.encode(translation[data.language].title)}</title>
 			
@@ -71,7 +66,7 @@ module.exports = {
           
 			`,
 
-			content: await Framework.render`
+      content: await Framework.render`
 
 			${await Components.visitor.Marquee.html({ text: '<img style="height:30px" alt="kanby.net-rss-icon" alt="rss-kanby.net" src="https://cdn.kanby.net/assets/rss-icon.png">RSS Available<img alt="rss-kanby.net" style="height:30px" src="https://cdn.kanby.net/assets/rss-icon.png">', time: 20 })}
 				<main id="page-container">
@@ -114,26 +109,26 @@ module.exports = {
 
 						<div class="all-blogs-list">
 							${async () => {
-								const text = `SELECT * FROM blogs WHERE language= $1 LIMIT 3`;
+                const text = `SELECT * FROM blogs WHERE language= $1 LIMIT 3`;
 
-								const values = [data.language];
+                const values = [data.language];
 
-								var record = await Index.pool.query(text, values);
+                var record = await Index.pool.query(text, values);
 
-								if (record.rowCount != 0) {
-									return "".concat(...await Promise.all(record.rows.map(async t => {
-									
-									try{
-            		const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
-            		const values1 = [t.thumbnail_url.trim()];
-             		var record1 = await Index.pool.query(text1, values1);
-            		alt_text = record1.rows[0].alt_text
-            }
-            catch(e){
-              alt_text = "kanby.net-freelance-developer-designer"
-            }
-            
-										return `
+                if (record.rowCount != 0) {
+                  return "".concat(
+                    ...(await Promise.all(
+                      record.rows.map(async (t) => {
+                        try {
+                          const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
+                          const values1 = [t.thumbnail_url.trim()];
+                          var record1 = await Index.pool.query(text1, values1);
+                          alt_text = record1.rows[0].alt_text;
+                        } catch (e) {
+                          alt_text = "kanby.net-freelance-developer-designer";
+                        }
+
+                        return `
 
 <a rel="ugc" hreflang="${data.langCode}" href="blogs/${t.id}/"  class="all-blogs-item">
 
@@ -142,11 +137,13 @@ module.exports = {
         <span>${t.title}</span>
         </a>
     `;
-									})));
-								} else {
-									return `<p>${translation[data.language].key4}</p>`;
-								}
-							}}
+                      }),
+                    )),
+                  );
+                } else {
+                  return `<p>${translation[data.language].key4}</p>`;
+                }
+              }}
 						</div>
 					</div>
 
@@ -155,24 +152,25 @@ module.exports = {
 					<div class="all-blogs-list">
 
 					${async () => {
-						const text = `SELECT "${data.language}",id FROM projects LIMIT 3`;
-						const values = [];
-						var record = await Index.pool.query(text, values);
-						
-						if (record.rowCount != 0) {
-							return "".concat(...await Promise.all(record.rows.map(async t => {
-                var alt_text = ""
-            try{
-            		const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
-            		const values1 = [t[data.language].thumbnail_url.trim()];
-             		var record1 = await Index.pool.query(text1, values1);
-            		alt_text = record1.rows[0].alt_text
-            }
-            catch(e){
-              alt_text = "kanby.net-freelance-developer-designer"
-            }
-							
- 									return `
+            const text = `SELECT "${data.language}",id FROM projects LIMIT 3`;
+            const values = [];
+            var record = await Index.pool.query(text, values);
+
+            if (record.rowCount != 0) {
+              return "".concat(
+                ...(await Promise.all(
+                  record.rows.map(async (t) => {
+                    var alt_text = "";
+                    try {
+                      const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
+                      const values1 = [t[data.language].thumbnail_url.trim()];
+                      var record1 = await Index.pool.query(text1, values1);
+                      alt_text = record1.rows[0].alt_text;
+                    } catch (e) {
+                      alt_text = "kanby.net-freelance-developer-designer";
+                    }
+
+                    return `
 					<a rel="ugc" hreflang="${data.langCode}" href="projects/${t.id}/"  class="all-blogs-item">
 						<div class="icon">
 							<img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
@@ -180,12 +178,13 @@ module.exports = {
 						<span>${t[data.language].title}</span>
 					</a>
 `;
-							}))
-							);
-						} else {
-							return `<p>${translation[data.language].key8}</p>`;
-						}
-					}}
+                  }),
+                )),
+              );
+            } else {
+              return `<p>${translation[data.language].key8}</p>`;
+            }
+          }}
 
 
 					</div>
@@ -281,5 +280,5 @@ module.exports = {
 					}
 				</style>
 			`,
-		}),
+    }),
 };

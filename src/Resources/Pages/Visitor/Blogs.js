@@ -3,28 +3,27 @@ const Index = require("#Index");
 const Framework = require("#Framework");
 const he = require("he");
 
-
 const translation = {
-	Turkish: {
- title:"Bloglar - kanby.net",
-    description:"kanby.net mevcut bloglar",
-		key1: "Bloglar",
-		key2: "Blog henüz yok",
-	},
-	English: {
- title:"Blogs - kanby.net",
-    description:"kanby.net all available blogs",
-		key1: "Blogs",
-		key2: "No blog exist yet",
-	},
+  Turkish: {
+    title: "Bloglar - kanby.net",
+    description: "kanby.net mevcut bloglar",
+    key1: "Bloglar",
+    key2: "Blog henüz yok",
+  },
+  English: {
+    title: "Blogs - kanby.net",
+    description: "kanby.net all available blogs",
+    key1: "Blogs",
+    key2: "No blog exist yet",
+  },
 };
 
 module.exports = {
-	html: async data =>
-		await Layouts.VisitorLayout({
-	    langCode:data.langCode,
-			language: data.language,
-			head: await Framework.render`
+  html: async (data) =>
+    await Layouts.VisitorLayout({
+      langCode: data.langCode,
+      language: data.language,
+      head: await Framework.render`
 			<title>Kanby | ${he.encode(translation[data.language].title)}</title>
 			<meta name="description" content="${he.encode(translation[data.language].description)}">
  	        <meta name="robots" content="index,follow">
@@ -34,37 +33,32 @@ module.exports = {
 			<link rel="alternate" href="https://kanby.net/English/blogs/" hreflang="x-default" />
 			`,
 
-			content: await Framework.render`
+      content: await Framework.render`
 
 
             <h1 style="text-align:center">${translation[data.language].key1}</h1>
 				<div id="all-blogs-list">
 
 				${async () => {
- 
-					
+          const text = `SELECT * FROM blogs WHERE language= $1`;
 
-					const text = `SELECT * FROM blogs WHERE language= $1`;
+          const values = [data.language];
 
-					const values = [data.language];
-				
-					var record = await Index.pool.query(text, values);
+          var record = await Index.pool.query(text, values);
 
-
-
-					if (record.rowCount != 0) {
-						return "".concat(...await Promise.all(record.rows.map(async t => {
-						
-						try{
-            		const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
-            		const values1 = [t.thumbnail_url.trim()];
-             		var record1 = await Index.pool.query(text1, values1);
-            		alt_text = record1.rows[0].alt_text
-            }
-            catch(e){
-              alt_text = "kanby.net-freelance-developer-designer"
-            }
- 							return `
+          if (record.rowCount != 0) {
+            return "".concat(
+              ...(await Promise.all(
+                record.rows.map(async (t) => {
+                  try {
+                    const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
+                    const values1 = [t.thumbnail_url.trim()];
+                    var record1 = await Index.pool.query(text1, values1);
+                    alt_text = record1.rows[0].alt_text;
+                  } catch (e) {
+                    alt_text = "kanby.net-freelance-developer-designer";
+                  }
+                  return `
 
 <a rel="ugc" hreflang="${data.langCode}" href="blogs/${t.id}/"   class="all-blogs-item">
 
@@ -73,13 +67,13 @@ module.exports = {
         <span>${t.title}</span>
         </a>
     `;
-						}))
-							
-						);
-					} else {
-						return `<p>${translation[data.language].key2}</p>`;
-					}
-				}}
+                }),
+              )),
+            );
+          } else {
+            return `<p>${translation[data.language].key2}</p>`;
+          }
+        }}
 				
 				</div>
 
@@ -126,5 +120,5 @@ module.exports = {
 			 
 
       `,
-		}),
+    }),
 };

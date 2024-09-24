@@ -8,12 +8,12 @@ const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 module.exports = {
-	html: async data =>
-		await Layouts.AdminLayout({
-			user_id: data.user_id,
+  html: async (data) =>
+    await Layouts.AdminLayout({
+      user_id: data.user_id,
 
-			head: await Framework.render``,
-			content: await Framework.render`
+      head: await Framework.render``,
+      content: await Framework.render`
 
 
 
@@ -33,15 +33,15 @@ module.exports = {
 	
    
     ${async () => {
-			const text = `SELECT * FROM blogs WHERE id= $1`;
+      const text = `SELECT * FROM blogs WHERE id= $1`;
 
-			const values = [data.id];
+      const values = [data.id];
 
-			var query = await Index.pool.query(text, values);
+      var query = await Index.pool.query(text, values);
 
-			t = query.rows[0];
+      t = query.rows[0];
 
-			return await Framework.render`
+      return await Framework.render`
 		
 
 			<form data-blog-id="${data.id}" style="display:none" id="edit-blog-form">
@@ -52,21 +52,23 @@ module.exports = {
  					id="blog-form-language-edit">
 
 				${async () => {
-					return await Promise.all(
-						(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(async r => {
-							return await Framework.render`
+          return await Promise.all(
+            (
+              await Index.pool.query(`SELECT * FROM "variables"`)
+            ).rows[0].value.map(async (r) => {
+              return await Framework.render`
  
 						<option ${() => {
-							if (t.language == r) {
-								return "selected";
-							} else {
-								return "";
-							}
-						}}  value="${() => r}">${() => r}</option>
+              if (t.language == r) {
+                return "selected";
+              } else {
+                return "";
+              }
+            }}  value="${() => r}">${() => r}</option>
 					`;
-						}),
-					);
-				}}
+            }),
+          );
+        }}
 				</select>
 
 
@@ -117,7 +119,7 @@ module.exports = {
 
 		
 		`;
-		}}
+    }}
    
 
 
@@ -272,5 +274,5 @@ document.querySelector("#blog-top-bar").style.display = "none"
 
 
 	`,
-		}),
+    }),
 };

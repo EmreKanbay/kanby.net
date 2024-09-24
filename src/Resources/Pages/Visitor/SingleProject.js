@@ -7,32 +7,32 @@ const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 const translation = {
-	Turkish: {
-		key1: "Bloglar",
-		key2: "İçerikler",
-		key3: "Haberler",
-	},
-	English: {
-		key1: "Blogs",
-		key2: "Contents",
-		key3: "News",
-	},
+  Turkish: {
+    key1: "Bloglar",
+    key2: "İçerikler",
+    key3: "Haberler",
+  },
+  English: {
+    key1: "Blogs",
+    key2: "Contents",
+    key3: "News",
+  },
 };
 
 module.exports = {
-	html: async data =>
-		await Layouts.VisitorLayout({
-	    langCode:data.langCode,
-			language: data.language,
-			head: await Framework.render`
+  html: async (data) =>
+    await Layouts.VisitorLayout({
+      langCode: data.langCode,
+      language: data.language,
+      head: await Framework.render`
 						${async () => {
-							const text = `SELECT * FROM projects WHERE id = $1`;
+              const text = `SELECT * FROM projects WHERE id = $1`;
 
-							const values = [data.id];
+              const values = [data.id];
 
-							var record = await Index.pool.query(text, values);
+              var record = await Index.pool.query(text, values);
 
-							return `
+              return `
   				<!--Stylesheet for markdown-->
   				<link rel="stylesheet" href="${cdn}/assets/github-markdown-light.css" />
 					<meta name="description" content="${he.encode(record.rows[0][data.language].description)}"/>
@@ -50,21 +50,21 @@ module.exports = {
 				<link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${data.id}/" >
 				<link rel="alternate" href="https://kanby.net/English/projects/${data.id}/" hreflang="x-default" />
 					`;
-						}}
+            }}
  			`,
 
-			content: await Framework.render`
+      content: await Framework.render`
 
  
 
 				${async () => {
-					const text = `SELECT "${data.language}",id FROM projects WHERE id = ${data.id}`;
+          const text = `SELECT "${data.language}",id FROM projects WHERE id = ${data.id}`;
 
-					const values = [];
+          const values = [];
 
-					var record = await Index.pool.query(text, values);
+          var record = await Index.pool.query(text, values);
 
-					return await Framework.render`
+          return await Framework.render`
                     
 			 <div class="blog-container">
         
@@ -75,12 +75,14 @@ module.exports = {
                     <p class="blog-description">${record.rows[0][data.language].description}</p>
 
                     ${async () => {
-											return "".concat(
-												...Object.keys(JSON.parse(record.rows[0][data.language].links)).map(yy => {
-													return `<p>${yy} -> ${JSON.parse(record.rows[0][data.language].links)[yy]}</p>`;
-												}),
-											);
-										}}
+                      return "".concat(
+                        ...Object.keys(
+                          JSON.parse(record.rows[0][data.language].links),
+                        ).map((yy) => {
+                          return `<p>${yy} -> ${JSON.parse(record.rows[0][data.language].links)[yy]}</p>`;
+                        }),
+                      );
+                    }}
 
 
 						</aside>
@@ -99,7 +101,7 @@ module.exports = {
 
                     
                     `;
-				}}
+        }}
 				
 			 
 		 
@@ -192,5 +194,5 @@ module.exports = {
           </style>
 
       `,
-		}),
+    }),
 };

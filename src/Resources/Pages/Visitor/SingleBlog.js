@@ -7,31 +7,31 @@ const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 const translation = {
-	Turkish: {
-		key1: "Oluşturulma Tarihi: ",
-		key2: "Son Güncellenme Tarihi: ",
-	},
-	English: {
-		key1: "Creation Date: ",
-		key2: "Last Modify Date",
-	},
+  Turkish: {
+    key1: "Oluşturulma Tarihi: ",
+    key2: "Son Güncellenme Tarihi: ",
+  },
+  English: {
+    key1: "Creation Date: ",
+    key2: "Last Modify Date",
+  },
 };
 
 module.exports = {
-	html: async data =>
-		await Layouts.VisitorLayout({
-	    langCode:data.langCode,
-			language: data.language,
-			head: await Framework.render`
+  html: async (data) =>
+    await Layouts.VisitorLayout({
+      langCode: data.langCode,
+      language: data.language,
+      head: await Framework.render`
 
 			${async () => {
-				const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
+        const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
 
-				const values = [data.language, data.blog_id];
+        const values = [data.language, data.blog_id];
 
-				var record = await Index.pool.query(text, values);
+        var record = await Index.pool.query(text, values);
 
-				return `
+        return `
 				  <!--Stylesheet for markdown-->
 					<link rel="stylesheet" href="${cdn}/assets/github-markdown-light.css" />
 					<meta name="description" content="${he.encode(record.rows[0].description)}"/>
@@ -50,38 +50,32 @@ module.exports = {
           
        	<link rel="alternate" hreflang="${data.langCode}" href="https://kanby.net/${data.language}/projects/${data.blog_id}/" >
 					`;
-			}}
+      }}
  
 			
 
 
 			`,
 
-			content: await Framework.render`
+      content: await Framework.render`
 
  
 	 
 
 				${async () => {
-					const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
+          const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
 
-					const values = [data.language, data.blog_id];
+          const values = [data.language, data.blog_id];
 
-					var record = await Index.pool.query(text, values);
+          var record = await Index.pool.query(text, values);
 
+          const text1 = `SELECT profile_picture_url FROM users WHERE public_name = $1`;
 
+          const values1 = [record.rows[0].author];
 
-					const text1 = `SELECT profile_picture_url FROM users WHERE public_name = $1`;
+          var record1 = await Index.pool.query(text1, values1);
 
-					const values1 = [record.rows[0].author];
-
-					var record1 = await Index.pool.query(text1, values1);
-
-					
-
-
-
-					return `
+          return `
                     
                      
 					<div id="blog-container" >
@@ -105,7 +99,7 @@ module.exports = {
 								</div>
                     
                     `;
-				}}
+        }}
 	 
 			 
 		 
@@ -198,5 +192,5 @@ module.exports = {
           </style>
 
       `,
-		}),
+    }),
 };

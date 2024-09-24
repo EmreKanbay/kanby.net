@@ -4,12 +4,12 @@ const Index = require("#Index");
 const Framework = require("#Framework");
 
 module.exports = {
-	html: async data =>
-		await Layouts.AdminLayout({
-			user_id: data.user_id,
+  html: async (data) =>
+    await Layouts.AdminLayout({
+      user_id: data.user_id,
 
-			head: await Framework.render``,
-			content: await Framework.render`
+      head: await Framework.render``,
+      content: await Framework.render`
  
 	<form id="add-blog-form">
 		<span>Select a language:</span>
@@ -21,14 +21,16 @@ module.exports = {
 					  <option value="" selected disabled hidden>language</option>
 
 					${async () => {
-						return String(
-							(await Index.pool.query(`SELECT * FROM "variables"`)).rows[0].value.map(t => {
-								return `
+            return String(
+              (
+                await Index.pool.query(`SELECT * FROM "variables"`)
+              ).rows[0].value.map((t) => {
+                return `
 						<option value="${t}">${t}</option>
 					`;
-							}),
-						).replaceAll(",", "\n");
-					}}
+              }),
+            ).replaceAll(",", "\n");
+          }}
 				</select>
 				<br>
 			
@@ -169,5 +171,5 @@ module.exports = {
 
 
   `,
-		}),
+    }),
 };

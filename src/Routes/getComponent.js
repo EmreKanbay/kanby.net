@@ -38,14 +38,14 @@ getComponents.post("/admin/:component_name", Index.express.json(), async (req, r
 			res.status(401).send("<h1>Not Authorized</h1>");
 		}
 	} catch (error) {
-		console.log(error);
+		
 		res.status(500).send("<h1>Internal Server Error</h1>");
 	}
 });
 
 getComponents.post("/visitor/:component_name", Index.express.json(), (req, res) => {
 	if (typeof Components.visitor[req.params.component_name] != "undefined") {
-		console.log(req.body);
+		
 		res.send(Components.visitor[req.params.component_name](req.body));
 	} else {
 		res.send("<h1>Component Not Found</h1>");

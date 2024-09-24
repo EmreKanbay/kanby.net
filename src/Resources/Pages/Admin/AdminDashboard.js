@@ -3,11 +3,11 @@ const Layouts = require("#Layouts");
 const Framework = require("#Framework");
 
 module.exports = {
-	html: async data =>
-		await Layouts.AdminLayout({
-			user_id: data.user_id,
-			head: await Framework.render``,
-			content: await Framework.render`
+  html: async (data) =>
+    await Layouts.AdminLayout({
+      user_id: data.user_id,
+      head: await Framework.render``,
+      content: await Framework.render`
  
 	This is dashboard
 
@@ -21,5 +21,5 @@ module.exports = {
 
 
   `,
-		}),
+    }),
 };
