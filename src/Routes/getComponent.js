@@ -1,3 +1,5 @@
+/* Will not be used for a a while
+
 const Components = require("#Components");
 
 const Index = require("#Index");
@@ -51,3 +53,5 @@ getComponents.post("/visitor/:component_name", Index.express.json(), (req, res) 
 });
 
 module.exports = getComponents;
+
+*/

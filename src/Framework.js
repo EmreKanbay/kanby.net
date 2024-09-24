@@ -1,3 +1,4 @@
+// Render function for template literals
 const render = async (x, ...values) => {
 	var rendered = "";
 	for (let u = 0; u < x.length; u++) {

@@ -1,7 +1,5 @@
 const Pages = require("#Pages");
 const Index = require("#Index");
-const Components = require("#Components");
-const path = require("path");
 var he = require("he");
 
 require("dotenv").config();

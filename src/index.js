@@ -1,29 +1,39 @@
+// API Libraries
 const express = require("express");
-const multer = require("multer");
-const pg = require("pg");
-require("dotenv").config();
-const cookieParser = require("cookie-parser");
-const crypto = require("crypto");
-const cors = require("cors");
-const Framework = require("#Framework");
-const Components = require("#Components");
-const LoginPage = require("./Resources/Pages/Visitor/LoginPage");
-const jwt = require("jsonwebtoken");
 const helmet = require("helmet");
+const multer = require("multer");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const cors = require("cors");
 const compression = require("compression");
 
-// Setup Cache Server
+// Database Libraries
+const pg = require("pg");
 const redis = require("redis");
+
+// Other Libraries
+require("dotenv").config();
+const crypto = require("crypto");
+const LoginPage = require("./Resources/Pages/Visitor/LoginPage");
+const Framework = require("#Framework");
+const Components = require("#Components");
+
+
+const cdn = process.env.CDN_DOMAIN;
+const upload = multer();
+
+// Setup REDİS Server
 const client = redis
-  .createClient({
-    url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
-  })
+  .createClient({url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`})
   .on("error", (err) => console.log("Redis Client Error", err))
   .on("connect", () => {
     console.log("Redis connected succesfully");
   });
+var REDIS_works = false;
 
-// Setup SQL Server
+
+
+// Setup POSTGRES Server
 const { Pool } = pg;
 const pool = new Pool({
   user: process.env.PG_USER,
@@ -34,7 +44,7 @@ const pool = new Pool({
   idleTimeoutMillis: 30000, // close idle clients after 30 seconds
   connectionTimeoutMillis: 2000, // return an error after 2 seconds if connection cannot be established
 });
-var DB_connected = false;
+var SQL_works = false;
 
 // Connect Redis and Postgres
 (async () => {
@@ -45,19 +55,20 @@ var DB_connected = false;
     await pool.query("SELECT * FROM projects LIMIT 1");
     await pool.query("SELECT * FROM media LIMIT 1");
     console.log("Postgres connected succesfully");
-    DB_connected = true;
+    SQL_works = true;
   } catch (e) {
-    DB_connected = false;
+    SQL_works = false;
 
     console.log(e);
   }
 
   try {
     await client.connect();
-
+    REDIS_works = true
     // await client.flushDb();
   } catch (error) {
     console.log("redis connection ERROR");
+    REDIS_works = false
 
     console.log(error);
   }
@@ -73,7 +84,6 @@ process.on("SIGINT", async () => {
   console.log("Postgres connection closed");
   process.exit(0); // Exit the process after cleanup
 });
-
 process.on("SIGTERM", async () => {
   console.log("Reddis shutting down...");
   await client.quit();
@@ -84,26 +94,8 @@ process.on("SIGTERM", async () => {
   process.exit(0); // Exit the process after cleanup
 });
 
-const cdn = process.env.CDN_DOMAIN;
-const upload = multer();
-
-// Export variables
-module.exports = {
-  __rootDir: __dirname,
-  pool,
-  upload,
-  express,
-  client,
-  crypto,
-};
-
 // Setup Routes
 const root = express();
-
-const visitor = require("./Routes/visitor");
-const getComponents = require("./Routes/getComponent");
-const admin = require("./Routes/admin");
-
 /* SETUP MIDDLEWARES */
 
 // For Compression
@@ -136,12 +128,12 @@ root.use(
         defaultSrc: ["'none'"],
         objectSrc: ["'none'"],
         frameAncestors: ["'none'"],
-        fontSrc: ["'self'", "https://cdn.kanby.net"],
+        fontSrc: ["'self'", cdn],
         scriptSrc: ["'self'", "'unsafe-inline'"],
         upgradeInsecureRequests: [],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.kanby.net"], // Allow styles from self and inline styles
-        imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
-        connectSrc: ["'self'", "https://cdn.kanby.net"], // Allow connections, fetch requests
+        styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
+        imgSrc: ["'self'", cdn], // Allow images from self and data URIs
+        connectSrc: ["'self'", cdn], // Allow connections, fetch requests
         // Add other directives as needed
       },
     },
@@ -160,7 +152,7 @@ root.use(
         defaultSrc: ["'none'"],
         objectSrc: ["'none'"],
         frameAncestors: ["'none'"],
-        fontSrc: ["'self'", "https://cdn.kanby.net"],
+        fontSrc: ["'self'", cdn],
         scriptSrcAttr: ["self", "'unsafe-inline'"],
         scriptSrc: [
           "'self'",
@@ -170,11 +162,11 @@ root.use(
           "https://unpkg.com/babel-standalone@6/babel.js",
         ], // Allow scripts from self and CDN
         upgradeInsecureRequests: [],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.kanby.net"], // Allow styles from self and inline styles
-        imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
+        styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
+        imgSrc: ["'self'", cdn], // Allow images from self and data URIs
         connectSrc: [
           "'self'",
-          "https://cdn.kanby.net",
+          cdn,
           "https://api.github.com/markdown",
         ], // Allow connections, fetch requests
         // Add other directives as needed
@@ -185,7 +177,7 @@ root.use(
 
 //DB check
 root.use((req, res, next) => {
-  if (DB_connected) next();
+  if (SQL_works && REDIS_works) next();
   else res.send("DB is not connected");
 });
 
@@ -780,9 +772,20 @@ root.use("/admin/:id", auth, async (req, res, next) => {
   }
 });
 
+// Export Variables
+module.exports = {
+  __rootDir: __dirname,
+  pool,
+  upload,
+  express,
+  client,
+  crypto,
+};
+
 // Route Handlers
+const visitor = require("./Routes/visitor");
+const admin = require("./Routes/admin");
 root.use("/admin", admin);
-root.use("/get-component", getComponents);
 root.use("/", visitor);
 
 // start server
