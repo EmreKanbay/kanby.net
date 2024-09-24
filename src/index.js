@@ -81,18 +81,6 @@ var SQL_works = false;
   }
 })();
 
-// Shutdown DBs properly
-process.on("SIGINT", async () => {
-  await client.quit();
-  await pool.end();
-  process.exit(0); // Exit the process after cleanup
-});
-process.on("SIGTERM", async () => {
-  await client.quit();
-  await pool.end();
-  process.exit(0); // Exit the process after cleanup
-});
-
 // Setup Routes
 const root = express();
 /* SETUP MIDDLEWARES */
@@ -681,6 +669,7 @@ const auth = async (req, res, next) => {
           expires: new Date(Date.now() + 3600 * 60 * 10),
           httpOnly: true,
           secure: true,
+          domain: req.get("host") == "localhost" ? "" : "kanby.net",
           sameSite: "strict",
         });
         req.customData = { record };
@@ -867,6 +856,29 @@ root.use("/:lang", async (req, res, next) => {
 
 
 // start server
-root.listen(3000, () => {
+const server = root.listen(3000, () => {
   console.log("Server Connected");
+});
+
+
+// Shutdown DBs properly
+process.on("SIGINT", async () => {
+  await client.quit();
+  await pool.end();
+  server.close(() => {
+    console.log('EXPRESS server closed')
+    console.log('REDIS server closed')
+    console.log('SQL server closed')
+    process.exit(0); 
+  })
+});
+process.on("SIGTERM", async () => {
+  await client.quit();
+  await pool.end();
+  server.close(() => {
+    console.log('EXPRESS server closed')
+    console.log('REDIS server closed')
+    console.log('SQL server closed')
+    process.exit(0);
+  })
 });
