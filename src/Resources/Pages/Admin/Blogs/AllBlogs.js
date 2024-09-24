@@ -78,13 +78,22 @@ module.exports = {
 				</style>
 	<script>
 
+
+
 				document.querySelector("#all-blogs-language").addEventListener("change",async ()=> {
 					
 
-					const formData = new FormData()
+
+					try{
+
+						    if (window.navigator.onLine) {
+							const formData = new FormData()
 
 					formData.append("language", document.querySelector("#all-blogs-language").value)
+
 					
+
+
 		document.querySelector(".loading-block").classList.add("active")
 					
 					const res = await fetch(".", {
@@ -102,8 +111,22 @@ module.exports = {
  
 					}else{
 
-					document.querySelector("#all-blogs-list").innerHTML = rows.message 
+			document.querySelector("#qMQEbc-container").classList.add("active")
+            document.querySelector("#qMQEbc-message").innerHTML = rows.message 
 					
+					}
+							}
+							else{
+			document.querySelector("#qMQEbc-container").classList.add("active")
+            document.querySelector("#qMQEbc-message").innerHTML = "No Internet Connection"
+							}
+					
+					
+			}
+					catch(e){
+
+								document.querySelector("#qMQEbc-container").classList.add("active")
+            document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
 					}
 					
 					})

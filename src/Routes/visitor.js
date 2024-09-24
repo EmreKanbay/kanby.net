@@ -78,7 +78,6 @@ subVisitor.get("/", async (req, res, next) => {
       }),
     );
   } catch (e) {
-    
     res.status(500).send(errorPage());
   }
 });

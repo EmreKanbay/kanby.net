@@ -220,7 +220,7 @@ display: grid;
 		}
 	</style>
 
-                            <div class="content-wrapper content-wrapper--with-bg">
+                            <div class="content-wrapper">
                     
     
      
@@ -234,7 +234,11 @@ display: grid;
             
             <style>
     
-     
+     #alert-bar{
+     width:100%;
+     height: 2rem;
+     background-color:Red;
+     }
     
     body {
         margin: 0;

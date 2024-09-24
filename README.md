@@ -6,84 +6,15 @@
 
 # TODO
 
-```
-[x] user ip needs to be included in JWT payload and checked if it is stolen
-[] landing page is loading slow
-[] for contentSecurityPolicy header, nonce may be added for scripts and styles
 
-[] Create LOGS, and save them to database properly
-[] Simplify everything with a simple library or framework
-```
+- [x] user ip needs to be included in JWT payload and checked if it is stolen
+- [] Handle errors on client side
+- [x] Handle errors on server side
+- [] landing page is loading slow
+- [] for contentSecurityPolicy header, nonce may be added for scripts and styles
+- [] Create LOGS, and save them to database properly
+- [] Simplify everything with a simple library or framework
 
-## SEO tips
-
-- Avoid repeated or boilerplate text in <- title -> elements. It's important to have distinct text that describes the content of the page in the <- title -> element for each page on your site. Titling every page on a commerce site "Cheap products for sale", for example, makes it impossible for users to distinguish between two pages. Long text in the <- title -> element that varies by only a single piece of information ("boilerplate" titles) is also bad; for example, a common <- title -> element for all pages with text like "Band Name - See videos, lyrics, posters, albums, reviews and concerts" contains a lot of uninformative text
-
-- Brand your titles concisely. The <- title -> element on your site's home page is a reasonable place to include some additional information about your site. For example:
-  <- title ->ExampleSocialSite, a place for people to meet and mingle<- /title ->
-  But displaying that text in the <- title -> element of every single page on your site will look repetitive if several pages from your site are returned for the same query. In this case, consider including just your site name at the beginning or end of each <- title -> element, separated from the rest of the text with a delimiter such as a hyphen, colon, or pipe, like this:
-- Avoid including flight price information in <- title -> elements. Our systems will likely not show price information when generating title links for flight pages. This is because pricing for flights can change so fast (sometimes every few minutes), that what's shown in title links may not correspond to the actual price on the landing page.
-
-- use meta open graph tags to be able to be appealing on social platforms
-
-- Open Graph is important
-
-- Structed data and rich search results
-
-- Structed data and rich search results However, it is more important to supply fewer but complete and accurate recommended properties rather than trying to provide every possible recommended property with less complete, badly-formed, or inaccurate data.
-
-- rich text results have so many sub branches, like for softwares, organisations, educational courses and way much more
-
-For images as links, Google uses the alt attribute of the img element as anchor text, so be sure to add descriptive alt text to your images:
-
-Good:
-
-```html
-<a href="/add-to-cart.html"
-  ><img src="enchiladas-in-shopping-cart.jpg" alt="add enchiladas to your cart"
-/></a>
-```
-
-Bad (empty alt text and empty link text):
-
-```html
-<a href="/add-to-cart.html"
-  ><img src="enchiladas-in-shopping-cart.jpg" alt=""
-/></a>
-```
-
-# Write good anchor text
-
-Good anchor text is descriptive, reasonably concise, and relevant to the page that it's on and to the page it links to. It provides context for the link, and sets the expectation for your readers. The better your anchor text, the easier it is for people to navigate your site and for Google to understand what the page you're linking to is about.
-
-**Bad (too generic):**
-[**Click here**](https://example.com) to learn more.
-[**Read more**](https://example.com).
-Learn more about our cheese on our [**website**](https://example.com).
-We have an [**article**](https://example.com) that provides more background on how the cheese is made.
-
-**Tip**: Try reading only the anchor text (out of context) and check if it's specific enough to make sense by itself. If you don't know what the page could be about, you need more descriptive anchor text.
-
-**Better (more descriptive):**
-For a full list of cheese available for purchase, see the [**list of cheese types**](https://example.com).
-
-**Bad (weirdly long):**
-Starting next Tuesday, the [**Knitted Cow invites local residents of Wisconsin to their grand re-opening by also offering complimentary cow-shaped ice sculptures**](https://example.com) to the first 20 customers.
-
-**Better (more concise):**
-Starting next Tuesday, the [**Knitted Cow invites local residents of Wisconsin**](https://example.com) to their grand re-opening by also offering complimentary cow-shaped ice sculptures to the first 20 customers.
-
-Write as naturally as possible, and resist the urge to cram every keyword that's related to the page that you're linking to (remember, keyword stuffing is a violation of our spam policies). Ask yourself, does the reader need these keywords to understand the next page? If it feels like you're forcing keywords into the anchor text, then it's probably too much.
-
-Remember to give context to your links: the words before and after links matter, so pay attention to the sentence as a whole. Don't chain up links next to each other; it's harder for your readers to distinguish between links, and you lose surrounding text for each link.
-
-**Bad (too many links next to each other):**
-I've written about cheese [**so**](https://example.com/page1) [**many**](https://example.com/page2) [**times**](https://example.com/page3) [**this**](https://example.com/page4) [**year**](https://example.com/page5).
-
-**Better (links are spaced out with context):**
-I've written about cheese so many times this year: who can forget the [**controversy over blue cheese and gorgonzola**](https://example.com/blue-cheese-vs-gorgonzola), the [**world's oldest brie**](https://example.com/worlds-oldest-brie) piece that won the Cheesiest Research Medal, the epic retelling of [**The Lost Cheese**](https://example.com/the-lost-cheese), and my personal favorite, [**A Boy and His Cheese: a story of two unlikely friends**](https://example.com/boy-and-his-cheese).
-
-- Internal links: cross-reference your own content
 
 ## What is this
 
@@ -121,12 +52,12 @@ and manually insert at least one user to be able to log in
 
 ```SQL
 
- CREATE TABLE users (id serial primary key, login_name text, creation_date text, password_hash text, profile_picture_url text, privilege text, public_name text)
+ CREATE TABLE users (id serial primary key, login_name text, creation_date text, password_hash text, profile_picture_url text, privilege text, public_name text, salt text)
 
 ```
 
 ```SQL
- CREATE TABLE variables (key text, value text[])
+ CREATE TABLE variables (key text, value text[], value_2 text[])
 
 ```
 
@@ -137,6 +68,13 @@ and manually insert at least one user to be able to log in
 ```SQL
  CREATE TABLE media (id serial primary key, full_url text, alt_text text)
 ```
+
+
+```SQL
+ CREATE TABLE projects (id serial primary key, "English" json, "Turkish" json)
+```
+
+
 
 ### Template literal guides,
 

@@ -58,7 +58,7 @@ module.exports = {
 
 				<input type="submit" />
 
-				<input required id="preview-markdown" value="preview" type="button" />
+				<input id="preview-markdown" value="preview" type="button" />
 </form>
 				<h2>Preview</h2>
 
@@ -77,89 +77,132 @@ module.exports = {
 				</style>
 	<script>
 
-	document.querySelector("#preview-markdown").addEventListener("click",async (e)=> {
-		
+	document.querySelector("#preview-markdown").addEventListener("click", async (e) => {
 
-		document.querySelector(".loading-block").classList.add("active")
-
-		const res = await fetch("https://api.github.com/markdown", {
-		headers: {"accept": "application/vnd.github+json"},
-		method:"POST",
-		body: JSON.stringify({"text": document.querySelector("#blog-markdown-content").value, mode: "gfm"})
-		})
-
-		if (res.ok){
-
-		document.querySelector(".markdown-body").innerHTML = await res.text()
-		document.querySelector(".loading-block").classList.remove("active")
-		
- 		}else {
- 						 document.querySelector("#qMQEbc-container").classList.add("active")
-		 document.querySelector("#qMQEbc-message").innerHTML = await response.text()
+try{
 
 
-		}
+if (window.navigator.onLine) {
 
-		})
+document.querySelector(".loading-block").classList.add("active")
 
-	document.querySelector("#add-blog-form").addEventListener("submit", async (e)=> {
+const res = await fetch("https://api.github.com/markdown", {
+	headers: {
+		"accept": "application/vnd.github+json"
+	},
+	method: "POST",
+	body: JSON.stringify({
+		"text": document.querySelector("#blog-markdown-content").value,
+		mode: "gfm"
+	})
+})
 
-		document.querySelector(".loading-block").classList.add("active")
-
-
-		e.preventDefault()
-		
- 	const res = await fetch("https://api.github.com/markdown", {
-		headers: {"accept": "application/vnd.github+json"},
-		method:"POST",
-		body: JSON.stringify({"text": document.querySelector("#blog-markdown-content").value, mode: "gfm"})
-		})
-
-		if (res.ok){
+document.querySelector(".loading-block").classList.remove("active")
 
 
- 		const formData = new FormData();
+if (res.ok) {
 
-		formData.append("blog_title", document.querySelector("#blog-title").value)
-		formData.append("blog_markdown_rendered", await res.text())
-		formData.append("blog_markdwon_raw", document.querySelector("#blog-markdown-content").value)
-		formData.append("blog_language", document.querySelector("#blog-form-language").value)
-		formData.append("blog_description", document.querySelector("#blog-description").value)
-		formData.append("blog_cover_image", document.querySelector("#blog-cover-image").value)
+	document.querySelector(".markdown-body").innerHTML = await res.text()
+	document.querySelector("#qMQEbc-container").classList.remove("active")
 
-		const response = await fetch("..", {
-		method:"PUT",
-		body: formData,
-		
-		}) 
+} else {
+	document.querySelector("#qMQEbc-container").classList.add("active")
+	document.querySelector("#qMQEbc-message").innerHTML = "Error While Preview"
 
-		document.querySelector(".loading-block").classList.remove("active")
+
+}
+
+} else {
+document.querySelector("#qMQEbc-container").classList.add("active")
+document.querySelector("#qMQEbc-message").innerHTML = "No Internet Connection"
+}
+
+
+}
+catch(e){
+document.querySelector("#qMQEbc-container").classList.add("active")
+document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
+}
+
+
+})
 
 
 
-		if(response.ok){
 
-		console.log(response)
-
-		window.location.href = ".."
-		
-		}
-		else{
-		 document.querySelector("#qMQEbc-container").classList.add("active")
-		 document.querySelector("#qMQEbc-message").innerHTML = await response.text()
-		}
-				
-		}else{
-				 document.querySelector("#qMQEbc-container").classList.add("active")
-		 document.querySelector("#qMQEbc-message").innerHTML = await response.text()
+document.querySelector("#add-blog-form").addEventListener("submit", async (e) => {
 
 
-		}
+    e.preventDefault()
 
+try{
+    if (window.navigator.onLine) {
+
+        document.querySelector(".loading-block").classList.add("active")
+
+
+        const res = await fetch("https://api.github.com/markdown", {
+            headers: {
+                "accept": "application/vnd.github+json"
+            },
+            method: "POST",
+            body: JSON.stringify({
+                "text": document.querySelector("#blog-markdown-content").value,
+                mode: "gfm"
+            })
+        })
+
+
+        if (res.ok) {
+
+            const formData = new FormData();
+
+            formData.append("blog_title", document.querySelector("#blog-title").value)
+            formData.append("blog_markdown_rendered", await res.text())
+            formData.append("blog_markdwon_raw", document.querySelector("#blog-markdown-content").value)
+            formData.append("blog_language", document.querySelector("#blog-form-language").value)
+            formData.append("blog_description", document.querySelector("#blog-description").value)
+            formData.append("blog_cover_image", document.querySelector("#blog-cover-image").value)
+
+            const response = await fetch("..", {
+                method: "PUT",
+                body: formData,
+
+            })
+
+
+            document.querySelector(".loading-block").classList.remove("active")
+
+
+
+            if (response.ok) {
+                window.location.href = ".."
+            } else {
+                document.querySelector("#qMQEbc-container").classList.add("active")
+                document.querySelector("#qMQEbc-message").innerHTML = "Blog could not be added due to error"
+            }
+
+
+
+        } else {
+            document.querySelector("#qMQEbc-container").classList.add("active")
+            document.querySelector("#qMQEbc-message").innerHTML = "No Internet Connection"
+
+
+        }
+
+    }
+
+
+
+})
+}
+catch(e){
+            document.querySelector("#qMQEbc-container").classList.add("active")
+            document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
+}
 
 	
-
-		})
 
 
 	document.querySelectorAll(".nav-menu__item").forEach( (node, index) => { node.classList.remove("is-active")})
@@ -173,3 +216,6 @@ module.exports = {
   `,
     }),
 };
+
+
+
