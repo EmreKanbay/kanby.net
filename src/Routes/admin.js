@@ -12,10 +12,10 @@ const errorPage = (error)=> {
 
 	return `
 	<h1>🤠Aw shit🤠</h1>
-				<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please please report this error code to developer: </h2>
-								<h2>Meanwhile developer: 😱🤕😓😭</h2>
-				<p>Message: ${error.message}</p>
-				<p>Detais: ${error.stack}</p>
+	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please report this error code to developer > emre@kanby.net </h2>
+	<h2>Meanwhile developer: 😱🤕😓😭</h2>
+	<p>Message: ${error.message}</p>
+	<p>Detais: ${error.stack}</p>
 	`
 }
 
@@ -334,14 +334,6 @@ subAdmin.get("/settings", async (req, res) => {
 	}
 });
 
-admin.use("/:id", async (req, res) => {
-	try {
-	res.send(await Pages.NotFound.html({ language: "English" }));
-		
-	} catch (e) {
-		console.log(e);
-		res.status(500).send(`<h1>Error: </h1> \n  `)
-	}
-});
+
 
 module.exports = admin;

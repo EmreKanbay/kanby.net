@@ -17,6 +17,13 @@ const crypto = require("crypto");
 const LoginPage = require("./Resources/Pages/Visitor/LoginPage");
 const Framework = require("#Framework");
 const Components = require("#Components");
+const NotFound = require("./Resources/Pages/NotFound");
+
+const errorPage = () =>
+   `<h1>🤠kanby.net has encountered with an error🤠</h1>
+	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please report this error to Developer at emre@kanby.net </h2>
+	<h2>Meanwhile developer: 😱🤕😓😭</h2>
+  <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">`
 
 
 const cdn = process.env.CDN_DOMAIN;
@@ -169,6 +176,7 @@ root.use(
 
 //DB check
 root.use((req, res, next) => {
+  
   if (SQL_works && REDIS_works) next();
   else res.send("DB is not connected");
 });
@@ -551,6 +559,16 @@ root.get("/sitemap.xml", async function (req, res, next) {
   }
 });
 
+// Security of Root endpoint
+root.all("/", (req, res, next) => {
+
+if(req.method == "GET") next()
+else {  res.status(405).send({
+  message: `The method ${req.method} is not allowed for the requested endpoint.`,
+});}
+
+})
+
 // These are the endpoints which should not add trailing slashes
 // Rest endpoints will have trailing slashes to be consistent
 root.use((req, res, next) => {
@@ -562,21 +580,26 @@ root.use((req, res, next) => {
   ];
 
   try {
-    if (
-      !preservedPaths.includes(req.path.split("/")[1]) ||
-      typeof req.path.split("/")[1] == "undefined"
-    ) {
-      if (req.path.substr(-1) !== "/") {
-        res.redirect(req.path + "/");
-        return;
+
+    if(req.method == "GET"){
+
+      if (
+        !preservedPaths.includes(req.path.split("/")[1]) ||
+        typeof req.path.split("/")[1] == "undefined"
+      ) {
+        if (req.path.substr(-1) !== "/") {
+          res.redirect(req.path + "/");
+          return;
+        } else {
+          next();
+          return;
+        }
       } else {
         next();
         return;
       }
-    } else {
-      next();
-      return;
-    }
+    }else { next()}
+
   } catch (e) {
     res.send(`<h1>Error: </h1> \n  `);
     console.log(e);
@@ -587,6 +610,7 @@ root.use((req, res, next) => {
 // Authemtication middleware For Logged In Users
 const auth = async (req, res, next) => {
   try {
+
     const token = req?.cookies?.SessionToken;
 
     var JWT_SECRET;
@@ -598,6 +622,7 @@ const auth = async (req, res, next) => {
       await client.set("JWT_SECRET", JWT_SECRET);
       await client.expire("JWT_SECRET", 60 * 60 * 24 * 7);
     }
+
 
     if (req.method == "POST" && req.originalUrl == "/admin/login/") {
       const redisKey = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
@@ -673,13 +698,22 @@ const auth = async (req, res, next) => {
       }
     }
 
+
     if (!token) {
-      res.send(await LoginPage.html({ langCode: "en", language: "English" }));
-      return;
+
+      if(req.method == "GET"){
+        res.send(await LoginPage.html({ langCode: "en", language: "English" }));
+      }else{
+        res.status(405).send({
+          error: "Not Autherized",
+        });
+        
+      }
+            return;
     }
 
     var ret;
-
+// Verifies The Token
     try {
       ret = jwt.verify(token, JWT_SECRET, (err, payload) => {
         if (err) {
@@ -704,6 +738,8 @@ const auth = async (req, res, next) => {
       ret = { pass: false };
     }
 
+
+// if token is valid and ip address is same and user id is accurate, continiue with next()
     if (ret.pass) {
       const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1`;
 
@@ -716,17 +752,33 @@ const auth = async (req, res, next) => {
         next();
         return;
       } else {
-        res.status(401).send("<h1>Not Authorized</h1>");
+        if(req.method == "GET"){
+          res.status(401).send("<h1>Not autherized</h1>")
+        }else{
+          res.status(401).send({
+            error: "Not autherized",
+          });
+          
+        }
         return;
       }
     } else {
       res.clearCookie("SessionToken");
-      res.send(await LoginPage.html({ langCode: "en", language: "English" }));
+      if(req.method == "GET"){
+        res.send(await LoginPage.html({ langCode: "en", language: "English" }));
+      }else{
+        res.status(401).send({
+          error: "Not autherized",
+        });
+        
+      }
       return;
     }
     // else values = [req?.cookies?.login_name, req?.cookies?.password_hash];
+
+
   } catch (e) {
-    res.send(`<h1>Error: </h1> \n ${e} `);
+    res.status(500).send(errorPage());
     return;
   }
 };
@@ -746,10 +798,6 @@ root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
 // Check authentication for admin page
 root.use("/admin/:id", auth, async (req, res, next) => {
   try {
-    if (req.method == "POST" && req.originalUrl == "/admin/login/") {
-      return;
-    }
-
     if (req.originalUrl == `/admin/${req.customData.record.rows[0]["id"]}/`)
       res.redirect(
         `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
@@ -760,7 +808,7 @@ root.use("/admin/:id", auth, async (req, res, next) => {
       );
     else next();
   } catch (e) {
-    res.send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(errorPage());
     console.log(e);
   }
 });
@@ -775,11 +823,48 @@ module.exports = {
   crypto,
 };
 
+
+
 // Route Handlers
 const visitor = require("./Routes/visitor");
 const admin = require("./Routes/admin");
 root.use("/admin", admin);
 root.use("/", visitor);
+
+
+
+// not found page
+root.use("/:lang", async (req, res, next) => {
+  try {
+    if (req.method == "GET") {
+      console.log(1234)
+      const query = await pool.query("SELECT * FROM variables");
+      if (query.rows[0].value.includes(req.params.lang)) {
+        const langCode =
+          query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)];
+
+        res.send(
+          await NotFound.html({
+            language: req.params.lang,
+            langCode: langCode,
+          }),
+        );
+      } else {
+        res.send(
+          await NotFound.html({ language: "English", langCode: "en" }),
+        );
+      }
+    } else {
+      res.status(405).send({
+        message: `The method ${req.method} is not allowed for the requested endpoint.`,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(errorPage());
+  }
+});
+
 
 // start server
 root.listen(3000, () => {

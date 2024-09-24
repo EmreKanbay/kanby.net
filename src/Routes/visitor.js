@@ -3,12 +3,26 @@ const Pages = require("#Pages");
 
 const visitor = Index.express.Router();
 
+
+const errorPage = ()=> {
+
+
+	return `
+	<h1>🤠kanby.net has encountered with an error🤠</h1>
+	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please report this error to Developer at emre@kanby.net </h2>
+	<h2>Meanwhile developer: 😱🤕😓😭</h2>
+  <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">
+	`
+}
+
+
 // redirect / to /Turkish
 visitor.get("/", async (req, res, next) => {
   try {
     res.redirect(new URL(`/Turkish/`, req.protocol + "://" + req.get("host")));
-  } catch (e) {
-    res.send("Error");
+
+   } catch (e) {
+    res.status(500).send(errorPage());
     console.log(e);
   }
 
@@ -18,31 +32,33 @@ visitor.get("/", async (req, res, next) => {
 // validate :lang and if it is valid and exist in SQL db redirect to relevant page
 visitor.use("/:lang", async (req, res, next) => {
   try {
-    if (/^([A-Z]{1}[a-z]+)$/.test(req.params.lang)) {
-      const query = await Index.pool.query("SELECT * FROM variables");
-      if (query.rows[0].value.includes(req.params.lang)) {
-        req.langCode =
-          query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)];
-        req.language = req.params.lang;
-        req.clientIP =
-          typeof req?.header("x-forwarded-for") == "string"
-            ? req?.header("x-forwarded-for").split(",")[0]
-            : "";
+      if (/^([A-Z]{1}[a-z]+)$/.test(req.params.lang)) {
+        const query = await Index.pool.query("SELECT * FROM variables");
+        if (query.rows[0].value.includes(req.params.lang)) {
+          req.langCode =
+            query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)];
+          req.language = req.params.lang;
+          req.clientIP =
+            typeof req?.header("x-forwarded-for") == "string"
+              ? req?.header("x-forwarded-for").split(",")[0]
+              : "";
 
-        next();
+          next();
+        } else {
+          next();
+        }
       } else {
-        res.send(
-          await Pages.NotFound.html({ language: "English", langCode: "en" }),
-        );
+        next();
       }
-    } else {
-      res.send(
-        await Pages.NotFound.html({ language: "English", langCode: "en" }),
-      );
-    }
+
   } catch (e) {
     console.log(e);
-    res.send("Error");
+    if(req.method == "GET"){
+      res.status(500).send(errorPage());
+    }else{
+      res.status(500).send(JSON.stringify({"Message": "Error"}));
+    }
+
   }
 });
 
@@ -61,7 +77,7 @@ subVisitor.get("/", async (req, res, next) => {
     );
   } catch (e) {
     console.log(e);
-    res.send("Error");
+    res.status(500).send(errorPage());
   }
 });
 
@@ -77,7 +93,7 @@ subVisitor.get("/blogs/", async (req, res, next) => {
   } catch (error) {
     console.log(error);
 
-    res.send("Error");
+    res.status(500).send(errorPage());
   }
 });
 
@@ -115,7 +131,7 @@ subVisitor.get("/blogs/:id", async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    res.send("Error");
+    res.status(500).send(errorPage());
   }
 });
 
@@ -131,7 +147,7 @@ subVisitor.get("/projects/", async (req, res, next) => {
     );
   } catch (error) {
     console.log(error);
-    res.send("Error");
+    res.status(500).send(errorPage());
   }
 });
 
@@ -169,7 +185,7 @@ subVisitor.get("/projects/:id", async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    res.send("Error");
+    res.status(500).send(errorPage());
   }
 });
 
@@ -184,7 +200,7 @@ subVisitor.get("/contact/", async (req, res, next) => {
     );
   } catch (error) {
     console.log(error);
-    res.send("Error");
+    res.status(500).send(errorPage());
   }
 });
 
@@ -201,7 +217,7 @@ subVisitor.get("/about/", async (req, res, next) => {
     );
   } catch (error) {
     console.log(error);
-    res.send("Error");
+    res.status(500).send(errorPage());
   }
 });
 
@@ -217,41 +233,9 @@ subVisitor.get("/services/", async (req, res, next) => {
     );
   } catch (error) {
     console.log(error);
-    res.send("Error");
+    res.status(500).send(errorPage());
   }
 });
 
-
-// not found page
-visitor.use("/:lang", async (req, res, next) => {
-  try {
-    if (req.method == "GET") {
-      const query = await Index.pool.query("SELECT * FROM variables");
-      if (query.rows[0].value.includes(req.params.lang)) {
-        const langCode =
-          query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)];
-
-        res.send(
-          await Pages.NotFound.html({
-            language: req.language,
-            langCode: langCode,
-          }),
-        );
-      } else {
-        res.send(
-          await Pages.NotFound.html({ language: "English", langCode: "en" }),
-        );
-      }
-    } else {
-      res.status(405).send({
-        error: "Method Not Allowed",
-        message: `The method ${req.method} is not allowed for the requested endpoint.`,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.send("Error");
-  }
-});
 
 module.exports = visitor;
