@@ -93,14 +93,16 @@ module.exports = {
 					
 					})
 		document.querySelector(".loading-block").classList.remove("active")
+					var rows = await res.json()
 
 					if(res.ok){
 					
-					var rows = await res.text()
 
-					document.querySelector("#all-blogs-list").innerHTML = rows 
+					document.querySelector("#all-blogs-list").innerHTML = rows.message 
  
 					}else{
+
+					document.querySelector("#all-blogs-list").innerHTML = rows.message 
 					
 					}
 					

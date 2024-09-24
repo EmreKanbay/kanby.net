@@ -6,7 +6,7 @@ const visitor = Index.express.Router();
 const errorPage = () => {
   return `
 	<h1>🤠kanby.net has encountered with an error🤠</h1>
-	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please report this error to Developer at emre@kanby.net </h2>
+	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please tell this error to Developer at emre@kanby.net </h2>
 	<h2>Meanwhile developer: 😱🤕😓😭</h2>
   <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">
 	`;
@@ -21,7 +21,6 @@ visitor.get("/", async (req, res, next) => {
     
   }
 
-  // res.send(await Pages.LandingPage.html({}))
 });
 
 // validate :lang and if it is valid and exist in SQL db redirect to relevant page
@@ -40,7 +39,7 @@ visitor.use("/:lang", async (req, res, next) => {
 
         next();
       } else {
-        res.send(
+        res.status(404).send(
           await Pages.NotFound.html({
             language: "English",
             langCode: "en",
@@ -48,7 +47,7 @@ visitor.use("/:lang", async (req, res, next) => {
         );
       }
     } else {
-      res.send(
+      res.status(404).send(
         await Pages.NotFound.html({
           language: "English",
           langCode: "en",
@@ -71,7 +70,7 @@ visitor.use("/:lang/", subVisitor);
 // Landing Page
 subVisitor.get("/", async (req, res, next) => {
   try {
-    res.send(
+    res.status(200).send(
       await Pages.LandingPage.html({
         language: req.language,
         langCode: req.langCode,
@@ -87,7 +86,7 @@ subVisitor.get("/", async (req, res, next) => {
 // blogs page
 subVisitor.get("/blogs/", async (req, res, next) => {
   try {
-    res.send(
+    res.status(200).send(
       await Pages.Blogs.html({
         language: req.language,
         langCode: req.langCode,
@@ -108,7 +107,7 @@ subVisitor.get("/blogs/:id", async (req, res, next) => {
 
     if (/^[0-9]+$/.test(req.params.id)) {
       if (record.rows[0].ids.includes(Number(req.params.id))) {
-        res.send(
+        res.status(200).send(
           await Pages.SingleBlog.html({
             language: req.language,
             blog_id: req.params.id,
@@ -116,7 +115,7 @@ subVisitor.get("/blogs/:id", async (req, res, next) => {
           }),
         );
       } else {
-        res.send(
+        res.status(404).send(
           await Pages.NotFound.html({
             language: req.language,
             langCode: req.langCode,
@@ -124,7 +123,7 @@ subVisitor.get("/blogs/:id", async (req, res, next) => {
         );
       }
     } else {
-      res.send(
+      res.status(404).send(
         await Pages.NotFound.html({
           language: req.language,
           langCode: req.langCode,
@@ -140,7 +139,7 @@ subVisitor.get("/blogs/:id", async (req, res, next) => {
 // projects page
 subVisitor.get("/projects/", async (req, res, next) => {
   try {
-    res.send(
+    res.status(200).send(
       await Pages.Projects.html({
         language: req.language,
         langCode: req.langCode,
@@ -160,7 +159,7 @@ subVisitor.get("/projects/:id", async (req, res, next) => {
 
     if (/^[0-9]+$/.test(req.params.id)) {
       if (record.rows[0].ids.includes(Number(req.params.id))) {
-        res.send(
+        res.status(200).send(
           await Pages.SingleProject.html({
             language: req.language,
             id: req.params.id,
@@ -168,7 +167,7 @@ subVisitor.get("/projects/:id", async (req, res, next) => {
           }),
         );
       } else {
-        res.send(
+        res.status(404).send(
           await Pages.NotFound.html({
             language: req.language,
             langCode: req.langCode,
@@ -176,7 +175,7 @@ subVisitor.get("/projects/:id", async (req, res, next) => {
         );
       }
     } else {
-      res.send(
+      res.status(404).send(
         await Pages.NotFound.html({
           language: req.language,
           langCode: req.langCode,
@@ -192,7 +191,7 @@ subVisitor.get("/projects/:id", async (req, res, next) => {
 //contact page
 subVisitor.get("/contact/", async (req, res, next) => {
   try {
-    res.send(
+    re.status(200).send(
       await Pages.Contact.html({
         language: req.language,
         langCode: req.langCode,
@@ -207,7 +206,7 @@ subVisitor.get("/contact/", async (req, res, next) => {
 // about page
 subVisitor.get("/about/", async (req, res, next) => {
   try {
-    res.send(
+    res.status(200).send(
       await Pages.About.html({
         language: req.language,
         langCode: req.langCode,
@@ -222,7 +221,7 @@ subVisitor.get("/about/", async (req, res, next) => {
 //services page
 subVisitor.get("/services/", async (req, res, next) => {
   try {
-    res.send(
+    res.status(200).send(
       await Pages.Services.html({
         language: req.language,
         langCode: req.langCode,

@@ -21,7 +21,7 @@ const NotFound = require("./Resources/Pages/NotFound");
 
 const errorPage = () =>
   `<h1>🤠kanby.net has encountered with an error🤠</h1>
-	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please report this error to Developer at emre@kanby.net </h2>
+	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please tell this error to Developer at emre@kanby.net </h2>
 	<h2>Meanwhile developer: 😱🤕😓😭</h2>
   <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">`;
 
@@ -160,7 +160,7 @@ root.use(
 //DB check
 root.use((req, res, next) => {
   if (SQL_works && REDIS_works) next();
-  else res.send("DB is not connected");
+  else res.status(503).send("DB is not connected");
 });
 
 // Rate Limit
@@ -184,7 +184,7 @@ root.use(async (req, res, next) => {
     }
 
     if (Number(await currentCount_login) >= 10) {
-      res.status(401).send("too many requests");
+      res.status(429).send("too many requests");
       return;
     }
 
@@ -196,7 +196,7 @@ root.use(async (req, res, next) => {
       return;
     } else {
       if (Number(await currentCount) >= 50) {
-        res.send("too many requests");
+        res.status(429).send("too many requests");
         return;
       } else {
         await client.incr(redisKey); // Increments by 1
@@ -207,7 +207,7 @@ root.use(async (req, res, next) => {
     }
   } catch (e) {
     
-    res.send(`<h1>Error: \n  </h1>`);
+    res.status(500).send(`<h1>Error: \n  </h1>`);
     return;
   }
 });
@@ -234,7 +234,7 @@ Sitemap: https://kanby.net/sitemap.xml
 root.get("/manifest.json", function (req, res, next) {
   try {
     res.set("content-type", "application/json; charset=utf-8");
-    res.send(
+    res.status(200).send(
       JSON.stringify({
         manifest_version: 3,
         name: "kanby.net - freelance design and development",
@@ -274,7 +274,7 @@ root.get("/manifest.json", function (req, res, next) {
   } catch (e) {
     res.type("text/html");
 
-    res.send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(`<h1>Error: </h1> \n  `);
     
   }
 });
@@ -350,10 +350,10 @@ root.get("/rss.xml", async function (req, res, next) {
 		</channel>
  </rss>`;
 
-    res.send(rss);
+    res.status(200).send(rss);
   } catch (e) {
     res.type("text/html");
-    res.send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(`<h1>Error: </h1> \n  `);
     
   }
 });
@@ -533,10 +533,10 @@ root.get("/sitemap.xml", async function (req, res, next) {
  </urlset>
  `;
 
-    res.send(sitemap);
+    res.status(200).send(sitemap);
   } catch (e) {
     res.type("text/html");
-    res.send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(`<h1>Error: </h1> \n  `);
     
   }
 });
@@ -582,7 +582,7 @@ root.use((req, res, next) => {
       next();
     }
   } catch (e) {
-    res.send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(`<h1>Error: </h1> \n  `);
     
   }
 });
@@ -623,7 +623,7 @@ const auth = async (req, res, next) => {
 
       if (token) {
         res.clearCookie("SessionToken");
-        res.send("Existing token found, token removed.");
+        res.status(403).send("Existing token found, token removed.");
         return;
       }
 
@@ -669,7 +669,7 @@ const auth = async (req, res, next) => {
         return;
       } else {
         res
-          .status(401)
+          .status(403)
           .send(
             await Components.visitor.ErrorBox.html({ message: "login failed" }),
           );
@@ -679,10 +679,10 @@ const auth = async (req, res, next) => {
 
     if (!token) {
       if (req.method == "GET") {
-        res.send(await LoginPage.html({ langCode: "en", language: "English" }));
+        res.status(401).send(await LoginPage.html({ langCode: "en", language: "English" }));
       } else {
-        res.status(405).send({
-          error: "Not Autherized",
+        res.status(401).send({
+          message: "Not Autherized",
         });
       }
       return;
@@ -731,7 +731,7 @@ const auth = async (req, res, next) => {
           res.status(401).send("<h1>Not autherized</h1>");
         } else {
           res.status(401).send({
-            error: "Not autherized",
+            message: "Not autherized",
           });
         }
         return;
@@ -742,7 +742,7 @@ const auth = async (req, res, next) => {
         res.send(await LoginPage.html({ langCode: "en", language: "English" }));
       } else {
         res.status(401).send({
-          error: "Not autherized",
+          message: "Not autherized",
         });
       }
       return;
@@ -761,7 +761,7 @@ root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
       `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
     );
   } catch (e) {
-    res.send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(`<h1>Error: </h1> \n  `);
     
   }
 });
@@ -810,14 +810,14 @@ root.use("/:lang", async (req, res, next) => {
         const langCode =
           query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)];
 
-        res.send(
+        res.status(404).send(
           await NotFound.html({
             language: req.params.lang,
             langCode: langCode,
           }),
         );
       } else {
-        res.send(await NotFound.html({ language: "English", langCode: "en" }));
+        res.status(404).send(await NotFound.html({ language: "English", langCode: "en" }));
       }
     } else {
       res.status(405).send({

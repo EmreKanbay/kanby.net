@@ -9,7 +9,8 @@ const admin = Index.express.Router();
 
 const errorPage = (error) => {
   return `
-	<h1>🤠Aw shit🤠</h1>
+	<h1>🤠Aw shit here we go again🤠</h1>
+	<h1>🔥Error🔥</h1>
 	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please report this error code to developer > emre@kanby.net </h2>
 	<h2>Meanwhile developer: 😱🤕😓😭</h2>
 	<p>Message: ${error.message}</p>
@@ -18,9 +19,18 @@ const errorPage = (error) => {
 };
 
 admin.use("/:user_id", async (req, res, next) => {
-  
-  req.userID = req.params.user_id;
-  next();
+	try{
+		req.userID = req?.params?.user_id;
+		next();
+	}catch(e){
+		if(req.method == "GET"){
+
+			res.status(500).send(errorPage(e))
+		}else{
+			res.status(500).send(JSON.stringify({message: "error"}))
+
+		}
+	}
 });
 
 const subAdmin = Index.express.Router();
@@ -28,7 +38,7 @@ admin.use("/:user_id/", subAdmin);
 
 subAdmin.get("/dashboard/", async (req, res, next) => {
   try {
-    res.send(await Pages.AdminDashboard.html({ user_id: req.userID }));
+    res.status(200).send(await Pages.AdminDashboard.html({ user_id: req.userID }));
   } catch (error) {
     
     res.status(500).send(errorPage(error));
@@ -37,7 +47,7 @@ subAdmin.get("/dashboard/", async (req, res, next) => {
 
 subAdmin.get("/blogs/add/", async (req, res, next) => {
   try {
-    res.send(await Pages.AddBlog.html({ user_id: req.userID }));
+    res.status(200).send(await Pages.AddBlog.html({ user_id: req.userID }));
   } catch (error) {
     
     res.status(500).send(errorPage(error));
@@ -49,7 +59,7 @@ subAdmin
 
   .get(async (req, res) => {
     try {
-      res.send(await Pages.AllBlogs.html({ user_id: req.userID }));
+      res.status(200).send(await Pages.AllBlogs.html({ user_id: req.userID }));
     } catch (error) {
       
       res.status(500).send(errorPage(error));
@@ -65,10 +75,9 @@ subAdmin
       var record = await Index.pool.query(text, values);
 
       if (record.rowCount == 0) {
-        res.send("<h1>No blog exist</h1>");
+        res.status(404).send(JSON.stringify({message: "<h1>Not Found</h1>"}));
       } else {
-        res.send(
-          "".concat(
+        res.status(200).send(JSON.stringify({message: "".concat(
             ...record.rows.map((t) => {
               return `
 	 <a href="/admin/${req.userID}/blogs/${t.id}/" data-title="${he.encode(t.title)}"
@@ -79,12 +88,12 @@ subAdmin
 	 </a>
 			`;
             }),
-          ),
+          )})
         );
       }
     } catch (error) {
       
-      res.status(500).send(`<h1>Error: </h1> \n  `);
+      res.status(500).send(JSON.stringify({message: "error"}))
     }
   })
 
@@ -111,10 +120,10 @@ subAdmin
 
       await Index.pool.query(text, values);
 
-      res.send();
+      res.status(200).send(JSON.stringify({message: "success"}));
     } catch (e) {
       
-      res.status(500).send(`<h1>Error: </h1> \n  `);
+      res.status(500).send(JSON.stringify({message: "error"}))
     }
   });
 
@@ -122,7 +131,7 @@ subAdmin
   .route("/blogs/:id/")
   .get(async (req, res) => {
     try {
-      res.send(
+      res.status(200).send(
         await Pages.ViewBlog.html({ id: req.params.id, user_id: req.userID }),
       );
     } catch (error) {
@@ -138,10 +147,10 @@ subAdmin
 
       await Index.pool.query(text, values);
 
-      res.send();
+      res.status(200).send(JSON.stringify({message: "success"}));
     } catch (error) {
       
-      res.status(500).send(`<h1>Error: </h1> \n  `);
+      res.status(500).send(JSON.stringify({message: "error"}));
     }
   })
 
@@ -161,11 +170,9 @@ subAdmin
       ];
 
       await Index.pool.query(text, values);
-
-      res.send();
+      res.status(200).send(JSON.stringify({message: "success"}));
     } catch (error) {
-      
-      res.status(500).send(`<h1>Error: </h1> \n  `);
+            res.status(500).send(JSON.stringify({message: "error"}));
     }
   });
 
@@ -173,7 +180,7 @@ subAdmin
   .route("/projects/")
   .get(async (req, res) => {
     try {
-      res.send(await Pages.AllProjects.html({ user_id: req.userID }));
+      res.status(200).send(await Pages.AllProjects.html({ user_id: req.userID }));
     } catch (error) {
       
       res.status(500).send(errorPage(error));
@@ -192,16 +199,14 @@ subAdmin
       const values = [...Object.values(req.body)];
 
       var record = await Index.pool.query(text, values);
-
-      res.send();
+      res.status(200).send(JSON.stringify({message: "success"}));
     } catch (error) {
-      
-      res.status(500).send(`<h1>Error: </h1> \n  `);
+            res.status(500).send(JSON.stringify({message: "error"}));
     }
   });
 subAdmin.get("/projects/add/", async (req, res) => {
   try {
-    res.send(await Pages.AddProject.html({ user_id: req.userID }));
+    res.status(200).send(await Pages.AddProject.html({ user_id: req.userID }));
   } catch (error) {
     
     res.status(500).send(errorPage(error));
@@ -212,7 +217,7 @@ subAdmin
   .route("/projects/:id")
   .get(async (req, res) => {
     try {
-      res.send(
+      res.status(200).send(
         await Pages.ViewProject.html({
           id: req.params.id,
           user_id: req.userID,
@@ -230,11 +235,9 @@ subAdmin
       const values = [req.body.id];
 
       await Index.pool.query(text, values);
-
-      res.send();
+      res.status(200).send(JSON.stringify({message: "success"}));
     } catch (error) {
-      
-      res.status(500).send(`<h1>Error: </h1> \n  `);
+            res.status(500).send(JSON.stringify({message: "error"}));
     }
   })
   .patch(Index.upload.none(), async (req, res) => {
@@ -244,19 +247,17 @@ subAdmin
       const values = [Object.values(req.body)[0], Object.values(req.body)[1]];
 
       var query = await Index.pool.query(text, values);
-
-      res.send();
-    } catch (error) {
-      
-      res.status(500).send(`<h1>Error: </h1> \n  `);
-    }
+      res.status(200).send(JSON.stringify({message: "success"}));
+     } catch (error) {
+            res.status(500).send(JSON.stringify({message: "error"}));
+     }
   });
 
 subAdmin
   .route("/media/")
   .get(async (req, res, next) => {
     try {
-      res.send(await Pages.Media.html({ user_id: req.userID }));
+      res.status(200).send(await Pages.Media.html({ user_id: req.userID }));
     } catch (error) {
       
       res.status(500).send(errorPage(error));
@@ -268,10 +269,9 @@ subAdmin
       const values = [req.body.id];
 
       await Index.pool.query(text, values);
-      res.send();
+	        res.status(200).send(JSON.stringify({message: "success"}));
     } catch (error) {
-      
-      res.status(500).send(`<h1>Error: </h1> \n  `);
+            res.status(500).send(JSON.stringify({message: "error"}));
     }
   })
 
@@ -286,16 +286,15 @@ subAdmin
       const values = [`${cdn}/media/${mediaName}`, req.body.alt_text];
 
       await Index.pool.query(text, values);
-      res.send();
+	        res.status(200).send(JSON.stringify({message: "success"}));
     } catch (e) {
-      
-      res.status(500).send(`<h1>Error: </h1> \n  `);
+            res.status(500).send(JSON.stringify({message: "error"}));
     }
   });
 
 subAdmin.get("/media/add/", async (req, res, next) => {
   try {
-    res.send(await Pages.AddMedia.html({ user_id: req.userID }));
+    res.status(200).send(await Pages.AddMedia.html({ user_id: req.userID }));
   } catch (error) {
     
     res.status(500).send(errorPage(error));
@@ -304,7 +303,7 @@ subAdmin.get("/media/add/", async (req, res, next) => {
 
 subAdmin.get("/security", async (req, res) => {
   try {
-    res.send(await Pages.Security.html({ user_id: req.userID }));
+    res.status(200).send(await Pages.Security.html({ user_id: req.userID }));
   } catch (error) {
     
     res.status(500).send(errorPage(error));
@@ -313,7 +312,7 @@ subAdmin.get("/security", async (req, res) => {
 
 subAdmin.get("/settings", async (req, res) => {
   try {
-    res.send(await Pages.Settings.html({ user_id: req.userID }));
+    res.status(200).send(await Pages.Settings.html({ user_id: req.userID }));
   } catch (error) {
     
     res.status(500).send(errorPage(error));
