@@ -1,7 +1,7 @@
 const Index = require("#Index");
 
 const Pages = require("#Pages");
-
+ 
 const visitor = Index.express.Router();
 
 visitor.get("/", async (req, res, next) => {
@@ -46,9 +46,10 @@ const subVisitor = Index.express.Router()
 
 visitor.use("/:lang/", subVisitor)
 
-subVisitor.get("/", async (req, res, next) => {
+subVisitor.get("/" ,async (req, res, next) => {
 	try {
 
+ 
 res.send(await Pages.LandingPage.html({ language: req.language, langCode:req.langCode, reqIp: req.clientIP}));
 	
 	} catch (e) {

@@ -51,7 +51,7 @@ module.exports = {
                 </li>
                 <li class="external-link">
                     <img
-                        src="${cdn}/assets/twitter.svg"
+                        src="${cdn}/assets/x-icon.svg"
                         alt="" />
                     <a
                     rel="nofollow"
@@ -95,7 +95,7 @@ module.exports = {
                 </li>
                 <li class="external-link">
                     <img
-                        src="${cdn}/assets/Instagram.svg"
+                        src="${cdn}/assets/instagram.svg"
                         alt="" />
                     <a
                     rel="nofollow"

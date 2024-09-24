@@ -1,453 +1,479 @@
-//Import libraries
 const express = require("express");
 const multer = require("multer");
 const pg = require("pg");
-const dotenv = require("dotenv")
-const path = require("path");
+require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
-const cors = require('cors');
+const cors = require("cors");
 const Framework = require("#Framework");
 const Components = require("#Components");
-const LoginPage = require("./Resources/Pages/Visitor/LoginPage")
-const jwt = require("jsonwebtoken")
-const helmet = require('helmet');
+const LoginPage = require("./Resources/Pages/Visitor/LoginPage");
+const jwt = require("jsonwebtoken");
+const helmet = require("helmet");
+const compression = require("compression");
 
+// Setup Cache Server
+const redis = require("redis");
+const client = redis
+  .createClient({
+    url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  })
+  .on("error", (err) => console.log("Redis Client Error", err))
+  .on("connect", () => {
+    console.log("Redis connected succesfully");
+  });
 
-
-const redis = require('redis');
-const client =  redis.createClient({
-		url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,  // e.g. '192.168.1.100'
-}).on('error', err => console.log('Redis Client Error', err))
-.on('connect', () => {
-	console.log('Redis connected succesfully');
-});;
-
-
-
- 
-(async ()=> {
-
-	try {
-
-	await client.connect(); 
-	// await client.flushDb(); 
-
-	} catch (error) {
-		console.log("redis connection ERROR")
-
-console.log(error)		
-	}
-	
-})()
-
-
-
-process.on('SIGINT', async () => {
-    console.log('Reddis shutting down...');
-    await client.quit();
-    console.log('Redis connection closed');
-
-	console.log('Postgres shutting down...');
-	await pool.end()
-    console.log('Postgres connection closed');
-    process.exit(0); // Exit the process after cleanup
-});
- 
-const JWT_SECRET = crypto.randomBytes(64).toString('hex')
-const nonce_value = crypto.randomBytes(16).toString('hex')
- 
-dotenv.config();
+// Setup SQL Server
 const { Pool } = pg;
 const pool = new Pool({
-	user: process.env.PG_USER,
-	host: process.env.PG_HOST,
-	port: process.env.PG_PORT,
-	password: process.env.PG_PASSWORD,
-	database: process.env.PG_DATABASE,
+  user: process.env.PG_USER,
+  host: process.env.PG_HOST,
+  port: process.env.PG_PORT,
+  password: process.env.PG_PASSWORD,
+  database: process.env.PG_DATABASE,
+  idleTimeoutMillis: 30000, // close idle clients after 30 seconds
+  connectionTimeoutMillis: 2000, // return an error after 2 seconds if connection cannot be established
 });
- 
-const cdn = process.env.CDN_DOMAIN;
-
 var DB_connected = false;
 
+// Connect Redis and Postgres
 (async () => {
-	try {
+  try {
+    await pool.query("SELECT * FROM users LIMIT 1");
+    await pool.query("SELECT * FROM blogs LIMIT 1");
+    await pool.query("SELECT * FROM variables LIMIT 1");
+    await pool.query("SELECT * FROM projects LIMIT 1");
+    await pool.query("SELECT * FROM media LIMIT 1");
+    console.log("Postgres connected succesfully");
+    DB_connected = true;
+  } catch (e) {
+    DB_connected = false;
 
-		await pool.query("SELECT * FROM users LIMIT 1");
-		await pool.query("SELECT * FROM blogs LIMIT 1");
-		await pool.query("SELECT * FROM variables LIMIT 1");
-		await pool.query("SELECT * FROM projects LIMIT 1");
-		await pool.query("SELECT * FROM media LIMIT 1");
-		console.log("Postgres connected succesfully");
-		DB_connected = true;
-	} catch (e) {
-		DB_connected = false;
+    console.log(e);
+  }
 
-		console.log(e);
-	}
+  try {
+    await client.connect();
+
+    // await client.flushDb();
+  } catch (error) {
+    console.log("redis connection ERROR");
+
+    console.log(error);
+  }
 })();
 
+// Shutdown DBs properly
+process.on("SIGINT", async () => {
+  console.log("Reddis shutting down...");
+  await client.quit();
+  console.log("Redis connection closed");
+  console.log("Postgres shutting down...");
+  await pool.end();
+  console.log("Postgres connection closed");
+  process.exit(0); // Exit the process after cleanup
+});
 
+process.on("SIGTERM", async () => {
+  console.log("Reddis shutting down...");
+  await client.quit();
+  console.log("Redis connection closed");
+  console.log("Postgres shutting down...");
+  await pool.end();
+  console.log("Postgres connection closed");
+  process.exit(0); // Exit the process after cleanup
+});
+
+const cdn = process.env.CDN_DOMAIN;
 const upload = multer();
 
-
-const auth = async (req, res, next) => {
-	try{
- 	const token = req?.cookies?.SessionToken
-
-
-	 if(req.method == "POST" && req.originalUrl == "/admin/login/") {
-
-		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}:login`
-		const currentCount = await client.get(redisKey);
-
-		var temp = typeof req?.header('x-forwarded-for') == "string" ? `${req?.header('x-forwarded-for').split(",")[0]}` : "undefined"
-		var tempLogin = `login_attempts:${temp}:${Date.now()}`
-		await client.set(tempLogin, temp)  
-		await client.expire(tempLogin, 172800)
-
- 		if(isNaN(Number(String(await currentCount)))){
-			await client.set(redisKey, "0")
-			await client.expire(redisKey, 172800)
-
-
- 
-	  }else{
-
-			  await client.incr(redisKey); // Increments by 1
-			
-	  }
-
- 
-		if (token){
-			res.clearCookie("SessionToken")
-			res.send("Existing token found, token removed.")
-			return;
-		}
-
-		const text = `SELECT id, password_hash,salt  FROM "users" WHERE login_name = $1`;
-
-		const values = [String(req?.body?.login_name)];
-		var record = await pool.query(text, values);
-	
-		if (record.rows.length == 1 && record.rows[0].password_hash == crypto.createHash("sha256").update(String(record.rows[0].salt) + ""  + String(req?.body?.login_password)).digest("hex")) {
-
-				const token = jwt.sign({username: req?.body?.login_name, ip: typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}, JWT_SECRET, { expiresIn: '7200s' });
-				res.cookie("SessionToken", token, { expires: new Date(Date.now() + 3600*60*10), httpOnly: true, secure: true, sameSite:"strict" });
-				req.customData = {record}
-				next()
-				await client.set(redisKey, "0")
-				await client.expire(redisKey, 172800)
-				return
-	// res.cookie("login_name", record.rows[0].login_name, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
-	// res.cookie("password_hash", record.rows[0].password_hash, { expires: new Date(Date.now() + 36000000), httpOnly: true, secure: true });
-	// res.cookie("user_id", record.rows[0].id, { expires: new Date(Date.now() + 36000000), httpOnly: true });
-	} else  {  
-		
-		res.status(401).send(await Components.visitor.ErrorBox.html({ message: "login failed" }))
-		return;
-	};
-	
-	
-	 }
-
-  	if (!token){
-		res.send(await LoginPage.html({langCode: "en", language: "English"}));	
-		return
-	}
-
-
-	var ret;
-	
-	try{
-		ret = jwt.verify(token, JWT_SECRET, (err, payload) => {
-			if (err) {return { pass:false }}
-				
-
-  		
-			if(String(payload.ip) == String(typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : "")){
-					return { pass:true, payload: payload}
-				}else{
-					return { pass:false }
-
-				}
-	})
-	}catch(e){console.log(e); ret = { pass:false }}
-
-
-
-
-if (ret.pass) {
-
-	const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1`;
-
-const values = [ret?.payload?.username];
-
-var record = await pool.query(text, values);
-
-if(req.params.id == record.rows[0].id || req.params.id == "login" ){
-	
-	req.customData = {record}
-		next()
-		return;
-
-}else{
-	res.status(401).send("<h1>Not Authorized</h1>");
-	return
-}
-}
-else{
-	res.clearCookie("SessionToken")
-	res.send(await LoginPage.html({langCode: "en", language: "English"}));	
-	return
-} 
-// else values = [req?.cookies?.login_name, req?.cookies?.password_hash];  
- 	
-	}
-	catch(e){
-		res.send(`<h1>Error: </h1> \n ${e} `)
-		return
-	}
-
-
-}; 
-
-//Global variables
+// Export variables
 module.exports = {
-	__rootDir: __dirname,
-	pool,
-	upload,
-	express,
-	auth,
-	client,
-	nonce_value,
-	crypto
+  __rootDir: __dirname,
+  pool,
+  upload,
+  express,
+  client,
+  crypto,
 };
 
 // Setup Routes
 const root = express();
+
 const visitor = require("./Routes/visitor");
 const getComponents = require("./Routes/getComponent");
 const admin = require("./Routes/admin");
 
+/* SETUP MIDDLEWARES */
 
-// Setup Middlewares
- 
-root.set('env', 'production');
+// For Compression
+root.use(compression());
+root.use((req, res, next) => {
+  res.set("content-type", "text/html; charset=utf-8");
+  next();
+});
+
+// For Reading Request cookies
 root.use(cookieParser());
-root.use(cors({origin:"https://kanby.net/"}));
+
+// Cors Policy
+root.use(cors({ origin: "https://kanby.net/" }));
+
+// Hide "express.js" from visible on headers
 root.disable("x-powered-by");
- 
-root.use( "/:lang/" ,helmet({
 
-	xFrameOptions: { action: "deny" },
-	referrerPolicy: {
-		policy: "no-referrer",
-	  },
-	xPoweredBy: false,
-	contentSecurityPolicy:  {
-		directives: {
-		  defaultSrc: ["'none'"], 
-		  objectSrc: ["'none'"],
-		  frameAncestors: ["'none'"],
-		  fontSrc: ["'self'", "https://cdn.kanby.net"],
-		  scriptSrc: ["'self'", "'unsafe-inline'"],
-		  upgradeInsecureRequests: [], 
-		  styleSrc: ["'self'", "'unsafe-inline'" , "https://cdn.kanby.net"], // Allow styles from self and inline styles
-		  imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
-		  connectSrc: ["'self'", "https://cdn.kanby.net"], // Allow connections, fetch requests
-		  // Add other directives as needed
-		},
-	  },
-}))
-
-root.use( "/admin/",helmet({
-
-	xFrameOptions: { action: "deny" },
-	referrerPolicy: {
-		policy: "no-referrer",
-	  },
-	xPoweredBy: false,
-	contentSecurityPolicy:  {
-		directives: {
-		  defaultSrc: ["'none'"], 
-		  objectSrc: ["'none'"],
-		  frameAncestors: ["'none'"],
-		  fontSrc: ["'self'", "https://cdn.kanby.net"],
-		  scriptSrcAttr: ["self", "'unsafe-inline'"],
-		  scriptSrc: [
-			"'self'", 
-			"'unsafe-inline'", 
-			"https://unpkg.com/react@18/umd/react.production.min.js",
-			"https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
-			'https://unpkg.com/babel-standalone@6/babel.js' ], // Allow scripts from self and CDN
-		  upgradeInsecureRequests: [], 
-		  styleSrc: ["'self'", "'unsafe-inline'" , "https://cdn.kanby.net"], // Allow styles from self and inline styles
-		  imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
-		  connectSrc: ["'self'", "https://cdn.kanby.net", 'https://api.github.com/markdown'], // Allow connections, fetch requests
-		  // Add other directives as needed
-		},
-	  },
-}))
-
-
+// Security Headers
+root.use(
+  "/:lang/",
+  helmet({
+    xFrameOptions: { action: "deny" },
+    referrerPolicy: {
+      policy: "no-referrer",
+    },
+    xPoweredBy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'none'"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        fontSrc: ["'self'", "https://cdn.kanby.net"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        upgradeInsecureRequests: [],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.kanby.net"], // Allow styles from self and inline styles
+        imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
+        connectSrc: ["'self'", "https://cdn.kanby.net"], // Allow connections, fetch requests
+        // Add other directives as needed
+      },
+    },
+  }),
+);
+root.use(
+  "/admin/",
+  helmet({
+    xFrameOptions: { action: "deny" },
+    referrerPolicy: {
+      policy: "no-referrer",
+    },
+    xPoweredBy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'none'"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        fontSrc: ["'self'", "https://cdn.kanby.net"],
+        scriptSrcAttr: ["self", "'unsafe-inline'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://unpkg.com/react@18/umd/react.production.min.js",
+          "https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
+          "https://unpkg.com/babel-standalone@6/babel.js",
+        ], // Allow scripts from self and CDN
+        upgradeInsecureRequests: [],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.kanby.net"], // Allow styles from self and inline styles
+        imgSrc: ["'self'", "https://cdn.kanby.net"], // Allow images from self and data URIs
+        connectSrc: [
+          "'self'",
+          "https://cdn.kanby.net",
+          "https://api.github.com/markdown",
+        ], // Allow connections, fetch requests
+        // Add other directives as needed
+      },
+    },
+  }),
+);
 
 //DB check
 root.use((req, res, next) => {
-	if (DB_connected) next();
-	else res.send("DB is not connected");
+  if (DB_connected) next();
+  else res.send("DB is not connected");
 });
 
-
-// Too many request prevent
+// Rate Limit
 root.use(async (req, res, next) => {
-	try{
-	
-		const redisKey = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}:count`
-		const currentCount = await client.get(redisKey);
- 
-		const redisKey_login = `request:${typeof req?.header('x-forwarded-for') == "string" ? req?.header('x-forwarded-for').split(",")[0] : ""}:login`
-		const currentCount_login = await client.get(redisKey_login);
+  try {
+    const redisKey = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:count`;
+    const currentCount = await client.get(redisKey);
 
-	
-		var temp = typeof req?.header('x-forwarded-for') == "string" ? `${req?.header('x-forwarded-for').split(",")[0]}` : "undefined"
-		var tempRequest = `request_ips:${temp}:${Date.now()}:${req.path}`
- 
-		if(req.path.split("/")?.[1] != "admin") {
- 
-			await client.set(tempRequest, temp)
-			await client.expire(tempRequest, 172800)
+    const redisKey_login = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
+    const currentCount_login = await client.get(redisKey_login);
 
-		}
+    var temp =
+      typeof req?.header("x-forwarded-for") == "string"
+        ? `${req?.header("x-forwarded-for").split(",")[0]}`
+        : "undefined";
+    var tempRequest = `request_ips:${temp}:${Date.now()}:${req.path}`;
 
-		if(Number(await currentCount_login) >= 10){
-			res.status(401).send("too many requests")
-			return;
-		}
+    if (req.path.split("/")?.[1] != "admin") {
+      await client.set(tempRequest, temp);
+      await client.expire(tempRequest, 172800);
+    }
 
+    if (Number(await currentCount_login) >= 10) {
+      res.status(401).send("too many requests");
+      return;
+    }
 
-		if(isNaN(Number(String(await currentCount)))){
-  			await client.set(redisKey, "0")
-			await client.expire(redisKey, 100)
+    if (isNaN(Number(String(await currentCount)))) {
+      await client.set(redisKey, "0");
+      await client.expire(redisKey, 100);
 
- 			next()
- 			return;
-	
-		}else{
-			if(Number(await currentCount) >= 50){
-				res.send("too many requests")
-				return;
-			}else{
-				await client.incr(redisKey); // Increments by 1
-	
-				next()
-				return
-			}	
-		}
+      next();
+      return;
+    } else {
+      if (Number(await currentCount) >= 50) {
+        res.send("too many requests");
+        return;
+      } else {
+        await client.incr(redisKey); // Increments by 1
 
-	}catch(e){
+        next();
+        return;
+      }
+    }
+  } catch (e) {
+    console.log(e);
+    res.send(`<h1>Error: \n  </h1>`);
+    return;
+  }
+});
 
-		console.log(e)
-		res.send(`<h1>Error: \n  </h1>`)
-		return
-	}
+// Authemtication For Logged In Users
+const auth = async (req, res, next) => {
+  try {
+    const token = req?.cookies?.SessionToken;
 
-})
- 
+    var JWT_SECRET;
+
+    if (await client.get("JWT_SECRET")) {
+      JWT_SECRET = await client.get("JWT_SECRET");
+    } else {
+      JWT_SECRET = crypto.randomBytes(64).toString("hex");
+      await client.set("JWT_SECRET", JWT_SECRET);
+      await client.expire("JWT_SECRET", 60 * 60 * 24 * 7);
+    }
+
+    if (req.method == "POST" && req.originalUrl == "/admin/login/") {
+      const redisKey = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
+      const currentCount = await client.get(redisKey);
+
+      var temp =
+        typeof req?.header("x-forwarded-for") == "string"
+          ? `${req?.header("x-forwarded-for").split(",")[0]}`
+          : "undefined";
+      var tempLogin = `login_attempts:${temp}:${Date.now()}`;
+      await client.set(tempLogin, temp);
+      await client.expire(tempLogin, 172800);
+
+      if (isNaN(Number(String(await currentCount)))) {
+        await client.set(redisKey, "0");
+        await client.expire(redisKey, 172800);
+      } else {
+        await client.incr(redisKey); // Increments by 1
+      }
+
+      if (token) {
+        res.clearCookie("SessionToken");
+        res.send("Existing token found, token removed.");
+        return;
+      }
+
+      const text = `SELECT id, password_hash,salt  FROM "users" WHERE login_name = $1`;
+
+      const values = [String(req?.body?.login_name)];
+      var record = await pool.query(text, values);
+
+      if (
+        record.rows.length == 1 &&
+        record.rows[0].password_hash ==
+          crypto
+            .createHash("sha256")
+            .update(
+              String(record.rows[0].salt) +
+                "" +
+                String(req?.body?.login_password),
+            )
+            .digest("hex")
+      ) {
+        const token = jwt.sign(
+          {
+            username: req?.body?.login_name,
+            ip:
+              typeof req?.header("x-forwarded-for") == "string"
+                ? req?.header("x-forwarded-for").split(",")[0]
+                : "",
+          },
+          JWT_SECRET,
+          { expiresIn: "7200s" },
+        );
+        res.cookie("SessionToken", token, {
+          expires: new Date(Date.now() + 3600 * 60 * 10),
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+        });
+        req.customData = { record };
+        next();
+        await client.set(redisKey, "0");
+        await client.expire(redisKey, 172800);
+        return;
+      } else {
+        res
+          .status(401)
+          .send(
+            await Components.visitor.ErrorBox.html({ message: "login failed" }),
+          );
+        return;
+      }
+    }
+
+    if (!token) {
+      res.send(await LoginPage.html({ langCode: "en", language: "English" }));
+      return;
+    }
+
+    var ret;
+
+    try {
+      ret = jwt.verify(token, JWT_SECRET, (err, payload) => {
+        if (err) {
+          return { pass: false };
+        }
+
+        if (
+          String(payload.ip) ==
+          String(
+            typeof req?.header("x-forwarded-for") == "string"
+              ? req?.header("x-forwarded-for").split(",")[0]
+              : "",
+          )
+        ) {
+          return { pass: true, payload: payload };
+        } else {
+          return { pass: false };
+        }
+      });
+    } catch (e) {
+      console.log(e);
+      ret = { pass: false };
+    }
+
+    if (ret.pass) {
+      const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1`;
+
+      const values = [ret?.payload?.username];
+
+      var record = await pool.query(text, values);
+
+      if (req.params.id == record.rows[0].id || req.params.id == "login") {
+        req.customData = { record };
+        next();
+        return;
+      } else {
+        res.status(401).send("<h1>Not Authorized</h1>");
+        return;
+      }
+    } else {
+      res.clearCookie("SessionToken");
+      res.send(await LoginPage.html({ langCode: "en", language: "English" }));
+      return;
+    }
+    // else values = [req?.cookies?.login_name, req?.cookies?.password_hash];
+  } catch (e) {
+    res.send(`<h1>Error: </h1> \n ${e} `);
+    return;
+  }
+};
+
+// Robots.txt
 root.get("/robots.txt", function (req, res, next) {
-  
-  try{
-   	res.type("text/plain");
-   
-	res.send(`User-agent: *
+  try {
+    res.set("content-type", "text/plain; charset=utf-8");
+
+    res.send(`User-agent: *
 Disallow: /admin/
 Sitemap: https://kanby.net/sitemap.xml
    `);
-  }catch(e){
-	console.log(e)
-    
+  } catch (e) {
+    console.log(e);
+
     res.type("text/html");
 
-	res.send(`<h1>Error: </h1> \n  `)
-}
-
+    res.send(`<h1>Error: </h1> \n  `);
+  }
 });
 
+// Manifest.json - Static
 root.get("/manifest.json", function (req, res, next) {
-  try{
-    res.type("application/json");
-    res.send(JSON.stringify(
-	{
-    "manifest_version": 3,
-    "name": "kanby.net - freelance design and development",
-    "short_name": "kanby.net",
-    "description": "Freelance desinger and developer",
-     "version": "1.0.0",
-	"author": "Emre Kanbay",
-	"icons": [
-	
-       {
-         "src": cdn + "/assets/logo-16.png",
-         "sizes": "16x16",
-         "type": "image/png"
-       },
-       {
-         "src": cdn + "/assets/logo-64.png",
-         "sizes": "64x64",
-         "type": "image/png"
-       },
-       {
-         "src": cdn + "/assets/logo-128.png",
-         "sizes": "128x128",
-         "type": "image/png"
-       },
-       {
-         "src": cdn + "/assets/logo.svg",
-         "sizes": "any",
-         "type": "image/svg+xml"
-       }
-     ],
-     "start_url": "/",
-     "display": "standalone",
-     "background_color": "#ffffff",
-     "theme_color": "#ffffff",
-     "orientation": "portrait",
-	}))
-    
-  }catch(e){
+  try {
+    res.set("content-type", "application/json; charset=utf-8");
+    res.send(
+      JSON.stringify({
+        manifest_version: 3,
+        name: "kanby.net - freelance design and development",
+        short_name: "kanby.net",
+        description: "Freelance desinger and developer",
+        version: "1.0.0",
+        author: "Emre Kanbay",
+        icons: [
+          {
+            src: cdn + "/assets/logo-16.png",
+            sizes: "16x16",
+            type: "image/png",
+          },
+          {
+            src: cdn + "/assets/logo-64.png",
+            sizes: "64x64",
+            type: "image/png",
+          },
+          {
+            src: cdn + "/assets/logo-128.png",
+            sizes: "128x128",
+            type: "image/png",
+          },
+          {
+            src: cdn + "/assets/logo.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+          },
+        ],
+        start_url: "/",
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#ffffff",
+        orientation: "portrait",
+      }),
+    );
+  } catch (e) {
     res.type("text/html");
 
-	res.send(`<h1>Error: </h1> \n  `)
-    console.log(e)
+    res.send(`<h1>Error: </h1> \n  `);
+    console.log(e);
   }
+});
 
-	;});
-
+// Rss.xml - Dynamic - English Only For Now
 root.get("/rss.xml", async function (req, res, next) {
-  
-try{
- 	res.type("application/xml");
- 
-	const rss = await Framework.render
- `<?xml version="1.0" encoding="UTF-8"?>
+  try {
+    res.set("content-type", "application/xml; charset=utf-8");
+
+    const rss = await Framework.render`<?xml version="1.0" encoding="UTF-8"?>
 	<rss version="2.0">
 	  <channel>
 		<title>Blogs</title>
 		<link>https://kanby.net/English/blogs/</link>
 		${async () => {
-try {
-	
-	const text = `SELECT * FROM blogs Where language='English'`;
- 
-	const values = [];
+      try {
+        const text = `SELECT * FROM blogs Where language='English'`;
 
-	var record = await pool.query(text, values);
+        const values = [];
 
-	return "".concat(
-		...(await Promise.all(
-			record.rows.map(t => {
-				return `
+        var record = await pool.query(text, values);
+
+        return "".concat(
+          ...(await Promise.all(
+            record.rows.map((t) => {
+              return `
 	<item>
 		<title>${t.title}</title>
 		<link>https://kanby.net/English/blogs/${t.id}/</link>
@@ -455,63 +481,63 @@ try {
 		<pubDate>${new Date(t.creation_date * 1)}</pubDate>
 	</item>
 				`;
-			}),
-		)),
-	);
-
-} catch (error) {
-	console.log(error)
-	return ``
-}
-		}}
+            }),
+          )),
+        );
+      } catch (error) {
+        console.log(error);
+        return ``;
+      }
+    }}
 		</channel>
  
 		<channel>
 		<title>Projects</title>
 		<link>https://kanby.net/English/projects/</link>
 		${async () => {
-try {
-	const text = `SELECT * FROM projects`;
- 
-	const values = [];
+      try {
+        const text = `SELECT * FROM projects`;
 
-	var record = await pool.query(text, values);
+        const values = [];
 
-	return "".concat(
-		...(await Promise.all(
-			record.rows.map(t => {
-				return `
+        var record = await pool.query(text, values);
+
+        return "".concat(
+          ...(await Promise.all(
+            record.rows.map((t) => {
+              return `
 	<item>
 		<title>${t["English"].title}</title>
 		<link>https://kanby.net/English/projects/${t.id}/</link>
 		<description>${t["English"].description}</description>
 	</item>
 				`;
-			}),
-		)),
-	);
-} catch (error) {
-	console.log(error)
-	return``
-}
-		}}
+            }),
+          )),
+        );
+      } catch (error) {
+        console.log(error);
+        return ``;
+      }
+    }}
 		</channel>
- </rss>`
- 
-	res.send(rss);
-}catch(e){
-	res.type("text/html");
-	res.send(`<h1>Error: </h1> \n  `)
-  console.log(e)
- }
+ </rss>`;
+
+    res.send(rss);
+  } catch (e) {
+    res.type("text/html");
+    res.send(`<h1>Error: </h1> \n  `);
+    console.log(e);
+  }
 });
 
+// Sitemap.xml - Dynamic - Multilinugal
 root.get("/sitemap.xml", async function (req, res, next) {
-try{
- 	res.type("application/xml");
- 
-	const sitemap = await Framework.render
- `<?xml version="1.0" encoding="UTF-8"?>
+  try {
+    res.set("content-type", "application/xml; charset=utf-8");
+
+    const sitemap =
+      await Framework.render`<?xml version="1.0" encoding="UTF-8"?>
  
  <urlset 
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -594,72 +620,70 @@ try{
 	</url>
  
 		${async () => {
-try {
-	
-	const text = `SELECT * FROM blogs Where language='English'`;
- 
-	const values = [];
+      try {
+        const text = `SELECT * FROM blogs Where language='English'`;
 
-	var record = await pool.query(text, values);
+        const values = [];
 
-	return "".concat(
-		...(await Promise.all(
-			record.rows.map(t => {
-				return `
+        var record = await pool.query(text, values);
+
+        return "".concat(
+          ...(await Promise.all(
+            record.rows.map((t) => {
+              return `
 <url>
 <loc>https://kanby.net/English/blogs/${t.id}/</loc>   
 <xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/${t.id}/" />
 </url>
 					`;
-			}),
-		)),
-	);
-
-} catch (error) {
-	console.log(error)
-	return``
-}
-		}}
+            }),
+          )),
+        );
+      } catch (error) {
+        console.log(error);
+        return ``;
+      }
+    }}
  
 				${async () => {
-try {
-	const text = `SELECT * FROM blogs Where language='Turkish'`;
- 
-	const values = [];
+          try {
+            const text = `SELECT * FROM blogs Where language='Turkish'`;
 
-	var record = await pool.query(text, values);
+            const values = [];
 
-	return "".concat(
-		...(await Promise.all(
-			record.rows.map(t => {
-				return `
+            var record = await pool.query(text, values);
+
+            return "".concat(
+              ...(await Promise.all(
+                record.rows.map((t) => {
+                  return `
 <url>
 <loc>https://kanby.net/Turkish/blogs/${t.id}/</loc>   
 <xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/${t.id}/" />
 </url>
 				`;
-			}),
-		)),
-	);
-} catch (error) {
-	console.log(error)
-	return ``
-}
-		}}
+                }),
+              )),
+            );
+          } catch (error) {
+            console.log(error);
+            return ``;
+          }
+        }}
  
  
 						${async () => {
-try {
-	const text = `SELECT * FROM projects`;
- 
-	const values = [];
+              try {
+                const text = `SELECT * FROM projects`;
 
-	var record = await pool.query(text, values);
+                const values = [];
 
-	return "".concat(
-		...(await Promise.all(
-			record.rows.map(t => {
-				return `
+                var record = await pool.query(text, values);
+
+                return "".concat(
+                  ...(await Promise.all(
+                    record.rows.map((t) => {
+                      return `
 <url>
 <loc>https://kanby.net/Turkish/projects/${t.id}/</loc>   
 <xhtml:link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${t.id}/" />
@@ -671,98 +695,97 @@ try {
 <xhtml:link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/${t.id}/" />
 </url>
 				`;
-			}),
-		)),
-	);
-} catch (error) {
-	console.log(error)
-	return``
-	
-}
-		}}
+                    }),
+                  )),
+                );
+              } catch (error) {
+                console.log(error);
+                return ``;
+              }
+            }}
  </urlset>
- `
- 
-	res.send(sitemap);
-}catch(e){
-	res.type("text/html");
-	res.send(`<h1>Error: </h1> \n  `)
-  console.log(e)
-}
-});
+ `;
 
+    res.send(sitemap);
+  } catch (e) {
+    res.type("text/html");
+    res.send(`<h1>Error: </h1> \n  `);
+    console.log(e);
+  }
+});
 
 // These are the endpoints which should not add trailing slashes
+// Rest endpoints will have trailing slashes to be consistent
 root.use((req, res, next) => {
-	var preservedPaths = ["mainfest.json", "sitemap.xml", "assets", "robots.txt", "rss.xml"];
+  var preservedPaths = [
+    "mainfest.json",
+    "sitemap.xml",
+    "robots.txt",
+    "rss.xml",
+  ];
 
-try{
- 	if (!preservedPaths.includes(req.path.split("/")[1]) || typeof req.path.split("/")[1] == "undefined") {
-		if (req.path.substr(-1) !== "/") {
-			res.redirect(req.path + "/");
-			return;
-		} else {
-			next();
-			return;
-		}
-	} else {
-		next();
-		return;
-	}
-}catch(e){
- 	res.send(`<h1>Error: </h1> \n  `)
-  console.log(e)
-}
+  try {
+    if (
+      !preservedPaths.includes(req.path.split("/")[1]) ||
+      typeof req.path.split("/")[1] == "undefined"
+    ) {
+      if (req.path.substr(-1) !== "/") {
+        res.redirect(req.path + "/");
+        return;
+      } else {
+        next();
+        return;
+      }
+    } else {
+      next();
+      return;
+    }
+  } catch (e) {
+    res.send(`<h1>Error: </h1> \n  `);
+    console.log(e);
+  }
 });
 
+// Process Login attemt
+root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
+  try {
+    res.redirect(
+      `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
+    );
+  } catch (e) {
+    res.send(`<h1>Error: </h1> \n  `);
+    console.log(e);
+  }
+});
 
-root.post("/admin/login/", upload.none(), auth , async (req, res, next) => {
-  
-	try{	
-		res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
-	}catch(e){
-		res.send(`<h1>Error: </h1> \n  `)
-		console.log(e)
-	  
-	}
-  
-	
-  })
-
-
-
-
+// Admin Page
 root.use("/admin/:id", auth, async (req, res, next) => {
-  
-	try {
-		if(req.method == "POST" && req.originalUrl == "/admin/login/") {return}
+  try {
+    if (req.method == "POST" && req.originalUrl == "/admin/login/") {
+      return;
+    }
 
- 	if (req.originalUrl == `/admin/${req.customData.record.rows[0]["id"]}/`) res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
-	else if (req.originalUrl == "/admin/login/") res.redirect(`${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`);
-    else next(); 
-
-	
-	} catch (e) {
-		res.send(`<h1>Error: </h1> \n  `)
-		console.log(e)
-	}
+    if (req.originalUrl == `/admin/${req.customData.record.rows[0]["id"]}/`)
+      res.redirect(
+        `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
+      );
+    else if (req.originalUrl == "/admin/login/")
+      res.redirect(
+        `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
+      );
+    else next();
+  } catch (e) {
+    res.send(`<h1>Error: </h1> \n  `);
+    console.log(e);
+  }
 });
-
-
-
-
-// root.use("/media", express.static(path.join(__dirname, "Media")));
 
 // Route Handlers
-root.use("/assets", express.static(path.join(__dirname, "Assets")));
 root.use("/admin", admin);
 root.use("/get-component", getComponents);
 root.use("/", visitor);
 
-
-
-
 // start server
 root.listen(3000, () => {
-	console.log("Server Connected");
+  console.log("Server Connected");
 });
