@@ -195,12 +195,15 @@ try{
 
 
 
-})
 }
 catch(e){
             document.querySelector("#qMQEbc-container").classList.add("active")
             document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
 }
+
+
+
+})
 
 	
 
@@ -216,6 +219,7 @@ catch(e){
   `,
     }),
 };
+
 
 
 

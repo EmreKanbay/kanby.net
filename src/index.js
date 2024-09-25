@@ -217,7 +217,7 @@ root.get("/robots.txt", function (req, res, next) {
   try {
     res.set("content-type", "text/plain; charset=utf-8");
 
-    res.send(`User-agent: *
+    res.status(200).send(`User-agent: *
 Disallow: /rss.xml
 Disallow: /manifest.json
 Disallow: /admin/
@@ -228,7 +228,7 @@ Sitemap: https://kanby.net/sitemap.xml
 
     res.type("text/html");
 
-    res.send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(errorPage());
   }
 });
 
@@ -276,7 +276,7 @@ root.get("/manifest.json", function (req, res, next) {
   } catch (e) {
     res.type("text/html");
 
-    res.status(500).send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(errorPage());
     
   }
 });
@@ -355,7 +355,7 @@ root.get("/rss.xml", async function (req, res, next) {
     res.status(200).send(rss);
   } catch (e) {
     res.type("text/html");
-    res.status(500).send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(errorPage());
     
   }
 });
@@ -538,7 +538,7 @@ root.get("/sitemap.xml", async function (req, res, next) {
     res.status(200).send(sitemap);
   } catch (e) {
     res.type("text/html");
-    res.status(500).send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(errorPage());
     
   }
 });
@@ -584,7 +584,7 @@ root.use((req, res, next) => {
       next();
     }
   } catch (e) {
-    res.status(500).send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(errorPage());
     
   }
 });
@@ -741,7 +741,7 @@ const auth = async (req, res, next) => {
     } else {
       res.clearCookie("SessionToken");
       if (req.method == "GET") {
-        res.send(await LoginPage.html({ langCode: "en", language: "English" }));
+        res.status(401).send(await LoginPage.html({ langCode: "en", language: "English" }));
       } else {
         res.status(401).send({
           message: "Not autherized",

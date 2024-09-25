@@ -184,6 +184,12 @@ module.exports = {
  document.querySelector("#edit-blog-form").addEventListener("submit", async (e)=> {
 	e.preventDefault()
 
+
+	try{
+	
+
+	if (window.navigator.onLine) {
+	
 		document.querySelector(".loading-block").classList.add("active")
 
 	const res = await fetch("https://api.github.com/markdown", {
@@ -208,21 +214,42 @@ module.exports = {
 
 		const res2 = await fetch(".", {
 		method:"PATCH",
-		body:formData
-
-		
-		
+		body:formData		
 		})
 		document.querySelector(".loading-block").classList.remove("active")
 
 
 		if(res2.ok) window.location.href = "./";
+		else{
+		
+			document.querySelector("#qMQEbc-container").classList.add("active")
+	document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
+	
+	}
 
 		}
+	else{
+	document.querySelector("#qMQEbc-container").classList.add("active")
+	document.querySelector("#qMQEbc-message").innerHTML = "Markdown Render Failed"
+	}
+
+	}
+	else{
+	
+		document.querySelector("#qMQEbc-container").classList.add("active")
+	document.querySelector("#qMQEbc-message").innerHTML = "No Internet Connection"
+	}
+
+	}
 
 
-
-
+	catch(e){
+	
+			document.querySelector("#qMQEbc-container").classList.add("active")
+	document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
+	}
+			
+	
 	})
 
 
@@ -237,12 +264,15 @@ document.querySelector("#blog-top-bar").style.display = "none"
 	
 	})
 
+
+
 	 document.querySelector("#delete-blog").addEventListener("click", async ()=> {
 	
-
+try{
+	if (window.navigator.onLine) {
+	
+	
 		const formData = new FormData()
-
-		formData.append("id", "test")
 
 		document.querySelector(".loading-block").classList.add("active")
 
@@ -260,8 +290,21 @@ document.querySelector("#blog-top-bar").style.display = "none"
 		
 		}else{
 		
+				document.querySelector("#qMQEbc-container").classList.add("active")
+	document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"}
 		}
 	 
+		
+	else{
+				document.querySelector("#qMQEbc-container").classList.add("active")
+	document.querySelector("#qMQEbc-message").innerHTML = "No Internet Connection"
+	}
+}
+catch(e){
+
+				document.querySelector("#qMQEbc-container").classList.add("active")
+	document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"}
+
 	
 	})
  
@@ -276,3 +319,4 @@ document.querySelector("#blog-top-bar").style.display = "none"
 	`,
     }),
 };
+

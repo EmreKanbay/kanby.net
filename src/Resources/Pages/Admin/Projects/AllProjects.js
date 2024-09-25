@@ -32,6 +32,8 @@ module.exports = {
           } else {
             return "".concat(
               ...record.rows.map((t) => {
+
+				console.log(t)
                 return `
 
  <a href="/admin/${data.user_id}/projects/${t.id}/"  class="all-blogs-item">

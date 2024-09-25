@@ -18,6 +18,7 @@ module.exports = {
                 ...(
                   await Index.pool.query(`SELECT * FROM "variables"`)
                 ).rows[0].value.map((t) => {
+					console.log(t)
                   return `
 
 								
@@ -131,9 +132,13 @@ module.exports = {
 
 	document.querySelectorAll(".preview-markdown").forEach(ty => {ty.addEventListener("click",async (e)=> {
 		
+try{
 
-		document.querySelector(".loading-block").classList.add("active")
+	if (window.navigator.onLine) {
+	
+	document.querySelector(".loading-block").classList.add("active")
 
+		
 		const res = await fetch("https://api.github.com/markdown", {
 		headers: {"accept": "application/vnd.github+json"},
 		method:"POST",
@@ -147,115 +152,134 @@ module.exports = {
 		
  		}else {
  						 document.querySelector("#qUp2bc-container").classList.add("active")
-		 document.querySelector("#qUp2bc-message").innerHTML = await response.text()
+		 document.querySelector("#qUp2bc-message").innerHTML = "No Internet Connection"
 
 
-		}
+		}}
+
+
+	else{
+	document.querySelector("#qMQEbc-container").classList.add("active")
+document.querySelector("#qMQEbc-message").innerHTML = "No Internet Connection"
+	}
+}
+catch(e){
+				document.querySelector("#qMQEbc-container").classList.add("active")
+document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
+
+}
+
+		
 
 		})})
+
+
+
 
 	document.querySelector("#add-project-form").addEventListener("submit", async (e)=> {
 		
 		e.preventDefault()
-		document.querySelector(".loading-block").classList.add("active")
 
 
 
-
-
-
-
-
- 		const formData = new FormData();
-			var all_langs = []
-
-	document.querySelectorAll("[data-lang]").forEach(uzs => {
+		try{
+			if (window.navigator.onLine) {
+			
+				document.querySelector(".loading-block").classList.add("active")
 		
-		all_langs.push(uzs.getAttribute("data-lang"))
+				 const formData = new FormData();
+					var all_langs = []
 		
-		})
-
-
-			var links = {}
-
-
-await Promise.all(all_langs.map(async yhz => {
-
-  
-
-
-		var res2 = await fetch("https://api.github.com/markdown", {
-			headers: {"accept": "application/vnd.github+json"},
-			method:"POST",
-			body: JSON.stringify({"text": document.querySelector("#project-markdown-content-" + yhz).value, mode: "gfm"})
-			})
-
-		if(res2.ok){
-
-
+			document.querySelectorAll("[data-lang]").forEach(uzs => {
+				
+				all_langs.push(uzs.getAttribute("data-lang"))
+				
+				})
 		
-				formData.append(yhz, JSON.stringify({
-		links: JSON.stringify(links),
-		title: document.querySelector("#project-title-" + yhz).value,
-		markdown_raw:  document.querySelector("#project-markdown-content-" + yhz).value,
-		markdown_rendered: await res2.text(),
-		language: yhz,
-		description: document.querySelector("#project-description-" + yhz).value,
-		thumbnail_url: document.querySelector("#project-cover-image-" + yhz).value,
-	
-		}))
-
-		}
-	
-
-
-	}))
 		
-
-		const response = await fetch("..", {
-		method:"PUT",
-		body: formData,
 		
-		}) 
-
-		document.querySelector(".loading-block").classList.remove("active")
-
-
-
-		if(response.ok){
-
- 
-		window.location.href = ".."
 		
-		}
-		else{
-		 document.querySelector("#qUp2bc-container").classList.add("active")
-		 document.querySelector("#qUp2bc-message").innerHTML = await response.text()
-		}
-
-
-	
-	
-
- 
+		await Promise.all(all_langs.map(async yhz => {
+		
+		  
+				var res2 = await fetch("https://api.github.com/markdown", {
+					headers: {"accept": "application/vnd.github+json"},
+					method:"POST",
+					body: JSON.stringify({"text": document.querySelector("#project-markdown-content-" + yhz).value, mode: "gfm"})
+					})
+		
+				if(res2.ok){
+		
+					var links = {}
+		
+					document.querySelectorAll(".link-title-"+ yhz).forEach(yxu => {
+						links[yxu.value] = yxu.nextElementSibling.nextElementSibling.value
+					})
 		
 				
-
-
-
-	
-
+						formData.append(yhz, JSON.stringify({
+				links: JSON.stringify(links),
+				title: document.querySelector("#project-title-" + yhz).value,
+				markdown_raw:  document.querySelector("#project-markdown-content-" + yhz).value,
+				markdown_rendered: await res2.text(),
+				language: yhz,
+				description: document.querySelector("#project-description-" + yhz).value,
+				thumbnail_url: document.querySelector("#project-cover-image-" + yhz).value,
+			
+				}))
+		
+				
+		
+		
+		
+				}else{
+					document.querySelector("#qUp2bc-container").classList.add("active")
+					document.querySelector("#qUp2bc-message").innerHTML = "Markdown Render Failed"
+				}
+			
+		
+		
+			}))
+		
+			const response = await fetch("..", {
+				method:"PUT",
+				body: formData,
+				
+				}) 
+		
+				document.querySelector(".loading-block").classList.remove("active")
+		
+		
+		
+				if(response.ok){
+		
+		 
+				window.location.href = ".."
+				
+				}
+				else{
+				 document.querySelector("#qUp2bc-container").classList.add("active")
+				 document.querySelector("#qUp2bc-message").innerHTML = "Unknown Error"
+				}
+			
+			}
+			else{
+							document.querySelector("#qMQEbc-container").classList.add("active")
+		document.querySelector("#qMQEbc-message").innerHTML = "No Internet  Connection"
+			}
+		}
+		catch(e){
+						document.querySelector("#qMQEbc-container").classList.add("active")
+		document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
+		}
 		})
 
 
 	document.querySelectorAll(".nav-menu__item").forEach( (node, index) => { node.classList.remove("is-active")})
 	document.querySelector(".navbar-projects").classList.add("is-active")
 	</script>
-
-	
-
-
-
   `,
     }),
 };
+
+

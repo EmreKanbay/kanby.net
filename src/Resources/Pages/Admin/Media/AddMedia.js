@@ -51,35 +51,49 @@ width: 40vw;
 document.querySelector("#media-form").addEventListener("submit", async (e)=> {
 	e.preventDefault();
 
-	const formData = new FormData();
- 
-	formData.append("file_name", document.querySelector("#media-name").value)
-	formData.append("alt_text", document.querySelector("#alt_text").value)
- 
-		document.querySelector(".loading-block").classList.add("active")
+try{
+	if (window.navigator.onLine) {
+		
+	document.querySelector(".loading-block").classList.add("active")
+		const formData = new FormData();
 
- 	const res = await fetch("..", {
-
-	method:"PUT",
-	body: formData,
-
-	
-	
-	})
-
-			document.querySelector(".loading-block").classList.remove("active")
+formData.append("file_name", document.querySelector("#media-name").value)
+formData.append("alt_text", document.querySelector("#alt_text").value)
 
 
-	if(res.ok) {
-                window.location.href = ".."
+ const res = await fetch("..", {
+
+method:"PUT",
+body: formData,
+
+})
+
+		document.querySelector(".loading-block").classList.remove("active")
+
+
+if(res.ok) {
+			window.location.href = ".."
+
+}
+else{
+
+ document.querySelector("#qMQEbc-container").classList.add("active")
+	 document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
+}
 	
 	}
 	else{
-	
-	 document.querySelector("#qMQEbc-container").classList.add("active")
-		 document.querySelector("#qMQEbc-message").innerHTML = await res.text()
-}
-}	)
+					document.querySelector("#qMQEbc-container").classList.add("active")
+document.querySelector("#qMQEbc-message").innerHTML = "No Internet Connection"
+}}
+
+catch(e){
+
+				document.querySelector("#qMQEbc-container").classList.add("active")
+document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"}
+
+
+})
 
 
 
@@ -96,3 +110,9 @@ document.querySelector("#media-form").addEventListener("submit", async (e)=> {
   `,
     }),
 };
+
+
+
+
+
+

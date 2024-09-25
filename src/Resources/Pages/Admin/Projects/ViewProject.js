@@ -242,166 +242,171 @@ ${async () => {
   <script>
 
 
-  	const addNewLink = (t, lng)=> {
+  const addNewLink = (t, lng)=> {
 
 
-		var a = document.createElement("div")
-		var b = document.createElement("span")
-		var c = document.createElement("input")
-		var d = document.createElement("span")
-		var e = document.createElement("input")
-		var f = document.createElement("input")
+	var a = document.createElement("div")
+	var b = document.createElement("span")
+	var c = document.createElement("input")
+	var d = document.createElement("span")
+	var e = document.createElement("input")
+	var f = document.createElement("input")
 
-		a.append(b)
-		a.append(c)
-		a.append(d)
-		a.append(e)
-		a.append(f)
+	a.append(b)
+	a.append(c)
+	a.append(d)
+	a.append(e)
+	a.append(f)
 
-	a.classList.add("project-link-cont-"+ lng)
-	b.innerText = "Title: "
-	c.classList.add("link-title-" + lng)
-	c.setAttribute("placeholder", "Title")	
-	c.setAttribute("type", "text")	
-	d.innerText = "Link: "
-	e.classList.add("link-link-" + lng)
-	e.setAttribute("placeholder", "Link")	
-	e.setAttribute("type", "text")	
- 	f.setAttribute("type", "button")	
- 	f.setAttribute("value", "-")	
-	f.addEventListener("click", (e) => {
+a.classList.add("project-link-cont-"+ lng)
+b.innerText = "Title: "
+c.classList.add("link-title-" + lng)
+c.setAttribute("placeholder", "Title")	
+c.setAttribute("type", "text")	
+d.innerText = "Link: "
+e.classList.add("link-link-" + lng)
+e.setAttribute("placeholder", "Link")	
+e.setAttribute("type", "text")	
+ f.setAttribute("type", "button")	
+ f.setAttribute("value", "-")	
+f.addEventListener("click", (e) => {
 
-		e.target.parentNode.remove()		
-		
-		
-		})
-
-
-
-	t.previousElementSibling.append(a)
- 
+	e.target.parentNode.remove()		
 	
-	}
+	
+	})
 
 
 
+t.previousElementSibling.append(a)
 
 
+}
 
-  
+
 document.querySelectorAll(".form-edit-project").forEach(ety => {ety.addEventListener("submit", async (e)=> {
-	e.preventDefault()
+e.preventDefault()
 
 
+try{
+
+	if (window.navigator.onLine) {
+	
 	const lngt = ety.getAttribute("data-language")
-	const frmid = ety.getAttribute("data-project-id")
+const frmid = ety.getAttribute("data-project-id")
 
- 
-		document.querySelector(".loading-block").classList.add("active")
 
-	const res = await fetch("https://api.github.com/markdown", {
-		headers: {"accept": "application/vnd.github+json"},
-		method:"POST",
-		body: JSON.stringify({"text": document.querySelector("#project-markdown-content-" + lngt).value, mode: "gfm"})
-		})
+document.querySelector(".loading-block").classList.add("active")
 
-		const markdown_rndnr = await res.text()
-		
-		const formData = new FormData()
+const res = await fetch("https://api.github.com/markdown", {
+headers: {"accept": "application/vnd.github+json"},
+method:"POST",
+body: JSON.stringify({"text": document.querySelector("#project-markdown-content-" + lngt).value, mode: "gfm"})
+})
 
-	var links = {}
-	document.querySelectorAll(".link-title-" + lngt).forEach(tete => {
-		
-		links[tete.value] = tete.nextElementSibling.nextElementSibling.value
-		
-		})
+const markdown_rndnr = await res.text()
 
-		if(res.ok){
+const formData = new FormData()
 
-	  formData.append(lngt, JSON.stringify({
-		
-	  			links: JSON.stringify(links),
-				title: document.querySelector("#project-title-" + lngt).value,
-				markdown_raw:  document.querySelector("#project-markdown-content-" + lngt).value,
-				markdown_rendered: markdown_rndnr,
-				language: lngt,
-				description: document.querySelector("#project-description-" + lngt).value,
-				thumbnail_url: document.querySelector("#project-cover-image-" + lngt).value,
-			
+var links = {}
+document.querySelectorAll(".link-title-" + lngt).forEach(tete => {
+
+links[tete.value] = tete.nextElementSibling.nextElementSibling.value
+
+})
+
+if(res.ok){
+
+formData.append(lngt, JSON.stringify({
+
+		  links: JSON.stringify(links),
+		title: document.querySelector("#project-title-" + lngt).value,
+		markdown_raw:  document.querySelector("#project-markdown-content-" + lngt).value,
+		markdown_rendered: markdown_rndnr,
+		language: lngt,
+		description: document.querySelector("#project-description-" + lngt).value,
+		thumbnail_url: document.querySelector("#project-cover-image-" + lngt).value,
+	
 }))
 
 formData.append("id", frmid)
 
 
-				const res2 = await fetch(".", {
-					method:"PATCH",
-					body:formData
-			
-					
-					
-					})
-					document.querySelector(".loading-block").classList.remove("active")
-			
-			
-					if(res2.ok) window.location.href = ".";
-		}
-		
-
-		
-
-
-		}
-
-	)})
-
-
-
-
- document.querySelector("#edit-project").addEventListener("click", async ()=> {
+		const res2 = await fetch(".", {
+			method:"PATCH",
+			body:formData
 	
+			
+			
+			})
+			document.querySelector(".loading-block").classList.remove("active")
+	
+	
+			if(res2.ok) window.location.href = ".";
+			else{
+										  document.querySelector("#qUp2bc-container").classList.add("active")
+	 document.querySelector("#qUp2bc-message").innerHTML = "Unknown Error"
+			}
+}
+			else{
+										  document.querySelector("#qUp2bc-container").classList.add("active")
+	 document.querySelector("#qUp2bc-message").innerHTML = "Markdown render failed"
+	 }
 
 
 
+	}
+	else{
+	
+							  document.querySelector("#qUp2bc-container").classList.add("active")
+	 document.querySelector("#qUp2bc-message").innerHTML = "No Internet Connection"
+	 }
+
+}
+ catch(e){
+						  document.querySelector("#qUp2bc-container").classList.add("active")
+	 document.querySelector("#qUp2bc-message").innerHTML = "Unknown Error"
+}
+})})
 
 
+
+document.querySelector("#edit-project").addEventListener("click", async ()=> {
 
 document.querySelector("#project-view-cont").style.display = "none"
 document.querySelector("#project-edit-cont").style.display = "block"
 document.querySelector("#project-top-bar").style.display = "none"
-	
+
+})
+
+ document.querySelector("#delete-project").addEventListener("click", async ()=> {
+
+	const formData = new FormData()
+
+	formData.append("id", document.querySelector("[data-project-id]").getAttribute("data-project-id"))
+
+	document.querySelector(".loading-block").classList.add("active")
+
+	const res = await fetch(".", {
+	method:"DELETE",
+	body: formData
 	})
- 
-	 document.querySelector("#delete-project").addEventListener("click", async ()=> {
+
+	document.querySelector(".loading-block").classList.remove("active")
+
+
+	if (res.ok){
+
+	window.location.href = "../"
 	
-
-		const formData = new FormData()
-
-		formData.append("id", document.querySelector("[data-project-id]").getAttribute("data-project-id"))
-
-		document.querySelector(".loading-block").classList.add("active")
-
-		const res = await fetch(".", {
-		method:"DELETE",
-		body: formData
-		})
+	}else{
 	
-		document.querySelector(".loading-block").classList.remove("active")
+	}
+})
 
 
-		if (res.ok){
-
-		window.location.href = "../"
-		
-		}else{
-		
-		}
-	 
-	
-	})
- 
- 
- 	document.querySelectorAll(".nav-menu__item").forEach( (node, index) => { node.classList.remove("is-active")})
-	document.querySelector(".navbar-projects").classList.add("is-active")
+ document.querySelectorAll(".nav-menu__item").forEach( (node, index) => { node.classList.remove("is-active")})
+document.querySelector(".navbar-projects").classList.add("is-active")
 
   </script>
 
@@ -410,3 +415,5 @@ document.querySelector("#project-top-bar").style.display = "none"
 	`,
     }),
 };
+
+

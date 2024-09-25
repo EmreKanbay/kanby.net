@@ -92,7 +92,9 @@ module.exports = {
 document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 		e.preventDefault();
 
-		const formData = new FormData();
+if (window.navigator.onLine) {
+
+const formData = new FormData();
 		formData.append("login_name", document.querySelector(".ge0yN5-username-input").value);
 		formData.append("login_password", document.querySelector(".ge0yN5-password-input").value);
 		try {
@@ -115,8 +117,12 @@ document.querySelector(".ge0yN5-form").addEventListener("submit", async e => {
 			}
 		} catch (error) {
 			document.querySelector(".ge0yN5-loading").classList.remove("active");
-			document.querySelector(".ge0yN5-login-error").innerHTML = \` <h1>Network Error</h1>\`;
-		}
+			document.querySelector(".ge0yN5-login-error").innerHTML = "Unknown Error";
+		}}
+
+		
+else{document.querySelector(".ge0yN5-login-error").innerHTML = "No Internet Connection";}
+		
 	});
 
 </script>
