@@ -135,7 +135,7 @@ root.use(
         objectSrc: ["'none'"],
         frameAncestors: ["'none'"],
         fontSrc: ["'self'", cdn],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "https://www.clarity.ms"],
         upgradeInsecureRequests: [],
         styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
         imgSrc: ["'self'", cdn], // Allow images from self and data URIs
