@@ -99,10 +99,11 @@ const root = express();
 root.use(compression());
 root.set('trust proxy', true);
 root.use((req, res, next) => {
-  if(req.path[1] == "admin"){
+
+  if(req.path.split("/")[1] == "admin"){
+    res.set("cache-control", "no-store");
 
   }else{
-
     res.set("cache-control", "public, max-age=1800, must-revalidate");
   }
   res.set("content-cype", "text/html; charset=utf-8");

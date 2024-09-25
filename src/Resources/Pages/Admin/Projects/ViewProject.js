@@ -189,7 +189,7 @@ ${async () => {
 	
 	}
 
-			.markdown-editor-edit{
+			.markdown-editor{
 
 		resize:vertical;
 		width:100%;
