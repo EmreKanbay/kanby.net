@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const compression = require("compression");
+const memoryCache = require("memory-cache");
 
 // Database Libraries
 const pg = require("pg");
@@ -61,8 +62,6 @@ var SQL_works = false;
   } catch (error) {
     console.log("redis connection ERROR");
     REDIS_works = false;
-
-    
   }
 
   try {
@@ -75,19 +74,19 @@ var SQL_works = false;
     SQL_works = true;
   } catch (e) {
     SQL_works = false;
-
-    
   }
 })();
 
 // Setup Routes
 const root = express();
+
 /* SETUP MIDDLEWARES */
 
-// For Compression
+// Set Some Hedears Here
 root.use(compression());
 root.use((req, res, next) => {
-  res.set("content-type", "text/html; charset=utf-8");
+  res.set("cache-control", "public, max-age=1800, must-revalidate");
+  res.set("content-cype", "text/html; charset=utf-8");
   next();
 });
 
@@ -206,7 +205,6 @@ root.use(async (req, res, next) => {
       }
     }
   } catch (e) {
-    
     res.status(500).send(`<h1>Error: \n  </h1>`);
     return;
   }
@@ -224,8 +222,6 @@ Disallow: /admin/
 Sitemap: https://kanby.net/sitemap.xml
    `);
   } catch (e) {
-    
-
     res.type("text/html");
 
     res.status(500).send(errorPage());
@@ -277,7 +273,6 @@ root.get("/manifest.json", function (req, res, next) {
     res.type("text/html");
 
     res.status(500).send(errorPage());
-    
   }
 });
 
@@ -314,7 +309,6 @@ root.get("/rss.xml", async function (req, res, next) {
           )),
         );
       } catch (error) {
-        
         return ``;
       }
     }}
@@ -345,7 +339,6 @@ root.get("/rss.xml", async function (req, res, next) {
           )),
         );
       } catch (error) {
-        
         return ``;
       }
     }}
@@ -356,7 +349,6 @@ root.get("/rss.xml", async function (req, res, next) {
   } catch (e) {
     res.type("text/html");
     res.status(500).send(errorPage());
-    
   }
 });
 
@@ -469,7 +461,6 @@ root.get("/sitemap.xml", async function (req, res, next) {
           )),
         );
       } catch (error) {
-        
         return ``;
       }
     }}
@@ -495,7 +486,6 @@ root.get("/sitemap.xml", async function (req, res, next) {
               )),
             );
           } catch (error) {
-            
             return ``;
           }
         }}
@@ -528,7 +518,6 @@ root.get("/sitemap.xml", async function (req, res, next) {
                   )),
                 );
               } catch (error) {
-                
                 return ``;
               }
             }}
@@ -539,7 +528,6 @@ root.get("/sitemap.xml", async function (req, res, next) {
   } catch (e) {
     res.type("text/html");
     res.status(500).send(errorPage());
-    
   }
 });
 
@@ -585,7 +573,6 @@ root.use((req, res, next) => {
     }
   } catch (e) {
     res.status(500).send(errorPage());
-    
   }
 });
 
@@ -681,7 +668,9 @@ const auth = async (req, res, next) => {
 
     if (!token) {
       if (req.method == "GET") {
-        res.status(401).send(await LoginPage.html({ langCode: "en", language: "English" }));
+        res
+          .status(401)
+          .send(await LoginPage.html({ langCode: "en", language: "English" }));
       } else {
         res.status(401).send({
           message: "Not Autherized",
@@ -712,7 +701,6 @@ const auth = async (req, res, next) => {
         }
       });
     } catch (e) {
-      
       ret = { pass: false };
     }
 
@@ -741,7 +729,9 @@ const auth = async (req, res, next) => {
     } else {
       res.clearCookie("SessionToken");
       if (req.method == "GET") {
-        res.status(401).send(await LoginPage.html({ langCode: "en", language: "English" }));
+        res
+          .status(401)
+          .send(await LoginPage.html({ langCode: "en", language: "English" }));
       } else {
         res.status(401).send({
           message: "Not autherized",
@@ -756,6 +746,42 @@ const auth = async (req, res, next) => {
   }
 };
 
+// Cache Middleware, cache library accepts time in miliseconds
+var cache = (duration) => {
+  duration = duration * 1000
+  return (req, res, next) => {
+    let key = "_express_" + req.originalUrl || req.url;
+    let cachedBody = memoryCache.get(key);
+    if( cachedBody){
+      res.send(cachedBody)
+      return;
+    } else{
+      res.sendResponse = res.send;
+        res.send = (body) => {
+        memoryCache.put(key, body, duration);
+        res.sendResponse(body);
+      };
+    }
+    next()
+  }
+  // return (req, res, next) => {
+  //   
+  //   
+  //   if (cachedBody) {
+  //     res.send(cachedBody);
+  //     return;
+  //   } else {
+  //     res.sendResponse = res.send;
+  //     res.send = (body) => {
+  //       mcache.put(key, body, duration * 1000);
+  //       res.sendResponse(body);
+  //     };
+  //     next();
+  //   }
+  // };
+
+};
+
 // Process Login attemt
 root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
   try {
@@ -764,7 +790,6 @@ root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
     );
   } catch (e) {
     res.status(500).send(`<h1>Error: </h1> \n  `);
-    
   }
 });
 
@@ -782,7 +807,6 @@ root.use("/admin/:id", auth, async (req, res, next) => {
     else next();
   } catch (e) {
     res.status(500).send(errorPage());
-    
   }
 });
 
@@ -794,6 +818,7 @@ module.exports = {
   express,
   client,
   crypto,
+  cache,
 };
 
 // Route Handlers
@@ -806,7 +831,6 @@ root.use("/", visitor);
 root.use("/:lang", async (req, res, next) => {
   try {
     if (req.method == "GET") {
-      
       const query = await pool.query("SELECT * FROM variables");
       if (query.rows[0].value.includes(req.params.lang)) {
         const langCode =
@@ -819,7 +843,9 @@ root.use("/:lang", async (req, res, next) => {
           }),
         );
       } else {
-        res.status(404).send(await NotFound.html({ language: "English", langCode: "en" }));
+        res
+          .status(404)
+          .send(await NotFound.html({ language: "English", langCode: "en" }));
       }
     } else {
       res.status(405).send({
@@ -827,7 +853,6 @@ root.use("/:lang", async (req, res, next) => {
       });
     }
   } catch (error) {
-    
     res.status(500).send(errorPage());
   }
 });

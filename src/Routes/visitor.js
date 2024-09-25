@@ -68,7 +68,7 @@ const subVisitor = Index.express.Router();
 visitor.use("/:lang/", subVisitor);
 
 // Landing Page
-subVisitor.get("/", async (req, res, next) => {
+subVisitor.get("/", Index.cache(100) ,async (req, res, next) => {
   try {
     res.status(200).send(
       await Pages.LandingPage.html({
