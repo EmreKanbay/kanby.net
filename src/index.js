@@ -1,24 +1,25 @@
 // API Libraries
-const express = require("express");
-const helmet = require("helmet");
-const multer = require("multer");
-const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
-const cors = require("cors");
-const compression = require("compression");
-const memoryCache = require("memory-cache");
+  const express = require("express");
+  const helmet = require("helmet");
+  const multer = require("multer");
+  const cookieParser = require("cookie-parser");
+  const jwt = require("jsonwebtoken");
+  const cors = require("cors");
+  const compression = require("compression");
+  const memoryCache = require("memory-cache");
 
-// Database Libraries
-const pg = require("pg");
-const redis = require("redis");
+  // Database Libraries
+  const pg = require("pg");
+  const redis = require("redis");
+  
+  // Other Libraries
+  require("dotenv").config();
+  const crypto = require("crypto");
+  const LoginPage = require("./Resources/Pages/Visitor/LoginPage");
+  const Framework = require("#Framework");
+  const Components = require("#Components");
+  const NotFound = require("./Resources/Pages/NotFound");
 
-// Other Libraries
-require("dotenv").config();
-const crypto = require("crypto");
-const LoginPage = require("./Resources/Pages/Visitor/LoginPage");
-const Framework = require("#Framework");
-const Components = require("#Components");
-const NotFound = require("./Resources/Pages/NotFound");
 
 const errorPage = () =>
   `<h1>🤠kanby.net has encountered with an error🤠</h1>
@@ -84,11 +85,13 @@ const root = express();
 
 // Set Some Hedears Here
 root.use(compression());
+root.set('trust proxy', true);
 root.use((req, res, next) => {
   res.set("cache-control", "public, max-age=1800, must-revalidate");
   res.set("content-cype", "text/html; charset=utf-8");
   next();
 });
+
 
 // For Reading Request cookies
 root.use(cookieParser());

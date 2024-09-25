@@ -6,14 +6,10 @@
 
 # TODO
 
-
-- [x] user ip needs to be included in JWT payload and checked if it is stolen
-- [] Handle errors on client side
-- [x] Handle errors on server side
-- [] landing page is loading slow
-- [] for contentSecurityPolicy header, nonce may be added for scripts and styles
-- [] Create LOGS, and save them to database properly
-- [] Simplify everything with a simple library or framework
+- [ ] landing page is loading slow 
+- [ ] for contentSecurityPolicy header, nonce may be added for scripts and styles
+- [ ] Create LOGS, and save them to database properly
+- [ ] Simplify everything with a simple library or framework
 
 
 ## What is this
