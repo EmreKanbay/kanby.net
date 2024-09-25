@@ -124,13 +124,13 @@ module.exports = async (data) =>
                                                         class="sidebar-menu-icons" />
                                                     <div class="nav-menu-item__title"><span>Security</span></div>
                                                  </a>
-                                                <a href="/admin/${data.user_id}/dashboard/all_requests" class="nav-menu__item__inner-submenu">
+                                                <a href="/admin/${data.user_id}/security/all_requests" class="nav-menu__item__inner-submenu">
                                                         <div>All Requests</div>
                                                  </a>  
-                                                        <a href="/admin/${data.user_id}/dashboard/login_attempts" class="nav-menu__item__inner-submenu">
+                                                        <a href="/admin/${data.user_id}/security/login_attempts" class="nav-menu__item__inner-submenu">
                                                         <div>Login Attempts</div>
                                                  </a>  
-                                                        <a href="/admin/${data.user_id}/dashboard/ip_blacklist" class="nav-menu__item__inner-submenu">
+                                                        <a href="/admin/${data.user_id}/security/ip_blacklist" class="nav-menu__item__inner-submenu">
                                                         <div>IP Blacklist</div>
                                                  </a>  
                                             </div>

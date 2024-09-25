@@ -11,7 +11,15 @@ module.exports = async (data) =>
 	<!doctype html>
 	<html lang="${data.langCode}">
 		<head>
-		
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-DWKY33461Y"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-DWKY33461Y');
+		</script>
 
   
 		<base href="/${data.language}/">

@@ -17,7 +17,7 @@ const Projects = require("./Pages/Visitor/Projects");
 const SingleProject = require("./Pages/Visitor/SingleProject");
 const Services = require("./Pages/Visitor/Services");
 const About = require("./Pages/Visitor/About");
-const Security = require("./Pages/Admin/Security.js");
+const Security = require("./Pages/Admin/Security/Security.js");
 const Settings = require("./Pages/Admin/Settings.js");
 
 module.exports = {

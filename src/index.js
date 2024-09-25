@@ -199,11 +199,11 @@ root.use(async (req, res, next) => {
 
   
     const DDoS_req_count = await memoryCache.get(`request:${ReqIP}:count`)
+    await memoryCache.put(Date.now(), `${ReqIP}:${req.path}`, 100 * 1000);
     
 
-    if (req.path.split("/")?.[1] != "admin") {
-      await memoryCache.put(Date.now(), `${ReqIP}:${req.path}`, 172800 * 1000);
-    }
+    // if (req.path.split("/")?.[1] != "admin") {
+    // }
 
     if (Number(currentCount_login) >= 10) {
       res.status(429).send("too many requests");
