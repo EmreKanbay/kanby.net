@@ -139,7 +139,7 @@ root.use(
         upgradeInsecureRequests: [],
         styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
         imgSrc: ["'self'", cdn], // Allow images from self and data URIs
-        connectSrc: ["'self'", cdn], // Allow connections, fetch requests
+        connectSrc: ["'self'", cdn, "https://www.googletagmanager.com", "https://www.google-analytics.com"], // Allow connections, fetch requests
         // Add other directives as needed
       },
     },
