@@ -186,47 +186,55 @@ root.use((req, res, next) => {
 // Rate Limit
 root.use(async (req, res, next) => {
   try {
-    const redisKey = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:count`;
-    const currentCount = await client.get(redisKey);
-
     const redisKey_login = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
     const currentCount_login = await client.get(redisKey_login);
 
-    var temp =
-      typeof req?.header("x-forwarded-for") == "string"
-        ? `${req?.header("x-forwarded-for").split(",")[0]}`
-        : "undefined";
-    var tempRequest = `request_ips:${temp}:${Date.now()}:${req.path}`;
+
+
+    var ReqIP =
+    typeof req?.header("x-forwarded-for") == "string"
+      ? `${req?.header("x-forwarded-for").split(",")[0]}`
+      : "undefined";
+
+
+  
+    const DDoS_req_count = await memoryCache.get(`request:${ReqIP}:count`)
+    
 
     if (req.path.split("/")?.[1] != "admin") {
-      await client.set(tempRequest, temp);
-      await client.expire(tempRequest, 172800);
+      await memoryCache.put(Date.now(), `${ReqIP}:${req.path}`, 172800 * 1000);
     }
 
-    if (Number(await currentCount_login) >= 10) {
+    if (Number(currentCount_login) >= 10) {
       res.status(429).send("too many requests");
       return;
     }
 
-    if (isNaN(Number(String(await currentCount)))) {
-      await client.set(redisKey, "0");
-      await client.expire(redisKey, 100);
+    if (isNaN(Number(String(DDoS_req_count)))) {
+      await memoryCache.put(`request:${ReqIP}:count`, `0`, 1000 * 100);
+      
 
       next();
       return;
     } else {
-      if (Number(await currentCount) >= 50) {
-        res.status(429).send("too many requests");
+      if (Number(DDoS_req_count) >= 50) {
+        res.status(429).send("too many requests, try again later");
         return;
       } else {
-        await client.incr(redisKey); // Increments by 1
+
+      const tempCount = await memoryCache.get(`request:${ReqIP}:count`);
+
+      await memoryCache.del(`request:${ReqIP}:count`);
+
+      await memoryCache.put(`request:${ReqIP}:count`, String(Number(tempCount) + 1), 1000 * 100);
+
 
         next();
         return;
       }
     }
   } catch (e) {
-    res.status(500).send(`<h1>Error: \n  </h1>`);
+    res.status(500).send(errorPage());
     return;
   }
 });
@@ -613,6 +621,7 @@ const auth = async (req, res, next) => {
     }
 
     if (req.method == "POST" && req.originalUrl == "/admin/login/") {
+
       const redisKey = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
       const currentCount = await client.get(redisKey);
 
@@ -793,7 +802,7 @@ root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
       `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
     );
   } catch (e) {
-    res.status(500).send(`<h1>Error: </h1> \n  `);
+    res.status(500).send(JSON.stringify({message: "error"}));
   }
 });
 
@@ -823,6 +832,7 @@ module.exports = {
   client,
   crypto,
   cache,
+  memoryCache,
 };
 
 // Route Handlers
