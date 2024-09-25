@@ -746,40 +746,23 @@ const auth = async (req, res, next) => {
   }
 };
 
+
 // Cache Middleware, cache library accepts time in miliseconds
-var cache = (duration) => {
-  duration = duration * 1000
-  return (req, res, next) => {
+var cache = (duration = null /* SECONDS */) => {
+  return (req, res, next) => {    
     let key = "_express_" + req.originalUrl || req.url;
-    let cachedBody = memoryCache.get(key);
-    if( cachedBody){
-      res.send(cachedBody)
-      return;
+    if(memoryCache.get(key)){
+      res.send(memoryCache.get(key)); return;
     } else{
       res.sendResponse = res.send;
         res.send = (body) => {
-        memoryCache.put(key, body, duration);
+          if(duration) memoryCache.put(key, body, duration * 1000);
+          else memoryCache.put(key, body);
         res.sendResponse(body);
       };
     }
     next()
   }
-  // return (req, res, next) => {
-  //   
-  //   
-  //   if (cachedBody) {
-  //     res.send(cachedBody);
-  //     return;
-  //   } else {
-  //     res.sendResponse = res.send;
-  //     res.send = (body) => {
-  //       mcache.put(key, body, duration * 1000);
-  //       res.sendResponse(body);
-  //     };
-  //     next();
-  //   }
-  // };
-
 };
 
 // Process Login attemt

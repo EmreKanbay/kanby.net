@@ -68,7 +68,7 @@ const subVisitor = Index.express.Router();
 visitor.use("/:lang/", subVisitor);
 
 // Landing Page
-subVisitor.get("/", Index.cache(100) ,async (req, res, next) => {
+subVisitor.get("/", Index.cache() ,async (req, res, next) => {
   try {
     res.status(200).send(
       await Pages.LandingPage.html({
@@ -83,7 +83,7 @@ subVisitor.get("/", Index.cache(100) ,async (req, res, next) => {
 });
 
 // blogs page
-subVisitor.get("/blogs/", async (req, res, next) => {
+subVisitor.get("/blogs/", Index.cache() ,async (req, res, next) => {
   try {
     res.status(200).send(
       await Pages.Blogs.html({
@@ -99,7 +99,7 @@ subVisitor.get("/blogs/", async (req, res, next) => {
 });
 
 // single blog
-subVisitor.get("/blogs/:id", async (req, res, next) => {
+subVisitor.get("/blogs/:id", Index.cache(),async (req, res, next) => {
   try {
     const text = `SELECT ARRAY(SELECT id FROM blogs WHERE language= $1) AS ids`;
     var record = await Index.pool.query(text, [req.language]);
@@ -136,7 +136,7 @@ subVisitor.get("/blogs/:id", async (req, res, next) => {
 });
 
 // projects page
-subVisitor.get("/projects/", async (req, res, next) => {
+subVisitor.get("/projects/",Index.cache(), async (req, res, next) => {
   try {
     res.status(200).send(
       await Pages.Projects.html({
@@ -151,7 +151,7 @@ subVisitor.get("/projects/", async (req, res, next) => {
 });
 
 // single project
-subVisitor.get("/projects/:id", async (req, res, next) => {
+subVisitor.get("/projects/:id", Index.cache(),async (req, res, next) => {
   try {
     const text = `SELECT ARRAY(SELECT id FROM projects) AS ids`;
     var record = await Index.pool.query(text);
@@ -188,9 +188,9 @@ subVisitor.get("/projects/:id", async (req, res, next) => {
 });
 
 //contact page
-subVisitor.get("/contact/", async (req, res, next) => {
+subVisitor.get("/contact/", Index.cache(),async (req, res, next) => {
   try {
-    re.status(200).send(
+    res.status(200).send(
       await Pages.Contact.html({
         language: req.language,
         langCode: req.langCode,
@@ -203,7 +203,7 @@ subVisitor.get("/contact/", async (req, res, next) => {
 });
 
 // about page
-subVisitor.get("/about/", async (req, res, next) => {
+subVisitor.get("/about/", Index.cache(),async (req, res, next) => {
   try {
     res.status(200).send(
       await Pages.About.html({
@@ -218,7 +218,7 @@ subVisitor.get("/about/", async (req, res, next) => {
 });
 
 //services page
-subVisitor.get("/services/", async (req, res, next) => {
+subVisitor.get("/services/", Index.cache(),async (req, res, next) => {
   try {
     res.status(200).send(
       await Pages.Services.html({
