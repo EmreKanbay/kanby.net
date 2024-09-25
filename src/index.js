@@ -135,11 +135,11 @@ root.use(
         objectSrc: ["'none'"],
         frameAncestors: ["'none'"],
         fontSrc: ["'self'", cdn],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://www.clarity.ms"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
         upgradeInsecureRequests: [],
         styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
         imgSrc: ["'self'", cdn], // Allow images from self and data URIs
-        connectSrc: ["'self'", cdn, "https://*.clarity.ms"], // Allow connections, fetch requests
+        connectSrc: ["'self'", cdn], // Allow connections, fetch requests
         // Add other directives as needed
       },
     },

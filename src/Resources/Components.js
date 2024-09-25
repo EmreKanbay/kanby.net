@@ -4,6 +4,7 @@ const Footer = require("./Components/Footer");
 
 const SuccessBox = require("./Components/SuccessBox");
 const Marquee = require("./Components/Marquee");
+const CookieConsent = require("./Components/CookieConsent");
 
 module.exports = {
   visitor: {
@@ -12,6 +13,7 @@ module.exports = {
     ErrorBox,
     SuccessBox,
     Marquee,
+    CookieConsent
   },
   admin: {},
 };
