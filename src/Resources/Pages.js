@@ -19,6 +19,8 @@ const Services = require("./Pages/Visitor/Services");
 const About = require("./Pages/Visitor/About");
 const Security = require("./Pages/Admin/Security/Security.js");
 const Settings = require("./Pages/Admin/Settings.js");
+const AllRequests = require("./Pages/Admin/Security/AllRequests.js");
+const LoginAttempts = require("./Pages/Admin/Security/LoginAttempts.js");
 
 module.exports = {
   LoginPage,
@@ -42,4 +44,7 @@ module.exports = {
   About,
   Security,
   Settings,
+  AllRequests,
+  LoginAttempts
+  
 };

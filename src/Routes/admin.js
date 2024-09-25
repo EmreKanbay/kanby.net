@@ -36,7 +36,7 @@ admin.use("/:user_id", async (req, res, next) => {
 const subAdmin = Index.express.Router();
 admin.use("/:user_id/", subAdmin);
 
-subAdmin.get("/dashboard/", async (req, res, next) => {
+subAdmin.get("/dashboard/",async (req, res, next) => {
   try {
     res.status(200).send(await Pages.AdminDashboard.html({ user_id: req.userID }));
   } catch (error) {
@@ -45,7 +45,7 @@ subAdmin.get("/dashboard/", async (req, res, next) => {
   }
 });
 
-subAdmin.get("/blogs/add/", async (req, res, next) => {
+subAdmin.get("/blogs/add/",Index.cache(), async (req, res, next) => {
   try {
     res.status(200).send(await Pages.AddBlog.html({ user_id: req.userID }));
   } catch (error) {
@@ -57,7 +57,7 @@ subAdmin.get("/blogs/add/", async (req, res, next) => {
 subAdmin
   .route("/blogs/")
 
-  .get(async (req, res) => {
+  .get(Index.cache(), async (req, res) => {
     try {
       res.status(200).send(await Pages.AllBlogs.html({ user_id: req.userID }));
     } catch (error) {
@@ -131,7 +131,7 @@ subAdmin
 
 subAdmin
   .route("/blogs/:id/")
-  .get(async (req, res) => {
+  .get(Index.cache(), async (req, res) => {
     try {
       res.status(200).send(
         await Pages.ViewBlog.html({ id: req.params.id, user_id: req.userID }),
@@ -184,7 +184,7 @@ subAdmin
 
 subAdmin
   .route("/projects/")
-  .get(async (req, res) => {
+  .get(Index.cache(), async (req, res) => {
     try {
 
       res.status(200).send(await Pages.AllProjects.html({ user_id: req.userID }));
@@ -212,7 +212,7 @@ subAdmin
             res.status(500).send(JSON.stringify({message: "error"}));
     }
   });
-subAdmin.get("/projects/add/", async (req, res) => {
+subAdmin.get("/projects/add/", Index.cache(),  async (req, res) => {
   try {
     res.status(200).send(await Pages.AddProject.html({ user_id: req.userID }));
   } catch (error) {
@@ -223,7 +223,7 @@ subAdmin.get("/projects/add/", async (req, res) => {
 
 subAdmin
   .route("/projects/:id")
-  .get(async (req, res) => {
+  .get(Index.cache(), async (req, res) => {
     try {
       res.status(200).send(
         await Pages.ViewProject.html({
@@ -267,7 +267,7 @@ subAdmin
 
 subAdmin
   .route("/media/")
-  .get(async (req, res, next) => {
+  .get(Index.cache() ,async (req, res, next) => {
     try {
       res.status(200).send(await Pages.Media.html({ user_id: req.userID }));
 
@@ -309,7 +309,7 @@ subAdmin
     }
   });
 
-subAdmin.get("/media/add/", async (req, res, next) => {
+subAdmin.get("/media/add/", Index.cache(), async (req, res, next) => {
   try {
     res.status(200).send(await Pages.AddMedia.html({ user_id: req.userID }));
   } catch (error) {
@@ -318,7 +318,7 @@ subAdmin.get("/media/add/", async (req, res, next) => {
   }
 });
 
-subAdmin.get("/security", async (req, res) => {
+subAdmin.get("/security",  async (req, res) => {
   try {
     res.status(200).send(await Pages.Security.html({ user_id: req.userID }));
   } catch (error) {
@@ -327,7 +327,7 @@ subAdmin.get("/security", async (req, res) => {
   }
 });
 
-subAdmin.get("/settings", async (req, res) => {
+subAdmin.get("/settings",  async (req, res) => {
   try {
     res.status(200).send(await Pages.Settings.html({ user_id: req.userID }));
   } catch (error) {
@@ -335,5 +335,27 @@ subAdmin.get("/settings", async (req, res) => {
     res.status(500).send(errorPage(error));
   }
 });
+
+
+subAdmin.get("/security/all_requests/",  async (req, res) => {
+  try {
+    res.status(200).send(await Pages.AllRequests.html({ user_id: req.userID }));
+  } catch (error) {
+    
+    res.status(500).send(errorPage(error));
+  }
+});
+
+
+subAdmin.get("/security/login_attempts/",  async (req, res) => {
+  try {
+    res.status(200).send(await Pages.LoginAttempts.html({ user_id: req.userID }));
+  } catch (error) {
+    
+    res.status(500).send(errorPage(error));
+  }
+});
+
+
 
 module.exports = admin;

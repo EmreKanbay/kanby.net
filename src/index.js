@@ -101,10 +101,10 @@ root.set('trust proxy', true);
 root.use((req, res, next) => {
 
   if(req.path.split("/")[1] == "admin"){
-    res.set("cache-control", "no-store");
+    res.set("cache-control", "private, no-cache");
 
   }else{
-    res.set("cache-control", "public, max-age=1800, must-revalidate");
+    res.set("cache-control", "max-age=100, must-revalidate");
   }
   res.set("content-cype", "text/html; charset=utf-8");
   next();
@@ -186,7 +186,7 @@ root.use((req, res, next) => {
 // Rate Limit
 root.use(async (req, res, next) => {
   try {
-    const redisKey_login = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
+    const redisKey_login = `req_login:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}`;
     const currentCount_login = await client.get(redisKey_login);
 
 
@@ -196,10 +196,9 @@ root.use(async (req, res, next) => {
       ? `${req?.header("x-forwarded-for").split(",")[0]}`
       : "undefined";
 
-
-  
-    const DDoS_req_count = await memoryCache.get(`request:${ReqIP}:count`)
-    await memoryCache.put(Date.now(), `${ReqIP}:${req.path}`, 100 * 1000);
+    var tempVar = `req_count:${ReqIP}`
+    const DDoS_req_count = await memoryCache.get(tempVar)
+    await memoryCache.put(`req:${Date.now()}:${ReqIP}:${req.path}`, `0`);
     
 
     // if (req.path.split("/")?.[1] != "admin") {
@@ -211,7 +210,7 @@ root.use(async (req, res, next) => {
     }
 
     if (isNaN(Number(String(DDoS_req_count)))) {
-      await memoryCache.put(`request:${ReqIP}:count`, `0`, 1000 * 100);
+      await memoryCache.put(tempVar, `0`, 1000 * 100);
       
 
       next();
@@ -222,11 +221,11 @@ root.use(async (req, res, next) => {
         return;
       } else {
 
-      const tempCount = await memoryCache.get(`request:${ReqIP}:count`);
+      const tempCount = await memoryCache.get(tempVar);
 
-      await memoryCache.del(`request:${ReqIP}:count`);
+      await memoryCache.del(tempVar);
 
-      await memoryCache.put(`request:${ReqIP}:count`, String(Number(tempCount) + 1), 1000 * 100);
+      await memoryCache.put(tempVar, String(Number(tempCount) + 1), 1000 * 100);
 
 
         next();
@@ -622,7 +621,7 @@ const auth = async (req, res, next) => {
 
     if (req.method == "POST" && req.originalUrl == "/admin/login/") {
 
-      const redisKey = `request:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}:login`;
+      const redisKey = `req_login:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}`;
       const currentCount = await client.get(redisKey);
 
       var temp =
