@@ -12,7 +12,10 @@ module.exports = {
     await Layouts.AdminLayout({
       user_id: data.user_id,
 
-      head: await Framework.render``,
+      head: await Framework.render`
+					<link rel="stylesheet" href="${cdn}/assets/github-markdown-light.css" />
+	  
+	  `,
       content: await Framework.render`
 
 
@@ -83,7 +86,8 @@ module.exports = {
 					
 	
 							${async () => {
-                if (trx?.links) {
+
+                if (trx?.links.length != 0) {
                   const links = JSON.parse(trx?.links);
 
                   return "".concat(
@@ -92,7 +96,7 @@ module.exports = {
                     }),
                   );
                 } else {
-                  return `<div class="project-link-cont-${trx?.language}"><span>Title: </span> <input class="link-title-${trx?.language}" placeholder="title" type="text"> <span>Link: </span> <input class="link-link-${trx?.language}" placeholder="link" type="text"><input onclick="this.parentNode.remove()" class="remove-link" type="button" value="-"></div>`;
+                  return ``;
                 }
               }}
 					
@@ -133,50 +137,44 @@ module.exports = {
 
 
 
-
-
-
-
-
-
-
-
-
 <div id="project-view-cont">
 ${async () => {
   return "".concat(
-    ...Object.values(t).map((trx) => {
-      if (trx?.title) {
-        return `
+    ...(await Promise.all(Object.values(t).map(async (trx) => {
+		if (trx?.title) {
+		  return await Framework.render`
+  
+  <details>
+  <summary>${trx?.language}</summary>
+  
+   <h2>${trx?.title}</h2>
+  
+   
+  <p>${trx?.language} Description: ${trx?.description}</p>
+  
+   
+  <img  src="${trx?.thumbnail_url}">
+   
+  
+  ${async () => {
+	  return "".concat(
+	  ...Object.keys(
+		  JSON.parse(trx?.links),
+	  ).map((yy) => {
+		  return `<p>${yy} -> ${JSON.parse(trx?.links)[yy]}</p>`;
+	  }),
+	  );
+  }}
+  
+  
+  
+  
+  <div class="markdown-body">${trx?.markdown_rendered}</div>
 
-<details>
-<summary>${trx?.language}</summary>
-
- <h2 data-lang="${trx?.language}">${trx?.language} Title: ${trx?.title}</h2>
-
- 
-<h2>${trx?.language} Description: ${trx?.description}</h2>
-
- 
-
-
-<h2>${trx?.language} Cover Image url: ${trx?.thumbnail_url}</h2>
- 
-
-
-<h2>${trx?.language} Markdown: ${trx?.markdown_raw}</h2>
- 
-
-
-
-
-</details>
-
-
-
-`;
-      } else return ``;
-    }),
+  </details>
+  `;
+		} else return ``;
+	  }),))
   );
 }}
 
@@ -309,9 +307,15 @@ const markdown_rndnr = await res.text()
 const formData = new FormData()
 
 var links = {}
+
 document.querySelectorAll(".link-title-" + lngt).forEach(tete => {
 
-links[tete.value] = tete.nextElementSibling.nextElementSibling.value
+	if(tete.value == "" || tete.nextElementSibling.nextElementSibling.value == ""){
+
+	}else{
+		links[tete.value] = tete.nextElementSibling.nextElementSibling.value
+	}
+
 
 })
 

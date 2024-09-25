@@ -18,12 +18,7 @@ module.exports = {
                 ...(
                   await Index.pool.query(`SELECT * FROM "variables"`)
                 ).rows[0].value.map((t) => {
-					console.log(t)
                   return `
-
-								
- 
-
 
 				<h2 data-lang="${t}">${t} Title</h2>
  
@@ -43,9 +38,8 @@ module.exports = {
 				<div class="cont-links-${t}">
 					<cite>*Link titles must be different, or it will corrupt</cite>
 
-					<div class="cont-links-inner-${t}">
-						<div class="project-link-cont-${t}"><span>Title: </span> <input class="link-title-${t}" placeholder="title" type="text"> <span>Link: </span> <input class="link-link-${t}" placeholder="link" type="text"><input onclick="this.parentNode.remove()" class="remove-link" type="button" value="-"></div>
-					</div>
+					<div class="cont-links-inner-${t}"></div>
+					
 				<input onclick="addNewLink(this, '${t}')" type="button" class="add-link" value="+">
 				</div>
 				

@@ -180,8 +180,7 @@ subAdmin
   .route("/projects/")
   .get(async (req, res) => {
     try {
-      const x = 12;
-      x = 123;
+
       res.status(200).send(await Pages.AllProjects.html({ user_id: req.userID }));
     } catch (error) {
       

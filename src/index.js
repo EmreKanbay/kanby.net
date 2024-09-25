@@ -7,6 +7,7 @@
   const cors = require("cors");
   const compression = require("compression");
   const memoryCache = require("memory-cache");
+  const morgan = require("morgan");
 
   // Database Libraries
   const pg = require("pg");
@@ -14,7 +15,10 @@
   
   // Other Libraries
   require("dotenv").config();
+
   const crypto = require("crypto");
+  const fs = require("fs");
+  const path = require("path");
   const LoginPage = require("./Resources/Pages/Visitor/LoginPage");
   const Framework = require("#Framework");
   const Components = require("#Components");
@@ -83,11 +87,24 @@ const root = express();
 
 /* SETUP MIDDLEWARES */
 
+// var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+// root.use(morgan(`#######
+//   METHOD -> ":method :status" 
+//   PATH -> ":url"  
+//   DATE -> ":date[web]"
+//   IP -> ":req[x-forwarded-for]"`, { stream: accessLogStream }))
+
+
 // Set Some Hedears Here
 root.use(compression());
 root.set('trust proxy', true);
 root.use((req, res, next) => {
-  res.set("cache-control", "public, max-age=1800, must-revalidate");
+  if(req.path[1] == "admin"){
+
+  }else{
+
+    res.set("cache-control", "public, max-age=1800, must-revalidate");
+  }
   res.set("content-cype", "text/html; charset=utf-8");
   next();
 });
