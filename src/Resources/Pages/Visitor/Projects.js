@@ -60,7 +60,13 @@ module.exports = {
                     const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
                     const values1 = [t[data.language].thumbnail_url.trim()];
                     var record1 = await Index.pool.query(text1, values1);
-                    alt_text = record1.rows[0].alt_text;
+                    if(record1.rowCount == 0){
+
+                      alt_text = "placeholder-image"
+                      }else{
+                      t.thumbnail_url = "https://cdn.kanby.net/assets/placeholder-image.svg"
+                        alt_text = record1.rows[0].alt_text;
+                      }
                   } catch (e) {
                     
                     alt_text = "kanby.net-freelance-developer-designer";

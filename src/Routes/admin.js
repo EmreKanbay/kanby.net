@@ -115,12 +115,14 @@ subAdmin
         Date.now(),
         req.body.blog_markdown_rendered,
         req.body.blog_markdwon_raw,
-        req.body.blog_cover_image,
+        req.body.blog_cover_image == "" ? "https://cdn.kanby.net/assets/placeholder-image.svg" : req.body.blog_cover_image,
       ];
 
       await Index.pool.query(text, values);
 
       res.status(200).send(JSON.stringify({message: "success"}));
+      Index.memoryCache.clear()
+
     } catch (e) {
       
       res.status(500).send(JSON.stringify({message: "error"}))
@@ -148,6 +150,8 @@ subAdmin
       await Index.pool.query(text, values);
 
       res.status(200).send(JSON.stringify({message: "success"}));
+      Index.memoryCache.clear()
+
     } catch (error) {
       
       res.status(500).send(JSON.stringify({message: "error"}));
@@ -171,6 +175,8 @@ subAdmin
 
       await Index.pool.query(text, values);
       res.status(200).send(JSON.stringify({message: "success"}));
+      Index.memoryCache.clear()
+
     } catch (error) {
             res.status(500).send(JSON.stringify({message: "error"}));
     }
@@ -201,6 +207,7 @@ subAdmin
 
       var record = await Index.pool.query(text, values);
       res.status(200).send(JSON.stringify({message: "success"}));
+      Index.memoryCache.clear()
     } catch (error) {
             res.status(500).send(JSON.stringify({message: "error"}));
     }
@@ -237,6 +244,8 @@ subAdmin
 
       await Index.pool.query(text, values);
       res.status(200).send(JSON.stringify({message: "success"}));
+      Index.memoryCache.clear()
+
     } catch (error) {
             res.status(500).send(JSON.stringify({message: "error"}));
     }
@@ -249,6 +258,8 @@ subAdmin
 
       var query = await Index.pool.query(text, values);
       res.status(200).send(JSON.stringify({message: "success"}));
+      Index.memoryCache.clear()
+
      } catch (error) {
             res.status(500).send(JSON.stringify({message: "error"}));
      }
@@ -259,6 +270,7 @@ subAdmin
   .get(async (req, res, next) => {
     try {
       res.status(200).send(await Pages.Media.html({ user_id: req.userID }));
+
     } catch (error) {
       
       res.status(500).send(errorPage(error));
@@ -271,6 +283,8 @@ subAdmin
 
       await Index.pool.query(text, values);
 	        res.status(200).send(JSON.stringify({message: "success"}));
+      Index.memoryCache.clear()
+
     } catch (error) {
             res.status(500).send(JSON.stringify({message: "error"}));
     }
@@ -288,6 +302,8 @@ subAdmin
 
       await Index.pool.query(text, values);
 	        res.status(200).send(JSON.stringify({message: "success"}));
+      Index.memoryCache.clear()
+
     } catch (e) {
             res.status(500).send(JSON.stringify({message: "error"}));
     }
