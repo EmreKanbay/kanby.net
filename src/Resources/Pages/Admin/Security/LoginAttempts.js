@@ -38,7 +38,7 @@ module.exports = {
 							  const reqKeys = ${async () => {
 
 
-                                return await JSON.stringify(await Index.client.keys("req_login:*"),
+                                return await JSON.stringify(await Index.client.scan("req_login:*"),
                                 );
                               }}
 
