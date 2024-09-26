@@ -43,12 +43,13 @@ module.exports = {
                               }}
 
 
-
                      
 
                               const rendered = reqKeys.map((key) =>{
 
-                                if(/^req:/.test(key)) {var temp = key.split(":");return <Fragment> <p>  DATE:{Date(temp[1] * 1)} | IP: {temp[2]} | PATH: {temp[3]} </p> </Fragment>}
+                                
+ 
+                                if(/^req:/.test(key)) {var temp = key.split(":"); var dt = new Date(temp[1]*1) ; ;return <Fragment> <p>  DATE:{String(dt)} | IP: {temp[2]} | PATH: {temp[3]} </p> </Fragment>}
                                 else return ""
                               }
 

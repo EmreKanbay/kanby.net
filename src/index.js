@@ -207,6 +207,7 @@ root.use(async (req, res, next) => {
 
       var tempVar = `req_count:${ReqIP}`
       const DDoS_req_count = await memoryCache.get(tempVar)
+      
     if(req.path.split("/")[1] != "admin"){
       await memoryCache.put(`req:${Date.now()}:${ReqIP}:${req.path}`, `0`);
     }

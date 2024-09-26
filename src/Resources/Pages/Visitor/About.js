@@ -31,8 +31,8 @@ module.exports = {
 
       head: await Framework.render`
  
-			<title>${he.encode(translation[data.customDatalanguage].title)}</title>
-            <meta name="description" content="${he.encode(translation[data.customDatalanguage].description)}">
+			<title>${he.encode(translation[data.customData.language].title)}</title>
+            <meta name="description" content="${he.encode(translation[data.customData.language].description)}">
 
           
   		<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/about/" >
@@ -43,9 +43,9 @@ module.exports = {
       content: await Framework.render`
 					<div class="cont">
 					
-					<h1>${translation[data.customDatalanguage].key1}</h1>
+					<h1>${translation[data.customData.language].key1}</h1>
 
-					<p>${translation[data.customDatalanguage].key2}</p>
+					<p>${translation[data.customData.language].key2}</p>
 					
 
 					</div>
