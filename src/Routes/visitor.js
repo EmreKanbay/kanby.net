@@ -3,19 +3,19 @@ const Pages = require("#Pages");
 
 const visitor = Index.express.Router();
 
-const errorPage = () => {
+const errorPage = (msg) => {
   return `
 	<h1>🤠kanby.net has encountered with an error🤠</h1>
 	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please tell this error to Developer at emre@kanby.net </h2>
 	<h2>Meanwhile developer: 😱🤕😓😭</h2>
   <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">
-	`;
+  ${msg == undefined ? "" : `<p>Error Message: ${msg} </p>`}`;
 };
 
 // redirect / to /Turkish
 visitor.get("/", async (req, res, next) => {
   try {
-    res.redirect(new URL(`/Turkish/`, req.protocol + "://" + req.get("host")));
+        res.redirect(new URL(`/Turkish/`, req.protocol + "://" + req.get("host")));
   } catch (e) {
     if(process.env.NODE_ENV == "developement"){console.log(e)}
 

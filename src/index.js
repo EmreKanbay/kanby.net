@@ -25,11 +25,12 @@
   const NotFound = require("./Resources/Pages/NotFound");
 
 
-const errorPage = () =>
+const errorPage =  (msg) =>
   `<h1>🤠kanby.net has encountered with an error🤠</h1>
 	<h2>please... please, do not let anyone know this but developer. Becouse it would be a security threat. Please tell this error to Developer at emre@kanby.net </h2>
 	<h2>Meanwhile developer: 😱🤕😓😭</h2>
-  <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">`;
+  <img src="https://cdn.kanby.net/assets/kanby-net-error.gif">
+  ${msg == undefined ? "" : `<p>Error Message: ${msg} </p>`}`;
 
 const cdn = process.env.CDN_DOMAIN;
 const upload = multer();
@@ -102,6 +103,7 @@ root.use(compression());
 root.set('trust proxy', true);
 root.use((req, res, next) => {
 
+try {
   if(req.path.split("/")[1] == "admin"){
     res.set("cache-control", "private, no-cache");
 
@@ -110,6 +112,10 @@ root.use((req, res, next) => {
   }
   res.set("content-cype", "text/html; charset=utf-8");
   next();
+} catch (e) {
+  if(process.env.NODE_ENV == "developement"){console.log(e)}
+  next();
+}
 });
 
 
@@ -181,8 +187,13 @@ root.use(
 
 //DB check
 root.use((req, res, next) => {
-  if (SQL_works && REDIS_works) next();
-  else res.status(503).send("DB is not connected");
+  try {
+    if (SQL_works && REDIS_works) next();
+    else res.status(503).send(errorPage("DB connection error"));
+  } catch (error) {
+    res.status(503).send(errorPage());
+    }
+
 });
 
 // SECURITY MIDDLEWARE

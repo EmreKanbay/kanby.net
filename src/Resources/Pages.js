@@ -21,6 +21,7 @@ const Security = require("./Pages/Admin/Security/Security.js");
 const Settings = require("./Pages/Admin/Settings.js");
 const AllRequests = require("./Pages/Admin/Security/AllRequests.js");
 const LoginAttempts = require("./Pages/Admin/Security/LoginAttempts.js");
+const IpBlacklist = require("./Pages/Admin/Security/IpBlacklist.js");
 
 module.exports = {
   LoginPage,
@@ -45,6 +46,8 @@ module.exports = {
   Security,
   Settings,
   AllRequests,
-  LoginAttempts
+  LoginAttempts,
+  IpBlacklist
+  
   
 };
