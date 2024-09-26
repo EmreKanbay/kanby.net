@@ -48,7 +48,7 @@ module.exports = {
 
                               const rendered = reqKeys.map((key) =>{
 
-                                if(/^req:/.test(key)) {var temp = key.split(":");return <Fragment> <p>DATE:{Date(temp[1] * 1)} | IP: {temp[2]} | PATH: {temp[3]}</p> </Fragment>}
+                                if(/^req:/.test(key)) {var temp = key.split(":");return <Fragment> <p> IP: {temp[2]} | PATH: {temp[3]} | DATE:{Date(temp[1] * 1)}</p> </Fragment>}
                                 else return ""
                               }
 
@@ -78,6 +78,12 @@ module.exports = {
 
 				<style>
 				
+        #ip-list-container{
+          min-height: 200px;
+        }
+        #ip-list-container .loading-inline{
+          height: 100%;
+        }
 				h1{text-decoration:underline}
 				</style>
 

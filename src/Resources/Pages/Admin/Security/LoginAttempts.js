@@ -35,28 +35,69 @@ module.exports = {
 
 						const IpList = () => {
 
+
+
+              const loginAttemptKeys = ${async () => {
+
+                return JSON.stringify(await Index.client.keys("login_attempt:*"))
+              }}
+
+              
 							  const reqKeys = ${async () => {
-
-
-                                return await JSON.stringify(await Index.client.scan("req_login:*"),
-                                );
+                                const allKeys =  await Index.client.keys("req_login:*")
+                                var obj = [];
+                                for(let u of allKeys){
+                                  var t = {}
+                                  t[u.split(":")[1]] = await Index.client.get(u)
+                                  obj.push(t)
+                                }
+                                return JSON.stringify(obj)
                               }}
 
 
-                     
+                              const rendered = reqKeys.map((key) =>{
 
-                            //   const rendered = reqKeys.map((key) =>{
+                              var ip = ""
+                              var count = ""
 
-                            //     if(/^req:/.test(key)) {var temp = key.split(":");return <Fragment> <p>DATE:{Date(temp[1] * 1)} | IP: {temp[2]} | PATH: {temp[3]}</p> </Fragment>}
-                            //     else return ""
-                            //   }
+                              for(let o in key){
+                                ip = o
+                                count = key[o]
+                                          }
 
-                            //   );
+
+                              return <Fragment> <p>count: {count} | IP: {ip} </p> </Fragment>
+                             
+                            
+                              }
+
+                              );
+
+                              const rendered2 = loginAttemptKeys.map((key) => {
+
+                                const temp = key.split(":")
+                                console.log(temp)
+
+                                if(temp[3] == "2"){
+                                  return <Fragment> <p>DATE: {Date(temp[1] * 1)} | IP: {temp[2]} | <span style={{fontSize:"2rem",backgroundColor:"red",color:"white"}}>Suspicious attempt</span> </p> </Fragment>
+
+                                }else if (temp[3] == "1"){
+                                  return <Fragment> <p>DATE: {Date(temp[1] * 1)} | IP: {temp[2]} | <span style={{fontSize:"2rem",color:"green"}}>Approved</span></p> </Fragment>
+
+                                }else if (temp[3] == "0"){
+                                  return <Fragment> <p>DATE: {Date(temp[1] * 1)} | IP: {temp[2]} |  <span style={{fontSize:"2rem",color:"red"}}>Not Approved</span></p> </Fragment>
+
+                                }
+
+                              })
 
  
                 return (<Fragment>
 
-                        {"rendered"}
+                    <h3>Request Counts</h3>
+                        {rendered}
+                    <h3>All Requests</h3>
+                    {rendered2}
                         
 
                 </Fragment>)

@@ -196,9 +196,13 @@ root.use(async (req, res, next) => {
       ? `${req?.header("x-forwarded-for").split(",")[0]}`
       : "undefined";
 
-    var tempVar = `req_count:${ReqIP}`
-    const DDoS_req_count = await memoryCache.get(tempVar)
-    await memoryCache.put(`req:${Date.now()}:${ReqIP}:${req.path}`, `0`);
+
+    if(req.path.split("/")[1] != "admin"){
+      var tempVar = `req_count:${ReqIP}`
+      const DDoS_req_count = await memoryCache.get(tempVar)
+      await memoryCache.put(`req:${Date.now()}:${ReqIP}:${req.path}`, `0`);
+    }
+
     
 
     // if (req.path.split("/")?.[1] != "admin") {
@@ -621,15 +625,23 @@ const auth = async (req, res, next) => {
 
     if (req.method == "POST" && req.originalUrl == "/admin/login/") {
 
+
       const redisKey = `req_login:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}`;
       const currentCount = await client.get(redisKey);
 
-      var temp =
+      var ReqIP =
         typeof req?.header("x-forwarded-for") == "string"
           ? `${req?.header("x-forwarded-for").split(",")[0]}`
           : "undefined";
-      var tempLogin = `login_attempts:${temp}:${Date.now()}`;
-      await client.set(tempLogin, temp);
+
+      var tempLogin = `login_attempts:${ReqIP}:${Date.now()}`;
+
+
+
+      var loginLog = `login_attempt:${Date.now()}:${ReqIP}`
+
+
+      await client.set(tempLogin, ReqIP);
       await client.expire(tempLogin, 172800);
 
       if (isNaN(Number(String(await currentCount)))) {
@@ -641,7 +653,7 @@ const auth = async (req, res, next) => {
 
       if (token) {
         res.clearCookie("SessionToken");
-        res.status(403).send("Existing token found, token removed.");
+        res.status(401).send(JSON.stringify({message: "Existing token found, token removed"}));
         return;
       }
 
@@ -684,13 +696,13 @@ const auth = async (req, res, next) => {
         next();
         await client.set(redisKey, "0");
         await client.expire(redisKey, 172800);
+        client.set(loginLog + ":1", "0")
+        client.expire(loginLog,172800)
         return;
       } else {
-        res
-          .status(403)
-          .send(
-            await Components.visitor.ErrorBox.html({ message: "login failed" }),
-          );
+        client.set(loginLog + ":0", "0")
+        client.expire(loginLog,172800)
+        res.status(403).send(await Components.visitor.ErrorBox.html({ message: "login failed" }));
         return;
       }
     }
