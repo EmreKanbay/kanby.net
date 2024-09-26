@@ -105,7 +105,7 @@ subAdmin
     try {
       const text = `INSERT INTO "blogs" (title, description, 
 		language,  author, creation_date, 
-		rendered_content, raw_content, thumbnail_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
+		rendered_content, raw_content, thumbnail_url, last_modify_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
 
       const text1 = `SELECT * FROM users WHERE id= $1`;
 
@@ -120,6 +120,8 @@ subAdmin
         req.body.blog_markdown_rendered,
         req.body.blog_markdwon_raw,
         req.body.blog_cover_image == "" ? "https://cdn.kanby.net/assets/placeholder-image.svg" : req.body.blog_cover_image,
+        Date.now(),
+
       ];
 
       await Index.pool.query(text, values);

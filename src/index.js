@@ -186,6 +186,7 @@ root.use((req, res, next) => {
     if (SQL_works && REDIS_works) next();
     else res.status(503).send(errorPage("DB connection error"));
   } catch (error) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     res.status(503).send(errorPage());
     }
 
