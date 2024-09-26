@@ -48,7 +48,6 @@ module.exports = {
 			
 
       <meta name="description" content="${he.encode(translation[data.language].description)}"/>
-      <meta name="robots" content="index,follow">
       
   		<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" >
 			<link rel="alternate" hreflang="en" href="https://kanby.net/English/" >
@@ -128,8 +127,9 @@ module.exports = {
 						  if(record1.rowCount == 0){
 
 							alt_text = "placeholder-image"
-						  }else{
 							t.thumbnail_url = "https://cdn.kanby.net/assets/placeholder-image.svg"
+
+						  }else{
 							  alt_text = record1.rows[0].alt_text;
 						  }
                         } catch (e) {
@@ -177,8 +177,9 @@ module.exports = {
 					  if(record1.rowCount == 0){
 
 						alt_text = "placeholder-image"
-					  }else{
 						t.thumbnail_url = "https://cdn.kanby.net/assets/placeholder-image.svg"
+
+					  }else{
 						  alt_text = record1.rows[0].alt_text;
 					  }
                     } catch (e) {

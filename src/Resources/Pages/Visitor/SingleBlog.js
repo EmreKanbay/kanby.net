@@ -36,7 +36,6 @@ module.exports = {
 					<link rel="stylesheet" href="${cdn}/assets/github-markdown-light.css" />
 					<meta name="description" content="${he.encode(record.rows[0].description)}"/>
 					<title>${he.encode(record.rows[0].title)}</title>
-	    		 <meta name="robots" content="index,follow">
 								
 								
         <meta property="og:title" content="${he.encode(record.rows[0].title)}" />

@@ -33,7 +33,6 @@ module.exports = {
  
 			<title>${he.encode(translation[data.language].title)}</title>
             <meta name="description" content="${he.encode(translation[data.language].description)}">
- 	        <meta name="robots" content="index,follow">
 
           
   		<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/about/" >

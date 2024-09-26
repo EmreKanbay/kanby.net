@@ -14,7 +14,6 @@ module.exports = async (data) =>
 		<base href="/${data.language}/">
 		<meta charset="utf-8">
        	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="robots" content="index,follow">
         <link rel="preload" href="${cdn}/assets/github-markdown-light.css" as="style" />
         <link rel="preload" href="${cdn}/assets/loading.svg" as="image" type="image/svg+xml"/>
         <link href="${cdn}" rel="dns-prefetch">

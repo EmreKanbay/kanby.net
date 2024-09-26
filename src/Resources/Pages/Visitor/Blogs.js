@@ -24,9 +24,8 @@ module.exports = {
       langCode: data.langCode,
       language: data.language,
       head: await Framework.render`
-			<title>Kanby | ${he.encode(translation[data.language].title)}</title>
+			<title>${he.encode(translation[data.language].title)}</title>
 			<meta name="description" content="${he.encode(translation[data.language].description)}">
- 	        <meta name="robots" content="index,follow">
                    
          	<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/blogs/" >
 			<link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/" >
@@ -57,8 +56,9 @@ module.exports = {
                     if(record1.rowCount == 0){
 
                       alt_text = "placeholder-image"
-                      }else{
                       t.thumbnail_url = "https://cdn.kanby.net/assets/placeholder-image.svg"
+
+                      }else{
                         alt_text = record1.rows[0].alt_text;
                       }
                    } catch (e) {

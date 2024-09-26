@@ -218,7 +218,7 @@ document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
 				markdown_rendered: await res2.text(),
 				language: yhz,
 				description: document.querySelector("#project-description-" + yhz).value,
-				thumbnail_url: document.querySelector("#project-cover-image-" + yhz).value,
+				thumbnail_url: document.querySelector("#project-cover-image-" + yhz).value == "" ? "https://cdn.kanby.net/assets/placeholder-image.svg" : document.querySelector("#project-cover-image-" + yhz).value,
 			
 				}))
 		

@@ -185,7 +185,7 @@ root.use((req, res, next) => {
   else res.status(503).send("DB is not connected");
 });
 
-// Rate Limit
+// SECURITY MIDDLEWARE
 root.use(async (req, res, next) => {
   try {
     const redisKey_login = `req_login:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}`;
@@ -201,7 +201,10 @@ root.use(async (req, res, next) => {
       var tempVar = `req_count:${ReqIP}`
       const DDoS_req_count = await memoryCache.get(tempVar)
     if(req.path.split("/")[1] != "admin"){
+      await memoryCache.put(`req:${Date.now()}:${ReqIP}:${req.path}`, `0`);
+    }
 
+    if(req.path == "/admin/login/"){
       await memoryCache.put(`req:${Date.now()}:${ReqIP}:${req.path}`, `0`);
     }
 

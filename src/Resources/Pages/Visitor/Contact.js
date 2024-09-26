@@ -6,12 +6,12 @@ const Framework = require("#Framework");
 
 const translation = {
   Turkish: {
-    title: "iletişim - kanby.net",
+    title: "İletişim - kanby.net",
     description: "kanby.net iletişim sayfası",
     key1: "İletişim / Sosyal Medya",
   },
   English: {
-    title: "contact - kanby.net",
+    title: "Contact - kanby.net",
     description: "kanby.net contact page",
     key1: "Contact / Social Media",
   },
@@ -25,7 +25,6 @@ module.exports = {
       head: await Framework.render`
           <title>${he.encode(translation[data.language].title)}</title>
           <meta name="description" content="${he.encode(translation[data.language].description)}">
-	        <meta name="robots" content="index,follow">
 									
         	<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/contact/" >
 		<link rel="alternate" hreflang="en" href="https://kanby.net/English/contact/" >
