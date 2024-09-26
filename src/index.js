@@ -65,7 +65,7 @@ var SQL_works = false;
     REDIS_works = true;
     // await client.flushDb();
   } catch (error) {
-    console.log("redis connection ERROR");
+    if(process.env.NODE_ENV == "developement"){console.log(error)}
     REDIS_works = false;
   }
 
@@ -78,6 +78,8 @@ var SQL_works = false;
     console.log("Postgres connected succesfully");
     SQL_works = true;
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     SQL_works = false;
   }
 })();
@@ -196,10 +198,10 @@ root.use(async (req, res, next) => {
       ? `${req?.header("x-forwarded-for").split(",")[0]}`
       : "undefined";
 
-
-    if(req.path.split("/")[1] != "admin"){
       var tempVar = `req_count:${ReqIP}`
       const DDoS_req_count = await memoryCache.get(tempVar)
+    if(req.path.split("/")[1] != "admin"){
+
       await memoryCache.put(`req:${Date.now()}:${ReqIP}:${req.path}`, `0`);
     }
 
@@ -237,6 +239,7 @@ root.use(async (req, res, next) => {
       }
     }
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     res.status(500).send(errorPage());
     return;
   }
@@ -254,6 +257,8 @@ Disallow: /admin/
 Sitemap: https://kanby.net/sitemap.xml
    `);
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.type("text/html");
 
     res.status(500).send(errorPage());
@@ -302,6 +307,8 @@ root.get("/manifest.json", function (req, res, next) {
       }),
     );
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.type("text/html");
 
     res.status(500).send(errorPage());
@@ -341,6 +348,7 @@ root.get("/rss.xml", async function (req, res, next) {
           )),
         );
       } catch (error) {
+        
         return ``;
       }
     }}
@@ -379,6 +387,8 @@ root.get("/rss.xml", async function (req, res, next) {
 
     res.status(200).send(rss);
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.type("text/html");
     res.status(500).send(errorPage());
   }
@@ -558,6 +568,8 @@ root.get("/sitemap.xml", async function (req, res, next) {
 
     res.status(200).send(sitemap);
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.type("text/html");
     res.status(500).send(errorPage());
   }
@@ -604,6 +616,8 @@ root.use((req, res, next) => {
       next();
     }
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.status(500).send(errorPage());
   }
 });
@@ -782,6 +796,8 @@ const auth = async (req, res, next) => {
     }
     // else values = [req?.cookies?.login_name, req?.cookies?.password_hash];
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+  
     res.status(500).send(errorPage());
     return;
   }
@@ -813,6 +829,8 @@ root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
       `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
     );
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.status(500).send(JSON.stringify({message: "error"}));
   }
 });
@@ -830,6 +848,8 @@ root.use("/admin/:id", auth, async (req, res, next) => {
       );
     else next();
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.status(500).send(errorPage());
   }
 });
@@ -878,6 +898,8 @@ root.use("/:lang", async (req, res, next) => {
       });
     }
   } catch (error) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.status(500).send(errorPage());
   }
 });

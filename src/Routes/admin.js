@@ -24,9 +24,13 @@ admin.use("/:user_id", async (req, res, next) => {
 		next();
 	}catch(e){
 		if(req.method == "GET"){
+      if(process.env.NODE_ENV == "developement"){console.log(e)}
 
 			res.status(500).send(errorPage(e))
+      
 		}else{
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
 			res.status(500).send(JSON.stringify({message: "error"}))
 
 		}
@@ -39,18 +43,20 @@ admin.use("/:user_id/", subAdmin);
 subAdmin.get("/dashboard/",async (req, res, next) => {
   try {
     res.status(200).send(await Pages.AdminDashboard.html({ user_id: req.userID }));
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
-    res.status(500).send(errorPage(error));
+    res.status(500).send(errorPage(e));
   }
 });
 
 subAdmin.get("/blogs/add/",Index.cache(), async (req, res, next) => {
   try {
     res.status(200).send(await Pages.AddBlog.html({ user_id: req.userID }));
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
-    res.status(500).send(errorPage(error));
+    res.status(500).send(errorPage(e));
   }
 });
 
@@ -60,9 +66,10 @@ subAdmin
   .get(Index.cache(), async (req, res) => {
     try {
       res.status(200).send(await Pages.AllBlogs.html({ user_id: req.userID }));
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
       
-      res.status(500).send(errorPage(error));
+      res.status(500).send(errorPage(e));
     }
   })
 
@@ -91,8 +98,10 @@ subAdmin
           )})
         );
       }
-    } catch (error) {
+    } catch (e) {
       
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
       res.status(500).send(JSON.stringify({message: "error"}))
     }
   })
@@ -124,6 +133,7 @@ subAdmin
       Index.memoryCache.clear()
 
     } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
       
       res.status(500).send(JSON.stringify({message: "error"}))
     }
@@ -136,9 +146,10 @@ subAdmin
       res.status(200).send(
         await Pages.ViewBlog.html({ id: req.params.id, user_id: req.userID }),
       );
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
       
-      res.status(500).send(errorPage(error));
+      res.status(500).send(errorPage(e));
     }
   })
   .delete(async (req, res) => {
@@ -152,7 +163,8 @@ subAdmin
       res.status(200).send(JSON.stringify({message: "success"}));
       Index.memoryCache.clear()
 
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
       
       res.status(500).send(JSON.stringify({message: "error"}));
     }
@@ -177,7 +189,9 @@ subAdmin
       res.status(200).send(JSON.stringify({message: "success"}));
       Index.memoryCache.clear()
 
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
             res.status(500).send(JSON.stringify({message: "error"}));
     }
   });
@@ -188,9 +202,10 @@ subAdmin
     try {
 
       res.status(200).send(await Pages.AllProjects.html({ user_id: req.userID }));
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
       
-      res.status(500).send(errorPage(error));
+      res.status(500).send(errorPage(e));
     }
   })
   .put(Index.upload.none(), async (req, res) => {
@@ -208,16 +223,19 @@ subAdmin
       var record = await Index.pool.query(text, values);
       res.status(200).send(JSON.stringify({message: "success"}));
       Index.memoryCache.clear()
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
             res.status(500).send(JSON.stringify({message: "error"}));
     }
   });
 subAdmin.get("/projects/add/", Index.cache(),  async (req, res) => {
   try {
     res.status(200).send(await Pages.AddProject.html({ user_id: req.userID }));
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
-    res.status(500).send(errorPage(error));
+    res.status(500).send(errorPage(e));
   }
 });
 
@@ -231,9 +249,10 @@ subAdmin
           user_id: req.userID,
         }),
       );
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
       
-      res.status(500).send(errorPage(error));
+      res.status(500).send(errorPage(e));
     }
   })
   .delete(Index.upload.none(), async (req, res) => {
@@ -246,7 +265,9 @@ subAdmin
       res.status(200).send(JSON.stringify({message: "success"}));
       Index.memoryCache.clear()
 
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
             res.status(500).send(JSON.stringify({message: "error"}));
     }
   })
@@ -260,7 +281,9 @@ subAdmin
       res.status(200).send(JSON.stringify({message: "success"}));
       Index.memoryCache.clear()
 
-     } catch (error) {
+     } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
             res.status(500).send(JSON.stringify({message: "error"}));
      }
   });
@@ -271,9 +294,10 @@ subAdmin
     try {
       res.status(200).send(await Pages.Media.html({ user_id: req.userID }));
 
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
       
-      res.status(500).send(errorPage(error));
+      res.status(500).send(errorPage(e));
     }
   })
   .delete(Index.upload.none(), async (req, res, next) => {
@@ -285,7 +309,9 @@ subAdmin
 	        res.status(200).send(JSON.stringify({message: "success"}));
       Index.memoryCache.clear()
 
-    } catch (error) {
+    } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
             res.status(500).send(JSON.stringify({message: "error"}));
     }
   })
@@ -305,6 +331,8 @@ subAdmin
       Index.memoryCache.clear()
 
     } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
             res.status(500).send(JSON.stringify({message: "error"}));
     }
   });
@@ -312,27 +340,30 @@ subAdmin
 subAdmin.get("/media/add/", Index.cache(), async (req, res, next) => {
   try {
     res.status(200).send(await Pages.AddMedia.html({ user_id: req.userID }));
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
-    res.status(500).send(errorPage(error));
+    res.status(500).send(errorPage(e));
   }
 });
 
 subAdmin.get("/security",  async (req, res) => {
   try {
     res.status(200).send(await Pages.Security.html({ user_id: req.userID }));
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
-    res.status(500).send(errorPage(error));
+    res.status(500).send(errorPage(e));
   }
 });
 
 subAdmin.get("/settings",  async (req, res) => {
   try {
     res.status(200).send(await Pages.Settings.html({ user_id: req.userID }));
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
-    res.status(500).send(errorPage(error));
+    res.status(500).send(errorPage(e));
   }
 });
 
@@ -340,9 +371,10 @@ subAdmin.get("/settings",  async (req, res) => {
 subAdmin.get("/security/all_requests/",  async (req, res) => {
   try {
     res.status(200).send(await Pages.AllRequests.html({ user_id: req.userID }));
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
-    res.status(500).send(errorPage(error));
+    res.status(500).send(errorPage(e));
   }
 });
 
@@ -350,9 +382,10 @@ subAdmin.get("/security/all_requests/",  async (req, res) => {
 subAdmin.get("/security/login_attempts/",  async (req, res) => {
   try {
     res.status(200).send(await Pages.LoginAttempts.html({ user_id: req.userID }));
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
-    res.status(500).send(errorPage(error));
+    res.status(500).send(errorPage(e));
   }
 });
 

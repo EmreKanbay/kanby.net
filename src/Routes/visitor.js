@@ -17,6 +17,8 @@ visitor.get("/", async (req, res, next) => {
   try {
     res.redirect(new URL(`/Turkish/`, req.protocol + "://" + req.get("host")));
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.status(500).send(errorPage());
     
   }
@@ -57,8 +59,12 @@ visitor.use("/:lang", async (req, res, next) => {
   } catch (e) {
     
     if (req.method == "GET") {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
       res.status(500).send(errorPage());
     } else {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
       res.status(500).send(JSON.stringify({ Message: "Error" }));
     }
   }
@@ -78,6 +84,8 @@ subVisitor.get("/", Index.cache() ,async (req, res, next) => {
       }),
     );
   } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+
     res.status(500).send(errorPage());
   }
 });
@@ -91,8 +99,9 @@ subVisitor.get("/blogs/", Index.cache() ,async (req, res, next) => {
         langCode: req.langCode,
       }),
     );
-  } catch (error) {
+  } catch (e) {
     
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
 
     res.status(500).send(errorPage());
   }
@@ -129,7 +138,8 @@ subVisitor.get("/blogs/:id", Index.cache(),async (req, res, next) => {
         }),
       );
     }
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
     res.status(500).send(errorPage());
   }
@@ -144,7 +154,8 @@ subVisitor.get("/projects/",Index.cache(), async (req, res, next) => {
         langCode: req.langCode,
       }),
     );
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
     res.status(500).send(errorPage());
   }
@@ -181,7 +192,8 @@ subVisitor.get("/projects/:id", Index.cache(),async (req, res, next) => {
         }),
       );
     }
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
     res.status(500).send(errorPage());
   }
@@ -196,7 +208,8 @@ subVisitor.get("/contact/", Index.cache(),async (req, res, next) => {
         langCode: req.langCode,
       }),
     );
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
     res.status(500).send(errorPage());
   }
@@ -211,7 +224,8 @@ subVisitor.get("/about/", Index.cache(),async (req, res, next) => {
         langCode: req.langCode,
       }),
     );
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
     res.status(500).send(errorPage());
   }
@@ -226,7 +240,8 @@ subVisitor.get("/services/", Index.cache(),async (req, res, next) => {
         langCode: req.langCode,
       }),
     );
-  } catch (error) {
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
     
     res.status(500).send(errorPage());
   }

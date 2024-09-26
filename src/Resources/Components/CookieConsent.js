@@ -18,13 +18,21 @@ const translation = {
 
 
 module.exports = {
-  html: (data) => Framework.render`
+  html: (data) => Framework.render/*html*/`
 
   <div id="cookie-consent-cont">
   <p>${translation[data.language].key1}</p>
-  <button>${translation[data.language].key2}</button>
-  <button>${translation[data.language].key3}...</button>
+  <button id="grant-cookies">${translation[data.language].key2}</button>
+  <button id="cookies-details">${translation[data.language].key3}...</button>
   </div>
+
+  <script>
+  document.querySelector("#grant-cookies")
+  
+  
+  </script>
+
+
 	<style>
 
     #cookie-consent-cont{
