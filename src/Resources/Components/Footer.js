@@ -33,7 +33,7 @@ module.exports = {
     <footer class="K0e6gd-container">
     <div class="K0e6gd-sub-container">
         <div class="K0e6gd-heading">
-            <p>${translation[data.language].key1}</p>
+            <p>${translation[data.customData.language].key1}</p>
             <ul>
                 <li class="external-link">
                     <img
@@ -109,22 +109,22 @@ module.exports = {
 
 
                 <div class="K0e6gd-heading">
-            <p>${translation[data.language].key2}</p>
+            <p>${translation[data.customData.language].key2}</p>
             <ul>
 
                 <li>
                     <a
-                    hreflang="${data.langCode}"
+                    hreflang="${data.customData.langCode}"
                          href="blogs/">
-                        ${translation[data.language].key2_1}
+                        ${translation[data.customData.language].key2_1}
                     </a>
                 </li>
 
                                <li>
                     <a
-                    hreflang="${data.langCode}"
+                    hreflang="${data.customData.langCode}"
                          href="projects/">
-                        ${translation[data.language].key2_2}
+                        ${translation[data.customData.language].key2_2}
                     </a>
                 </li>
 
@@ -133,22 +133,22 @@ module.exports = {
 
 
 		 <div class="K0e6gd-heading">
-            <p>${translation[data.language].key3}</p>
+            <p>${translation[data.customData.language].key3}</p>
             <ul>
 
                 <li>
                     <a
-                    hreflang="${data.langCode}"
+                    hreflang="${data.customData.langCode}"
                          href="contact/">
-                        ${translation[data.language].key3_1}
+                        ${translation[data.customData.language].key3_1}
                     </a>
                 </li>
 
                                <li>
                     <a
-                    hreflang="${data.langCode}"
+                    hreflang="${data.customData.langCode}"
                          href="about/">
-                        ${translation[data.language].key3_2}
+                        ${translation[data.customData.language].key3_2}
                     </a>
                 </li>
 
@@ -156,9 +156,9 @@ module.exports = {
 
                                <li>
                     <a
-                    hreflang="${data.langCode}"
+                    hreflang="${data.customData.langCode}"
                          href="services/">
-                        ${translation[data.language].key3_3}
+                        ${translation[data.customData.language].key3_3}
                     </a>
                 </li>
             </ul>

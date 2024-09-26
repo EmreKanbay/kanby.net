@@ -12,6 +12,24 @@ const errorPage = (msg) => {
   ${msg == undefined ? "" : `<p>Error Message: ${msg} </p>`}`;
 };
 
+
+
+
+visitor.post("/grant_cookie", (req, res, next) => {
+
+    res.cookie("CookiesGranted", "true", {
+      expires:  new Date(Date.now() + 18000000000),
+      httpOnly: true,
+      secure: true,
+      domain: req.get("host") == "localhost" ? "" : "kanby.net",
+      sameSite: "strict",
+    });
+
+    Index.memoryCache.clear()
+    res.send()
+
+})
+
 // redirect / to /Turkish
 visitor.get("/", async (req, res, next) => {
   try {
@@ -26,36 +44,43 @@ visitor.get("/", async (req, res, next) => {
 });
 
 // validate :lang and if it is valid and exist in SQL db redirect to relevant page
-visitor.use("/:lang", async (req, res, next) => {
+//     if (/^([A-Z]{1}[a-z]+)$/.test(req.params.lang))
+visitor.use("/:lang",Index.cache(20) , async (req, res, next) => {
   try {
-    if (/^([A-Z]{1}[a-z]+)$/.test(req.params.lang)) {
+
       const query = await Index.pool.query("SELECT * FROM variables");
       if (query.rows[0].value.includes(req.params.lang)) {
-        req.langCode =
+        req.customData={}
+
+        req.customData.langCode =
           query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)];
-        req.language = req.params.lang;
-        req.clientIP =
+        req.customData.language = req.params.lang;
+        req.customData.clientIP =
           typeof req?.header("x-forwarded-for") == "string"
             ? req?.header("x-forwarded-for").split(",")[0]
             : "";
+        req.customData.cookiesGranted = Boolean(req?.cookies?.CookiesGranted)
 
         next();
       } else {
-        res.status(404).send(
-          await Pages.NotFound.html({
-            language: "English",
-            langCode: "en",
-          }),
-        );
+
+        if (req.method == "GET") {
+
+          res.status(404).send(
+            await Pages.NotFound.html({
+              customData: {language: "English",
+                langCode: "en",cookiesGranted: Boolean(req?.cookies?.CookiesGranted)}
+            }),
+          );
+          } else {
+            res.status(405).send({
+              message: `The method ${req.method} is not allowed for the requested endpoint.`,
+            });
+          }
+
+
       }
-    } else {
-      res.status(404).send(
-        await Pages.NotFound.html({
-          language: "English",
-          langCode: "en",
-        }),
-      );
-    }
+
   } catch (e) {
     
     if (req.method == "GET") {
@@ -74,13 +99,11 @@ const subVisitor = Index.express.Router();
 visitor.use("/:lang/", subVisitor);
 
 // Landing Page
-subVisitor.get("/", Index.cache() ,async (req, res, next) => {
+subVisitor.get("/", async (req, res, next) => {
   try {
-    res.status(200).send(
+    res.status(200).sendNoCache(
       await Pages.LandingPage.html({
-        language: req.language,
-        langCode: req.langCode,
-        reqIp: req.clientIP,
+        customData: req.customData,
       }),
     );
   } catch (e) {
@@ -91,12 +114,11 @@ subVisitor.get("/", Index.cache() ,async (req, res, next) => {
 });
 
 // blogs page
-subVisitor.get("/blogs/", Index.cache() ,async (req, res, next) => {
+subVisitor.get("/blogs/", async (req, res, next) => {
   try {
-    res.status(200).send(
+    res.status(200).sendNoCache(
       await Pages.Blogs.html({
-        language: req.language,
-        langCode: req.langCode,
+        customData: req.customData,
       }),
     );
   } catch (e) {
@@ -108,37 +130,27 @@ subVisitor.get("/blogs/", Index.cache() ,async (req, res, next) => {
 });
 
 // single blog
-subVisitor.get("/blogs/:id", Index.cache(),async (req, res, next) => {
+subVisitor.get("/blogs/:id/", async (req, res, next) => {
   try {
     const text = `SELECT ARRAY(SELECT id FROM blogs WHERE language= $1) AS ids`;
-    var record = await Index.pool.query(text, [req.language]);
+    var record = await Index.pool.query(text, [req.customData.language]);
 
-    if (/^[0-9]+$/.test(req.params.id)) {
       if (record.rows[0].ids.includes(Number(req.params.id))) {
-        res.status(200).send(
+        res.status(200).sendNoCache(
           await Pages.SingleBlog.html({
-            language: req.language,
             blog_id: req.params.id,
-            langCode: req.langCode,
+            customData: req.customData,
           }),
         );
       } else {
         res.status(404).send(
           await Pages.NotFound.html({
-            language: req.language,
-            langCode: req.langCode,
+            customData: req.customData,
           }),
         );
       }
-    } else {
-      res.status(404).send(
-        await Pages.NotFound.html({
-          language: req.language,
-          langCode: req.langCode,
-        }),
-      );
-    }
-  } catch (e) {
+    } 
+   catch (e) {
     if(process.env.NODE_ENV == "developement"){console.log(e)}
     
     res.status(500).send(errorPage());
@@ -146,12 +158,11 @@ subVisitor.get("/blogs/:id", Index.cache(),async (req, res, next) => {
 });
 
 // projects page
-subVisitor.get("/projects/",Index.cache(), async (req, res, next) => {
+subVisitor.get("/projects/", async (req, res, next) => {
   try {
-    res.status(200).send(
+    res.status(200).sendNoCache(
       await Pages.Projects.html({
-        language: req.language,
-        langCode: req.langCode,
+        customData: req.customData,
       }),
     );
   } catch (e) {
@@ -162,36 +173,27 @@ subVisitor.get("/projects/",Index.cache(), async (req, res, next) => {
 });
 
 // single project
-subVisitor.get("/projects/:id", Index.cache(),async (req, res, next) => {
+subVisitor.get("/projects/:id", async (req, res, next) => {
   try {
     const text = `SELECT ARRAY(SELECT id FROM projects) AS ids`;
     var record = await Index.pool.query(text);
 
-    if (/^[0-9]+$/.test(req.params.id)) {
+
       if (record.rows[0].ids.includes(Number(req.params.id))) {
-        res.status(200).send(
+        res.status(200).sendNoCache(
           await Pages.SingleProject.html({
-            language: req.language,
             id: req.params.id,
-            langCode: req.langCode,
+            customData: req.customData,
           }),
         );
       } else {
         res.status(404).send(
           await Pages.NotFound.html({
-            language: req.language,
-            langCode: req.langCode,
+            customData: req.customData,
           }),
         );
       }
-    } else {
-      res.status(404).send(
-        await Pages.NotFound.html({
-          language: req.language,
-          langCode: req.langCode,
-        }),
-      );
-    }
+    
   } catch (e) {
     if(process.env.NODE_ENV == "developement"){console.log(e)}
     
@@ -200,12 +202,11 @@ subVisitor.get("/projects/:id", Index.cache(),async (req, res, next) => {
 });
 
 //contact page
-subVisitor.get("/contact/", Index.cache(),async (req, res, next) => {
+subVisitor.get("/contact/", async (req, res, next) => {
   try {
     res.status(200).send(
       await Pages.Contact.html({
-        language: req.language,
-        langCode: req.langCode,
+        customData: req.customData,
       }),
     );
   } catch (e) {
@@ -216,12 +217,11 @@ subVisitor.get("/contact/", Index.cache(),async (req, res, next) => {
 });
 
 // about page
-subVisitor.get("/about/", Index.cache(),async (req, res, next) => {
+subVisitor.get("/about/", async (req, res, next) => {
   try {
     res.status(200).send(
       await Pages.About.html({
-        language: req.language,
-        langCode: req.langCode,
+        customData: req.customData,
       }),
     );
   } catch (e) {
@@ -232,12 +232,11 @@ subVisitor.get("/about/", Index.cache(),async (req, res, next) => {
 });
 
 //services page
-subVisitor.get("/services/", Index.cache(),async (req, res, next) => {
+subVisitor.get("/services/",async (req, res, next) => {
   try {
     res.status(200).send(
       await Pages.Services.html({
-        language: req.language,
-        langCode: req.langCode,
+        customData: req.customData,
       }),
     );
   } catch (e) {
@@ -246,5 +245,30 @@ subVisitor.get("/services/", Index.cache(),async (req, res, next) => {
     res.status(500).send(errorPage());
   }
 });
+
+subVisitor.use(async (req, res, next)=> {
+
+  try {
+    if(req.method == "GET") {
+      res.status(404).send(
+        await Pages.NotFound.html({
+          customData: {language: req.customData.language,
+            langCode: req.customData.langCode,cookiesGranted: Boolean(req?.cookies?.CookiesGranted)}
+          
+        })
+      );
+    }else{
+      res.status(405).send({
+        message: `The method ${req.method} is not allowed for the requested endpoint.`,
+      });
+    }
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+    
+    res.status(500).send(errorPage());
+  }
+
+
+})
 
 module.exports = visitor;

@@ -71,11 +71,11 @@ const translation = {
 module.exports = {
   html: async (data) =>
     await Layouts.VisitorLayout({
-      langCode: data.langCode,
-      language: data.language,
+      customData: data.customData,
+
       head: await Framework.render`
-			<title>${he.encode(translation[data.language].title)}</title>
-            <meta name="description" content="${he.encode(translation[data.language].description)}">
+			<title>${he.encode(translation[data.customData.language].title)}</title>
+            <meta name="description" content="${he.encode(translation[data.customData.language].description)}">
 									
         	<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/services/" >
 		<link rel="alternate" hreflang="en" href="https://kanby.net/English/services/" >
@@ -86,30 +86,30 @@ module.exports = {
       content: await Framework.render`
 					<div class="cont">
 					
-					<h1>${translation[data.language].key1}</h1>
+					<h1>${translation[data.customData.language].key1}</h1>
 
-					<p>${translation[data.language].key1_1}</p>
+					<p>${translation[data.customData.language].key1_1}</p>
 
-					<h2>${translation[data.language].key2}</h2>
-					<p>${translation[data.language].key2_1}</p>
+					<h2>${translation[data.customData.language].key2}</h2>
+					<p>${translation[data.customData.language].key2_1}</p>
 
-					<h2>${translation[data.language].key3}</h2>
-					<p>${translation[data.language].key3_1}</p>
+					<h2>${translation[data.customData.language].key3}</h2>
+					<p>${translation[data.customData.language].key3_1}</p>
 
-					<h2>${translation[data.language].key4}</h2>
-					<p>${translation[data.language].key4_1}</p>
+					<h2>${translation[data.customData.language].key4}</h2>
+					<p>${translation[data.customData.language].key4_1}</p>
 
-					<h2>${translation[data.language].key5}</h2>
-					<p>${translation[data.language].key5_1}</p>
+					<h2>${translation[data.customData.language].key5}</h2>
+					<p>${translation[data.customData.language].key5_1}</p>
 
-					<h2>${translation[data.language].key6}</h2>
-					<p>${translation[data.language].key6_1}</p>
+					<h2>${translation[data.customData.language].key6}</h2>
+					<p>${translation[data.customData.language].key6_1}</p>
 
-					<h2>${translation[data.language].key7}</h2>
-					<p>${translation[data.language].key7_1}</p>
+					<h2>${translation[data.customData.language].key7}</h2>
+					<p>${translation[data.customData.language].key7_1}</p>
 
-					<h2>${translation[data.language].key8}</h2>
-					<p>${translation[data.language].key8_1}</p>
+					<h2>${translation[data.customData.language].key8}</h2>
+					<p>${translation[data.customData.language].key8_1}</p>
 
 					
 					

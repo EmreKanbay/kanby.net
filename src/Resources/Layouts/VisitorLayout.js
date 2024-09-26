@@ -9,9 +9,9 @@ const Framework = require("#Framework");
 module.exports = async (data) =>
   await Framework.render/*html*/`
 	<!doctype html>
-	<html lang="${data.langCode}">
+	<html lang="${data.customData.langCode}">
 		<head>
-		<base href="/${data.language}/">
+		<base href="/${data.customData.language}/">
 		<meta charset="utf-8">
        	<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preload" href="${cdn}/assets/github-markdown-light.css" as="style" />
@@ -29,17 +29,22 @@ module.exports = async (data) =>
 		</head>
 		<body>
 
-			${await Components.visitor.Header.html({ language: data.language, langCode: data.langCode })} 
+			${await Components.visitor.Header.html({ customData: data.customData })} 
 			
 			<main style="padding-top:3rem">
 			${await data.content} 
 			</main>
+
+
 			
-			${await Components.visitor.Footer.html({ language: data.language, langCode: data.langCode })}
-			${await Components.visitor.CookieConsent.html({ language: data.language, langCode: data.langCode })}
+			${await Components.visitor.Footer.html({ customData: data.customData })}
+			${async ()=> {
 
-		
+				if(!data.customData.cookiesGranted) return await Components.visitor.CookieConsent.html({ customData: data.customData })
+				
+			}}
 
+ 
 			</body>
 	</html>
 `;

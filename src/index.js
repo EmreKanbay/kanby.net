@@ -99,34 +99,29 @@ const root = express();
 
 
 // Set Some Hedears Here
-root.use(compression());
-root.set('trust proxy', true);
+root.use(compression()); // compression middleware
+root.set('trust proxy', true); // works behind a proxy
+root.use(cookieParser()); // For Reading Request cookies
+root.use(cors({ origin: "https://kanby.net" })); // Cors Policy
+root.disable("x-powered-by"); // Hide "express.js" from visible on headers
+
+// Custom header setup
 root.use((req, res, next) => {
-
-try {
-  if(req.path.split("/")[1] == "admin"){
-    res.set("cache-control", "private, no-cache");
-
-  }else{
-    res.set("cache-control", "max-age=100, must-revalidate");
+  try {
+    if(req.path.split("/")[1] == "admin"){
+      res.set("cache-control", "private, no-cache");
+  
+    }else{
+      res.set("cache-control", "max-age=100, must-revalidate");
+    }
+    res.set("content-cype", "text/html; charset=utf-8");
+    next();
+  } catch (e) {
+    if(process.env.NODE_ENV == "developement"){console.log(e)}
+    next();
   }
-  res.set("content-cype", "text/html; charset=utf-8");
-  next();
-} catch (e) {
-  if(process.env.NODE_ENV == "developement"){console.log(e)}
-  next();
-}
-});
+  });
 
-
-// For Reading Request cookies
-root.use(cookieParser());
-
-// Cors Policy
-root.use(cors({ origin: "https://kanby.net" }));
-
-// Hide "express.js" from visible on headers
-root.disable("x-powered-by");
 
 // Security Headers
 root.use(
@@ -589,15 +584,6 @@ root.get("/sitemap.xml", async function (req, res, next) {
   }
 });
 
-// Security of Root endpoint
-root.all("/", (req, res, next) => {
-  if (req.method == "GET") next();
-  else {
-    res.status(405).send({
-      message: `The method ${req.method} is not allowed for the requested endpoint.`,
-    });
-  }
-});
 
 // These are the endpoints which should not add trailing slashes
 // Rest endpoints will have trailing slashes to be consistent
@@ -643,6 +629,7 @@ const auth = async (req, res, next) => {
 
     var JWT_SECRET;
 
+    // RENEWS JWR SECRET IF NECCESARy
     if (await client.get("JWT_SECRET")) {
       JWT_SECRET = await client.get("JWT_SECRET");
     } else {
@@ -651,7 +638,10 @@ const auth = async (req, res, next) => {
       await client.expire("JWT_SECRET", 60 * 60 * 24 * 7);
     }
 
+
+
     if (req.method == "POST" && req.originalUrl == "/admin/login/") {
+
 
 
       const redisKey = `req_login:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}`;
@@ -690,6 +680,7 @@ const auth = async (req, res, next) => {
       const values = [String(req?.body?.login_name)];
       var record = await pool.query(text, values);
 
+
       if (
         record.rows.length == 1 &&
         record.rows[0].password_hash ==
@@ -720,8 +711,9 @@ const auth = async (req, res, next) => {
           domain: req.get("host") == "localhost" ? "" : "kanby.net",
           sameSite: "strict",
         });
-        req.customData = { record };
-        next();
+        res.redirect(
+          `${req.protocol}://${req.get("host")}/admin/${record.rows[0]["id"]}/dashboard/`,
+        );
         await client.set(redisKey, "0");
         await client.expire(redisKey, 172800);
         client.set(loginLog + ":1", "0")
@@ -735,11 +727,14 @@ const auth = async (req, res, next) => {
       }
     }
 
+
+
     if (!token) {
       if (req.method == "GET") {
         res
           .status(401)
-          .send(await LoginPage.html({ langCode: "en", language: "English" }));
+          .send(await LoginPage.html({ customData: {language: "English",
+            langCode: "en",cookiesGranted: Boolean(req?.cookies?.CookiesGranted)} }));
       } else {
         res.status(401).send({
           message: "Not Autherized",
@@ -748,6 +743,7 @@ const auth = async (req, res, next) => {
       return;
     }
 
+    
     var ret;
     // Verifies The Token
     try {
@@ -773,6 +769,7 @@ const auth = async (req, res, next) => {
       ret = { pass: false };
     }
 
+
     // if token is valid and ip address is same and user id is accurate, continiue with next()
     if (ret.pass) {
       const text = `SELECT login_name, password_hash, id FROM "users" WHERE login_name = $1`;
@@ -781,8 +778,14 @@ const auth = async (req, res, next) => {
 
       var record = await pool.query(text, values);
 
-      if (req.params.id == record.rows[0].id || req.params.id == "login") {
-        req.customData = { record };
+      if(req.params.id == "login"){
+        res.redirect(
+          `${req.protocol}://${req.get("host")}/admin/${record.rows[0].id}/dashboard/`,
+        )
+        return
+      }
+      if (req.params.id == record.rows[0].id) {
+        req.userID = req?.params?.id;
         next();
         return;
       } else {
@@ -800,7 +803,8 @@ const auth = async (req, res, next) => {
       if (req.method == "GET") {
         res
           .status(401)
-          .send(await LoginPage.html({ langCode: "en", language: "English" }));
+          .send(await LoginPage.html({ customData: {language: "English",
+            langCode: "en",cookiesGranted: Boolean(req?.cookies?.CookiesGranted)} }));
       } else {
         res.status(401).send({
           message: "Not autherized",
@@ -825,50 +829,17 @@ var cache = (duration = null /* SECONDS */) => {
     if(memoryCache.get(key)){
       res.send(memoryCache.get(key)); return;
     } else{
-      res.sendResponse = res.send;
+      res.sendNoCache = res.send;
         res.send = (body) => {
           if(duration) memoryCache.put(key, body, duration * 1000);
           else memoryCache.put(key, body);
-        res.sendResponse(body);
+        res.sendNoCache(body);
       };
     }
     next()
   }
 };
 
-// Process Login attemt
-root.post("/admin/login/", upload.none(), auth, async (req, res, next) => {
-  try {
-    res.redirect(
-      `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
-    );
-  } catch (e) {
-    if(process.env.NODE_ENV == "developement"){console.log(e)}
-
-    res.status(500).send(JSON.stringify({message: "error"}));
-  }
-});
-
-// Check authentication for admin page
-root.use("/admin/:id", auth, async (req, res, next) => {
-  try {
-    if (req.originalUrl == `/admin/${req.customData.record.rows[0]["id"]}/`)
-      res.redirect(
-        `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
-      );
-    else if (req.originalUrl == "/admin/login/")
-      res.redirect(
-        `${req.protocol}://${req.get("host")}/admin/${req.customData.record.rows[0]["id"]}/dashboard/`,
-      );
-    else next();
-  } catch (e) {
-    if(process.env.NODE_ENV == "developement"){console.log(e)}
-
-    res.status(500).send(errorPage());
-  }
-});
-
-// Export Variables
 module.exports = {
   __rootDir: __dirname,
   pool,
@@ -883,30 +854,48 @@ module.exports = {
 // Route Handlers
 const visitor = require("./Routes/visitor");
 const admin = require("./Routes/admin");
-root.use("/admin", admin);
-root.use("/", visitor);
 
-// not found page
-root.use("/:lang", async (req, res, next) => {
+// admin
+root.use("/admin/:id", upload.none(),auth,  admin);
+
+
+// visitor
+root.use("/", visitor); 
+
+
+// Security of Root endpoint
+root.use("/", async (req, res, next) => {
+  if (req.method == "GET") {
+    res
+    .status(404)
+    .send(await NotFound.html({   
+      customData: {
+        language: "English",
+      langCode: "en",
+      cookiesGranted: Boolean(req?.cookies?.CookiesGranted)} }));
+  }
+  else {
+    res.status(405).send({
+      message: `The method ${req.method} is not allowed for the requested endpoint.`,
+    });
+  }
+});
+
+
+
+root.use(async (req, res, next) => {
   try {
     if (req.method == "GET") {
-      const query = await pool.query("SELECT * FROM variables");
-      if (query.rows[0].value.includes(req.params.lang)) {
-        const langCode =
-          query.rows[0].value_2[query.rows[0].value.indexOf(req.params.lang)];
 
         res.status(404).send(
           await NotFound.html({
-            language: req.params.lang,
-            langCode: langCode,
+            customData: {language: "English",
+              langCode: "en",}
+            
           }),
         );
-      } else {
-        res
-          .status(404)
-          .send(await NotFound.html({ language: "English", langCode: "en" }));
-      }
-    } else {
+      } 
+     else {
       res.status(405).send({
         message: `The method ${req.method} is not allowed for the requested endpoint.`,
       });
@@ -917,6 +906,7 @@ root.use("/:lang", async (req, res, next) => {
     res.status(500).send(errorPage());
   }
 });
+
 
 // start server
 const server = root.listen(3000, () => {

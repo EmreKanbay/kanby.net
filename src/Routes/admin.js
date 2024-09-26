@@ -18,27 +18,22 @@ const errorPage = (error) => {
 	`;
 };
 
-admin.use("/:user_id", async (req, res, next) => {
-	try{
-		req.userID = req?.params?.user_id;
-		next();
-	}catch(e){
-		if(req.method == "GET"){
-      if(process.env.NODE_ENV == "developement"){console.log(e)}
+admin.get("/", async (req, res, next) => {
+try{
+  res.redirect(
+    `${req.protocol}://${req.get("host")}/admin/${req.userID}/dashboard/`,
+  );
+}catch(e){
+  if(process.env.NODE_ENV == "developement"){console.log(e)}
+    
+  res.status(500).send(errorPage(e));
 
-			res.status(500).send(errorPage(e))
-      
-		}else{
-    if(process.env.NODE_ENV == "developement"){console.log(e)}
+}
+  });
 
-			res.status(500).send(JSON.stringify({message: "error"}))
-
-		}
-	}
-});
 
 const subAdmin = Index.express.Router();
-admin.use("/:user_id/", subAdmin);
+admin.use("/", subAdmin);
 
 subAdmin.get("/dashboard/",async (req, res, next) => {
   try {
@@ -73,7 +68,7 @@ subAdmin
     }
   })
 
-  .post(Index.upload.none(), async (req, res) => {
+  .post( async (req, res) => {
     try {
       const text = `SELECT * FROM "blogs" WHERE language= $1`;
 
@@ -106,7 +101,7 @@ subAdmin
     }
   })
 
-  .put(Index.upload.none(), async (req, res) => {
+  .put( async (req, res) => {
     try {
       const text = `INSERT INTO "blogs" (title, description, 
 		language,  author, creation_date, 
@@ -170,7 +165,7 @@ subAdmin
     }
   })
 
-  .patch(Index.upload.none(), async (req, res) => {
+  .patch(async (req, res) => {
     try {
       const text = `UPDATE "blogs" SET title = $1 , description = $2,rendered_content = $3, raw_content = $4, thumbnail_url = $5, last_modify_date = $6, language = $7 WHERE id= $8`;
 
@@ -208,7 +203,7 @@ subAdmin
       res.status(500).send(errorPage(e));
     }
   })
-  .put(Index.upload.none(), async (req, res) => {
+  .put(async (req, res) => {
     try {
       const columns = Object.keys(req.body)
         .map((key) => `"${key}"`)
@@ -255,7 +250,7 @@ subAdmin
       res.status(500).send(errorPage(e));
     }
   })
-  .delete(Index.upload.none(), async (req, res) => {
+  .delete( async (req, res) => {
     try {
       const text = `DELETE FROM projects WHERE id= $1`;
 
@@ -271,7 +266,7 @@ subAdmin
             res.status(500).send(JSON.stringify({message: "error"}));
     }
   })
-  .patch(Index.upload.none(), async (req, res) => {
+  .patch( async (req, res) => {
     try {
       const text = `UPDATE projects SET "${Object.keys(req.body)[0]}" = $1 WHERE id= $2`;
 
@@ -300,7 +295,7 @@ subAdmin
       res.status(500).send(errorPage(e));
     }
   })
-  .delete(Index.upload.none(), async (req, res, next) => {
+  .delete( async (req, res, next) => {
     try {
       const text = "DELETE FROM media WHERE id = $1";
       const values = [req.body.id];
@@ -316,7 +311,7 @@ subAdmin
     }
   })
 
-  .put(Index.upload.none(), async (req, res, next) => {
+  .put(async (req, res, next) => {
     try {
       var [main, ext] = req.body.file_name.split(".");
 

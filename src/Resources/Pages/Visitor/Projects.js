@@ -24,12 +24,12 @@ const translation = {
 module.exports = {
   html: async (data) =>
     await Layouts.VisitorLayout({
-      langCode: data.langCode,
-      language: data.language,
+      customData: data.customData,
+
       head: await Framework.render`
  
-			<title>${he.encode(translation[data.language].title)}</title>
-            <meta name="description" content="${he.encode(translation[data.language].description)}">
+			<title>${he.encode(translation[data.customData.language].title)}</title>
+            <meta name="description" content="${he.encode(translation[data.customData.language].description)}">
 									
 									
         	<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/" >
@@ -41,11 +41,11 @@ module.exports = {
       content: await Framework.render`
 
 
-            <h1 style="text-align:center">${translation[data.language].key1}</h1>
+            <h1 style="text-align:center">${translation[data.customData.language].key1}</h1>
 				<div id="all-blogs-list">
 
 				${async () => {
-          const text = `SELECT "${data.language}",id FROM projects`;
+          const text = `SELECT "${data.customData.language}",id FROM projects`;
 
           const values = [];
 
@@ -57,7 +57,7 @@ module.exports = {
                 record.rows.map(async (t) => {
                   try {
                     const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
-                    const values1 = [t[data.language].thumbnail_url.trim()];
+                    const values1 = [t[data.customData.language].thumbnail_url.trim()];
                     var record1 = await Index.pool.query(text1, values1);
                     if(record1.rowCount == 0){
 
@@ -74,18 +74,18 @@ module.exports = {
 
                   return `
 
-<a rel="ugc" hreflang="${data.langCode}" href="projects/${t.id}/"  class="all-blogs-item">
+<a rel="ugc" hreflang="${data.customData.langCode}" href="projects/${t.id}/"  class="all-blogs-item">
 
-        <img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
+        <img alt="${alt_text}" src="${t[data.customData.language].thumbnail_url}" />
 
-        <span>${t[data.language].title}</span>
+        <span>${t[data.customData.language].title}</span>
         </a>
     `;
                 }),
               )),
             );
           } else {
-            return `<p>${translation[data.language].key2}</p>`;
+            return `<p>${translation[data.customData.language].key2}</p>`;
           }
         }}
 				

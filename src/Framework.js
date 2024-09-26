@@ -5,7 +5,8 @@ const render = async (x, ...values) => {
     rendered = rendered.concat(x[u]);
     if (u < x.length - 1) {
       if (typeof values[u] == "function") {
-        rendered = rendered.concat(await values[u]());
+        var res = await values[u]()
+        if(res) rendered = rendered.concat(res);
       } else {
         rendered = rendered.concat(values[u]);
       }

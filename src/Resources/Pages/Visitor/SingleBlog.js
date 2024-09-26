@@ -20,14 +20,14 @@ const translation = {
 module.exports = {
   html: async (data) =>
     await Layouts.VisitorLayout({
-      langCode: data.langCode,
-      language: data.language,
+		customData: data.customData,
+
       head: await Framework.render`
 
 			${async () => {
         const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
 
-        const values = [data.language, data.blog_id];
+        const values = [data.customData.language, data.blog_id];
 
         var record = await Index.pool.query(text, values);
 
@@ -42,12 +42,12 @@ module.exports = {
         <meta property="og:description" content="${he.encode(record.rows[0].description)}" />
 
           <meta property="og:type" content="article" />
-          <meta property="og:url" content="https://kanby.net/${data.language}/blogs/${data.blog_id}" />
+          <meta property="og:url" content="https://kanby.net/${data.customData.language}/blogs/${data.blog_id}" />
           <meta property="og:image" content="${he.encode(record.rows[0].thumbnail_url)}" />
           
           
           
-       	<link rel="alternate" hreflang="${data.langCode}" href="https://kanby.net/${data.language}/projects/${data.blog_id}/" >
+       	<link rel="alternate" hreflang="${data.customData.langCode}" href="https://kanby.net/${data.customData.language}/projects/${data.blog_id}/" >
 					`;
       }}
  
@@ -64,7 +64,7 @@ module.exports = {
 				${async () => {
           const text = `SELECT * FROM blogs WHERE language= $1 AND id = $2`;
 
-          const values = [data.language, data.blog_id];
+          const values = [data.customData.language, data.blog_id];
 
           var record = await Index.pool.query(text, values);
 
@@ -84,8 +84,8 @@ module.exports = {
 						<p class="blog-title" >${record.rows[0].title}</p>
 						<p class="blog-description">${record.rows[0].description}</p>
  						<span style="display:flex;height:3rem;align-items:center;gap:1rem"><img  style="border-radius:50%;height:100%" src="${record1.rows[0].profile_picture_url}"><p class="blog-author">${record.rows[0].author}</p></span>
- 						<p class="blog-author">${translation[data.language].key1} ${new Date(record.rows[0].creation_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
- 						<p class="blog-author">${translation[data.language].key2} ${new Date(record.rows[0].last_modify_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
+ 						<p class="blog-author">${translation[data.customData.language].key1} ${new Date(record.rows[0].creation_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
+ 						<p class="blog-author">${translation[data.customData.language].key2} ${new Date(record.rows[0].last_modify_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
 
 
 						</aside>

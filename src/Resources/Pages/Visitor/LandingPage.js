@@ -40,24 +40,23 @@ const translation = {
 module.exports = {
   html: async (data) =>
     await Layouts.VisitorLayout({
-      langCode: data.langCode,
-      language: data.language,
+      customData: data.customData,
       head: await Framework.render`
 
-			<title>${he.encode(translation[data.language].title)}</title>
+			<title>${he.encode(translation[data.customData.language].title)}</title>
 			
 
-      <meta name="description" content="${he.encode(translation[data.language].description)}"/>
+      <meta name="description" content="${he.encode(translation[data.customData.language].description)}"/>
       
   		<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/" >
 			<link rel="alternate" hreflang="en" href="https://kanby.net/English/" >
 			<link rel="alternate" href="https://kanby.net/English/" hreflang="x-default" />
 
 			
-   <meta property="og:title" content="${he.encode(translation[data.language].title)}" />
-<meta property="og:description" content="${he.encode(translation[data.language].description)}" />
+   <meta property="og:title" content="${he.encode(translation[data.customData.language].title)}" />
+<meta property="og:description" content="${he.encode(translation[data.customData.language].description)}" />
           <meta property="og:type" content="article" />
-          <meta property="og:url" content="https://kanby.net/${data.language}/" />
+          <meta property="og:url" content="https://kanby.net/${data.customData.language}/" />
           <meta property="og:image" content="${cdn}/assets/logo-128.png" />
 
 
@@ -80,8 +79,8 @@ module.exports = {
 						</figure>
 
 						<div>
-							<p class="profile-heading">${translation[data.language].key1}</p>
-							<p class="profile-description">${translation[data.language].key2}</p>
+							<p class="profile-heading">${translation[data.customData.language].key1}</p>
+							<p class="profile-description">${translation[data.customData.language].key2}</p>
 						</div>
 					</div>
 
@@ -104,13 +103,13 @@ module.exports = {
   					</ul>
 
 					<div>
-						<p style="margin-left:2rem;font-size:2rem"><a hreflang="${data.langCode}" href="blogs/">${translation[data.language].key3}</a></p>
+						<p style="margin-left:2rem;font-size:2rem"><a hreflang="${data.customData.langCode}" href="blogs/">${translation[data.customData.language].key3}</a></p>
 
 						<div class="all-blogs-list">
 							${async () => {
                 const text = `SELECT * FROM blogs WHERE language= $1 LIMIT 3`;
 
-                const values = [data.language];
+                const values = [data.customData.language];
 
                 var record = await Index.pool.query(text, values);
 
@@ -138,7 +137,7 @@ module.exports = {
 
                         return `
 
-<a rel="ugc" hreflang="${data.langCode}" href="blogs/${t.id}/"  class="all-blogs-item">
+<a rel="ugc" hreflang="${data.customData.langCode}" href="blogs/${t.id}/"  class="all-blogs-item">
 
         <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 
@@ -149,18 +148,18 @@ module.exports = {
                     )),
                   );
                 } else {
-                  return `<p>${translation[data.language].key4}</p>`;
+                  return `<p>${translation[data.customData.language].key4}</p>`;
                 }
               }}
 						</div>
 					</div>
 
-					<p style="margin-left:2rem;font-size:2rem"><a hreflang="${data.langCode}" href="projects/">${translation[data.language].key5}</a></p>
+					<p style="margin-left:2rem;font-size:2rem"><a hreflang="${data.customData.langCode}" href="projects/">${translation[data.customData.language].key5}</a></p>
 
 					<div class="all-blogs-list">
 
 					${async () => {
-            const text = `SELECT "${data.language}",id FROM projects LIMIT 3`;
+            const text = `SELECT "${data.customData.language}",id FROM projects LIMIT 3`;
             const values = [];
             var record = await Index.pool.query(text, values);
 
@@ -171,7 +170,7 @@ module.exports = {
                     var alt_text = "";
                     try {
                       const text1 = `SELECT "alt_text" FROM media where full_url = $1 `;
-                      const values1 = [t[data.language].thumbnail_url.trim()];
+                      const values1 = [t[data.customData.language].thumbnail_url.trim()];
                       var record1 = await Index.pool.query(text1, values1);
 
 					  if(record1.rowCount == 0){
@@ -187,18 +186,18 @@ module.exports = {
                     }
 
                     return `
-					<a rel="ugc" hreflang="${data.langCode}" href="projects/${t.id}/"  class="all-blogs-item">
+					<a rel="ugc" hreflang="${data.customData.langCode}" href="projects/${t.id}/"  class="all-blogs-item">
 						<div class="icon">
-							<img alt="${alt_text}" src="${t[data.language].thumbnail_url}" />
+							<img alt="${alt_text}" src="${t[data.customData.language].thumbnail_url}" />
 						</div>
-						<span>${t[data.language].title}</span>
+						<span>${t[data.customData.language].title}</span>
 					</a>
 `;
                   }),
                 )),
               );
             } else {
-              return `<p>${translation[data.language].key8}</p>`;
+              return `<p>${translation[data.customData.language].key8}</p>`;
             }
           }}
 

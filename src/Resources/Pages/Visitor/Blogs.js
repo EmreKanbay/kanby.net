@@ -21,11 +21,11 @@ const translation = {
 module.exports = {
   html: async (data) =>
     await Layouts.VisitorLayout({
-      langCode: data.langCode,
-      language: data.language,
+      customData: data.customData,
+
       head: await Framework.render`
-			<title>${he.encode(translation[data.language].title)}</title>
-			<meta name="description" content="${he.encode(translation[data.language].description)}">
+			<title>${he.encode(translation[data.customData.language].title)}</title>
+			<meta name="description" content="${he.encode(translation[data.customData.language].description)}">
                    
          	<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/blogs/" >
 			<link rel="alternate" hreflang="en" href="https://kanby.net/English/blogs/" >
@@ -35,13 +35,13 @@ module.exports = {
       content: await Framework.render`
 
 
-            <h1 style="text-align:center">${translation[data.language].key1}</h1>
+            <h1 style="text-align:center">${translation[data.customData.language].key1}</h1>
 				<div id="all-blogs-list">
 
 				${async () => {
           const text = `SELECT * FROM blogs WHERE language= $1`;
 
-          const values = [data.language];
+          const values = [data.customData.language];
 
           var record = await Index.pool.query(text, values);
 
@@ -66,7 +66,7 @@ module.exports = {
                   }
                   return `
 
-<a rel="ugc" hreflang="${data.langCode}" href="blogs/${t.id}/"   class="all-blogs-item">
+<a rel="ugc" hreflang="${data.customData.langCode}" href="blogs/${t.id}/"   class="all-blogs-item">
 
         <img alt="${alt_text}"  src="${t.thumbnail_url}" />
 
@@ -77,7 +77,7 @@ module.exports = {
               )),
             );
           } else {
-            return `<p>${translation[data.language].key2}</p>`;
+            return `<p>${translation[data.customData.language].key2}</p>`;
           }
         }}
 				

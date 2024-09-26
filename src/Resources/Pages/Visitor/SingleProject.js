@@ -22,8 +22,7 @@ const translation = {
 module.exports = {
   html: async (data) =>
     await Layouts.VisitorLayout({
-      langCode: data.langCode,
-      language: data.language,
+		customData: data.customData,
       head: await Framework.render`
 						${async () => {
               const text = `SELECT * FROM projects WHERE id = $1`;
@@ -35,15 +34,15 @@ module.exports = {
               return `
   				<!--Stylesheet for markdown-->
   				<link rel="stylesheet" href="${cdn}/assets/github-markdown-light.css" />
-					<meta name="description" content="${he.encode(record.rows[0][data.language].description)}"/>
-					<title>${he.encode(record.rows[0][data.language].title)}</title>
+					<meta name="description" content="${he.encode(record.rows[0][data.customData.language].description)}"/>
+					<title>${he.encode(record.rows[0][data.customData.language].title)}</title>
 											
 											
-	        <meta property="og:title" content="${he.encode(record.rows[0][data.language].title)}" />
-					<meta property="og:description" content="${he.encode(record.rows[0][data.language].description)}" />
+	        <meta property="og:title" content="${he.encode(record.rows[0][data.customData.language].title)}" />
+					<meta property="og:description" content="${he.encode(record.rows[0][data.customData.language].description)}" />
           <meta property="og:type" content="article" />
-          <meta property="og:url" content="https://kanby.net/${data.language}/projects/${data.id}" />
-          <meta property="og:image" content="${he.encode(record.rows[0][data.language].thumbnail_url)}" />
+          <meta property="og:url" content="https://kanby.net/${data.customData.language}/projects/${data.id}" />
+          <meta property="og:image" content="${he.encode(record.rows[0][data.customData.language].thumbnail_url)}" />
           
 		        	<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/projects/${data.id}/" >
 				<link rel="alternate" hreflang="en" href="https://kanby.net/English/projects/${data.id}/" >
@@ -57,7 +56,7 @@ module.exports = {
  
 
 				${async () => {
-          const text = `SELECT "${data.language}",id FROM projects WHERE id = ${data.id}`;
+          const text = `SELECT "${data.customData.language}",id FROM projects WHERE id = ${data.id}`;
 
           const values = [];
 
@@ -69,16 +68,16 @@ module.exports = {
         
 											<aside>
   				 
-								<img class="cover-img" src="${record.rows[0][data.language].thumbnail_url}" />
-           			 <p class="blog-title" >${record.rows[0][data.language].title}</p>
-                    <p class="blog-description">${record.rows[0][data.language].description}</p>
+								<img class="cover-img" src="${record.rows[0][data.customData.language].thumbnail_url}" />
+           			 <p class="blog-title" >${record.rows[0][data.customData.language].title}</p>
+                    <p class="blog-description">${record.rows[0][data.customData.language].description}</p>
 
                     ${async () => {
                       return "".concat(
                         ...Object.keys(
-                          JSON.parse(record.rows[0][data.language].links),
+                          JSON.parse(record.rows[0][data.customData.language].links),
                         ).map((yy) => {
-                          return `<p>${yy} -> ${JSON.parse(record.rows[0][data.language].links)[yy]}</p>`;
+                          return `<p>${yy} -> ${JSON.parse(record.rows[0][data.customData.language].links)[yy]}</p>`;
                         }),
                       );
                     }}
@@ -88,7 +87,7 @@ module.exports = {
 
 
 					<div class="markdown-body">
-                 ${record.rows[0][data.language].markdown_rendered}
+                 ${record.rows[0][data.customData.language].markdown_rendered}
 					</div>
 
 		 </div>

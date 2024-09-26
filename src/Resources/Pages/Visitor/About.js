@@ -27,12 +27,12 @@ const translation = {
 module.exports = {
   html: async (data) =>
     await Layouts.VisitorLayout({
-      langCode: data.langCode,
-      language: data.language,
+      customData: data.customData,
+
       head: await Framework.render`
  
-			<title>${he.encode(translation[data.language].title)}</title>
-            <meta name="description" content="${he.encode(translation[data.language].description)}">
+			<title>${he.encode(translation[data.customDatalanguage].title)}</title>
+            <meta name="description" content="${he.encode(translation[data.customDatalanguage].description)}">
 
           
   		<link rel="alternate" hreflang="tr" href="https://kanby.net/Turkish/about/" >
@@ -43,9 +43,9 @@ module.exports = {
       content: await Framework.render`
 					<div class="cont">
 					
-					<h1>${translation[data.language].key1}</h1>
+					<h1>${translation[data.customDatalanguage].key1}</h1>
 
-					<p>${translation[data.language].key2}</p>
+					<p>${translation[data.customDatalanguage].key2}</p>
 					
 
 					</div>

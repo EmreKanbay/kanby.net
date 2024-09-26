@@ -21,13 +21,21 @@ module.exports = {
   html: (data) => Framework.render/*html*/`
 
   <div id="cookie-consent-cont">
-  <p>${translation[data.language].key1}</p>
-  <button id="grant-cookies">${translation[data.language].key2}</button>
-  <button id="cookies-details">${translation[data.language].key3}...</button>
-  </div>
-
+  <p>${translation[data.customData.language].key1}</p>
+  <button id="grant-cookies">${translation[data.customData.language].key2}</button>
+ 
   <script>
-  document.querySelector("#grant-cookies")
+  document.querySelector("#grant-cookies").addEventListener("click", async () => {
+
+
+    const res = await fetch("/grant_cookie", {
+      method: "POST",
+      })
+
+      if(res.ok){
+        document.querySelector("#cookie-consent-cont").remove()
+      }
+  })
   
   
   </script>
@@ -46,8 +54,11 @@ module.exports = {
         height: 3rem;
         display: grid;
         grid-template-rows: 3rem;
-        grid-template-columns: 3fr 1fr 1fr ;
+        grid-template-columns: 3fr 1fr  ;
 
     }
 	</style>
+  </div>
+
+ 
 `};

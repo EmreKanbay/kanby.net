@@ -51,37 +51,37 @@ module.exports = {
 
 
             <div class="liwlCh-header-menu-navigation-heading">
-                <span>${translation[data.language].key1}</span>
+                <span>${translation[data.customData.language].key1}</span>
                 <ul>
-                    <li><a href="">${translation[data.language].key1_1}</a></li>
-                    <li><a href="">${translation[data.language].key1_2}</a></li>
+                    <li><a href="">${translation[data.customData.language].key1_1}</a></li>
+                    <li><a href="">${translation[data.customData.language].key1_2}</a></li>
                 </ul>
             </div>
 
 
             <div class="liwlCh-header-menu-navigation-heading">
-                <span>${translation[data.language].key2}</span>
+                <span>${translation[data.customData.language].key2}</span>
                 <ul>
                     <li><a rel="nofollow" target="_blank"
- href="https://github.com/EmreKanbay">${translation[data.language].key2_1}</a></li>
+ href="https://github.com/EmreKanbay">${translation[data.customData.language].key2_1}</a></li>
                     <li><a rel="nofollow" target="_blank"
- href="https://x.com/_EmreKanbay_">${translation[data.language].key2_2}</a></li>
+ href="https://x.com/_EmreKanbay_">${translation[data.customData.language].key2_2}</a></li>
                     <li><a rel="nofollow" target="_blank"
- href="https://www.linkedin.com/in/EmreKanbay/">${translation[data.language].key2_3}</a></li>
+ href="https://www.linkedin.com/in/EmreKanbay/">${translation[data.customData.language].key2_3}</a></li>
                     <li><a  rel="nofollow" target="_blank"
- href="https://www.tiktok.com/@Emre_Kanbay">${translation[data.language].key2_4}</a></li>
+ href="https://www.tiktok.com/@Emre_Kanbay">${translation[data.customData.language].key2_4}</a></li>
                     <li><a rel="nofollow" target="_blank"
- href="https://www.instagram.com/_emrekanbay_">${translation[data.language].key2_5}</a></li>
+ href="https://www.instagram.com/_emrekanbay_">${translation[data.customData.language].key2_5}</a></li>
                  </ul>
             </div>
 
 
 			            <div class="liwlCh-header-menu-navigation-heading">
-                <span>${translation[data.language].key3}</span>
+                <span>${translation[data.customData.language].key3}</span>
                 <ul>
-                    <li><a hreflang="${data.langCode}" href="blogs/">${translation[data.language].key3_1}</a></li>
-                    <li><a hreflang="${data.langCode}" href="projects/">${translation[data.language].key3_2}</a></li>
-                    <li><a rel="nofollow" href="/admin/login/">${translation[data.language].key3_3}</a></li>
+                    <li><a hreflang="${data.customData.langCode}" href="blogs/">${translation[data.customData.language].key3_1}</a></li>
+                    <li><a hreflang="${data.customData.langCode}" href="projects/">${translation[data.customData.language].key3_2}</a></li>
+                    <li><a rel="nofollow" href="/admin/login/">${translation[data.customData.language].key3_3}</a></li>
                  </ul>
             </div>
             
@@ -93,7 +93,7 @@ module.exports = {
 
     <a
         class="liwlCh-header-menu-logo"
-        href="${"/" + data.language + "/"}"></a>
+        href="${"/" + data.customData.language + "/"}"></a>
 
     <div
         tabindex="0"

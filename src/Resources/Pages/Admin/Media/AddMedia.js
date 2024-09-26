@@ -23,7 +23,7 @@ module.exports = {
 <cite>*Preferably use avif and webp as image extention, they are better for compression process which leads faster loads </cite>
 <br>
 <p style="display:inline">File name:</p>
-<input placeholder="my-image" id="media-name" type="text"/><br> 
+<input placeholder="my-image.webp" id="media-name" type="text"/><br> 
 <p style="display:inline">Alt Text:</p>
 <input placeholder="my-alt-text" id="alt_text" type="text"/><br>
 
