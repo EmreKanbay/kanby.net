@@ -89,6 +89,16 @@ module.exports = {
 					<div class="markdown-body">
                  ${record.rows[0][data.customData.language].markdown_rendered}
 					</div>
+					
+										
+		<script src="https://utteranc.es/client.js"
+        repo="EmreKanbay/kanby.net"
+        issue-term="project-${data.blog_id}-comments"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+			</script>
+
 
 		 </div>
 

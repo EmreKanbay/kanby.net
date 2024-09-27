@@ -125,7 +125,7 @@ root.use((req, res, next) => {
 
 // Security Headers
 root.use(
-  "/:lang/",
+  "/",
   helmet({
     xFrameOptions: { action: "deny" },
     referrerPolicy: {
@@ -134,15 +134,16 @@ root.use(
     xPoweredBy: false,
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'none'"],
+        defaultSrc: ["https://utteranc.es"],
+        frameSrc: ["https://utteranc.es"],
         objectSrc: ["'none'"],
-        frameAncestors: ["'none'"],
+        frameAncestors: ["https://utteranc.es"],
         fontSrc: ["'self'", cdn],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "https://utteranc.es"],
         upgradeInsecureRequests: [],
         styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
         imgSrc: ["'self'", cdn], // Allow images from self and data URIs
-        connectSrc: ["'self'", cdn], // Allow connections, fetch requests
+        connectSrc: ["'self'", cdn, "https://utteranc.es"], // Allow connections, fetch requests
         // Add other directives as needed
       },
     },

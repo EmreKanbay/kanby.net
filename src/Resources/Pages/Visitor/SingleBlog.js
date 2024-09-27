@@ -93,6 +93,14 @@ module.exports = {
 					<div class="markdown-body">
                  ${record.rows[0].rendered_content}
 					</div>
+					
+		<script src="https://utteranc.es/client.js"
+        repo="EmreKanbay/kanby.net"
+        issue-term="blog-${data.blog_id}-comments"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+			</script>
 
 
 								</div>

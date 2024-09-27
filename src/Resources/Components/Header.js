@@ -50,14 +50,6 @@ module.exports = {
         <nav class="liwlCh-header-menu-navigation">
 
 
-            <div class="liwlCh-header-menu-navigation-heading">
-                <span>${translation[data.customData.language].key1}</span>
-                <ul>
-                    <li><a href="">${translation[data.customData.language].key1_1}</a></li>
-                    <li><a href="">${translation[data.customData.language].key1_2}</a></li>
-                </ul>
-            </div>
-
 
             <div class="liwlCh-header-menu-navigation-heading">
                 <span>${translation[data.customData.language].key2}</span>
@@ -81,7 +73,6 @@ module.exports = {
                 <ul>
                     <li><a hreflang="${data.customData.langCode}" href="blogs/">${translation[data.customData.language].key3_1}</a></li>
                     <li><a hreflang="${data.customData.langCode}" href="projects/">${translation[data.customData.language].key3_2}</a></li>
-                    <li><a rel="nofollow" href="/admin/login/">${translation[data.customData.language].key3_3}</a></li>
                  </ul>
             </div>
             
@@ -181,8 +172,9 @@ module.exports = {
 
 			.liwlCh-header-menu-search {
 				margin: auto 0;
-				cursor: pointer;
 				height: 80%;
+				display:none;
+
 				margin-right: 0.3rem;
 				grid-column: 3 / 4;
 				grid-row: 1 / 2;
@@ -194,7 +186,7 @@ module.exports = {
 
 			/* .liwlCh-header-menu-search-top-bar {
 				position: absolute;
-				cursor: default;
+
 
 				width: 100%;
 				left: 0;
