@@ -114,7 +114,7 @@ module.exports = {
 							  alt_text = record1.rows[0].alt_text;
 						  }
                         } catch (e) {
-                          alt_text = "kanby.net-freelance-developer-designer";
+                          alt_text = "kanby.net-open-source-developer";
                         }
 
                         return `
@@ -164,7 +164,7 @@ module.exports = {
 						  alt_text = record1.rows[0].alt_text;
 					  }
                     } catch (e) {
-                      alt_text = "kanby.net-freelance-developer-designer";
+                      alt_text = "kanby.net-app-developer";
                     }
 
                     return `

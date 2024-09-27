@@ -284,9 +284,9 @@ root.get("/manifest.json", function (req, res, next) {
     res.status(200).send(
       JSON.stringify({
         manifest_version: 3,
-        name: "kanby.net - freelance design and development",
+        name: "kanby.net",
         short_name: "kanby.net",
-        description: "Freelance desinger and developer",
+        description: "blogs and projects",
         version: "1.0.0",
         author: "Emre Kanbay",
         icons: [

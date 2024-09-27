@@ -69,7 +69,7 @@ module.exports = {
                       }
                   } catch (e) {
                     
-                    alt_text = "kanby.net-freelance-developer-designer";
+                    alt_text = "kanby.net-app-designer";
                   }
 
                   return `
