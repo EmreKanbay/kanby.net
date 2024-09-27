@@ -31,9 +31,24 @@ visitor.post("/grant_cookie", (req, res, next) => {
 })
 
 // redirect / to /Turkish
-visitor.get("/", async (req, res, next) => {
+visitor.get("/",Index.cache(20) ,async (req, res, next) => {
   try {
-        res.redirect(new URL(`/English/`, req.protocol + "://" + req.get("host")));
+        // res.redirect(new URL(`/English/`, req.protocol + "://" + req.get("host")));
+        const customData={}
+        customData.langCode = "en"
+      customData.language = "English";
+      customData.clientIP =
+        typeof req?.header("x-forwarded-for") == "string"
+          ? req?.header("x-forwarded-for").split(",")[0]
+          : "";
+      customData.cookiesGranted = Boolean(req?.cookies?.CookiesGranted)
+
+
+        res.status(200).sendNoCache(
+          await Pages.LandingPage.html({
+            customData: customData,
+          }),
+        );
   } catch (e) {
     if(process.env.NODE_ENV == "developement"){console.log(e)}
 
