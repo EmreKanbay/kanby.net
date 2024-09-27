@@ -696,10 +696,10 @@ const auth = async (req, res, next) => {
                 : "",
           },
           JWT_SECRET,
-          { expiresIn: "7200s" },
+          { expiresIn: "720000s" },
         );
         res.cookie("SessionToken", token, {
-          expires: new Date(Date.now() + 3600 * 60 * 10),
+          expires: new Date(Date.now() + 18000000000),
           httpOnly: true,
           secure: true,
           domain: req.get("host") == "localhost" ? "" : "kanby.net",

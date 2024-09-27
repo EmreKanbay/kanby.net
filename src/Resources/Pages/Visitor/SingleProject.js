@@ -86,9 +86,9 @@ module.exports = {
 						</aside>
 
 
-					<div class="markdown-body">
+					<article class="markdown-body">
                  ${record.rows[0][data.customData.language].markdown_rendered}
-					</div>
+					</article>
 					
 										
 		<script src="https://utteranc.es/client.js"
