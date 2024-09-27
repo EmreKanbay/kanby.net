@@ -130,16 +130,16 @@ root.use(
     xPoweredBy: false,
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["https://utteranc.es", "https://www.googletagmanager.com"],
+        defaultSrc: ["https://utteranc.es", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
         frameSrc: ["https://utteranc.es"],
         objectSrc: ["'none'"],
         frameAncestors: ["https://utteranc.es"],
         fontSrc: ["*"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://utteranc.es", "https://www.googletagmanager.com"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "https://utteranc.es", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
         upgradeInsecureRequests: [],
         styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
         imgSrc: ["*"], // Allow images from self and data URIs
-        connectSrc: ["'self'", cdn, "https://utteranc.es", "https://www.googletagmanager.com"], // Allow connections, fetch requests
+        connectSrc: ["'self'", cdn, "https://utteranc.es", "https://www.googletagmanager.com", "https://www.google-analytics.com"], // Allow connections, fetch requests
         // Add other directives as needed
       },
     },
