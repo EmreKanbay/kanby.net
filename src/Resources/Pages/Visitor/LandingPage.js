@@ -10,27 +10,26 @@ const cdn = process.env.CDN_DOMAIN;
 
 const translation = {
   Turkish: {
-    title: "Freelance Yazılımcı - kanby.net",
+    title: "kanby.net - blogları ve projeler",
     description:
-      "Burada, yaratıcı tasarım projelerimden ve özelleştirilmiş yazılım çözümlerimden örnekler bulabilirsiniz. Web tasarımı, kullanıcı deneyimi (UX), ve yazılım geliştirme konularında sunduğum hizmetlerle, projelerinize estetik ve işlevsellik katmayı amaçlıyorum",
-    key1: "Düşünce, Tasarım, Yazılım",
-    key2: "Talep üzerine uygulamalar geliştiriyorum. Bu uygulamalar web uygulamaları, iOS ve Android uygulamaları, masaüstü ve mobil için oyunlar, IoT projeleri, sunucu kurulumu, hosting, bulut sunucu kurulumu ve SQL sunucu kurulumu içeriyor",
+      "yazılım ve tasarım ile ilgili olan içeriklerimi paylaştığım bu site açık kaynak kodludur, github sayfamdan bu sitenin kaynak koduna ulaşabilirsiniz",
+    key1: "Ben Emre,",
+    key2: "Yıldız Teknik Üniversitesinde Kimya Mühendisliği öğrencisiyim, Boş zamanlarımda proje geliştirmeyi seviyorum, bu siteyi projelerimi ve bloglarımın paylaşmak için yazdım",
     key3: "En Yeni Bloglar",
     key4: "Blog Bulunamadı",
-    key5: "Açık kaynak projeler",
+    key5: "projeler",
 
     key7: "Projeler",
     key8: "Proje bulunamadı",
   },
   English: {
-    title: "Freelance Programmer - kanby.net",
-    description:
-      "Here, you can find examples of my creative design projects and custom software solutions. With my services in web design, user experience (UX), and software development, I aim to add both aesthetics and functionality to your projects",
-    key1: "Think, Design, Code",
-    key2: "I develop apps from on demand. These apps contains web apps, IOS and Android apps, Games for desktop and mobile, Iot projects, Server setup, hosting, cloud server setup, SQL server setup",
+    title: "kanby.net - blogs and projects",
+    description:"This site, where I share my content related to software and design, is open source. You can access the source code of this site from my GitHub page",
+    key1: "I am Emre,",
+    key2: "I am a chemical engineering student in Yıldız Technical University, I love to develop apps in my free time, I built this website to share my projects and blogs",
     key3: "New Blogs",
     key4: "No Blog found",
-    key5: "Open Source Projects",
+    key5: "Projects",
 
     key7: "Projects",
     key8: "No projects found",
@@ -84,23 +83,6 @@ module.exports = {
 						</div>
 					</div>
 
-
-
-					<h1>What I Do?</h1>
-
-					<ul>
-						<li>Turnkey projects (ready for production)</li>
-						<li>Web Apps with Admin management page with log in just like this one</li>
-						<li>High Level Web Apps Like instagram, Facebook, amazon, twitch and so on</li>
-						<li>Mobile & Desktop Application</li>
-						<li>Testing for existing apps</li>
-						<li>API Development</li>
-						<li>Physical Server Setup</li>
-						<li>Cloud Server Setup</li>
-						<li>Saas Video Edits</li>
-						<li>Music For Product Videos</li>
-						<li>Logo Design For Branding</li>
-  					</ul>
 
 					<div>
 						<p style="margin-left:2rem;font-size:2rem"><a hreflang="${data.customData.langCode}" href="blogs/">${translation[data.customData.language].key3}</a></p>

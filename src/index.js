@@ -138,11 +138,11 @@ root.use(
         frameSrc: ["https://utteranc.es"],
         objectSrc: ["'none'"],
         frameAncestors: ["https://utteranc.es"],
-        fontSrc: ["'self'", cdn],
+        fontSrc: ["*"],
         scriptSrc: ["'self'", "'unsafe-inline'", "https://utteranc.es"],
         upgradeInsecureRequests: [],
         styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
-        imgSrc: ["'self'", cdn], // Allow images from self and data URIs
+        imgSrc: ["*"], // Allow images from self and data URIs
         connectSrc: ["'self'", cdn, "https://utteranc.es"], // Allow connections, fetch requests
         // Add other directives as needed
       },

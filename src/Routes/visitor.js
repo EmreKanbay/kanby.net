@@ -33,7 +33,7 @@ visitor.post("/grant_cookie", (req, res, next) => {
 // redirect / to /Turkish
 visitor.get("/", async (req, res, next) => {
   try {
-        res.redirect(new URL(`/Turkish/`, req.protocol + "://" + req.get("host")));
+        res.redirect(new URL(`/English/`, req.protocol + "://" + req.get("host")));
   } catch (e) {
     if(process.env.NODE_ENV == "developement"){console.log(e)}
 
