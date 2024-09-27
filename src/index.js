@@ -193,7 +193,7 @@ root.use((req, res, next) => {
 
 });
 
-// SECURITY MIDDLEWARE
+// SECURITY MIDDLEWARE - DDoS protection
 root.use(async (req, res, next) => {
   try {
     const redisKey_login = `req_login:${typeof req?.header("x-forwarded-for") == "string" ? req?.header("x-forwarded-for").split(",")[0] : ""}`;
@@ -216,11 +216,6 @@ root.use(async (req, res, next) => {
     if(req.path == "/admin/login/"){
       await memoryCache.put(`req:${Date.now()}:${ReqIP}:${req.path}`, `0`);
     }
-
-    
-
-    // if (req.path.split("/")?.[1] != "admin") {
-    // }
 
     if (Number(currentCount_login) >= 10) {
       res.status(429).send("too many requests");
@@ -859,33 +854,14 @@ const visitor = require("./Routes/visitor");
 const admin = require("./Routes/admin");
 
 // admin
-root.use("/admin/:id", upload.none(),auth,  admin);
+root.use("/admin/:id", upload.none(), auth,  admin);
 
 
 // visitor
 root.use("/", visitor); 
 
 
-// Security of Root endpoint
-root.use("/", async (req, res, next) => {
-  if (req.method == "GET") {
-    res
-    .status(404)
-    .send(await NotFound.html({   
-      customData: {
-        language: "English",
-      langCode: "en",
-      cookiesGranted: Boolean(req?.cookies?.CookiesGranted)} }));
-  }
-  else {
-    res.status(405).send({
-      message: `The method ${req.method} is not allowed for the requested endpoint.`,
-    });
-  }
-});
-
-
-
+// not found
 root.use(async (req, res, next) => {
   try {
     if (req.method == "GET") {

@@ -79,11 +79,11 @@ module.exports = {
 
 				<br>
 			
-				<h2>Title</h2>
+				<h2>Blog Page Title</h2>
  
 				<input value="${t.title}" required id="blog-title-edit" type="text">
 
-				<h2>Description</h2>
+				<h2>Blog Page Description</h2>
  
 				<input value="${t.description}" required id="blog-description-edit" type="text">
 
@@ -94,14 +94,14 @@ module.exports = {
 				<input value="${t.thumbnail_url}" id="blog-cover-image-edit"  type="text">
 
 
-				<h2>Markdown</h2>
+				<h2>Blog Content(Markdown)</h2>
 				<textarea class="markdown-editor-edit"  required id="blog-markdown-content-edit"  class="markdown-editor" >${t.raw_content}</textarea>
 
 					<br>
 					<br>
 
 
-				<input value="Save Edit" type="submit" />
+				<input id="blog-edit-submit" value="Save Edit" type="submit" />
 
  </form>
 
@@ -124,6 +124,30 @@ module.exports = {
 
 
 	<style>
+
+
+
+	#blog-title-edit,#blog-description-edit, #blog-cover-image-edit {
+	
+	width:100%;
+	padding:1rem;
+	font-size: 1.3rem;
+	padding:1rem;
+	box-sizing:border-box;
+	
+	}
+	#blog-description-edit{
+	height:2rem;
+	}
+
+	#blog-edit-submit{
+	
+	padding:.5rem 1rem;
+	border-radius: .4rem;
+	font-size:2rem;
+	border: 2px solid black;
+	background: white;
+	}
 
 			.markdown-editor-edit{
 
