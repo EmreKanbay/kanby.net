@@ -123,63 +123,29 @@ root.use((req, res, next) => {
   });
 
 
-// Security Headers
 root.use(
   "/",
   helmet({
     xFrameOptions: { action: "deny" },
-    referrerPolicy: {
-      policy: "no-referrer",
-    },
     xPoweredBy: false,
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["https://utteranc.es"],
+        defaultSrc: ["https://utteranc.es", "https://www.googletagmanager.com"],
         frameSrc: ["https://utteranc.es"],
         objectSrc: ["'none'"],
         frameAncestors: ["https://utteranc.es"],
         fontSrc: ["*"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://utteranc.es"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "https://utteranc.es", "https://www.googletagmanager.com"],
         upgradeInsecureRequests: [],
         styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
         imgSrc: ["*"], // Allow images from self and data URIs
-        connectSrc: ["'self'", cdn, "https://utteranc.es"], // Allow connections, fetch requests
+        connectSrc: ["'self'", cdn, "https://utteranc.es", "https://www.googletagmanager.com"], // Allow connections, fetch requests
         // Add other directives as needed
       },
     },
   }),
 );
-root.use(
-  "/admin/",
-  helmet({
-    xFrameOptions: { action: "deny" },
-    referrerPolicy: {
-      policy: "no-referrer",
-    },
-    xPoweredBy: false,
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'none'"],
-        objectSrc: ["'none'"],
-        frameAncestors: ["'none'"],
-        fontSrc: ["'self'", cdn],
-        scriptSrcAttr: ["self", "'unsafe-inline'"],
-        scriptSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://unpkg.com/react@18/umd/react.production.min.js",
-          "https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
-          "https://unpkg.com/babel-standalone@6/babel.js",
-        ], // Allow scripts from self and CDN
-        upgradeInsecureRequests: [],
-        styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
-        imgSrc: ["'self'", cdn], // Allow images from self and data URIs
-        connectSrc: ["'self'", cdn, "https://api.github.com/markdown"], // Allow connections, fetch requests
-        // Add other directives as needed
-      },
-    },
-  }),
-);
+
 
 //DB check
 root.use((req, res, next) => {
