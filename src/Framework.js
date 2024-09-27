@@ -6,13 +6,12 @@ const render = async (x, ...values) => {
     if (u < x.length - 1) {
       if (typeof values[u] == "function") {
         var res = await values[u]()
-        if(res) rendered = rendered.concat(res);
+        if(res) rendered += res;
       } else {
-        rendered = rendered.concat(values[u]);
-      }
+        rendered +=values[u]
+            }
     }
   }
-
   return rendered;
 };
 

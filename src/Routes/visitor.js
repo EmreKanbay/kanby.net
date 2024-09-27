@@ -42,8 +42,6 @@ visitor.get("/",Index.cache(20) ,async (req, res, next) => {
           ? req?.header("x-forwarded-for").split(",")[0]
           : "";
       customData.cookiesGranted = Boolean(req?.cookies?.CookiesGranted)
-
-
         res.status(200).sendNoCache(
           await Pages.LandingPage.html({
             customData: customData,

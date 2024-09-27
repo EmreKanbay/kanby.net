@@ -130,21 +130,51 @@ root.use(
     xPoweredBy: false,
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["https://utteranc.es"],
-        frameSrc: ["https://utteranc.es"],
-        objectSrc: ["'none'"],
-        frameAncestors: ["https://utteranc.es"],
-        fontSrc: ["*"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://utteranc.es"],
-        upgradeInsecureRequests: [],
-        styleSrc: ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
-        imgSrc: ["*"], // Allow images from self and data URIs
-        connectSrc: ["'self'", cdn, "https://utteranc.es"], // Allow connections, fetch requests
+        "default-src": ["https://utteranc.es"],
+        "frame-src": ["https://utteranc.es"],
+        "frame-ancestors": ["https://utteranc.es"],
+        "script-src": ["'self'", "'unsafe-inline'", "https://utteranc.es"],
+        "upgrade-insecure-requests": [],
+        "styles-rc": ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
+        "img-src": ["*"], // Allow images from self and data URIs
+        "connect-src": ["'self'", cdn, "https://utteranc.es"], // Allow connections, fetch requests
         // Add other directives as needed
       },
     },
   }),
 );
+
+var permissions = ["'self'", "'unsafe-inline'",cdn, "https://unpkg.com/react@18/umd/react.production.min.js", "https://unpkg.com/react-dom@18/umd/react-dom.production.min.js", "https://unpkg.com/babel-standalone@6/babel.js","https://api.github.com"]
+root.use(
+  "/admin",
+  helmet({
+    xFrameOptions: { action: "deny" },
+    xPoweredBy: false,
+    contentSecurityPolicy: {
+      directives: {
+        "default-src": permissions,
+        "script-src-attr": permissions,
+        "script-src": permissions,
+        "connect-src": permissions, 
+        "upgrade-insecure-requests": [],
+        "style-src": ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
+        "img-src": ["*"], // Allow images from self and data URIs
+      },
+    },
+  }),
+);
+
+// default-src 'self';
+// base-uri 'self';
+// font-src 'self' https: data:;
+// form-action 'self';
+// frame-ancestors 'self';
+// img-src 'self' data:;
+// object-src 'none';
+// script-src 'self';
+// script-src-attr 'none';
+// style-src 'self' https: 'unsafe-inline';
+// upgrade-insecure-requests
 
 
 //DB check
