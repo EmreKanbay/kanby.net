@@ -31,7 +31,7 @@ visitor.post("/grant_cookie", (req, res, next) => {
 })
 
 // redirect / to /Turkish
-visitor.get("/",Index.cache(20) ,async (req, res, next) => {
+visitor.get("/",async (req, res, next) => {
   try {
         // res.redirect(new URL(`/English/`, req.protocol + "://" + req.get("host")));
         const customData={}
@@ -42,7 +42,7 @@ visitor.get("/",Index.cache(20) ,async (req, res, next) => {
           ? req?.header("x-forwarded-for").split(",")[0]
           : "";
       customData.cookiesGranted = Boolean(req?.cookies?.CookiesGranted)
-        res.status(200).sendNoCache(
+        res.status(200).send(
           await Pages.LandingPage.html({
             customData: customData,
           }),

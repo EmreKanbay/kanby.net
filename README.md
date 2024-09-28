@@ -96,7 +96,6 @@ const render = async (x, ...values) => {
       }
     }
   }
-
   return rendered;
 };
 ```

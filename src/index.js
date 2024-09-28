@@ -35,6 +35,16 @@ const errorPage =  (msg) =>
 const cdn = process.env.CDN_DOMAIN;
 const upload = multer();
 
+(async ()=> {
+  console.log()
+
+})()
+
+
+
+
+
+
 // Setup REDİS Server
 const client = redis
   .createClient({

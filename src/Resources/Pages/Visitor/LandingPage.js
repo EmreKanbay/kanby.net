@@ -108,7 +108,6 @@ module.exports = {
 						  if(record1.rowCount == 0){
 
 							alt_text = "placeholder-image"
-							t.thumbnail_url = "https://cdn.kanby.net/assets/placeholder-image.svg"
 
 						  }else{
 							  alt_text = record1.rows[0].alt_text;
@@ -158,7 +157,6 @@ module.exports = {
 					  if(record1.rowCount == 0){
 
 						alt_text = "placeholder-image"
-						t.thumbnail_url = "https://cdn.kanby.net/assets/placeholder-image.svg"
 
 					  }else{
 						  alt_text = record1.rows[0].alt_text;

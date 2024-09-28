@@ -80,14 +80,12 @@ module.exports = {
 					<div id="blog-container" >
 
 						<aside>
-						<img class="cover-img" src="${record.rows[0].thumbnail_url}" />					
 						<p class="blog-title" >${record.rows[0].title}</p>
 						<p class="blog-description">${record.rows[0].description}</p>
- 						<span style="display:flex;height:3rem;align-items:center;gap:1rem"><img  style="border-radius:50%;height:100%" src="${record1.rows[0].profile_picture_url}"><p class="blog-author">${record.rows[0].author}</p></span>
- 						<p class="blog-author">${translation[data.customData.language].key1} ${new Date(record.rows[0].creation_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
- 						<p class="blog-author">${translation[data.customData.language].key2} ${new Date(record.rows[0].last_modify_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
-
-
+						<span style="display:flex;height:3rem;align-items:center;gap:1rem"><img  style="border-radius:50%;height:100%" src="${record1.rows[0].profile_picture_url}"><p class="blog-author">${record.rows[0].author}</p></span>
+						<p class="blog-author">${translation[data.customData.language].key1} ${new Date(record.rows[0].creation_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
+						<p class="blog-author">${translation[data.customData.language].key2} ${new Date(record.rows[0].last_modify_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
+						<img class="cover-img" src="${record.rows[0].thumbnail_url}" />					
 						</aside>
 		
 					<article class="markdown-body">
@@ -132,7 +130,7 @@ module.exports = {
 
 		 .cover-img{
 		 margin:auto;
-		 width: 50%;
+		 width: 20%;
 		 justify-self: center;
 		 border-radius: 1rem;
 		 
@@ -148,7 +146,6 @@ module.exports = {
 		 grid-template-columns: 100%;
 		 grid-template-rows: auto auto;
  		 
-		 
 		 }
 
 
@@ -167,8 +164,6 @@ module.exports = {
 		 height:min-content;
 		 grid-area:b;
 		  border-left: 1px solid hsl(0, 0%, 70%);
-
-
 		 }
 
 
@@ -182,12 +177,12 @@ module.exports = {
 
 		 #blog-container{
 
-		 margin:0 auto;
-		 max-width: 1200px;		 
-		 padding:1rem;
+ 		 max-width: 1500px;		 
+		 margin: 0 auto;
+		 padding:1rem 4rem; 
 		 gap:1rem;
 		 display: grid;
-		 grid-template-columns: 3fr 1fr;
+		 grid-template-columns: 80% 20%;
 		 grid-template-rows: auto;
 		 grid-template-areas: "a b";
 		 
