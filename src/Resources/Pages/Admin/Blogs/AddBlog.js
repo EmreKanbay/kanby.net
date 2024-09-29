@@ -2,13 +2,17 @@ const Layouts = require("#Layouts");
 const Index = require("#Index");
 
 const Framework = require("#Framework");
+require("dotenv").config();
 
+const cdn = process.env.CDN_DOMAIN;
 module.exports = {
   html: async (data) =>
     await Layouts.AdminLayout({
       user_id: data.user_id,
 
-      head: await Framework.render``,
+      head: await Framework.render`
+					<link rel="stylesheet" href="${cdn}/assets/github-markdown-light.css" />
+      `,
       content: await Framework.render`
  
 	<form id="add-blog-form">

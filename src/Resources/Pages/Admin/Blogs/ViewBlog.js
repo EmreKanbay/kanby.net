@@ -12,7 +12,9 @@ module.exports = {
     await Layouts.AdminLayout({
       user_id: data.user_id,
 
-      head: await Framework.render``,
+      head: await Framework.render`
+					<link rel="stylesheet" href="${cdn}/assets/github-markdown-light.css" />
+	  `,
       content: await Framework.render`
 
 
