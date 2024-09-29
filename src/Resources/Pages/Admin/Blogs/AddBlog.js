@@ -70,7 +70,7 @@ module.exports = {
 </form>
 				<h2>Preview</h2>
 
-				<div required class="markdown-body" ></div>
+				<div class="markdown-body" ></div>
 
 				<style>
 				

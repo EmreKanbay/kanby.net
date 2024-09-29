@@ -111,12 +111,17 @@ module.exports = {
           <br>
 
 				<input id="blog-edit-submit" value="Save Edit" type="submit" />
+				<input id="blog-edit-preview" value="preview" type="button" />
 
  </form>
 
+				<h2>Preview</h2>
+				<div  class="markdown-body" ></div>
 
 
- <div data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" data-raw-content="${he.encode(t.raw_content)}" class="markdown-body">
+
+
+ <div id="view-blog-here" data-title="${he.encode(t.title)}" data-thumbnail-url="${he.encode(t.thumbnail_url)}" data-description="${he.encode(t.description)}" data-raw-content="${he.encode(t.raw_content)}" class="markdown-body">
 
 <img class="thumbnail" src="${t.thumbnail_url}" />
 <h1  class="page-title">${t.title}</h1>
@@ -212,7 +217,69 @@ module.exports = {
   <script>
   
 
+
+
+
+
+	document.querySelector("#blog-edit-preview").addEventListener("click", async (e) => {
+
+try{
+
+
+if (window.navigator.onLine) {
+
+document.querySelector(".loading-block").classList.add("active")
+
+const res = await fetch("https://api.github.com/markdown", {
+	headers: {
+		"accept": "application/vnd.github+json"
+	},
+	method: "POST",
+	body: JSON.stringify({
+		"text": document.querySelector(".markdown-editor-edit").value,
+		mode: "gfm"
+	})
+})
+
+document.querySelector(".loading-block").classList.remove("active")
+
+
+if (res.ok) {
+
+	document.querySelector(".markdown-body").innerHTML = await res.text()
+	document.querySelector("#qMQEbc-container").classList.remove("active")
+
+} else {
+	document.querySelector("#qMQEbc-container").classList.add("active")
+	document.querySelector("#qMQEbc-message").innerHTML = "Error While Preview"
+
+
+}
+
+} else {
+document.querySelector("#qMQEbc-container").classList.add("active")
+document.querySelector("#qMQEbc-message").innerHTML = "No Internet Connection"
+}
+
+
+}
+catch(e){
+document.querySelector("#qMQEbc-container").classList.add("active")
+document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
+}
+
+
+})
+
+
+
  
+
+
+
+
+
+
 
 
 
@@ -295,7 +362,7 @@ module.exports = {
 
 
 
-document.querySelector(".markdown-body").style.display = "none"
+document.querySelector("#view-blog-here").style.display = "none"
 document.querySelector("#edit-blog-form").style.display = "block"
 document.querySelector("#blog-top-bar").style.display = "none"
 	
