@@ -39,7 +39,7 @@ module.exports = {
 				<div id="all-blogs-list">
 
 				${async () => {
-          const text = `SELECT * FROM blogs WHERE language= $1`;
+          const text = `SELECT * FROM blogs WHERE language= $1 and status != 'draft'`;
 
           const values = [data.customData.language];
 

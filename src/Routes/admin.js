@@ -144,7 +144,8 @@ subAdmin
       var record = await Index.pool.query(text1, [req.userID]);
 
       const blog = new Blog(
-        req.body.blog_title,req.body.blog_description,
+        req.body.blog_title,
+        req.body.blog_description,
         req.body.blog_language,
         record.rows[0].public_name,
         Date.now(),
@@ -155,11 +156,9 @@ subAdmin
         req.body.blog_status
       )
 
-        console.log(blog.spit())
 
-      const values = blog.spit()
-
-      // await Index.pool.query(text, values);
+ 
+      await Index.pool.query(text, blog.spit());
 
 
       res.status(200).send(JSON.stringify({message: "success"}));
@@ -205,7 +204,8 @@ subAdmin
 
   .patch(async (req, res) => {
     try {
-      const text = `UPDATE "blogs" SET title = $1 , description = $2,rendered_content = $3, raw_content = $4, thumbnail_url = $5, last_modify_date = $6, language = $7 WHERE id= $8`;
+      const text = `UPDATE "blogs" SET title = $1 , description = $2,rendered_content = $3, 
+      raw_content = $4, thumbnail_url = $5, last_modify_date = $6, language = $7, status = $8 WHERE id= $9`;
 
       const values = [
         req.body.blog_title,
@@ -215,6 +215,7 @@ subAdmin
         req.body.blog_cover_image,
         Date.now(),
         req.body.blog_language,
+        req.body.blog_status,
         req.body.blog_id,
       ];
 

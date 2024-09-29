@@ -101,7 +101,14 @@ module.exports = {
 
 					<br>
 					<br>
+          <label>Status: </label>
+          <select required name="status" id="blog-status">
+            <option ${t.status == "draft" ? "selected" :""} value="draft">draft</option>
+            <option ${t.status == "published" ? "selected" :""} value="published">published</option>
 
+          </select>
+          <br>
+          <br>
 
 				<input id="blog-edit-submit" value="Save Edit" type="submit" />
 
@@ -239,6 +246,7 @@ module.exports = {
 		formData.append("blog_description", document.querySelector("#blog-description-edit").value)
 		formData.append("blog_cover_image", document.querySelector("#blog-cover-image-edit").value)
 		formData.append("blog_id", document.querySelector("#edit-blog-form").getAttribute("data-blog-id"))
+		formData.append("blog_status", document.querySelector("#blog-status").value)
 	
 
 		const res2 = await fetch(".", {

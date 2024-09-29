@@ -5,7 +5,7 @@ const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 module.exports = async (data) =>
-  await Framework.render/* html */`
+  await Framework.render`
     <!doctype html>
             <html lang="en">
                 <head>
