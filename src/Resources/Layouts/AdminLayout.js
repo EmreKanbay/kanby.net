@@ -5,7 +5,7 @@ const cdn = process.env.CDN_DOMAIN;
 const Framework = require("#Framework");
 
 module.exports = async (data) =>
-  await Framework.render`
+  await Framework.render/* html */`
     <!doctype html>
             <html lang="en">
                 <head>
@@ -25,7 +25,32 @@ module.exports = async (data) =>
 
     
                 <body>
+                
                
+                	  <dialog >
+		
+	  <h3 class="dialog-title"></h3>
+      <button class="dialog-cancel">Cancel</button>
+      <button class="dialog-action">Yes</button>
+  
+  </dialog>
+
+  <script>
+  
+  document.querySelector(".dialog-cancel").addEventListener("click", (e)=> {
+
+    var temp = document.querySelector(".dialog-action")
+    document.querySelector(".dialog-action").remove()
+    
+    e.target.parentNode.append(temp)
+    e.target.parentNode.close()
+
+  })
+  
+  </script>
+
+
+
 
                         <div class="l-sidebar">
                             <a href="/" class="logo">
@@ -188,6 +213,21 @@ module.exports = async (data) =>
 	</div>
 
 	<style>
+
+
+    body:has(dialog[open]) main{
+
+        background: white;
+        filter:  brightness(.5);
+    }
+    dialog{
+    
+    position:fixed;
+    top: 50%;
+    transform: translatey(-50%);
+    z-index: 100;
+    }
+
     #qMQEbc-container.active{
 display: grid; 
     }

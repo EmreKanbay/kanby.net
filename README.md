@@ -58,7 +58,7 @@ and manually insert at least one user to be able to log in
 ```
 
 ```SQL
- CREATE TABLE blogs (id serial primary key, title text, description text, language text, author text, creation_date text, last_modify_date text, thumbnail_url text, rendered_content text, raw_content text)
+ CREATE TABLE blogs (id serial primary key, title text, description text, language text, author text, creation_date text, last_modify_date text, thumbnail_url text, rendered_content text, raw_content text, status text)
 ```
 
 ```SQL

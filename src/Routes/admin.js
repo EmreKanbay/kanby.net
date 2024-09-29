@@ -7,6 +7,38 @@ require("dotenv").config();
 const cdn = process.env.CDN_DOMAIN;
 const admin = Index.express.Router();
 
+class Blog {
+  constructor(title, description, language, author, 
+    creation_date, rendered_content, raw_content, 
+    thumbnail_url, last_modify_date, status){
+      this.title = title
+      this.description = description
+      this.language = language
+      this.author = author
+      this.creation_date = creation_date
+      this.rendered_content = rendered_content
+      this.raw_content = raw_content
+      this.thumbnail_url = thumbnail_url
+      this.last_modify_date = last_modify_date
+      this.status = status
+    }
+
+    spit() {
+      return [
+        this.title,
+        this.description,
+        this.language,
+        this.author,
+        this.creation_date,
+        this.rendered_content,
+        this.raw_content,
+        this.thumbnail_url,
+        this.last_modify_date,
+        this.status
+      ]
+    }
+}
+
 const errorPage = (error) => {
   return `
 	<h1>🤠Aw shit here we go again🤠</h1>
@@ -105,15 +137,14 @@ subAdmin
     try {
       const text = `INSERT INTO "blogs" (title, description, 
 		language,  author, creation_date, 
-		rendered_content, raw_content, thumbnail_url, last_modify_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
+		rendered_content, raw_content, thumbnail_url, last_modify_date, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
 
       const text1 = `SELECT * FROM users WHERE id= $1`;
 
       var record = await Index.pool.query(text1, [req.userID]);
 
-      const values = [
-        req.body.blog_title,
-        req.body.blog_description,
+      const blog = new Blog(
+        req.body.blog_title,req.body.blog_description,
         req.body.blog_language,
         record.rows[0].public_name,
         Date.now(),
@@ -121,10 +152,15 @@ subAdmin
         req.body.blog_markdwon_raw,
         req.body.blog_cover_image == "" ? "https://cdn.kanby.net/assets/placeholder-image.svg" : req.body.blog_cover_image,
         Date.now(),
+        req.body.blog_status
+      )
 
-      ];
+        console.log(blog.spit())
 
-      await Index.pool.query(text, values);
+      const values = blog.spit()
+
+      // await Index.pool.query(text, values);
+
 
       res.status(200).send(JSON.stringify({message: "success"}));
       Index.memoryCache.clear()

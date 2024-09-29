@@ -23,9 +23,11 @@ module.exports = {
 	<img  src="${cdn}/assets/pen.svg" />
 	</button>
 
+
 	<button class="blog-button" id="delete-blog">
-	<img  src="${cdn}/assets/trash-icon.svg" />
+	<img src="${cdn}/assets/trash-icon.svg">
 	</button>
+
 
 </div>
 
@@ -178,6 +180,9 @@ module.exports = {
 	background-color:hsl(0,0%,40%);
 
 	}
+
+
+
 	#delete-blog{
 	
 	background-color:hsl(0,100%,50%);
@@ -292,6 +297,13 @@ document.querySelector("#blog-top-bar").style.display = "none"
 
 	 document.querySelector("#delete-blog").addEventListener("click", async ()=> {
 	
+		document.querySelector("dialog").show()
+
+		document.querySelector(".dialog-title").innerText = "Delete Blog?"
+
+  
+		document.querySelector(".dialog-action").addEventListener("click", async ()=> {
+
 try{
 	if (window.navigator.onLine) {
 	
@@ -328,6 +340,8 @@ catch(e){
 
 				document.querySelector("#qMQEbc-container").classList.add("active")
 	document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"}
+
+		}, { once: true})
 
 	
 	})

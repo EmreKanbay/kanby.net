@@ -55,6 +55,14 @@ module.exports = {
 					<br>
 					<br>
 
+          <label>Status: </label>
+          <select required name="status" id="blog-status">
+            <option selected value="draft">draft</option>
+            <option value="published">published</option>
+
+          </select>
+          <br>
+          <br>
 
 				<input type="submit" />
 
@@ -163,6 +171,7 @@ try{
             formData.append("blog_language", document.querySelector("#blog-form-language").value)
             formData.append("blog_description", document.querySelector("#blog-description").value)
             formData.append("blog_cover_image", document.querySelector("#blog-cover-image").value)
+            formData.append("blog_status", document.querySelector("#blog-status").value)
 
             const response = await fetch("..", {
                 method: "PUT",
