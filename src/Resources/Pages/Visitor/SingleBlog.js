@@ -130,7 +130,7 @@ module.exports = {
 
 		 .cover-img{
 		 margin:auto;
-		 width: 20%;
+		 width: 60%;
 		 justify-self: center;
 		 border-radius: 1rem;
 		 
