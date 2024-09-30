@@ -239,6 +239,13 @@ ${async () => {
  
   <script>
 
+window.onbeforeunload = function() {
+    return true;
+};
+
+
+
+
 
   const addNewLink = (t, lng)=> {
 

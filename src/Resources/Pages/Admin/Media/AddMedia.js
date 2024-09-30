@@ -46,6 +46,10 @@ width: 40vw;
 		<script>
 
 
+window.onbeforeunload = function() {
+    return true;
+};
+
 
 			
 document.querySelector("#media-form").addEventListener("submit", async (e)=> {

@@ -81,8 +81,14 @@ module.exports = {
 				</style>
 	<script>
 
+window.onbeforeunload = function() {
+    return true;
+};
 
-	const addNewLink = (t, lng)=> {
+
+
+
+const addNewLink = (t, lng)=> {
 
 
 		var a = document.createElement("div")

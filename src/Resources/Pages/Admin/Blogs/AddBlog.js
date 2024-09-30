@@ -89,6 +89,12 @@ module.exports = {
 				</style>
 	<script>
 
+window.onbeforeunload = function() {
+    return true;
+};
+
+
+
 	document.querySelector("#preview-markdown").addEventListener("click", async (e) => {
 
 try{

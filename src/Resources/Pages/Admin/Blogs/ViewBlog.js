@@ -219,7 +219,9 @@ module.exports = {
   <script>
   
 
-
+window.onbeforeunload = function() {
+    return true;
+};
 
 
 
