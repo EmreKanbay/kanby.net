@@ -145,7 +145,7 @@ subVisitor.get("/blogs/", async (req, res, next) => {
 // single blog
 subVisitor.get("/blogs/:id/", async (req, res, next) => {
   try {
-    const text = `SELECT ARRAY(SELECT id FROM blogs WHERE language= $1) AS ids`;
+    const text = `SELECT ARRAY(SELECT id FROM blogs WHERE language= $1 and status != 'draft') AS ids`;
     var record = await Index.pool.query(text, [req.customData.language]);
 
       if (record.rows[0].ids.includes(Number(req.params.id))) {

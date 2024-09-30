@@ -17,7 +17,6 @@
   require("dotenv").config();
 
   const crypto = require("crypto");
-  const fs = require("fs");
   const path = require("path");
   const LoginPage = require("./Resources/Pages/Visitor/LoginPage");
   const Framework = require("#Framework");
@@ -341,7 +340,7 @@ root.get("/rss.xml", async function (req, res, next) {
 		<link>https://kanby.net/English/blogs/</link>
 		${async () => {
       try {
-        const text = `SELECT * FROM blogs Where language='English'`;
+        const text = `SELECT * FROM blogs Where language='English' and status != 'draft'`;
 
         const values = [];
 
@@ -498,7 +497,7 @@ root.get("/sitemap.xml", async function (req, res, next) {
  
 		${async () => {
       try {
-        const text = `SELECT * FROM blogs Where language='English'`;
+        const text = `SELECT * FROM blogs Where language='English' and and status != 'draft'`;
 
         const values = [];
 
