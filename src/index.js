@@ -145,7 +145,7 @@ root.use(
         "frame-ancestors": ["https://utteranc.es"],
         "script-src": ["'self'", "'unsafe-inline'", "https://utteranc.es"],
         "upgrade-insecure-requests": [],
-        "styles-rc": ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
+        "styles-src": ["'self'", "'unsafe-inline'", cdn], // Allow styles from self and inline styles
         "img-src": ["*"], // Allow images from self and data URIs
         "connect-src": ["'self'", cdn, "https://utteranc.es"], // Allow connections, fetch requests
         // Add other directives as needed
