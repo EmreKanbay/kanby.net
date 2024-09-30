@@ -21,6 +21,7 @@ module.exports = {
 
 <div id="blog-top-bar">
 
+
 	<button class="blog-button" id="edit-blog">
 	<img  src="${cdn}/assets/pen.svg" />
 	</button>
@@ -47,6 +48,7 @@ module.exports = {
 
       return await Framework.render`
 		
+		<a href="/${t.language}/blogs/${data.id}/">View Blog</a>
 
 			<form data-blog-id="${data.id}" style="display:none" id="edit-blog-form">
 		<span>Select a language:</span>

@@ -46,17 +46,7 @@ module.exports = {
                         Github
                     </a>
                 </li>
-                <li class="external-link">
-                    <img
-                        src="${cdn}/assets/x-icon.svg"
-                        alt="" />
-                    <a
-                    rel="nofollow"
-                        target="_blank"
-                        href="https://x.com/_EmreKanbay_">
-                        Twitter / X
-                    </a>
-                </li>
+
                 <li class="external-link">
                     <img
                         src="${cdn}/assets/linkedin.svg"
@@ -70,34 +60,12 @@ module.exports = {
                 </li>
                 <li class="external-link">
                     <img
-                        src="${cdn}/assets/codepen.svg"
-                        alt="" />
-                    <a
-                    rel="nofollow"
-                        target="_blank"
-                        href="https://codepen.io/Emre-Kanbay">
-                        CodePen
-                    </a>
-                </li>
-                <li class="external-link">
-                    <img
-                        src="${cdn}/assets/tiktok.svg"
-                        alt="" />
-                    <a
-                    rel="nofollow"
-                        target="_blank"
-                        href="https://www.tiktok.com/@Emre_Kanbay">
-                        Tiktok
-                    </a>
-                </li>
-                <li class="external-link">
-                    <img
                         src="${cdn}/assets/instagram.svg"
                         alt="" />
                     <a
                     rel="nofollow"
                         target="_blank"
-                        href="https://www.instagram.com/_emrekanbay_">
+                        href="https://www.instagram.com/emrekanbay.en/">
                         Instagram
                     </a>
                 </li>

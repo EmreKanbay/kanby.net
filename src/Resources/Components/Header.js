@@ -57,11 +57,7 @@ module.exports = {
                     <li><a rel="nofollow" target="_blank"
  href="https://github.com/EmreKanbay">${translation[data.customData.language].key2_1}</a></li>
                     <li><a rel="nofollow" target="_blank"
- href="https://x.com/_EmreKanbay_">${translation[data.customData.language].key2_2}</a></li>
-                    <li><a rel="nofollow" target="_blank"
  href="https://www.linkedin.com/in/EmreKanbay/">${translation[data.customData.language].key2_3}</a></li>
-                    <li><a  rel="nofollow" target="_blank"
- href="https://www.tiktok.com/@Emre_Kanbay">${translation[data.customData.language].key2_4}</a></li>
                     <li><a rel="nofollow" target="_blank"
  href="https://www.instagram.com/_emrekanbay_">${translation[data.customData.language].key2_5}</a></li>
                  </ul>

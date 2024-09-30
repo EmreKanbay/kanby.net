@@ -37,6 +37,7 @@ module.exports = {
 					<meta name="description" content="${he.encode(record.rows[0].description)}"/>
 					<title>${he.encode(record.rows[0].title)}</title>
 								
+					<link rel="canonical" href="https://kanby.net/${data.customData.language}/blogs/${data.blog_id}/" />
 								
         <meta property="og:title" content="${he.encode(record.rows[0].title)}" />
         <meta property="og:description" content="${he.encode(record.rows[0].description)}" />
