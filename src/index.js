@@ -497,7 +497,7 @@ root.get("/sitemap.xml", async function (req, res, next) {
  
 		${async () => {
       try {
-        const text = `SELECT * FROM blogs Where language='English' and and status != 'draft'`;
+        const text = `SELECT * FROM blogs Where language='English' and status != 'draft'`;
 
         const values = [];
 
