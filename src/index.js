@@ -714,7 +714,7 @@ const auth = async (req, res, next) => {
           secure: true,
           domain: req.get("host") == "localhost" ? "" : "kanby.net",
           sameSite: "strict",
-          Credential
+          
         });
         res.redirect(
           `${req.protocol}://${req.get("host")}/admin/${record.rows[0]["id"]}/dashboard/`,
