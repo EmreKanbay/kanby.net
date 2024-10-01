@@ -713,7 +713,6 @@ const auth = async (req, res, next) => {
           httpOnly: true,
           secure: true,
           domain: req.get("host") == "localhost" ? "" : "kanby.net",
-          sameSite: "strict",
         });
         res.redirect(
           `${req.protocol}://${req.get("host")}/admin/${record.rows[0]["id"]}/dashboard/`,
@@ -864,7 +863,7 @@ root.use("/admin/:id", upload.none(), auth,  admin);
 
 
 // visitor
-root.use("/", visitor); 
+root.use("/",visitor); 
 
 
 // not found
