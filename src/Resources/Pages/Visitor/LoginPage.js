@@ -104,6 +104,7 @@ const formData = new FormData();
 			const res = await fetch("/admin/login/", {
 				body: formData,
 				method: "POST",
+				credentials: 'same-origin'
 			});
 
 			if (res.redirected) {
