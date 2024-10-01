@@ -712,9 +712,7 @@ const auth = async (req, res, next) => {
           expires: new Date(Date.now() + 18000000000),
           httpOnly: true,
           secure: true,
-          domain: req.get("host") == "localhost" ? "" : "kanby.net",
-          sameSite: "strict",
-          
+          domain: req.get("host") == "localhost" ? "" : "kanby.net",        
         });
         res.redirect(
           `${req.protocol}://${req.get("host")}/admin/${record.rows[0]["id"]}/dashboard/`,
