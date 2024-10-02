@@ -10,7 +10,7 @@ module.exports = {
 
       content: await Framework.render`
 
-<p style="direction:rtl;font-family: 'Amiri Quran', serif">${data.Arabic}</p>
+<p class="arabic">${data.Arabic}</p>
 				${async () => {
 
             return "".concat(
@@ -22,7 +22,17 @@ module.exports = {
             );
 
         }}
-	
+	<style>
+    
+    .arabic{
+    direction:rtl;
+    font-family: 'Amiri Quran', serif;
+    font-weight: 400;
+    font-size: 2rem;
+  font-style: normal;
+    
+    }
+    </style>
 
       `,
     }),
