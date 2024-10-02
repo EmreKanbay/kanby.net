@@ -221,12 +221,6 @@ module.exports = {
   <script>
   
 
-window.onbeforeunload = function() {
-    return true;
-};
-
-
-
 	document.querySelector("#blog-edit-preview").addEventListener("click", async (e) => {
 
 try{
@@ -293,7 +287,7 @@ document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
  document.querySelector("#edit-blog-form").addEventListener("submit", async (e)=> {
 	e.preventDefault()
 
-
+window.onbeforeunload = undefined
 	try{
 	
 
@@ -366,7 +360,9 @@ document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
  document.querySelector("#edit-blog").addEventListener("click", async ()=> {
 	
 
-
+window.onbeforeunload = function() {
+    return true;
+};
 
 document.querySelector("#view-blog-here").style.display = "none"
 document.querySelector("#edit-blog-form").style.display = "block"

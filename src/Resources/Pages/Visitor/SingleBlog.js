@@ -81,7 +81,7 @@ module.exports = {
 					<div id="blog-container" >
 
 						<aside>
-						<p class="blog-title" >${record.rows[0].title}</p>
+						<h1 class="blog-title" >${record.rows[0].title}</h1>
 						<p class="blog-description">${record.rows[0].description}</p>
 						<span style="display:flex;height:3rem;align-items:center;gap:1rem"><img  style="border-radius:50%;height:100%" src="${record1.rows[0].profile_picture_url}"><p class="blog-author">${record.rows[0].author}</p></span>
 						<p class="blog-author">${translation[data.customData.language].key1} ${new Date(record.rows[0].creation_date * 1).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>

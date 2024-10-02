@@ -150,6 +150,7 @@ document.querySelector("#qMQEbc-message").innerHTML = "Unknown Error"
 
 document.querySelector("#add-blog-form").addEventListener("submit", async (e) => {
 
+window.onbeforeunload = undefined
 
     e.preventDefault()
 
