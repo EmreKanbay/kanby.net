@@ -22,6 +22,7 @@ const Settings = require("./Pages/Admin/Settings.js");
 const AllRequests = require("./Pages/Admin/Security/AllRequests.js");
 const LoginAttempts = require("./Pages/Admin/Security/LoginAttempts.js");
 const IpBlacklist = require("./Pages/Admin/Security/IpBlacklist.js");
+const SingleAyah = require("./Pages/Visitor/SingleAyah.js");
 
 module.exports = {
   LoginPage,
@@ -47,7 +48,8 @@ module.exports = {
   Settings,
   AllRequests,
   LoginAttempts,
-  IpBlacklist
+  IpBlacklist,
+  SingleAyah
   
   
 };

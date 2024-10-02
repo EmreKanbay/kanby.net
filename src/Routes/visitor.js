@@ -12,6 +12,9 @@ const errorPage = (msg) => {
   ${msg == undefined ? "" : `<p>Error Message: ${msg} </p>`}`;
 };
 
+require("dotenv").config();
+
+const cdn = process.env.CDN_DOMAIN;
 
 
 
@@ -55,6 +58,25 @@ visitor.get("/",async (req, res, next) => {
   }
 
 });
+
+
+visitor.get("/quran/", async (req, res, next)=> {
+
+  if(!req.query.sure) {next(); return}
+  if(!req.query.ayet) {next(); return}
+  
+
+  const sure =  await (await fetch(`${cdn}/surah1/${req.query.sure}.json`, {method:"GET"})).json()
+  const meal = []
+  for(let x in sure[req.query.ayet]){
+    if(x == "Arabic") continue
+    meal.push([x, sure[req.query.ayet][x]])
+  }
+res.status(200).send(
+  await Pages.SingleAyah.html({Arabic: sure[req.query.ayet].Arabic, Meal: meal}),
+);
+})
+
 
 // validate :lang and if it is valid and exist in SQL db redirect to relevant page
 //     if (/^([A-Z]{1}[a-z]+)$/.test(req.params.lang))
