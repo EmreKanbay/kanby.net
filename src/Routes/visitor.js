@@ -61,7 +61,8 @@ visitor.get("/",async (req, res, next) => {
 
 
 visitor.get("/quran/", async (req, res, next)=> {
-
+try {
+  
   if(!req.query.sure) {next(); return}
   if(!req.query.ayet) {next(); return}
   
@@ -75,6 +76,9 @@ visitor.get("/quran/", async (req, res, next)=> {
 res.status(200).send(
   await Pages.SingleAyah.html({Arabic: sure[req.query.ayet].Arabic, Meal: meal}),
 );
+} catch (error) {
+  console.log(error)
+}
 })
 
 
